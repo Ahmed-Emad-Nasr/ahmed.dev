@@ -13,7 +13,7 @@ const nextConfig = {
   basePath: BASE_PATH,
   /* Static export: no image optimizer; thumbnails are pre-generated (npm run thumbs) */
   images: { unoptimized: true },
-  experimental: { optimizePackageImports: ["framer-motion"] },
+  experimental: { optimizePackageImports: ["framer-motion", "lucide-react"] },
 };
 
 export default nextConfig;

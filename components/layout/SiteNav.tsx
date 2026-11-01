@@ -1,6 +1,6 @@
 "use client";
 
-import { m as motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { m as motion, AnimatePresence, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { lockScroll } from "@/lib/scroll";
 import { useFocusTrap } from "@/lib/use-focus-trap";
@@ -79,6 +79,12 @@ export default function SiteNav() {
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState("#home");
+  const [scrolled, setScrolled] = useState(false);
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const next = latest > 100;
+    setScrolled((current) => (current === next ? current : next));
+  });
 
   useEffect(() => {
     setMounted(true);
@@ -152,17 +158,14 @@ export default function SiteNav() {
     return () => mq.removeEventListener("change", close);
   }, []);
 
-  const navWidth = useTransform(scrollY, [0, 100], ["95%", "85%"]);
-
   return (
     <>
       {/* ─── Main Navigation Bar ─── */}
       <motion.nav
         ref={navRef}
         data-site-header="true"
-        className="fixed z-[100] left-1/2 -translate-x-1/2 backdrop-blur-xl bg-background/60 border border-foreground/10 px-4 md:px-8 py-2 md:py-3 flex items-center justify-between transition-[width,background-color,border-color] duration-500 ease-out"
+        className={`fixed z-[100] left-1/2 -translate-x-1/2 backdrop-blur-xl bg-background/60 border border-foreground/10 px-4 md:px-8 py-2 md:py-3 flex items-center justify-between transition-[width,background-color,border-color] duration-500 ease-out ${scrolled ? "w-[85%]" : "w-[95%]"}`}
         style={{
-          width: navWidth,
           top: 20,
           borderTop: "2px solid #BC002D",
           clipPath: "polygon(0 0, 100% 0, 98% 100%, 2% 100%)",
