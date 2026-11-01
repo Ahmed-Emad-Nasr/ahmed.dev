@@ -9,19 +9,21 @@ const BOOT_WORDS = ["起動中", "武士道", "鍛錬", "技術調整", "出陣"
 /**
  * Minimal boot screen: monogram, cycling kanji, hairline progress.
  * Click anywhere to skip. Respects reduced-motion (short + static).
- * Sensei-Dev's loader, as is: 1.8 s fill, 0.2 s hold, 0.5 s slide, on
- * every page load (it also covers the hero's GSAP set-up).
+ * The loader is intentionally brief so it does not delay the first useful
+ * content on repeat visits (it also covers the hero's GSAP set-up).
  */
 export default function AppLoader() {
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [reduced] = useState(() => typeof window !== "undefined" && prefersReducedMotion());
+  const [reduced] = useState(
+    () => typeof window !== "undefined" && prefersReducedMotion(),
+  );
 
   useEffect(() => {
     let raf = 0;
     let doneTimer: NodeJS.Timeout | undefined;
     const start = performance.now();
-    const DURATION = reduced ? 600 : 1800;
+    const DURATION = reduced ? 300 : 650;
 
     const tick = (now: number) => {
       const t = Math.min(1, Math.max(0, (now - start) / DURATION));
@@ -29,13 +31,13 @@ export default function AppLoader() {
       if (t < 1) {
         raf = requestAnimationFrame(tick);
       } else {
-        doneTimer = setTimeout(() => setLoading(false), 200);
+        doneTimer = setTimeout(() => setLoading(false), 100);
       }
     };
     raf = requestAnimationFrame(tick);
 
     // Safety: never trap the user
-    const fallback = setTimeout(() => setLoading(false), 3500);
+    const fallback = setTimeout(() => setLoading(false), 1500);
 
     return () => {
       cancelAnimationFrame(raf);
@@ -45,7 +47,15 @@ export default function AppLoader() {
   }, [reduced]);
 
   const word =
-    BOOT_WORDS[Math.max(0, Math.min(BOOT_WORDS.length - 1, Math.floor((progress / 100) * BOOT_WORDS.length)))] ?? "起動中";
+    BOOT_WORDS[
+      Math.max(
+        0,
+        Math.min(
+          BOOT_WORDS.length - 1,
+          Math.floor((progress / 100) * BOOT_WORDS.length),
+        ),
+      )
+    ] ?? "起動中";
 
   return (
     <AnimatePresence>
@@ -77,11 +87,16 @@ export default function AppLoader() {
           <p className="mt-4 font-display text-xl font-black uppercase tracking-tighter text-foreground">
             Ahmed<span className="text-primary-ink">.</span>
           </p>
-          <p className="mt-1 font-mono text-[0.625rem] uppercase tracking-[0.45em] text-foreground/60">Portfolio</p>
+          <p className="mt-1 font-mono text-[0.625rem] uppercase tracking-[0.45em] text-foreground/60">
+            Portfolio
+          </p>
 
           <div className="mt-10 w-56 md:w-72">
             <div className="h-px w-full bg-foreground/10" aria-hidden="true">
-              <div className="h-px bg-primary transition-[width] duration-100" style={{ width: `${progress}%` }} />
+              <div
+                className="h-px bg-primary transition-[width] duration-100"
+                style={{ width: `${progress}%` }}
+              />
             </div>
             <div className="mt-3 flex items-center justify-between font-mono text-[0.625rem] tracking-[0.3em] text-foreground/60">
               <span>LOADING</span>
