@@ -11,13 +11,13 @@
 
 import type { Metadata } from "next";
 import HeroSection from "@/components/home/HeroSection";
+import { RolesCards } from "@/components/home/RolesCards";
 import StatsBar from "@/components/home/StatsBar";
 import SiteNav from "@/components/layout/SiteNav";
 import PageEffects from "@/lib/perf/PageEffects";
 import AppLoader from "@/components/layout/AppLoader";
 import {
   WorkShowcase,
-  RolesFit,
   ExperienceTimeline,
   TeachingSection,
   PlatformsSection,
@@ -185,8 +185,8 @@ export default async function Home() {
 
       {/* ═══ 01 · The pitch: who → roles → proof → experience ═══ */}
       <HeroSection description={LIVE_COPY.heroDescription} evidenceLabel={LIVE_COPY.heroEvidence} />
+      <RolesCards />
       <StatsBar stats={LIVE_COPY.stats} />
-      <RolesFit />
 
       <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
       <TickerStrip />

@@ -25,7 +25,6 @@ type Overlay = "shortcuts" | "terminal" | null;
 
 const GO_TO_SECTION: Record<string, string> = {
   h: "home",
-  r: "roles",
   w: "work",
   e: "experience",
   l: "teaching",

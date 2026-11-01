@@ -587,7 +587,6 @@
   }
 
   /* Infinite indicators are decoration, not information. */
-  .animate-ping,
   .animate-pulse {
     animation: none !important;
   }
@@ -605,7 +604,6 @@
   }
 }
 
-/* Hero role ticker cursor (RoleTicker.tsx) */
 @keyframes caret-blink {
   50% {
     opacity: 0;
@@ -978,21 +976,10 @@
   .attack-tile:hover { transform: none; }
 }
 
-/* ─── Security HUD motion (REC/live dots, process packets, case-briefing
-       steps). Everything here is decoration: with reduced
+/* ─── Security motion (process packets and case-briefing steps).
+       Everything here is decoration: with reduced
        motion none of it runs and nothing is hidden. ─────────────────── */
 @media (prefers-reduced-motion: no-preference) {
-  .hud-rec {
-    animation: hud-blink 1.6s steps(1, end) infinite;
-  }
-  .live-dot::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 9999px;
-    background: inherit;
-    animation: live-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
   .process-packet {
     animation: process-packet 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
@@ -1006,12 +993,6 @@
     animation: brief-node 2.4s ease-out infinite;
     animation-delay: inherit;
   }
-}
-@keyframes hud-blink {
-  50% { opacity: 0.15; }
-}
-@keyframes live-ping {
-  75%, 100% { transform: scale(3); opacity: 0; }
 }
 @keyframes process-packet {
   0% { transform: translateX(0); opacity: 0; }

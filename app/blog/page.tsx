@@ -113,8 +113,6 @@ export default function BlogPage() {
       <AreaIntro
         as="h1"
         id="blog-top"
-        eyebrow="Blog // The evidence"
-        japanese="記録"
         titleA="The"
         titleB="Blog."
         description={DESCRIPTION}

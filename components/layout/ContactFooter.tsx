@@ -7,7 +7,6 @@ import { MessageCircle, ArrowUpRight, Mail, Copy, Check } from "lucide-react";
 import { Github, Linkedin, Youtube, Instagram, XLogo } from "@/components/ui/BrandIcons";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { useCopyLink } from "@/lib/use-copy-link";
-import ScrambleText from "@/components/ui/ScrambleText";
 import FadeIn from "@/components/ui/FadeIn";
 
 /* The last line of every page: the mark, the copyright, the legal pages and
@@ -115,18 +114,15 @@ export default function ContactFooter() {
           <div className="flex flex-col">
             <FadeIn y={30} duration={0.8}
 >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-[2px] bg-primary" />
-                <span className="text-primary-ink font-mono text-[0.625rem] tracking-[0.5em] uppercase font-bold">
-                  <ScrambleText text="The End of the Path" />
-                </span>
-              </div>
 
               {/* Sized to its column: the fixed text-9xl ran past the half-width
                   column into the form on every desktop width */}
               <h2 className="font-display text-[clamp(2rem,10.5vw,5rem)] lg:text-[clamp(3rem,4.8vw,8rem)] font-black uppercase leading-[0.8] mb-12 tracking-tighter">
                 Forge <br /> <span className="text-primary italic">Together.</span>
               </h2>
+              <p className="mb-8 max-w-xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
+                Have a security problem to solve or a team that needs practical security work? Let&apos;s start with the context and find the next useful step.
+              </p>
 
               {/* Direct email: the one channel a recruiter usually wants,
                   readable and copyable without opening anything. */}
@@ -208,7 +204,6 @@ export default function ContactFooter() {
 
             {/* Briefing header */}
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-6 h-[2px] bg-primary" />
               <span className="font-mono text-[0.5625rem] text-primary-ink tracking-[0.4em] uppercase font-bold">
                 Mission Briefing // 依頼
               </span>

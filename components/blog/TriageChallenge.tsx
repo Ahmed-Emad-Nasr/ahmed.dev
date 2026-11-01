@@ -98,8 +98,6 @@ export default function TriageChallenge() {
       <KanjiWatermark chars="当番" side="left" />
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
-          eyebrow="Your shift // Triage challenge"
-          japanese="当番"
           titleA="Triage"
           titleB="This Alert."
           description="A real alert from the case library. Three calls an analyst makes in the first minutes — make them, then see how the investigation went."

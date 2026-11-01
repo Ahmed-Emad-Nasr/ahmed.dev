@@ -1,9 +1,6 @@
-import ScrambleText from "@/components/ui/ScrambleText";
 import FadeIn from "@/components/ui/FadeIn";
 
 interface SectionHeaderProps {
-  eyebrow: string;
-  japanese: string;
   titleA: string;
   titleB: string;
   description?: string;
@@ -12,8 +9,6 @@ interface SectionHeaderProps {
 }
 
 export default function SectionHeader({
-  eyebrow,
-  japanese,
   titleA,
   titleB,
   description,
@@ -21,13 +16,6 @@ export default function SectionHeader({
 }: SectionHeaderProps) {
   return (
     <FadeIn x={-32} y={0} duration={0.7} className="mb-16 md:mb-20 max-w-3xl">
-      <div className="flex items-center gap-4 mb-5">
-        <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-        <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
-          <ScrambleText text={eyebrow} />
-        </span>
-        <span className="jp-eyebrow text-[0.6875rem] text-foreground/30 uppercase" lang="ja" aria-hidden="true" data-jp={japanese} />
-      </div>
       <Heading className="font-display text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase leading-[0.9]">
         <span className="text-foreground">{titleA}</span> <br />
         <span className="text-primary italic">{titleB}</span>

@@ -8,7 +8,6 @@ import { TiltCard } from "@/components/ui/Motion";
 import { Eyebrow, filterTab } from "@/components/ui/kit";
 import dynamic from "next/dynamic";
 import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
-import ScrambleText from "@/components/ui/ScrambleText";
 import FadeIn from "@/components/ui/FadeIn";
 
 const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), { ssr: false });
@@ -125,13 +124,6 @@ export default function ArtGallery() {
         {/* ─── 01 · Main Header ─── */}
         <div className="mb-16 md:mb-20 flex flex-col md:flex-row justify-between items-end gap-8">
           <FadeIn x={-40} y={0} duration={0.8} className="max-w-3xl">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-[2px] bg-primary" />
-              <span className="text-primary-ink text-xs font-black tracking-[0.4em] uppercase font-mono">
-                <ScrambleText text="Gallery // Visual Archive" />
-              </span>
-              <span className="jp-eyebrow text-[0.6875rem] text-foreground/30 uppercase" lang="ja" aria-hidden="true" data-jp="証明" />
-            </div>
             <h1 id="art-title" className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]">
               <span className="text-foreground">Proof</span> <br />
               <span className="text-primary italic">Gallery.</span>
@@ -244,7 +236,7 @@ export default function ArtGallery() {
                   className={filterTab(certFilter === f.id)}
                 >
                   {f.label}{" "}
-                  <span className="ml-1.5 font-mono text-[0.625rem] opacity-75 tabular-nums">
+                  <span className="ml-1.5 font-mono text-[0.625rem] tabular-nums">
                     ({count})
                   </span>
                 </button>
@@ -322,7 +314,7 @@ export default function ArtGallery() {
                 className={filterTab(archiveFilter === tab.id)}
               >
                 {tab.label}{" "}
-                <span className="ml-1.5 font-mono text-[0.625rem] opacity-75 tabular-nums">
+                <span className="ml-1.5 font-mono text-[0.625rem] tabular-nums">
                   ({tab.count})
                 </span>
               </button>

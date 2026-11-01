@@ -41,8 +41,6 @@ export default function WorkShowcase({ items: workList = PORTFOLIO_DATA.work }: 
 
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
-          eyebrow="Selected work // Labs & tools"
-          japanese="仕事"
           titleA="Built &"
           titleB="Tested."
           description="A GRC platform, labs built to be attacked, research done in isolation, and tools that came out of real triage. Every number below is in the repo."

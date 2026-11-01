@@ -147,7 +147,6 @@ export default function CommandPalette() {
     const isDark = resolvedTheme === "dark";
     return [
       { id: "home", group: "Go to", label: "Home", icon: Home, run: () => go("#home") },
-      { id: "roles", group: "Go to", label: "Services & roles I fit", icon: Briefcase, run: () => go("#roles") },
       { id: "work", group: "Go to", label: "Selected work", icon: Code2, run: () => go("#work") },
       { id: "lab", group: "Go to", label: "Home lab architecture", icon: Code2, run: () => go("#lab") },
       { id: "experience", group: "Go to", label: "Experience", icon: Briefcase, run: () => go("#experience") },

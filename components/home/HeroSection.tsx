@@ -7,13 +7,12 @@ import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { normalizePublicHref } from "@/lib/shared";
 import { RevealText } from "@/components/ui/RevealText";
 import { HeroMascot } from "@/components/home/HeroMascot";
-import { RoleTicker } from "@/components/home/RoleTicker";
 import { MessageCircle, Download, ArrowDown } from "lucide-react";
 import { prefersReducedMotion } from "@/lib/fx";
 import { Github, Linkedin, Youtube } from "@/components/ui/BrandIcons";
 
 
-function FieldRow({ label, value, hot = false, live = false, wide = false }: { label: string; value: string; hot?: boolean; live?: boolean; wide?: boolean }) {
+function FieldRow({ label, value, hot = false, wide = false }: { label: string; value: string; hot?: boolean; wide?: boolean }) {
   /* wide: a row that only repeats something the hero already says — shown
      from md up, skipped on phones, where the panel was 1.5 screens down */
   return (
@@ -22,9 +21,6 @@ function FieldRow({ label, value, hot = false, live = false, wide = false }: { l
         {label}
       </dt>
       <dd className={`max-w-[72%] font-mono text-xs text-right leading-relaxed break-words ${hot ? "text-accent font-bold" : "text-foreground/80"}`}>
-        {live && (
-          <span className="live-dot relative mr-2 inline-block h-1.5 w-1.5 translate-y-[-1px] rounded-full bg-accent align-middle" aria-hidden="true" />
-        )}
         {value}
       </dd>
     </div>
@@ -273,11 +269,6 @@ export default function HeroSection({
 />
             </h1>
             <p className="brush-jp text-xl md:text-2xl text-foreground/40 mt-4 [word-break:auto-phrase] [text-wrap:balance]" lang="ja" aria-hidden="true" data-jp="アハメド・エマド・ナスル  情報セキュリティ" />
-            {/* The jobs, typed one after another (from the old site's hero) */}
-            <RoleTicker
-              roles={PORTFOLIO_DATA.profile.roles}
-              className="mt-5 text-sm sm:text-base md:text-lg"
-            />
           </div>
 
           {/* Portrait */}
@@ -311,18 +302,6 @@ export default function HeroSection({
                   </textPath>
                 </text>
               </svg>
-            </div>
-
-            {/* Camera Viewfinder Brackets */}
-            <div className="absolute top-2 left-2 w-7 h-7 border-l-2 border-t-2 border-foreground/20 pointer-events-none" />
-            <div className="absolute top-2 right-2 w-7 h-7 border-r-2 border-t-2 border-foreground/20 pointer-events-none" />
-            <div className="absolute bottom-2 left-2 w-7 h-7 border-l-2 border-b-2 border-foreground/20 pointer-events-none" />
-            <div className="absolute bottom-2 right-2 w-7 h-7 border-r-2 border-b-2 border-foreground/20 pointer-events-none" />
-
-            {/* HUD readout on the viewfinder: subject id, blinking REC */}
-            <div className="absolute -top-7 left-2 flex items-center gap-2 bg-background/80 px-2 py-1 font-mono text-[0.5625rem] font-bold tracking-[0.3em] text-foreground pointer-events-none" aria-hidden="true">
-              <span className="hud-rec inline-block h-1.5 w-1.5 rounded-full bg-primary" />
-              ID // 0x3omda
             </div>
 
             {/* The Photo */}
@@ -481,14 +460,13 @@ export default function HeroSection({
             <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/50 pointer-events-none" />
             <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/50 pointer-events-none" />
             <div className="flex items-center gap-3 mb-5">
-              <div className="w-8 h-[2px] bg-primary" />
               <span className="font-mono text-[0.625rem] font-bold tracking-[0.35em] uppercase text-primary-ink">
                 Field Record
               </span>
               <span className="brush-jp text-base text-foreground/30" lang="ja" aria-hidden="true" data-jp="記録" />
             </div>
             <dl className="flex flex-col">
-              <FieldRow label="Status" value={PORTFOLIO_DATA.profile.availability} hot live />
+              <FieldRow label="Status" value={PORTFOLIO_DATA.profile.availability} hot />
               <FieldRow label="Role" value={PORTFOLIO_DATA.profile.title} />
               <FieldRow label="Base" value={PORTFOLIO_DATA.profile.contact.location} />
               <FieldRow label="Focus" value={focusLabel} wide />

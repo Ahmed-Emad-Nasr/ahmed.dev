@@ -5,7 +5,6 @@ import { m as motion, AnimatePresence } from "framer-motion";
 import { EASE } from "@/lib/fx";
 import type { FaqItem } from "@/data/types";
 import { Plus } from "lucide-react";
-import ScrambleText from "@/components/ui/ScrambleText";
 import FadeIn from "@/components/ui/FadeIn";
 
 export default function FaqSection({ items }: { items: FaqItem[] }) {
@@ -27,13 +26,6 @@ export default function FaqSection({ items }: { items: FaqItem[] }) {
           <FadeIn x={-40} y={0} duration={0.8}
             className="max-w-3xl"
           >
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-12 h-[2px] bg-primary" />
-              <span className="text-primary-ink text-xs font-black tracking-[0.4em] uppercase font-mono">
-                <ScrambleText text="FAQ // Before you ask" />
-              </span>
-              <span className="jp-eyebrow text-[0.6875rem] text-foreground/30 uppercase" lang="ja" aria-hidden="true" data-jp="質問" />
-            </div>
             <h2 className="font-display title-fit [--title-n:11] font-black tracking-tighter uppercase leading-[0.85]">
               <span className="text-foreground">Fair</span> <br />
               <span className="text-primary italic">Questions.</span>

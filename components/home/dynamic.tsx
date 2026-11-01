@@ -13,7 +13,6 @@ import dynamic from "next/dynamic";
 import SectionSkeleton from "@/components/ui/SectionSkeleton";
 
 /* ── Server-rendered, split per section ── */
-export const RolesFit = dynamic(() => import("@/components/home/RolesFit"), { loading: () => <SectionSkeleton lines={3} /> });
 export const WorkShowcase = dynamic(() => import("@/components/home/WorkShowcase"), { loading: () => <SectionSkeleton lines={2} /> });
 export const ExperienceTimeline = dynamic(() => import("@/components/home/ExperienceTimeline"), { loading: () => <SectionSkeleton lines={3} tall /> });
 export const TeachingSection = dynamic(() => import("@/components/home/TeachingSection"), { loading: () => <SectionSkeleton lines={3} /> });

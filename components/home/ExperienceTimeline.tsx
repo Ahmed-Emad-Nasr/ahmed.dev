@@ -2,7 +2,6 @@ import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { TiltCard } from "@/components/ui/Motion";
 import { Calendar, MapPin, CheckCircle2, ExternalLink, Award, FolderSearch } from "lucide-react";
 import CaseFilterLink from "@/components/blog/CaseFilterLink";
-import ScrambleText from "@/components/ui/ScrambleText";
 import FadeIn from "@/components/ui/FadeIn";
 
 export default function ExperienceTimeline() {
@@ -25,21 +24,12 @@ export default function ExperienceTimeline() {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Section Header ─── */}
         <div className="exp-header mb-16 md:mb-20">
-          <FadeIn y={40} duration={1} className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-[2px] bg-primary" />
-            <span className="text-primary-ink text-[0.625rem] font-mono font-bold tracking-[0.4em] uppercase">
-              <ScrambleText text="Professional Path // 職歴" />
-            </span>
-          </FadeIn>
           <FadeIn as="h2" y={40} duration={1} delay={0.15} className="font-display title-fit [--title-n:12] font-black tracking-tighter uppercase leading-[0.85]">
             <span className="text-foreground">Professional</span> <br />
             <span className="text-primary italic">Experience.</span>
           </FadeIn>
-          <FadeIn y={40} duration={1} delay={0.3} className="mt-6 flex items-center gap-3">
-            <div className="w-2 h-2 bg-primary" />
-            <span className="font-mono text-[0.625rem] text-foreground/60 tracking-[0.2em] uppercase">
-              Service Record // Maintenance Log
-            </span>
+          <FadeIn y={40} duration={1} delay={0.3} className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
+            A record of the roles, responsibilities and measurable work behind the security practice.
           </FadeIn>
         </div>
 

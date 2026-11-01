@@ -9,7 +9,6 @@ import PageLink from "@/components/ui/PageLink";
 import type { CSSProperties } from "react";
 import FadeIn from "@/components/ui/FadeIn";
 import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
-import ScrambleText from "@/components/ui/ScrambleText";
 import { attackCoverage } from "@/lib/library-data";
 
 /* The whole matrix in one screen: a column per tactic, a cell per covered
@@ -183,13 +182,6 @@ export default function AttackCoverage() {
           className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
         >
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-              <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
-                <ScrambleText text="Coverage // MITRE ATT&amp;CK" />
-              </span>
-              <span className="jp-eyebrow text-[0.6875rem] text-foreground/30 uppercase" lang="ja" aria-hidden="true" data-jp="網羅" />
-            </div>
             <h2
               id="attack-title"
               className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]"

@@ -16,8 +16,6 @@ export default function ProcessSection() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
-          eyebrow="Process // How I work"
-          japanese="手順"
           titleA="Risk to"
           titleB="Response."
           description="One loop for every engagement — the NIST CSF functions, from the risk register to the incident report. Nothing is closed without a reason on record."

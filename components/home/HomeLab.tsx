@@ -48,8 +48,6 @@ export default function HomeLab() {
       <KanjiWatermark chars="道場" side="right" />
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
-          eyebrow="The lab // Where detections are tested"
-          japanese="道場"
           titleA="The"
           titleB="Home Lab."
           description="The SOC lab most of the projects run on: attacked from Kali with Atomic Red Team, watched by Sysmon, auditd, Suricata and Zeek, correlated in Wazuh, enriched by VirusTotal, answered by a YARA scan and a quarantine script, and handed to TheHive as a case."

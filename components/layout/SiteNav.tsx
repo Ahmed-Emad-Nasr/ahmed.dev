@@ -24,7 +24,6 @@ import {
    /#work …) plus the blog, which is its own page. */
 const navItems = [
   { name: "Home", href: "#home", icon: Home, katakana: "ホーム" },
-  { name: "Roles", href: "#roles", icon: Briefcase, katakana: "適任" },
   { name: "Work", href: "#work", icon: Code2, katakana: "仕事" },
   { name: "Experience", href: "#experience", icon: Briefcase, katakana: "経験" },
   { name: "Blog", href: "/blog", icon: BookOpen, katakana: "記録" },

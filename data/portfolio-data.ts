@@ -244,16 +244,6 @@ export const PORTFOLIO_DATA: PortfolioData = {
     availability: "Open to InfoSec roles: Officer, Engineer, GRC, SOC, IR/DFIR, IAM and Security Education",
     /* The areas shown on the hero's "Focus" row */
     focus: ["GRC", "SOC", "IR & DFIR", "Malware", "IAM", "Data Security"],
-    /* The jobs typed one after another under the name */
-    roles: [
-      "Information Security Officer",
-      "Information Security Engineer",
-      "GRC & Compliance Analyst",
-      "SOC Analyst (L1/L2)",
-      "DFIR & Malware Analyst",
-      "IAM & Data Security Analyst",
-      "Cybersecurity Instructor",
-    ],
     contact: {
       email: "ahmed.em.nasr@gmail.com",
       phone: "+201013972690",

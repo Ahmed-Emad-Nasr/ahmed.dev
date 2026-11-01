@@ -7,7 +7,6 @@ import { useContributionStats } from "@/lib/api/contributions";
 import { ContributionGraph } from "@/components/home/ContributionGraph";
 import { CountUp } from "@/components/ui/CountUp";
 import { ExternalLink } from "lucide-react";
-import ScrambleText from "@/components/ui/ScrambleText";
 import FadeIn from "@/components/ui/FadeIn";
 
 /* Open-source contributions to other projects, plus the GitHub contribution
@@ -23,11 +22,6 @@ export default function ContributionsGrid() {
         <FadeIn x={-32} y={0} duration={0.7}
           className="mb-10 flex flex-wrap items-center gap-4"
         >
-          <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-          <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
-            <ScrambleText text="Community // Contributed" />
-          </span>
-          <span className="brush-jp text-lg text-foreground/30" lang="ja" aria-hidden="true" data-jp="貢献" />
           {stats.status === "ready" && (
             <span className="ml-auto flex items-center gap-3 border border-foreground/10 bg-surface/60 px-4 py-2">
               <span className="font-mono text-lg font-black text-accent tabular-nums">

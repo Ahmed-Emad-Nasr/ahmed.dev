@@ -32,8 +32,6 @@ export default function DetectionLibrary() {
             badges did not fit, and the second badge ran off the screen. */}
         <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-8">
           <SectionHeader
-            eyebrow="Detection engineering // Wazuh"
-            japanese="検知"
             titleA="Detection"
             titleB="Library."
             description="My custom Wazuh rule pack, rule by rule: what fires, how loud (Wazuh level 0–15) and which ATT&CK technique it watches. Filter by family; the full XML is in the report."

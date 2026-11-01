@@ -112,8 +112,6 @@ export default function MediaSections() {
         <div className="relative z-10">
           <div className="flex flex-col md:flex-row justify-between md:items-end gap-8">
             <SectionHeader
-              eyebrow="YouTube // On the channel"
-              japanese="動画"
               titleA="Watch &"
               titleB="Learn."
               description="Walkthroughs and labs from the channel — SIEM, malware analysis, web security and GRC basics, all in one place."

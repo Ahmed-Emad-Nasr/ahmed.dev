@@ -225,8 +225,6 @@ export default function CaseLibrarySection() {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row justify-between md:items-end gap-8">
             <SectionHeader
-              eyebrow="Case Library // Investigations"
-              japanese="事件簿"
               titleA="Case"
               titleB="Library."
               description={`${libraryCounts.total} published cases — ${libraryCounts.reports} full investigation reports, plus write-ups and walkthroughs across SOC incidents, DFIR, malware analysis, detection engineering, IAM, data and cloud security.`}

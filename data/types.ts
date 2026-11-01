@@ -31,8 +31,6 @@ interface Profile {
   availability: string;
   /** The areas on the hero's "Focus" row */
   focus: string[];
-  /** The jobs typed one after another under the name in the hero */
-  roles: string[];
   contact: ContactInfo;
   hero: HeroInfo;
 }

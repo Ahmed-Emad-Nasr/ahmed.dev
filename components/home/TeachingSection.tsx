@@ -7,7 +7,6 @@ import { ArrowUpRight } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import { CounterBadge, KanjiWatermark, cardSurface, chipNeutral, chipTertiary } from "@/components/ui/kit";
 import { DIPLOMA, TEACHING_ROLES, TEACHING_STATS } from "@/data/teaching";
-import ScrambleText from "@/components/ui/ScrambleText";
 
 export default function TeachingSection() {
   return (
@@ -27,13 +26,6 @@ export default function TeachingSection() {
           className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
         >
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-              <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
-                <ScrambleText text="Teaching // Passing it on" />
-              </span>
-              <span className="jp-eyebrow text-[0.6875rem] text-foreground/30 uppercase" lang="ja" aria-hidden="true" data-jp="指導" />
-            </div>
             <h2
               id="teaching-title"
               className="font-display title-fit [--title-n:8] font-black tracking-tighter uppercase leading-[0.85]"

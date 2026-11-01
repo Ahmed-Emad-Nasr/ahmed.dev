@@ -8,7 +8,6 @@ import { ArrowUpRight } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import { CounterBadge, KanjiWatermark, cardSurface } from "@/components/ui/kit";
 import type { Platform, TryHackMeStats } from "@/data/platforms";
-import ScrambleText from "@/components/ui/ScrambleText";
 
 function Mark({ children }: { children: string }) {
   return (
@@ -66,10 +65,6 @@ function FeaturedCard({ platform, stats }: { platform: Platform; stats: TryHackM
           ))}
         </dl>
         <p className="mt-4 flex items-center gap-2 font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
-          <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
-            {stats.live && <span className="absolute inline-flex h-full w-full animate-ping bg-tertiary opacity-60" />}
-            <span className={`relative inline-flex h-1.5 w-1.5 ${stats.live ? "bg-tertiary" : "bg-foreground/40"}`} />
-          </span>
           {stats.live ? "Live from TryHackMe at build" : "Last recorded"} · {stats.asOf}
         </p>
       </div>
@@ -144,13 +139,6 @@ export default function PlatformsSection({
           className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
         >
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-4 mb-5">
-              <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-              <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
-                <ScrambleText text="Practice // Public profiles" />
-              </span>
-              <span className="jp-eyebrow text-[0.6875rem] text-foreground/30 uppercase" lang="ja" aria-hidden="true" data-jp="修練" />
-            </div>
             <h2
               id="platforms-title"
               className="font-display title-fit [--title-n:8] font-black tracking-tighter uppercase leading-[0.85]"

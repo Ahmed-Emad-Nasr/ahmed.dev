@@ -109,9 +109,6 @@ export function VerdictBar({ verdict, severity }: Pick<CaseDetail, "verdict" | "
     >
       <div className="absolute inset-y-0 left-0 w-[3px] bg-primary" aria-hidden="true" />
       <div className="flex items-center gap-3 shrink-0">
-        <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
-          <span className="live-dot absolute inline-flex h-full w-full rounded-full bg-primary" />
-        </span>
         <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.35em] text-foreground/60">Verdict</span>
       </div>
       <p className="flex-1 text-base md:text-lg text-foreground font-light leading-snug">{verdict}</p>
