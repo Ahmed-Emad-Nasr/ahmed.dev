@@ -35,7 +35,6 @@ const navItems = [
 const AREA_OF: Record<string, string> = {
   teaching: "#experience",
   platforms: "#platforms",
-  faq: "#contact",
 };
 
 function NavLink({

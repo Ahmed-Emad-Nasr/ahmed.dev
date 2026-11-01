@@ -1,7 +1,7 @@
 /*
  * lib/routes.ts — which page each section lives on.
  *
- *   /       the portfolio: pitch, FAQ, contact
+ *   /       the portfolio: pitch and contact
  *   /blog   the evidence: start here, the case
  *           library, videos, ATT&CK coverage, detection rules, triage
  *   /gallery the visual proof archive & all 48 certificates

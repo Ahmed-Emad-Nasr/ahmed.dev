@@ -17,7 +17,6 @@ export const WorkShowcase = dynamic(() => import("@/components/home/WorkShowcase
 export const ExperienceTimeline = dynamic(() => import("@/components/home/ExperienceTimeline"), { loading: () => <SectionSkeleton lines={3} tall /> });
 export const TeachingSection = dynamic(() => import("@/components/home/TeachingSection"), { loading: () => <SectionSkeleton lines={3} /> });
 export const PlatformsSection = dynamic(() => import("@/components/home/PlatformsSection"), { loading: () => <SectionSkeleton lines={3} /> });
-export const FaqSection = dynamic(() => import("@/components/home/FaqSection"), { loading: () => <SectionSkeleton lines={4} /> });
 export const ContactFooter = dynamic(() => import("@/components/layout/ContactFooter"), { loading: () => <SectionSkeleton lines={2} /> });
 export const MobileActionBar = dynamic(() => import("@/components/home/MobileActionBar"));
 export const PaletteHint = dynamic(() => import("@/components/home/PaletteHint"));

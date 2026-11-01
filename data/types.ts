@@ -120,11 +120,6 @@ export interface Language {
   level: string;
 }
 
-export interface FaqItem {
-  q: string;
-  a: string;
-}
-
 export interface PortfolioData {
   profile: Profile;
   experience: Experience[];

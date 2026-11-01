@@ -4,8 +4,8 @@
  * strings to the client sections as props.
  */
 
-import type { FaqItem, Stat } from "@/data/types";
-import { investigationReportCount, publishedCaseCount } from "@/data/cases";
+import type { Stat } from "@/data/types";
+import { investigationReportCount } from "@/data/cases";
 import { ALL_GALLERY_CERTIFICATES } from "@/data/certifications";
 import { coveredTechniqueCount } from "@/data/attack";
 import { CV_SUMMARY } from "@/data/cv";
@@ -14,22 +14,12 @@ import { normalizePublicHref } from "@/lib/shared";
 type LiveCopy = {
   heroDescription: string;
   heroEvidence: string;
-  faq: FaqItem[];
   stats: Stat[];
 };
 
 export const LIVE_COPY: LiveCopy = {
   heroDescription: CV_SUMMARY,
   heroEvidence: `${investigationReportCount} IR/DFIR reports · ${coveredTechniqueCount()} ATT&CK techniques`,
-  faq: [
-    { q: "What kind of role are you after?", a: "Information Security Officer or Engineer roles, with hands-on depth across GRC and compliance, SOC and incident response, DFIR and malware analysis, IAM and data security. I also work as a Cybersecurity Instructor; penetration testing is at a beginner level (eJPT)." },
-    { q: "Do you do GRC and compliance work?", a: "Yes. At Banque Misr I assessed GRC gaps across three units against ISO 27001, PCI DSS, COBIT and SWIFT, and audited IAM, PAM and DevSecOps architecture. VerifAI 360, my open-source GRC platform, automates control mapping and gap analysis across 150+ frameworks." },
-    { q: "Where can I see real work?", a: `In the case library: ${publishedCaseCount} documented cases, ${investigationReportCount} of them full investigation reports, with screenshots and ATT&CK mapping where it applies.` },
-    { q: "Are the cases real work?", a: `They are my own work on training platforms and in labs — ${investigationReportCount} incident and forensics reports (LetsDefend SOC alerts, DFIR and malware challenges, INE labs), plus capstones, rule packs and lab write-ups. Team projects are marked as team work, and every case links its original report or screenshots so you can check it.` },
-    { q: "Which tools and frameworks do you use?", a: "ISO 27001, PCI DSS and NIST CSF for governance; Wazuh, ELK and Splunk for SIEM; Suricata and Zeek on the network; Volatility, Autopsy and YARA for forensics; Python and Bash to automate the rest." },
-    { q: "Do you teach?", a: "Yes — instructor at AMIT Learning and NTI, with 300+ students taught. Before that, 35+ sessions with Google Developer Groups." },
-    { q: "How do I reach you?", a: "Email or LinkedIn. The form at the bottom of the page opens a pre-filled email — nothing is sent anywhere else." },
-  ],
   stats: [
     { target: investigationReportCount, suffix: "", label: "IR / DFIR reports", japanese: "記録", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
     { target: ALL_GALLERY_CERTIFICATES.length, suffix: "", label: "Certificates & badges", japanese: "認定", href: `${normalizePublicHref("/gallery")}#all-certificates` },

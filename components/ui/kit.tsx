@@ -55,7 +55,7 @@ export function Eyebrow({ children, japanese }: { children: ReactNode; japanese?
   );
 }
 
-/* Counter box with corner brackets — FaqSection / ArtGallery */
+/* Counter box with corner brackets — used by section cards and the art gallery */
 export function CounterBadge({
   value,
   top,
@@ -137,4 +137,3 @@ export const statusLede = "mt-5 mb-10 max-w-2xl text-lg text-foreground/60 font-
 export const statusActions = "flex flex-wrap gap-4 mb-14";
 export const statusReport =
   "mt-14 font-mono text-[0.625rem] uppercase tracking-[0.25em] leading-relaxed text-foreground/60 [&_a]:text-primary-ink [&_a]:underline [&_a]:decoration-primary/40 [&_a:hover]:decoration-current [&_a]:underline-offset-4";
-

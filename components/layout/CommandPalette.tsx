@@ -151,7 +151,6 @@ export default function CommandPalette() {
       { id: "lab", group: "Go to", label: "Home lab architecture", icon: Code2, run: () => go("#lab") },
       { id: "experience", group: "Go to", label: "Experience", icon: Briefcase, run: () => go("#experience") },
       { id: "teaching", group: "Go to", label: "Teaching", icon: GraduationCap, run: () => go("#teaching") },
-      { id: "faq", group: "Go to", label: "FAQ", icon: MessageCircle, run: () => go("#faq") },
       { id: "platforms", group: "Go to", label: "Practice platforms (THM, HTB …)", icon: Trophy, run: () => go("#platforms") },
       { id: "gallery", group: "Pages", label: "Proof gallery", icon: Palette, run: () => visit("/gallery") },
       { id: "all-certs", group: "Go to", label: `All certificates (${ALL_GALLERY_CERTIFICATES.length})`, icon: Award, run: () => go("#all-certificates") },

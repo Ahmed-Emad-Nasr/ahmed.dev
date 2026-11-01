@@ -1,7 +1,6 @@
 /*
  * The home page: the pitch (who, roles, proof, experience),
- * FAQ and contact, with a
- * door to /blog. Section order follows the Sensei-Dev portfolio
+ * contact, with a door to /blog. Section order follows the Sensei-Dev portfolio
  * (github.com/MostafaSensei106/Sensei-Dev, GPL-3.0).
  *
  * Loading: text sections are in the HTML; interactive ones are split
@@ -21,7 +20,6 @@ import {
   ExperienceTimeline,
   TeachingSection,
   PlatformsSection,
-  FaqSection,
   ContactFooter,
   MobileActionBar,
   PaletteHint,
@@ -105,7 +103,6 @@ function structuredData() {
         primaryImageOfPage: { "@type": "ImageObject", url: PERSON_IMAGE },
         image: [PERSON_IMAGE, OG_IMAGE.url],
         hasPart: [
-          { "@id": `${SITE_URL}#faq` },
           { "@id": `${SITE_URL}#experience-list` },
         ],
       },
@@ -148,19 +145,6 @@ function structuredData() {
         availableLanguage: ["en"],
         serviceType: ["Governance, Risk & Compliance", "SOC Monitoring", "Incident Response", "Digital Forensics", "Malware Analysis", "Identity & Access Management", "Data Security", "Security Training"],
         url: `${SITE_URL}#roles`,
-      },
-      {
-        /* The FAQ exactly as shown on the page */
-        "@type": "FAQPage",
-        "@id": `${SITE_URL}#faq`,
-        url: `${SITE_URL}#faq`,
-        inLanguage: "en",
-        author: PERSON_REF,
-        mainEntity: LIVE_COPY.faq.map((item) => ({
-          "@type": "Question",
-          name: item.q,
-          acceptedAnswer: { "@type": "Answer", text: item.a },
-        })),
       },
     ],
   });
@@ -206,10 +190,6 @@ export default async function Home() {
         <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
       </div>
 
-      {/* ═══ 02 · Questions and contact ═══ */}
-      <div className={DEFER}>
-        <FaqSection items={LIVE_COPY.faq} />
-      </div>
       <div id="contact" className={`mt-20 ${DEFER}`}>
         <ContactFooter />
       </div>
