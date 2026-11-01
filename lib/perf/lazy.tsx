@@ -4,7 +4,7 @@
  * lib/perf/lazy.tsx — sections whose code AND data load only when needed,
  * and that never cost a dropped frame when they arrive.
  *
- * The heavy client-only sections (the contributions graph on the home page
+ * The heavy client-only sections (the contributions graph on the blog page
  * and the triage challenge on the blog) are not in the server HTML. The
  * gallery has its own route and is therefore isolated from the home page.
  *

@@ -82,15 +82,6 @@ export interface WorkItem {
   featured?: boolean;
 }
 
-interface StackGroup {
-  id: string;
-  title: string;
-  japanese: string;
-  items: string[];
-  /** Case pages that show this group's skills in use */
-  evidence?: { id: string; label: string }[];
-}
-
 interface ProcessStep {
   id: string;
   index: string;
@@ -140,7 +131,6 @@ export interface PortfolioData {
   profile: Profile;
   experience: Experience[];
   work: WorkItem[];
-  stack: StackGroup[];
   process: ProcessStep[];
   contributions: Contribution[];
   languages: Language[];

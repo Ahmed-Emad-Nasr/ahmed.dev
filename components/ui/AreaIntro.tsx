@@ -1,5 +1,5 @@
 /*
- * AreaIntro — the opening of a group of sections ("About" on the home
+ * AreaIntro — the opening of a group of sections
  * page, the blog page's own header): a section header and a row of jump
  * links to the sections in the group. Server-rendered; the links are plain #anchors
  * (lib/perf/PageEffects.tsx mounts lazy targets before jumping).

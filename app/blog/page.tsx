@@ -10,7 +10,15 @@ import { DEFER, PageShell } from "@/components/ui/kit";
 import AreaIntro from "@/components/ui/AreaIntro";
 import SlashDivider from "@/components/ui/SlashDivider";
 import TickerStrip from "@/components/ui/TickerStrip";
-import { CaseLibrarySection, LazyAttackCoverage, LazyDetectionLibrary, LazyTriage } from "@/components/blog/dynamic";
+import {
+  CaseLibrarySection,
+  HomeLab,
+  LazyAttackCoverage,
+  LazyContributions,
+  LazyDetectionLibrary,
+  LazyTriage,
+  ProcessSection,
+} from "@/components/blog/dynamic";
 import PageEffects from "@/lib/perf/PageEffects";
 import { attackCoverage, libraryCounts, libraryStructuredData } from "@/lib/library-data";
 import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
@@ -132,6 +140,12 @@ export default function BlogPage() {
       <LazyAttackCoverage />
       <LazyDetectionLibrary />
       <LazyTriage />
+
+      <SlashDivider label="02 // Operating model" japanese="実務" origin="left" />
+      <TickerStrip reverse items={["継続", "改善", "実務", "計測", "BUILD THE RECORD"]} />
+      <HomeLab />
+      <ProcessSection />
+      <LazyContributions />
     </PageShell>
   );
 }

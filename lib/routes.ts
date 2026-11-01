@@ -1,7 +1,7 @@
 /*
  * lib/routes.ts — which page each section lives on.
  *
- *   /       the portfolio: pitch, about, FAQ, contact
+ *   /       the portfolio: pitch, FAQ, contact
  *   /blog   the evidence: start here, the case
  *           library, videos, ATT&CK coverage, detection rules, triage
  *   /gallery the visual proof archive & all 48 certificates
@@ -16,7 +16,7 @@
 type SitePage = "/" | "/blog" | "/gallery";
 
 /** Section ids that live on /blog (plus every #case-… and #tactic-… anchor) */
-const BLOG_IDS = new Set(["start-here", "cases", "videos", "youtube", "attack", "detections", "triage"]);
+const BLOG_IDS = new Set(["start-here", "cases", "videos", "youtube", "attack", "detections", "triage", "lab", "process", "contributions"]);
 const BLOG_PREFIX = /^(case|tactic)-/;
 
 /** Section ids that live on /gallery */

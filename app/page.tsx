@@ -1,6 +1,6 @@
 /*
  * The home page: the pitch (who, roles, proof, experience),
- * about (toolbox, lab, process, contributions), FAQ and contact, with a
+ * FAQ and contact, with a
  * door to /blog. Section order follows the Sensei-Dev portfolio
  * (github.com/MostafaSensei106/Sensei-Dev, GPL-3.0).
  *
@@ -13,7 +13,6 @@ import type { Metadata } from "next";
 import HeroSection from "@/components/home/HeroSection";
 import StatsBar from "@/components/home/StatsBar";
 import SiteNav from "@/components/layout/SiteNav";
-import AreaIntro from "@/components/ui/AreaIntro";
 import BlogTeaser from "@/components/home/BlogTeaser";
 import GalleryTeaser from "@/components/home/GalleryTeaser";
 import PageEffects from "@/lib/perf/PageEffects";
@@ -24,14 +23,10 @@ import {
   ExperienceTimeline,
   TeachingSection,
   PlatformsSection,
-  TechStackGrid,
-  HomeLab,
-  ProcessSection,
   FaqSection,
   ContactFooter,
   MobileActionBar,
   PaletteHint,
-  LazyContributions,
 } from "@/components/home/dynamic";
 import { getTryHackMeStats } from "@/lib/api/tryhackme";
 import { getSyncedWorkItems } from "@/lib/api/github-repos";
@@ -92,9 +87,6 @@ export const metadata: Metadata = {
     images: [OG_IMAGE.url],
   },
 };
-
-const ABOUT_DESCRIPTION =
-  "The security toolbox, the home lab architecture, how an engagement runs, and open-source contributions.";
 
 function structuredData() {
   return jsonLd({
@@ -216,45 +208,14 @@ export default async function Home() {
         <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
       </div>
 
-      {/* ═══ 02 · About: toolbox, lab, process, contributions ═══ */}
-      <SlashDivider label="02 // Operating model" japanese="実務" origin="right" />
-      <TickerStrip reverse items={["継続", "改善", "実務", "計測", "BUILD THE RECORD"]} />
-
-      <AreaIntro
-        id="about"
-        eyebrow="About // How I work"
-        japanese="人物"
-        titleA="Behind the"
-        titleB="Work."
-        description={ABOUT_DESCRIPTION}
-        links={[
-          { href: "#stack", label: "Toolbox" },
-          { href: "#lab", label: "Home lab" },
-          { href: "#process", label: "Process" },
-          { href: "#contributions", label: "Contributions" },
-        ]}
-      />
-      <div id="stack" className={DEFER}>
-        <TechStackGrid />
-      </div>
-      <div className={DEFER}>
-        <HomeLab />
-      </div>
-      <div className={DEFER}>
-        <ProcessSection />
-      </div>
-      <div id="contributions">
-        <LazyContributions />
-      </div>
-
-      {/* ═══ 03 · The door to the proof gallery & blog ═══ */}
-      <SlashDivider label="03 // Credentials & proof" japanese="証明" origin="left" />
+      {/* ═══ 02 · The door to the proof gallery & blog ═══ */}
+      <SlashDivider label="02 // Credentials & proof" japanese="証明" origin="left" />
       <TickerStrip items={["証明", "認定", "記録", "証拠", "PROOF GALLERY"]} />
       <div className={DEFER}>
         <GalleryTeaser />
       </div>
 
-      <SlashDivider label="04 // Field notes" japanese="記録" origin="right" />
+      <SlashDivider label="03 // Field notes" japanese="記録" origin="right" />
       <TickerStrip reverse items={["事件", "調査", "報告", "証拠", "FIELD NOTES"]} />
       <div className={DEFER}>
         <BlogTeaser />

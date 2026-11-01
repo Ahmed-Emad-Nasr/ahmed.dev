@@ -16,7 +16,6 @@ import {
   Code2,
   BookOpen,
   Images,
-  UserRound,
   Mail,
   Command,
 } from "lucide-react";
@@ -28,21 +27,15 @@ const navItems = [
   { name: "Roles", href: "#roles", icon: Briefcase, katakana: "適任" },
   { name: "Work", href: "#work", icon: Code2, katakana: "仕事" },
   { name: "Experience", href: "#experience", icon: Briefcase, katakana: "経験" },
-  { name: "About", href: "#about", icon: UserRound, katakana: "人物" },
   { name: "Blog", href: "/blog", icon: BookOpen, katakana: "記録" },
   { name: "Gallery", href: "/gallery", icon: Images, katakana: "証明" },
   { name: "Contact", href: "#contact", icon: Mail, katakana: "連絡" },
 ];
 
-/* Where each item's part of the home page ends: "About" stays lit through
-   the toolbox, lab and path sections; the blog teaser lights "Blog" */
+/* Where each item's part of the home page ends. */
 const AREA_OF: Record<string, string> = {
   teaching: "#experience",
   platforms: "#platforms",
-  stack: "#about",
-  lab: "#about",
-  process: "#about",
-  contributions: "#about",
   "gallery-preview": "/gallery",
   blog: "/blog",
   faq: "#contact",

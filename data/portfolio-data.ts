@@ -6,7 +6,7 @@
 
 import type { Experience, PortfolioData, WorkItem } from "@/data/types";
 import { knowledgeEducationItems } from "@/data/experience";
-import { languages, skillGroups } from "@/data/skills";
+import { languages } from "@/data/skills";
 import { GITHUB_USERNAME, staticProjectFallback } from "@/data/projects";
 import { GALLERY_IMAGE_COUNT, galleryImagePath, galleryMetadata } from "@/data/certifications";
 import { CV_PDF_HREF, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
@@ -236,39 +236,6 @@ const work: WorkItem[] = [
   },
 ];
 
-/* ── Stack: the skill groups, minus soft skills ────────────────────────── */
-
-const STACK_JP: Record<string, string> = {
-  grc: "統治",
-  siem: "監視",
-  ir: "対応",
-  forensics: "鑑識",
-  identity: "認証",
-  data: "保護",
-  vuln: "脆弱",
-  cloud: "雲",
-  intel: "諜報",
-  network: "網",
-  frameworks: "規範",
-  automation: "自動化",
-};
-
-/* Short card titles; the full group names (skills.ts) are on the CV page */
-const STACK_TITLE: Record<string, string> = {
-  grc: "GRC & Compliance",
-  siem: "SIEM & Monitoring",
-  ir: "Incident Response",
-  forensics: "Malware & Forensics",
-  identity: "Identity & Access",
-  data: "Data Security",
-  vuln: "Vuln. Management",
-  cloud: "Cloud Security",
-  intel: "Threat Intel",
-  network: "Network Security",
-  frameworks: "Frameworks",
-  automation: "Automation",
-};
-
 export const PORTFOLIO_DATA: PortfolioData = {
   profile: {
     name: "Ahmed Emad Nasr",
@@ -314,15 +281,6 @@ export const PORTFOLIO_DATA: PortfolioData = {
   },
   experience,
   work,
-  stack: skillGroups
-    .filter((g) => g.id !== "soft")
-    .map((g) => ({
-      id: g.id,
-      title: STACK_TITLE[g.id] ?? g.label,
-      japanese: STACK_JP[g.id] ?? "技",
-      items: [...g.items],
-      evidence: [...(g.evidence ?? [])],
-    })),
   process: [
     /* The NIST CSF functions, folded into four steps */
     { id: "govern", index: "01", title: "Govern", japanese: "統治", description: "Assets, risks and controls mapped against ISO 27001 and NIST CSF. Every gap gets an owner, a priority and a fix." },
