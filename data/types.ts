@@ -31,6 +31,8 @@ interface Profile {
   availability: string;
   /** The areas on the hero's "Focus" row */
   focus: string[];
+  /** Roles shown in the hero's animated ticker */
+  roles: string[];
   contact: ContactInfo;
   hero: HeroInfo;
 }

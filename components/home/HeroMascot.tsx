@@ -105,7 +105,7 @@ export function HeroMascot({ className }: { className?: string }) {
     <motion.div
       className={className}
       animate={reduced ? {} : { y: [0, -7, 0] }}
-      transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+      transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
     >
       <motion.button
         type="button"

@@ -7,6 +7,7 @@ import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { normalizePublicHref } from "@/lib/shared";
 import { RevealText } from "@/components/ui/RevealText";
 import { HeroMascot } from "@/components/home/HeroMascot";
+import { RoleTicker } from "@/components/home/RoleTicker";
 import { MessageCircle, Download, ArrowDown } from "lucide-react";
 import { prefersReducedMotion } from "@/lib/fx";
 import { Github, Linkedin, Youtube } from "@/components/ui/BrandIcons";
@@ -198,7 +199,7 @@ export default function HeroSection({
         className="absolute inset-0 pointer-events-none overflow-hidden hidden lg:block"
         aria-hidden="true"
       >
-        {Array.from({ length: 12 }).map((_, i) => (
+        {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
             className="absolute w-[2px] h-[2px] bg-primary/30 rounded-none"
@@ -269,6 +270,10 @@ export default function HeroSection({
 />
             </h1>
             <p className="brush-jp text-xl md:text-2xl text-foreground/40 mt-4 [word-break:auto-phrase] [text-wrap:balance]" lang="ja" aria-hidden="true" data-jp="アハメド・エマド・ナスル  情報セキュリティ" />
+            <RoleTicker
+              roles={PORTFOLIO_DATA.profile.roles}
+              className="mt-5 text-sm sm:text-base md:text-lg"
+            />
           </div>
 
           {/* Portrait */}
@@ -286,7 +291,7 @@ export default function HeroSection({
 
             {/* Orbit inscription  stack names circling the portrait */}
             <div
-              className="absolute -inset-3 hidden sm:block animate-[spin_36s_linear_infinite] pointer-events-none"
+              className="absolute -inset-3 hidden sm:block animate-[spin_48s_linear_infinite] pointer-events-none"
               aria-hidden="true"
             >
               <svg viewBox="0 0 200 200" className="w-full h-full">

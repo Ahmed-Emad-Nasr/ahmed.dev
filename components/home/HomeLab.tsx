@@ -72,10 +72,14 @@ export default function HomeLab() {
             {LINKS.map((l, i) => (
               <g key={i}>
                 <path d={l.d} fill="none" stroke={TONE[l.tone]} strokeOpacity="0.25" strokeWidth="2" />
-                <path d={l.d} fill="none" stroke={TONE[l.tone]} strokeWidth="2" strokeDasharray="6 10" className="lab-flow" style={{ animationDuration: `${l.dur}s` }} />
-                <circle r="4" fill={TONE[l.tone]} className="lab-packet">
-                  <animateMotion dur={`${l.dur * 1.6}s`} repeatCount="indefinite" path={l.d} begin={`${(i * 0.37).toFixed(2)}s`} />
-                </circle>
+                {i % 2 === 0 && (
+                  <path d={l.d} fill="none" stroke={TONE[l.tone]} strokeWidth="2" strokeDasharray="6 10" className="lab-flow" style={{ animationDuration: `${l.dur}s` }} />
+                )}
+                {i % 2 === 0 && (
+                  <circle r="4" fill={TONE[l.tone]} className="lab-packet">
+                    <animateMotion dur={`${l.dur * 1.6}s`} repeatCount="indefinite" path={l.d} begin={`${(i * 0.37).toFixed(2)}s`} />
+                  </circle>
+                )}
                 {l.label && (
                   <text x={l.lx} y={l.ly} textAnchor="middle" className="lab-label" fill="currentColor">
                     {l.label}
