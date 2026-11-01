@@ -13,8 +13,6 @@ import type { Metadata } from "next";
 import HeroSection from "@/components/home/HeroSection";
 import StatsBar from "@/components/home/StatsBar";
 import SiteNav from "@/components/layout/SiteNav";
-import BlogTeaser from "@/components/home/BlogTeaser";
-import GalleryTeaser from "@/components/home/GalleryTeaser";
 import PageEffects from "@/lib/perf/PageEffects";
 import AppLoader from "@/components/layout/AppLoader";
 import {
@@ -208,20 +206,7 @@ export default async function Home() {
         <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
       </div>
 
-      {/* ═══ 02 · The door to the proof gallery & blog ═══ */}
-      <SlashDivider label="02 // Credentials & proof" japanese="証明" origin="left" />
-      <TickerStrip items={["証明", "認定", "記録", "証拠", "PROOF GALLERY"]} />
-      <div className={DEFER}>
-        <GalleryTeaser />
-      </div>
-
-      <SlashDivider label="03 // Field notes" japanese="記録" origin="right" />
-      <TickerStrip reverse items={["事件", "調査", "報告", "証拠", "FIELD NOTES"]} />
-      <div className={DEFER}>
-        <BlogTeaser />
-      </div>
-
-      {/* ═══ 04 · Questions and contact ═══ */}
+      {/* ═══ 02 · Questions and contact ═══ */}
       <div className={DEFER}>
         <FaqSection items={LIVE_COPY.faq} />
       </div>

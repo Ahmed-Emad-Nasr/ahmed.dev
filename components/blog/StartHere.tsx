@@ -13,7 +13,7 @@ export default function StartHere({
   headingLevel: H = "h2",
 }: {
   note?: string;
-  /** h3 when it sits inside another section (the home page's blog teaser) */
+  /** h3 when it sits inside another section */
   headingLevel?: "h2" | "h3";
 } = {}) {
   if (ENTRIES.length === 0) return null;
