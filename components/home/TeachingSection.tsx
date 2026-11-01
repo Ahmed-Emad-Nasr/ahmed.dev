@@ -5,7 +5,13 @@
 
 import { ArrowUpRight } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
-import { CounterBadge, KanjiWatermark, cardSurface, chipNeutral, chipTertiary } from "@/components/ui/kit";
+import {
+  CounterBadge,
+  KanjiWatermark,
+  cardSurface,
+  chipNeutral,
+  chipTertiary,
+} from "@/components/ui/kit";
 import { DIPLOMA, TEACHING_ROLES, TEACHING_STATS } from "@/data/teaching";
 
 export default function TeachingSection() {
@@ -34,23 +40,40 @@ export default function TeachingSection() {
               <span className="text-primary italic">Forward.</span>
             </h2>
             <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              Explaining an attack to a room of forty is a harder test than running it once. The curriculum I wrote,
-              and the rooms I taught it in.
+              Explaining an attack to a room of forty is a harder test than
+              running it once. The curriculum I wrote, and the rooms I taught it
+              in.
             </p>
           </div>
-          <CounterBadge value={`${DIPLOMA.hours}h`} top="Curriculum" bottom="Written" />
+          <CounterBadge
+            value={`${DIPLOMA.hours}h`}
+            top="Curriculum"
+            bottom="Written"
+          />
         </FadeIn>
 
         {/* ─── Headline numbers ─── */}
         <FadeIn className="mb-10 md:mb-12">
           <dl className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-foreground/10 border border-foreground/10">
             {TEACHING_STATS.map((s) => (
-              <div key={s.label} className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 sm:px-6 py-5 bg-background min-w-0">
+              <div
+                key={s.label}
+                className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 sm:px-6 py-5 bg-background min-w-0"
+              >
                 <dt className="order-2 flex flex-col min-w-0">
-                  <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">{s.label}</span>
-                  <span className="jp-eyebrow text-[0.5625rem] text-foreground/25" lang="ja" aria-hidden="true" data-jp={s.japanese} />
+                  <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
+                    {s.label}
+                  </span>
+                  <span
+                    className="jp-eyebrow text-[0.5625rem] text-foreground/25"
+                    lang="ja"
+                    aria-hidden="true"
+                    data-jp={s.japanese}
+                  />
                 </dt>
-                <dd className="order-1 font-mono text-xl md:text-2xl font-black tabular-nums text-accent">{s.value}</dd>
+                <dd className="order-1 font-mono text-xl md:text-2xl font-black tabular-nums text-accent">
+                  {s.value}
+                </dd>
               </div>
             ))}
           </dl>
@@ -59,19 +82,32 @@ export default function TeachingSection() {
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-6 lg:gap-10 items-start">
           {/* ─── The diploma: one path, module by module ─── */}
           <FadeIn className={`${cardSurface} p-7 md:p-9`}>
-            <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary via-primary/40 to-transparent" aria-hidden="true" />
-            <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-primary" aria-hidden="true" />
+            <div
+              className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary via-primary/40 to-transparent"
+              aria-hidden="true"
+            />
+            <div
+              className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-primary"
+              aria-hidden="true"
+            />
 
             <div className="flex items-center justify-between gap-4">
               <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
                 Curriculum // {DIPLOMA.hours} hours
               </span>
-              <span className="jp-eyebrow text-[0.625rem] text-foreground/30" lang="ja" aria-hidden="true" data-jp={DIPLOMA.japanese} />
+              <span
+                className="jp-eyebrow text-[0.625rem] text-foreground/30"
+                lang="ja"
+                aria-hidden="true"
+                data-jp={DIPLOMA.japanese}
+              />
             </div>
             <h3 className="mt-5 font-display text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight leading-[0.95]">
               {DIPLOMA.title}
             </h3>
-            <p className="mt-4 text-sm md:text-base text-foreground/60 font-light leading-relaxed">{DIPLOMA.summary}</p>
+            <p className="mt-4 text-sm md:text-base text-foreground/60 font-light leading-relaxed">
+              {DIPLOMA.summary}
+            </p>
 
             {/* The path: numbered stops on a red rail */}
             <ol className="relative mt-8 border-l border-primary/40 ml-[11px]">
@@ -88,7 +124,7 @@ export default function TeachingSection() {
                       <span className="sr-only">Module {m.n}: </span>
                       {m.title}
                     </span>
-                    <span className="shrink-0 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60">
+                    <span className="max-w-[42%] text-right break-words font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60">
                       {m.detail}
                     </span>
                   </div>
@@ -126,13 +162,19 @@ export default function TeachingSection() {
                             className="inline-flex items-start gap-1.5 hover:text-primary transition-colors duration-300"
                           >
                             {r.org}
-                            <ArrowUpRight size={14} className="mt-1 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
+                            <ArrowUpRight
+                              size={14}
+                              className="mt-1 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity"
+                              aria-hidden="true"
+                            />
                           </a>
                         ) : (
                           r.org
                         )}
                       </h3>
-                      <p className="mt-1 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-primary-ink">{r.role}</p>
+                      <p className="mt-1 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-primary-ink">
+                        {r.role}
+                      </p>
                     </div>
                     <span
                       className={`shrink-0 font-mono text-[0.5625rem] uppercase tracking-[0.25em] px-2.5 py-1 border ${
@@ -144,7 +186,9 @@ export default function TeachingSection() {
                       {r.period}
                     </span>
                   </div>
-                  <p className="mt-3 text-sm text-foreground/60 font-light leading-relaxed">{r.topics}</p>
+                  <p className="mt-3 text-sm text-foreground/60 font-light leading-relaxed">
+                    {r.topics}
+                  </p>
                   <ul className="mt-4 flex flex-wrap gap-2">
                     {r.results.map((x) => (
                       <li key={x} className={chipTertiary}>

@@ -2,15 +2,30 @@
 
 /* CaseCard — one case in the library (card view) */
 
-import { memo, useCallback, useState, ViewTransition } from "react";
+import { memo, useCallback, useState } from "react";
 import Image from "next/image";
 import PageLink from "@/components/ui/PageLink";
-import { Check, Copy, ExternalLink, Download, Images, ShieldAlert, AlertTriangle, ArrowRight } from "lucide-react";
+import {
+  Check,
+  Copy,
+  ExternalLink,
+  Download,
+  Images,
+  ShieldAlert,
+  AlertTriangle,
+  ArrowRight,
+} from "lucide-react";
 import { TiltCard } from "@/components/ui/Motion";
 import { getThumbnail, normalizePublicHref } from "@/lib/shared";
 import type { PdfResource } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
-import { btnOutline, btnPrimary, chipAccent, chipNeutral, chipTertiary } from "@/components/ui/kit";
+import {
+  btnOutline,
+  btnPrimary,
+  chipAccent,
+  chipNeutral,
+  chipTertiary,
+} from "@/components/ui/kit";
 import { caseCardBlurb } from "@/lib/case-summary";
 import FadeIn from "@/components/ui/FadeIn";
 
@@ -54,9 +69,18 @@ function CaseCard({
   const moreTools = Math.max(0, (tools ?? []).length - shownTools.length);
 
   return (
-    <FadeIn y={32} duration={0.7} delay={(index % 2) * 0.1} id={`case-${id}`} className="scroll-mt-28">
+    <FadeIn
+      y={32}
+      duration={0.7}
+      delay={(index % 2) * 0.1}
+      id={`case-${id}`}
+      className="scroll-mt-28"
+    >
       <TiltCard className="spotlight group relative bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500 flex flex-col h-full overflow-hidden">
-        <div className="absolute top-0 left-0 z-10 w-full h-[2px] bg-gradient-to-r from-primary via-primary/40 to-transparent opacity-70" aria-hidden="true" />
+        <div
+          className="absolute top-0 left-0 z-10 w-full h-[2px] bg-gradient-to-r from-primary via-primary/40 to-transparent opacity-70"
+          aria-hidden="true"
+        />
 
         {cover && (
           <button
@@ -66,7 +90,9 @@ function CaseCard({
             aria-label={`Open ${shotCount} screenshot(s) of ${title}`}
           >
             <Image
-              src={normalizePublicHref(coverFailed ? cover : getThumbnail(cover))}
+              src={normalizePublicHref(
+                coverFailed ? cover : getThumbnail(cover),
+              )}
               alt=""
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -95,7 +121,9 @@ function CaseCard({
                   {category ? ` • ${category}` : ""}
                 </div>
                 <div className="font-mono text-[0.5625rem] text-foreground/60 tracking-widest mt-1 truncate">
-                  {[date, readTime ? `${readTime} min` : null, platform].filter(Boolean).join(" • ")}
+                  {[date, readTime ? `${readTime} min` : null, platform]
+                    .filter(Boolean)
+                    .join(" • ")}
                 </div>
               </div>
             </div>
@@ -119,37 +147,47 @@ function CaseCard({
             ) : null}
           </div>
 
-          {/* Named like the case page's <h1>: opening the case morphs this
-              title into the page headline (React <ViewTransition>) */}
-          <ViewTransition name={`case-title-${id}`} share="morph" default="none">
-            <h3 className="font-display text-xl md:text-lg lg:text-2xl font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
-              <PageLink href={detailPath} className="hover:text-primary-ink transition-colors duration-300">
-                {title}
-              </PageLink>
-            </h3>
-          </ViewTransition>
+          <h3 className="font-display text-xl md:text-lg lg:text-2xl font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
+            <PageLink
+              href={detailPath}
+              className="hover:text-primary-ink transition-colors duration-300"
+            >
+              {title}
+            </PageLink>
+          </h3>
           {verdict && (
             <p className="mb-3 flex items-start gap-2 font-mono text-[0.625rem] uppercase tracking-[0.15em] text-primary-ink">
-              <span className="mt-1 h-1.5 w-1.5 shrink-0 bg-primary" aria-hidden="true" />
+              <span
+                className="mt-1 h-1.5 w-1.5 shrink-0 bg-primary"
+                aria-hidden="true"
+              />
               <span>{verdict}</span>
             </p>
           )}
           {description && (
-            <p className="text-sm text-foreground/60 font-light leading-relaxed mb-5 line-clamp-3">{caseCardBlurb(description)}</p>
+            <p className="text-sm text-foreground/60 font-light leading-relaxed mb-5 line-clamp-3">
+              {caseCardBlurb(description)}
+            </p>
           )}
 
           {shownTools.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-3">
               {shownTools.map((t) => (
-                <span key={t} className={chipTertiary}>{t}</span>
+                <span key={t} className={chipTertiary}>
+                  {t}
+                </span>
               ))}
-              {moreTools > 0 && <span className={chipNeutral}>+{moreTools}</span>}
+              {moreTools > 0 && (
+                <span className={chipNeutral}>+{moreTools}</span>
+              )}
             </div>
           )}
           {skillsGained && skillsGained.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
               {skillsGained.slice(0, 3).map((s) => (
-                <span key={s} className={chipAccent}>{s}</span>
+                <span key={s} className={chipAccent}>
+                  {s}
+                </span>
               ))}
             </div>
           )}
@@ -160,10 +198,20 @@ function CaseCard({
             </PageLink>
             {href && (
               <>
-                <a href={normalizePublicHref(href)} target="_blank" rel="noopener noreferrer" className={btnOutline}>
+                <a
+                  href={normalizePublicHref(href)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={btnOutline}
+                >
                   <ExternalLink size={13} /> PDF
                 </a>
-                <a href={normalizePublicHref(href)} download className={btnOutline} aria-label={`Download the PDF of ${title}`}>
+                <a
+                  href={normalizePublicHref(href)}
+                  download
+                  className={btnOutline}
+                  aria-label={`Download the PDF of ${title}`}
+                >
                   <Download size={13} />
                 </a>
               </>
@@ -174,9 +222,17 @@ function CaseCard({
               className={`${btnOutline} min-w-[9.5rem] justify-center`}
               aria-label={`Copy link to ${title}`}
             >
-              {copyState === "done" ? <Check size={13} className="text-accent" /> : <Copy size={13} />}
+              {copyState === "done" ? (
+                <Check size={13} className="text-accent" />
+              ) : (
+                <Copy size={13} />
+              )}
               <span aria-live="polite">
-                {copyState === "done" ? "Copied" : copyState === "error" ? "Failed" : "Copy link"}
+                {copyState === "done"
+                  ? "Copied"
+                  : copyState === "error"
+                    ? "Failed"
+                    : "Copy link"}
               </span>
             </button>
           </div>

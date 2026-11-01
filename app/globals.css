@@ -55,18 +55,21 @@
   --font-display: var(--font-display-google), var(--font-jp-google), sans-serif;
   --font-body: var(--font-body-google), sans-serif;
   --font-mono: var(--font-mono-google), monospace;
-  --font-jp: 'Yuji Syuku Site', var(--font-jp-brush-google), var(--font-jp-google), sans-serif;
-  --font-jp-brush: 'Yuji Syuku Site', var(--font-jp-brush-google), var(--font-jp-google), serif;
+  --font-jp:
+    "Yuji Syuku Site", var(--font-jp-brush-google), var(--font-jp-google),
+    sans-serif;
+  --font-jp-brush:
+    "Yuji Syuku Site", var(--font-jp-brush-google), var(--font-jp-google), serif;
 }
 
 @layer base {
   :root {
     /* Light theme (washi paper)  default, class strategy via next-themes */
     color-scheme: light;
-    --primary: #BC002D;
+    --primary: #bc002d;
     /* Red used AS TEXT. Same as --primary on the light theme (6.1:1). */
-    --primary-ink: #BC002D;
-    --secondary: #1A1A1A;
+    --primary-ink: #bc002d;
+    --secondary: #1a1a1a;
     /* Darkened a step from #8a6d00 / #007a8a: the chips sit on a 10% tint
        of their own colour, which took them just under 4.5:1. */
     --accent: #7a6000;
@@ -93,24 +96,24 @@
   .dark {
     /* Dark theme (sumi ink) */
     color-scheme: dark;
-    --primary: #BC002D;
+    --primary: #bc002d;
     /* On sumi black the brand red is 3:1 — fine for fills, borders and big
        display type, too dark for the small red eyebrows and labels (WCAG
        wants 4.5:1). Text gets a lighter cut of the same red: 5:1 on the
        background, 4.6:1 on cards. Buttons and borders keep --primary. */
-    --primary-ink: #F0304F;
-    --secondary: #1A1A1A;
-    --accent: #FFD700;
-    --tertiary: #00D2EF;
-    --quaternary: #A29BFE;
+    --primary-ink: #f0304f;
+    --secondary: #1a1a1a;
+    --accent: #ffd700;
+    --tertiary: #00d2ef;
+    --quaternary: #a29bfe;
 
     --background: #080808;
-    --foreground: #FFFFFF;
+    --foreground: #ffffff;
 
     --surface: #121212;
-    --on-surface: #FCFCFC;
-    --on-surface-variant: #A0A0A0;
-    --surface-variant: #1E1E1E;
+    --on-surface: #fcfcfc;
+    --on-surface-variant: #a0a0a0;
+    --surface-variant: #1e1e1e;
 
     --primary-container: rgba(226, 0, 26, 0.1);
     --tertiary-container: rgba(0, 210, 239, 0.1);
@@ -131,10 +134,9 @@
     font-size: 100%;
   }
 
-  @media (prefers-reduced-motion: no-preference) {
-    html {
-      scroll-behavior: smooth;
-    }
+  /* Route changes should land immediately; section jumps use lib/scroll.ts. */
+  html {
+    scroll-behavior: auto;
   }
   @media (min-width: 1800px) {
     html {
@@ -184,7 +186,6 @@
 
   /* Custom cursor only on precise pointers; touch keeps native cursor */
   @media (pointer: fine) {
-
     body.custom-cursor-on,
     body.custom-cursor-on a,
     body.custom-cursor-on button {
@@ -200,7 +201,6 @@
   /* Pointer affordance on touch / non-fine pointers
      (fine pointers use the custom cursor with cursor:none). */
   @media (pointer: coarse) {
-
     button,
     [role="button"] {
       cursor: pointer;
@@ -219,7 +219,10 @@
   /* anywhere, not break-word: it also lowers the heading's minimum width,
      so a heading inside a flex row or grid cell can shrink and wrap a word
      too long for a 280px fold screen instead of pushing past the edge */
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     overflow-wrap: anywhere;
   }
   .font-display:is(h1, h2, h3, h4) {
@@ -278,16 +281,18 @@
   /* Selection Styling */
   ::selection {
     background: var(--primary);
-    color: #FFFFFF;
+    color: #ffffff;
   }
 
   ::-moz-selection {
     background: var(--primary);
-    color: #FFFFFF;
+    color: #ffffff;
   }
 
   body {
-    transition: background-color 0.35s ease, color 0.35s ease;
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease;
   }
 }
 
@@ -314,7 +319,6 @@
   display: block;
 }
 
-
 /* ─── Button sheen  one delight, used by every primary CTA ─── */
 
 .btn-sheen {
@@ -330,9 +334,14 @@
   left: -70%;
   width: 45%;
   height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
   transform: skewX(-20deg);
-  transition: left 0.6s ease;
+  transition: left 0.5s ease;
   z-index: 1;
 }
 
@@ -369,9 +378,19 @@
 
 .site-texture {
   background-image:
-    radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--foreground) 5%, transparent) 1px, transparent 0),
-    linear-gradient(135deg, color-mix(in srgb, var(--primary) 2%, transparent), transparent 42%);
-  background-size: 36px 36px, 100% 100%;
+    radial-gradient(
+      circle at 1px 1px,
+      color-mix(in srgb, var(--foreground) 5%, transparent) 1px,
+      transparent 0
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--primary) 2%, transparent),
+      transparent 42%
+    );
+  background-size:
+    36px 36px,
+    100% 100%;
   opacity: 0.35;
 }
 
@@ -387,10 +406,12 @@
   inset: 0;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.4s ease;
-  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%),
-      color-mix(in srgb, var(--primary) 14%, transparent),
-      transparent 70%);
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--primary) 14%, transparent),
+    transparent 70%
+  );
 }
 
 .spotlight:hover::before {
@@ -400,9 +421,9 @@
 @media (hover: hover) {
   .spotlight {
     transition:
-      border-color 0.5s ease,
-      box-shadow 0.5s ease,
-      background-color 0.5s ease;
+      border-color 0.4s ease,
+      box-shadow 0.4s ease,
+      background-color 0.4s ease;
   }
 
   .spotlight:hover {
@@ -422,13 +443,19 @@
 
 /* Blue variant  tools-flavored glow (tertiary) instead of red. */
 .spotlight-blue::before {
-  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%),
-      color-mix(in srgb, var(--tertiary) 16%, transparent),
-      transparent 70%);
+  background: radial-gradient(
+    320px circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--tertiary) 16%, transparent),
+    transparent 70%
+  );
 }
 
 .gallery-halftone {
-  background-image: radial-gradient(circle at 2px 2px, color-mix(in srgb, var(--primary) 28%, transparent) 1px, transparent 0);
+  background-image: radial-gradient(
+    circle at 2px 2px,
+    color-mix(in srgb, var(--primary) 28%, transparent) 1px,
+    transparent 0
+  );
   background-size: 8px 8px;
   mix-blend-mode: screen;
 }
@@ -436,7 +463,7 @@
 .ticker-track {
   display: flex;
   min-width: max-content;
-  animation: ticker-scroll 72s linear infinite;
+  animation: ticker-scroll 80s linear infinite;
 }
 
 .ticker-strip:hover .ticker-track {
@@ -444,7 +471,9 @@
 }
 
 @keyframes ticker-scroll {
-  to { transform: translateX(-50%); }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .chapter-slash {
@@ -469,7 +498,7 @@
 /* ─── Contribution cells pop as Pac-Man passes ─── */
 
 .cell-pop {
-  animation: cell-pop 0.45s ease both;
+  animation: cell-pop 0.4s ease both;
   animation-delay: calc(var(--i, 0) * 12ms);
 }
 
@@ -505,7 +534,7 @@
 @property --primary-ink {
   syntax: "<color>";
   inherits: true;
-  initial-value: #BC002D;
+  initial-value: #bc002d;
 }
 @property --accent {
   syntax: "<color>";
@@ -663,10 +692,12 @@
 @utility title-fit {
   font-size: min(3rem, calc((100vw - 3rem) / (var(--title-n, 10) * 0.86)));
   @media (width >= 48rem) {
-    font-size: min(6rem, calc((min(100vw - 10rem, 80rem)) / (var(--title-n, 10) * 0.86)));
+    font-size: min(
+      6rem,
+      calc((min(100vw - 10rem, 80rem)) / (var(--title-n, 10) * 0.86))
+    );
   }
 }
-
 
 /* ATT&CK coverage (components/blog/AttackCoverage.tsx). Server-rendered,
    ~30 tiles, ~30 popovers and ~90 links, so the repeated styling is written
@@ -700,8 +731,14 @@
   min-height: 5.25rem;
   padding: 0.625rem 0.625rem 0.5rem;
   border: 1px solid color-mix(in srgb, var(--primary) 35%, transparent);
-  background: color-mix(in srgb, var(--primary) calc(var(--heat, 8%) * var(--heat-k)), var(--surface));
-  transition: border-color 0.3s, transform 0.3s;
+  background: color-mix(
+    in srgb,
+    var(--primary) calc(var(--heat, 8%) * var(--heat-k)),
+    var(--surface)
+  );
+  transition:
+    border-color 0.3s,
+    transform 0.3s;
 }
 .attack-seg::before {
   content: "";
@@ -788,14 +825,22 @@
   text-align: left;
   border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
   border-left: 2px solid var(--primary);
-  background: color-mix(in srgb, var(--primary) calc(var(--heat, 8%) * var(--heat-k)), var(--surface));
-  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  background: color-mix(
+    in srgb,
+    var(--primary) calc(var(--heat, 8%) * var(--heat-k)),
+    var(--surface)
+  );
+  transition:
+    border-color 0.3s,
+    transform 0.3s,
+    box-shadow 0.3s;
 }
 .attack-tile:hover,
 .attack-tile:focus-visible {
   border-color: var(--primary);
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px -12px color-mix(in srgb, var(--primary) 45%, transparent);
+  box-shadow: 0 10px 30px -12px
+    color-mix(in srgb, var(--primary) 45%, transparent);
 }
 .attack-tile-top {
   display: flex;
@@ -911,7 +956,9 @@
   font-size: 0.75rem;
   border: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
   color: color-mix(in srgb, var(--foreground) 70%, transparent);
-  transition: border-color 0.2s, color 0.2s;
+  transition:
+    border-color 0.2s,
+    color 0.2s;
 }
 .attack-pop-close:hover {
   border-color: var(--primary);
@@ -928,8 +975,11 @@
   font-size: 0.875rem;
   line-height: 1.4;
   color: color-mix(in srgb, var(--foreground) 80%, transparent);
-  border-bottom: 1px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-  transition: color 0.2s, background-color 0.2s;
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--foreground) 10%, transparent);
+  transition:
+    color 0.2s,
+    background-color 0.2s;
 }
 .attack-pop-cases a:hover,
 .attack-pop-cases a:focus-visible {
@@ -964,16 +1014,28 @@
   color: var(--primary-ink);
 }
 @keyframes attack-pop-in {
-  from { opacity: 0; transform: translateY(12px) scale(0.98); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .attack-pop:popover-open { animation: none; }
+  .attack-pop:popover-open {
+    animation: none;
+  }
   .attack-seg,
   .attack-tile,
-  .attack-tile-foot > span { transition: none; }
+  .attack-tile-foot > span {
+    transition: none;
+  }
   .attack-seg:hover,
-  .attack-tile:hover { transform: none; }
+  .attack-tile:hover {
+    transform: none;
+  }
 }
 
 /* ─── Security motion (process packets and case-briefing steps).
@@ -981,7 +1043,7 @@
        motion none of it runs and nothing is hidden. ─────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   .process-packet {
-    animation: process-packet 2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    animation: process-packet 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
   /* The pulse is a pseudo-element scaling out (transform + opacity only,
      no box-shadow repaint every frame) */
@@ -990,19 +1052,36 @@
     position: absolute;
     inset: -1px;
     border: 1px solid var(--primary);
-    animation: brief-node 2.7s ease-out infinite;
+    animation: brief-node 3s ease-out infinite;
     animation-delay: inherit;
   }
 }
 @keyframes process-packet {
-  0% { transform: translateX(0); opacity: 0; }
-  15% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { transform: translateX(26px); opacity: 0; }
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(26px);
+    opacity: 0;
+  }
 }
 @keyframes brief-node {
-  0% { transform: scale(1); opacity: 0.7; }
-  60%, 100% { transform: scale(2.4); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  60%,
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
 }
 
 /* ── ATT&CK matrix view: one compact cell per technique ── */
@@ -1016,14 +1095,22 @@
   hyphens: auto;
   border: 1px solid color-mix(in srgb, var(--foreground) 8%, transparent);
   border-top: 2px solid var(--primary);
-  background: color-mix(in srgb, var(--primary) calc(var(--heat, 8%) * var(--heat-k)), var(--surface));
-  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+  background: color-mix(
+    in srgb,
+    var(--primary) calc(var(--heat, 8%) * var(--heat-k)),
+    var(--surface)
+  );
+  transition:
+    transform 0.3s,
+    box-shadow 0.3s,
+    border-color 0.3s;
 }
 .attack-cell:hover,
 .attack-cell:focus-visible {
   border-color: var(--primary);
   transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 10px 24px -12px color-mix(in srgb, var(--primary) 55%, transparent);
+  box-shadow: 0 10px 24px -12px
+    color-mix(in srgb, var(--primary) 55%, transparent);
   z-index: 1;
   position: relative;
 }
@@ -1031,80 +1118,167 @@
 /* ── Contact form: transmission bar while a message is sending ── */
 .send-progress {
   width: 0;
-  animation: send-progress 2.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation: send-progress 2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
 }
 @keyframes send-progress {
-  to { width: 92%; }
+  to {
+    width: 92%;
+  }
 }
 
 /* ── Palette hint: the top line runs down like a timer while it is open ── */
-.hint-timer { transform: scaleX(1); }
-.hint-timer[data-on="true"] { transform: scaleX(0); transition: transform 9s linear; }
+.hint-timer {
+  transform: scaleX(1);
+}
+.hint-timer[data-on="true"] {
+  transform: scaleX(0);
+  transition: transform 9s linear;
+}
 
 /* ── Detection library: rows cascade in (again on every filter), radar spins ── */
 .rule-row {
   animation: rule-row-in 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 @keyframes rule-row-in {
-  from { opacity: 0; transform: translateX(-12px); }
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
 }
-.radar-spin { animation: radar-spin 3.5s linear infinite; }
-@keyframes radar-spin { to { transform: rotate(360deg); } }
+.radar-spin {
+  animation: radar-spin 4s linear infinite;
+}
+@keyframes radar-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .rule-row, .radar-spin { animation: none; }
+  .rule-row,
+  .radar-spin {
+    animation: none;
+  }
 }
 
 /* ── Triage challenge ── */
-.siren-pulse { animation: siren-pulse 1.7s ease-in-out infinite; }
-@keyframes siren-pulse { 50% { opacity: 0.35; transform: scale(0.9); } }
-.caret-blink { animation: caret-blink 1.2s steps(1) infinite; }
-@keyframes caret-blink { 50% { visibility: hidden; } }
-.answer-shake { animation: answer-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both; }
-@keyframes answer-shake {
-  20%, 60% { transform: translateX(-4px); }
-  40%, 80% { transform: translateX(4px); }
+.siren-pulse {
+  animation: siren-pulse 1.9s ease-in-out infinite;
 }
-.answer-in { animation: answer-in 0.5s cubic-bezier(0.23, 1, 0.32, 1) both; }
-@keyframes answer-in { from { opacity: 0; transform: translateY(-6px); } }
+@keyframes siren-pulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.9);
+  }
+}
+.caret-blink {
+  animation: caret-blink 1.35s steps(1) infinite;
+}
+@keyframes caret-blink {
+  50% {
+    visibility: hidden;
+  }
+}
+.answer-shake {
+  animation: answer-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+@keyframes answer-shake {
+  20%,
+  60% {
+    transform: translateX(-4px);
+  }
+  40%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+.answer-in {
+  animation: answer-in 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@keyframes answer-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .siren-pulse, .caret-blink, .answer-shake, .answer-in { animation: none; }
+  .siren-pulse,
+  .caret-blink,
+  .answer-shake,
+  .answer-in {
+    animation: none;
+  }
 }
 
 /* ── Home lab diagram ── */
-.lab-flow { animation: lab-flow linear infinite; }
-@keyframes lab-flow { to { stroke-dashoffset: -32; } }
-.lab-beacon { animation: siren-pulse 1.8s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
-.lab-title { font-family: var(--font-display, inherit); font-size: 13px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em; }
-.lab-sub { font-family: var(--font-mono, monospace); font-size: 10.5px; opacity: 0.6; }
-.lab-label { font-family: var(--font-mono, monospace); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.55; }
-.lab-node rect:first-child { transition: stroke-opacity 0.3s; }
-.lab-node:hover rect:first-child { stroke-opacity: 1; }
+.lab-flow {
+  animation: lab-flow linear infinite;
+}
+@keyframes lab-flow {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+.lab-beacon {
+  animation: siren-pulse 2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.lab-title {
+  font-family: var(--font-display, inherit);
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+.lab-sub {
+  font-family: var(--font-mono, monospace);
+  font-size: 10.5px;
+  opacity: 0.6;
+}
+.lab-label {
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.lab-node rect:first-child {
+  transition: stroke-opacity 0.3s;
+}
+.lab-node:hover rect:first-child {
+  stroke-opacity: 1;
+}
 @media (prefers-reduced-motion: reduce) {
-  .lab-flow, .lab-beacon { animation: none; }
-  .lab-packet { display: none; }
+  .lab-flow,
+  .lab-beacon {
+    animation: none;
+  }
+  .lab-packet {
+    display: none;
+  }
 }
 
-/* View transitions: a case card's title morphs into the case page headline
-   (React <ViewTransition share="morph">), with a blur mid-flight. */
-::view-transition-group(.morph) {
-  animation-duration: 420ms;
-  animation-timing-function: cubic-bezier(0.23, 1, 0.32, 1);
-}
-::view-transition-image-pair(.morph) { animation-name: vt-via-blur; }
-@keyframes vt-via-blur { 35% { filter: blur(3px); } }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(*),
   ::view-transition-old(*),
-  ::view-transition-new(*) { animation: none !important; }
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }
 
 /* ─── Typography defaults ──────────────────────────────────────────────
    Headings balance their lines (no single orphan word on the last line of
    a card title); paragraphs avoid a lone last word. Japanese ornament
    breaks between phrases, not in the middle of a word (情報セキ|ュリティ). */
-:where(h1, h2, h3, h4) { text-wrap: balance; }
-:where(p, li, dd, figcaption) { text-wrap: pretty; }
-:lang(ja) { word-break: auto-phrase; }
+:where(h1, h2, h3, h4) {
+  text-wrap: balance;
+}
+:where(p, li, dd, figcaption) {
+  text-wrap: pretty;
+}
+:lang(ja) {
+  word-break: auto-phrase;
+}
 
 /* ─── ATT&CK: the heat fills in as the tiles scroll into view ──────────
    Each tile starts as a plain surface and reaches its own heat (more
@@ -1122,7 +1296,10 @@
   }
 }
 @keyframes attack-heat {
-  from { background-color: var(--surface); border-color: color-mix(in srgb, var(--foreground) 6%, transparent); }
+  from {
+    background-color: var(--surface);
+    border-color: color-mix(in srgb, var(--foreground) 6%, transparent);
+  }
 }
 
 /* ─── backdrop-filter only where something moves behind it ─────────────
@@ -1147,7 +1324,9 @@
    ignores the pointer. The nav, the menu and the toasts stay live. Touch
    screens (no hover) are not affected. */
 @media (hover: hover) {
-  html.lenis-scrolling :where(main, footer) > :not([data-site-header], #mobile-menu, [role="status"]) {
+  html.lenis-scrolling
+    :where(main, footer)
+    > :not([data-site-header], #mobile-menu, [role="status"]) {
     pointer-events: none;
   }
 }
@@ -1156,7 +1335,9 @@
    attribute and would show every ATT&CK evidence popover at once: keep them
    hidden there. The tiles and their counts still read fine. */
 @supports not selector(:popover-open) {
-  [popover] { display: none; }
+  [popover] {
+    display: none;
+  }
 }
 
 /* ─── Form fields: a focus mark you can see ────────────────────────────
@@ -1174,10 +1355,14 @@
    them and a keyboard user never saw them on focus. On touch screens they
    are always shown; with a keyboard, when their card has focus. */
 @media (hover: none) {
-  .hover-reveal { opacity: 1; }
+  .hover-reveal {
+    opacity: 1;
+  }
 }
 .group:focus-visible .hover-reveal,
-.group:focus-within .hover-reveal { opacity: 1; }
+.group:focus-within .hover-reveal {
+  opacity: 1;
+}
 
 /* ─── Windows high contrast (forced colors) ────────────────────────────
    The ornaments are drawn at 2–6% opacity; forced colors repaint them in
@@ -1190,12 +1375,21 @@
   .japanese-bg,
   [data-deco],
   .vertical-text[aria-hidden="true"],
-  [aria-hidden="true"]:is([class*="text-foreground/[0.0"], [class*="text-foreground/[0.1"]) {
+  [aria-hidden="true"]:is(
+    [class*="text-foreground/[0.0"],
+    [class*="text-foreground/[0.1"]
+  ) {
     display: none;
   }
-  #home h1 { line-height: 1.12; }
-  #home h1 [class*="clip-path"] { clip-path: none; }
-  :focus-visible { outline-color: Highlight; }
+  #home h1 {
+    line-height: 1.12;
+  }
+  #home h1 [class*="clip-path"] {
+    clip-path: none;
+  }
+  :focus-visible {
+    outline-color: Highlight;
+  }
 }
 
 /* ─── Large text (OS / browser text size raised — layout.tsx sets it) ───
@@ -1204,13 +1398,28 @@
    overflowed. In this mode only: flex rows may wrap, flex items may shrink
    below their content, nothing is forced onto one line, and long words
    break. Everyone else sees the design unchanged. */
-.large-text :where(.flex, .inline-flex):not(.flex-col) { flex-wrap: wrap; }
-.large-text :where(.flex, .inline-flex, .grid) > * { min-width: 0; }
-.large-text .whitespace-nowrap { white-space: normal; }
-.large-text :where(h1, h2, h3, h4, p, a, button, span, dd, dt, li, label) { overflow-wrap: anywhere; }
-.large-text .btn-sheen { height: auto; }
+.large-text :where(.flex, .inline-flex):not(.flex-col) {
+  flex-wrap: wrap;
+}
+.large-text :where(.flex, .inline-flex, .grid) > * {
+  min-width: 0;
+}
+.large-text .whitespace-nowrap {
+  white-space: normal;
+}
+.large-text :where(h1, h2, h3, h4, p, a, button, span, dd, dt, li, label) {
+  overflow-wrap: anywhere;
+}
+.large-text .btn-sheen {
+  height: auto;
+}
 /* Buttons: never wider than the screen; the label wraps inside instead */
-.large-text .btn-sheen { flex: 1 1 auto; min-width: 0; max-width: 100%; white-space: normal; }
+.large-text .btn-sheen {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+}
 
 /* ─── Reduced motion: transitions too ──────────────────────────────────
    The entrances, loops and the hero already stop under reduced motion;
@@ -1218,7 +1427,9 @@
    setting on, every transition and CSS animation finishes at once (only
    while that media query matches, so nobody else pays for the selector). */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     transition-duration: 0.01ms !important;
     transition-delay: 0s !important;
     animation-duration: 0.01ms !important;
@@ -1247,21 +1458,45 @@
   contain-intrinsic-size: auto var(--lazy-h, 100svh);
 }
 /* Expected heights, measured on the built site (phone / tablet / desktop) */
-.lazy-h-contributions { --lazy-h: 1110px; }
-.lazy-h-triage        { --lazy-h: 1600px; }
-.lazy-h-attack        { --lazy-h: 1800px; }
-.lazy-h-detection     { --lazy-h: 1500px; }
+.lazy-h-contributions {
+  --lazy-h: 1110px;
+}
+.lazy-h-triage {
+  --lazy-h: 1600px;
+}
+.lazy-h-attack {
+  --lazy-h: 1800px;
+}
+.lazy-h-detection {
+  --lazy-h: 1500px;
+}
 @media (min-width: 48rem) {
-  .lazy-h-contributions { --lazy-h: 870px; }
-  .lazy-h-triage        { --lazy-h: 1400px; }
-  .lazy-h-attack        { --lazy-h: 1500px; }
-  .lazy-h-detection     { --lazy-h: 1200px; }
+  .lazy-h-contributions {
+    --lazy-h: 870px;
+  }
+  .lazy-h-triage {
+    --lazy-h: 1400px;
+  }
+  .lazy-h-attack {
+    --lazy-h: 1500px;
+  }
+  .lazy-h-detection {
+    --lazy-h: 1200px;
+  }
 }
 @media (min-width: 64rem) {
-  .lazy-h-contributions { --lazy-h: 680px; }
-  .lazy-h-triage        { --lazy-h: 1300px; }
-  .lazy-h-attack        { --lazy-h: 1200px; }
-  .lazy-h-detection     { --lazy-h: 1000px; }
+  .lazy-h-contributions {
+    --lazy-h: 680px;
+  }
+  .lazy-h-triage {
+    --lazy-h: 1300px;
+  }
+  .lazy-h-attack {
+    --lazy-h: 1200px;
+  }
+  .lazy-h-detection {
+    --lazy-h: 1000px;
+  }
 }
 
 /* Looping animations of a block that is off screen wait where they are.

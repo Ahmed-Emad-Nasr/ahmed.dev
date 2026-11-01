@@ -60,7 +60,7 @@ type FadeInProps = Omit<
 const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
 const travel = (v: number, k: number) =>
-  v ? Math.sign(v) * Math.min(Math.abs(v) * k, 56) : 0;
+  v ? Math.sign(v) * Math.min(Math.abs(v) * k * 0.9, 50) : 0;
 
 /* Entrances that start in the same frame, played top to bottom */
 let batch: { el: Element; play: (order: number) => void }[] = [];
@@ -112,7 +112,7 @@ export default function FadeIn({
             transition: {
               duration:
                 clamp(duration || MOTION_ENTER_DURATION, 0.7, 1.35) *
-                0.92 *
+                0.88 *
                 tempo,
               delay:
                 (MOTION_STAGGER_STEP +

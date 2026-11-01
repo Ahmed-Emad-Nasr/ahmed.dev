@@ -12,16 +12,29 @@ import { MessageCircle, Download, ArrowDown } from "lucide-react";
 import { prefersReducedMotion } from "@/lib/fx";
 import { Github, Linkedin, Youtube } from "@/components/ui/BrandIcons";
 
-
-function FieldRow({ label, value, hot = false, wide = false }: { label: string; value: string; hot?: boolean; wide?: boolean }) {
+function FieldRow({
+  label,
+  value,
+  hot = false,
+  wide = false,
+}: {
+  label: string;
+  value: string;
+  hot?: boolean;
+  wide?: boolean;
+}) {
   /* wide: a row that only repeats something the hero already says — shown
      from md up, skipped on phones, where the panel was 1.5 screens down */
   return (
-    <div className={`${wide ? "hidden md:flex" : "flex"} items-baseline justify-between gap-4 py-2.5 border-b border-foreground/5 last:border-b-0`}>
+    <div
+      className={`${wide ? "hidden md:flex" : "flex"} items-baseline justify-between gap-4 py-2.5 border-b border-foreground/5 last:border-b-0`}
+    >
       <dt className="font-mono text-[0.625rem] uppercase tracking-[0.25em] text-foreground/60 shrink-0">
         {label}
       </dt>
-      <dd className={`max-w-[72%] font-mono text-xs text-right leading-relaxed break-words ${hot ? "text-accent font-bold" : "text-foreground/80"}`}>
+      <dd
+        className={`max-w-[72%] font-mono text-xs text-right leading-relaxed break-words ${hot ? "text-accent font-bold" : "text-foreground/80"}`}
+      >
         {value}
       </dd>
     </div>
@@ -29,14 +42,22 @@ function FieldRow({ label, value, hot = false, wide = false }: { label: string; 
 }
 
 /* Label colours of the spec strip, in order */
-const SPEC_TONES = ["text-primary-ink", "text-accent", "text-tertiary", "text-foreground/60"];
+const SPEC_TONES = [
+  "text-primary-ink",
+  "text-accent",
+  "text-tertiary",
+  "text-foreground/60",
+];
 
 /* The hero portrait at the widths the circle is drawn at (176 / 216 / 276
    CSS px, see .hero-image below) for 1x–3x screens. */
 const HERO_PHOTO = {
   src: normalizePublicHref("Assets/art-gallery/Images/logo/3omda-560.webp"),
   srcSet: [320, 420, 560, 840]
-    .map((w) => `${normalizePublicHref(`Assets/art-gallery/Images/logo/3omda-${w}.webp`)} ${w}w`)
+    .map(
+      (w) =>
+        `${normalizePublicHref(`Assets/art-gallery/Images/logo/3omda-${w}.webp`)} ${w}w`,
+    )
     .join(", "),
   sizes: "(max-width: 639px) 176px, (max-width: 1023px) 216px, 276px",
 };
@@ -74,63 +95,63 @@ export default function HeroSection({
     void import("gsap").then(({ gsap }) => {
       if (cancelled) return;
       ctx = gsap.context(() => {
-      /* Entrance: content stack */
-      gsap.from(".hero-content > *", {
-        y: 60,
-        opacity: 0,
-        duration: 1.5,
-        stagger: 0.15,
-        ease: "power4.out",
-        delay: 0.5,
-      });
+        /* Entrance: content stack */
+        gsap.from(".hero-content > *", {
+          y: 60,
+          opacity: 0,
+          duration: 1.35,
+          stagger: 0.15,
+          ease: "power4.out",
+          delay: 0.5,
+        });
 
-      /* Entrance: portrait */
-      gsap.from(".hero-image", {
-        scale: 1.1,
-        opacity: 0,
-        duration: 2,
-        ease: "power2.out",
-        delay: 0.2,
-      });
+        /* Entrance: portrait */
+        gsap.from(".hero-image", {
+          scale: 1.1,
+          opacity: 0,
+          duration: 1.8,
+          ease: "power2.out",
+          delay: 0.2,
+        });
 
-      /* Entrance: background kanji */
-      gsap.from(".japanese-bg", {
-        x: 100,
-        opacity: 0,
-        duration: 2,
-        ease: "expo.out",
-        delay: 1,
-      });
+        /* Entrance: background kanji */
+        gsap.from(".japanese-bg", {
+          x: 100,
+          opacity: 0,
+          duration: 1.8,
+          ease: "expo.out",
+          delay: 1,
+        });
 
-      /* Entrance: hinomaru sun */
-      gsap.from(".hinomaru-sun", {
-        scale: 0,
-        opacity: 0,
-        duration: 2.5,
-        ease: "expo.out",
-        delay: 0.3,
-      });
+        /* Entrance: hinomaru sun */
+        gsap.from(".hinomaru-sun", {
+          scale: 0,
+          opacity: 0,
+          duration: 2.25,
+          ease: "expo.out",
+          delay: 0.3,
+        });
 
-      /* Entrance: spec sheet */
-      gsap.from(".spec-item", {
-        x: -30,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.out",
-        delay: 1.2,
-      });
+        /* Entrance: spec sheet */
+        gsap.from(".spec-item", {
+          x: -30,
+          opacity: 0,
+          duration: 0.72,
+          stagger: 0.1,
+          ease: "power3.out",
+          delay: 1.2,
+        });
 
-      /* Entrance: speed lines */
-      gsap.from(".speed-line", {
-        scaleX: 0,
-        opacity: 0,
-        duration: 1.5,
-        stagger: 0.05,
-        ease: "expo.out",
-        delay: 1.5,
-        transformOrigin: "left center",
-      });
+        /* Entrance: speed lines */
+        gsap.from(".speed-line", {
+          scaleX: 0,
+          opacity: 0,
+          duration: 1.35,
+          stagger: 0.05,
+          ease: "expo.out",
+          delay: 1.5,
+          transformOrigin: "left center",
+        });
       }, containerRef);
     });
 
@@ -140,26 +161,27 @@ export default function HeroSection({
     };
   }, []);
 
-  const socials = [{
-    name: "GitHub",
-    icon: Github,
-    href: `https://github.com/${PORTFOLIO_DATA.profile.contact.github}`,
-  },
-  {
-    name: "LinkedIn",
-    icon: Linkedin,
-    href: `${PORTFOLIO_DATA.profile.contact.linkedin}`,
-  },
-  {
-    name: "WhatsApp",
-    icon: MessageCircle,
-    href: `https://wa.me/${PORTFOLIO_DATA.profile.contact.whatsapp}`,
-  },
-  {
-    name: "YouTube",
-    icon: Youtube,
-    href: PORTFOLIO_DATA.profile.contact.youtube,
-  },
+  const socials = [
+    {
+      name: "GitHub",
+      icon: Github,
+      href: `https://github.com/${PORTFOLIO_DATA.profile.contact.github}`,
+    },
+    {
+      name: "LinkedIn",
+      icon: Linkedin,
+      href: `${PORTFOLIO_DATA.profile.contact.linkedin}`,
+    },
+    {
+      name: "WhatsApp",
+      icon: MessageCircle,
+      href: `https://wa.me/${PORTFOLIO_DATA.profile.contact.whatsapp}`,
+    },
+    {
+      name: "YouTube",
+      icon: Youtube,
+      href: PORTFOLIO_DATA.profile.contact.youtube,
+    },
   ];
 
   /* Was built from the first two service titles plus "+N" — it read
@@ -204,8 +226,8 @@ export default function HeroSection({
             key={i}
             className="absolute w-[2px] h-[2px] bg-primary/30 rounded-none"
             style={{
-              left: `${10 + (i * 7) % 80}%`,
-              top: `${5 + (i * 13) % 90}%`,
+              left: `${10 + ((i * 7) % 80)}%`,
+              top: `${5 + ((i * 13) % 90)}%`,
               animation: `float-particle ${3 + (i % 4)}s ease-in-out infinite alternate`,
               animationDelay: `${i * 0.3}s`,
             }}
@@ -214,7 +236,11 @@ export default function HeroSection({
       </div>
 
       {/* ─── Background Japanese Watermark (parallax) ─── */}
-      <motion.div style={{ y: bgY }} className="absolute inset-0 pointer-events-none" aria-hidden="true">
+      <motion.div
+        style={{ y: bgY }}
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+      >
         <div
           className="japanese-bg absolute right-10 top-1/2 -translate-y-1/2 flex gap-12 text-foreground/[0.03] font-black text-[10vw] select-none pointer-events-none z-0 leading-none"
           role="img"
@@ -257,19 +283,28 @@ export default function HeroSection({
                 and 15vw) — "AHMED" at a fixed 60px is 338px wide, wider than a
                 320px screen minus its padding. */}
             <h1 className="font-display text-[min(3.75rem,15vw)] sm:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.85] tracking-tighter uppercase">
-              <RevealText text="Ahmed" delay={0.6} className="block text-foreground" />
+              <RevealText
+                text="Ahmed"
+                delay={0.6}
+                className="block text-foreground"
+              />
               {/* One line per word, always: "Emad Nasr" wraps at every width
                   in the display font but fits on one line in the fallback, so
                   letting it wrap on its own made the whole hero jump (a layout
                   shift of up to 0.75 on phones) when the font arrived. */}
               <RevealText
-  text="Emad  Nasr"
-  delay={0.72}
-  className="block md:ml-10 text-transparent whitespace-pre-wrap"
-  style={{ WebkitTextStroke: "2px #BC002D" }}
-/>
+                text="Emad  Nasr"
+                delay={0.72}
+                className="block md:ml-10 text-transparent whitespace-pre-wrap"
+                style={{ WebkitTextStroke: "2px #BC002D" }}
+              />
             </h1>
-            <p className="brush-jp text-xl md:text-2xl text-foreground/40 mt-4 [word-break:auto-phrase] [text-wrap:balance]" lang="ja" aria-hidden="true" data-jp="アハメド・エマド・ナスル  情報セキュリティ" />
+            <p
+              className="brush-jp text-xl md:text-2xl text-foreground/40 mt-4 [word-break:auto-phrase] [text-wrap:balance]"
+              lang="ja"
+              aria-hidden="true"
+              data-jp="アハメド・エマド・ナスル  情報セキュリティ"
+            />
             <RoleTicker
               roles={PORTFOLIO_DATA.profile.roles}
               className="mt-5 text-sm sm:text-base md:text-lg"
@@ -279,7 +314,10 @@ export default function HeroSection({
           {/* Portrait */}
           <div className="hero-image relative max-w-[78vw] w-[13.75rem] sm:w-[16.25rem] lg:w-[20rem] aspect-square shrink-0 order-1 md:order-2 md:ml-auto">
             {/* Hinomaru  Red Sun */}
-            <div className="hinomaru-sun absolute inset-[-20%] flex items-center justify-center pointer-events-none" aria-hidden="true">
+            <div
+              className="hinomaru-sun absolute inset-[-20%] flex items-center justify-center pointer-events-none"
+              aria-hidden="true"
+            >
               <div
                 className="w-[80%] h-[80%] rounded-full opacity-[0.07]"
                 style={{
@@ -301,9 +339,14 @@ export default function HeroSection({
                     d="M 100,100 m -86,0 a 86,86 0 1,1 172,0 a 86,86 0 1,1 -172,0"
                   />
                 </defs>
-                <text fontSize="8" letterSpacing="2.5" className="fill-foreground/30 font-mono uppercase">
+                <text
+                  fontSize="8"
+                  letterSpacing="2.5"
+                  className="fill-foreground/30 font-mono uppercase"
+                >
                   <textPath href="#hero-orbit">
-                  SOC • IR •  GRC • ISO 27001 • SOAR • Splunk • YARA • IAM • PAM • 侍 •
+                    SOC • IR • GRC • ISO 27001 • SOAR • Splunk • YARA • IAM •
+                    PAM • 侍 •
                   </textPath>
                 </text>
               </svg>
@@ -349,7 +392,12 @@ export default function HeroSection({
               aria-label="Maker's seal"
             >
               <div className="absolute inset-1.5 border border-foreground/40 pointer-events-none" />
-              <span className="brush-jp text-xl lg:text-2xl text-foreground leading-none" lang="ja" aria-hidden="true" data-jp="村長" />
+              <span
+                className="brush-jp text-xl lg:text-2xl text-foreground leading-none"
+                lang="ja"
+                aria-hidden="true"
+                data-jp="村長"
+              />
             </div>
 
             {/* Outer decorative ring with dashes */}
@@ -363,7 +411,6 @@ export default function HeroSection({
             {/* Mascot companion  random language mascot per visit */}
             <HeroMascot className="absolute -bottom-3 -left-4 z-20 lg:-left-8" />
           </div>
-
         </div>
 
         {/* ─── Content: proof + field record ─── */}
@@ -379,11 +426,18 @@ export default function HeroSection({
               </div>
               <div className="px-4 py-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                 {PORTFOLIO_DATA.profile.hero.specs.map((spec, i) => (
-                  <div key={spec.label} className="spec-item flex flex-col gap-1.5">
-                    <span className={`font-mono text-[0.625rem] font-bold tracking-[0.2em] uppercase ${SPEC_TONES[i % SPEC_TONES.length]}`}>
+                  <div
+                    key={spec.label}
+                    className="spec-item flex flex-col gap-1.5"
+                  >
+                    <span
+                      className={`font-mono text-[0.625rem] font-bold tracking-[0.2em] uppercase ${SPEC_TONES[i % SPEC_TONES.length]}`}
+                    >
                       {spec.label}
                     </span>
-                    <span className="font-mono text-sm text-foreground/85">{spec.value}</span>
+                    <span className="font-mono text-sm text-foreground/85">
+                      {spec.value}
+                    </span>
                   </div>
                 ))}
               </div>
@@ -414,18 +468,35 @@ export default function HeroSection({
                 >
                   {/* The accessible name now starts with the visible text
                       (WCAG 2.5.3 — voice users say what they see). */}
-                  <Download size={16} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-y-0.5" />
+                  <Download
+                    size={16}
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover:translate-y-0.5"
+                  />
                   RESUME.pdf
                   <span className="sr-only"> (download)</span>
-                  <span className="brush-jp text-base normal-case tracking-normal opacity-70" lang="ja" aria-hidden="true" data-jp="履歴書" />
+                  <span
+                    className="brush-jp text-base normal-case tracking-normal opacity-70"
+                    lang="ja"
+                    aria-hidden="true"
+                    data-jp="履歴書"
+                  />
                 </a>
                 <a
                   href="#work"
                   className="interactive group flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5 active:translate-y-0"
                 >
-                  <ArrowDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5" />
+                  <ArrowDown
+                    size={14}
+                    className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5"
+                  />
                   View Work
-                  <span className="brush-jp text-base normal-case tracking-normal text-foreground/50" lang="ja" aria-hidden="true" data-jp="仕事" />
+                  <span
+                    className="brush-jp text-base normal-case tracking-normal text-foreground/50"
+                    lang="ja"
+                    aria-hidden="true"
+                    data-jp="仕事"
+                  />
                 </a>
               </div>
 
@@ -468,14 +539,28 @@ export default function HeroSection({
               <span className="font-mono text-[0.625rem] font-bold tracking-[0.35em] uppercase text-primary-ink">
                 Field Record
               </span>
-              <span className="brush-jp text-base text-foreground/30" lang="ja" aria-hidden="true" data-jp="記録" />
+              <span
+                className="brush-jp text-base text-foreground/30"
+                lang="ja"
+                aria-hidden="true"
+                data-jp="記録"
+              />
             </div>
             <dl className="flex flex-col">
-              <FieldRow label="Status" value={PORTFOLIO_DATA.profile.availability} hot />
+              <FieldRow
+                label="Status"
+                value={PORTFOLIO_DATA.profile.availability}
+                hot
+              />
               <FieldRow label="Role" value={PORTFOLIO_DATA.profile.title} />
-              <FieldRow label="Base" value={PORTFOLIO_DATA.profile.contact.location} />
+              <FieldRow
+                label="Base"
+                value={PORTFOLIO_DATA.profile.contact.location}
+              />
               <FieldRow label="Focus" value={focusLabel} wide />
-              {evidenceLabel && <FieldRow label="Evidence" value={evidenceLabel} />}
+              {evidenceLabel && (
+                <FieldRow label="Evidence" value={evidenceLabel} />
+              )}
               <FieldRow label="Shipped" value={shippedLabel} wide />
               <FieldRow label="Languages" value={tongueCodes} wide />
             </dl>

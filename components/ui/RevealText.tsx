@@ -46,7 +46,7 @@ export function RevealText({
             className="inline-block will-change-transform"
             variants={{
               hidden: { y: "110%" },
-              show: { y: "0%", transition: { duration: 0.65, ease: EASE } },
+              show: { y: "0%", transition: { duration: 0.6, ease: EASE } },
             }}
           >
             {u}
