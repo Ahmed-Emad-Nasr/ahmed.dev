@@ -99,57 +99,57 @@ export default function HeroSection({
         gsap.from(".hero-content > *", {
           y: 60,
           opacity: 0,
-          duration: 1.35,
+          duration: 1.15,
           stagger: 0.15,
           ease: "power4.out",
-          delay: 0.5,
+          delay: 0.4,
         });
 
         /* Entrance: portrait */
         gsap.from(".hero-image", {
           scale: 1.1,
           opacity: 0,
-          duration: 1.8,
+          duration: 1.5,
           ease: "power2.out",
-          delay: 0.2,
+          delay: 0.15,
         });
 
         /* Entrance: background kanji */
         gsap.from(".japanese-bg", {
           x: 100,
           opacity: 0,
-          duration: 1.8,
+          duration: 1.5,
           ease: "expo.out",
-          delay: 1,
+          delay: 0.8,
         });
 
         /* Entrance: hinomaru sun */
         gsap.from(".hinomaru-sun", {
           scale: 0,
           opacity: 0,
-          duration: 2.25,
+          duration: 1.8,
           ease: "expo.out",
-          delay: 0.3,
+          delay: 0.25,
         });
 
         /* Entrance: spec sheet */
         gsap.from(".spec-item", {
           x: -30,
           opacity: 0,
-          duration: 0.72,
+          duration: 0.65,
           stagger: 0.1,
           ease: "power3.out",
-          delay: 1.2,
+          delay: 1,
         });
 
         /* Entrance: speed lines */
         gsap.from(".speed-line", {
           scaleX: 0,
           opacity: 0,
-          duration: 1.35,
+          duration: 1.15,
           stagger: 0.05,
           ease: "expo.out",
-          delay: 1.5,
+          delay: 1.25,
           transformOrigin: "left center",
         });
       }, containerRef);

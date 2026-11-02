@@ -86,7 +86,7 @@ export default function FadeIn({
   x = 0,
   y = 24,
   scale = 1,
-  duration = 0.7,
+  duration = 0.65,
   delay = 0,
   ...rest
 }: FadeInProps) {
@@ -111,8 +111,8 @@ export default function FadeIn({
             transform: "translate(0px, 0px) scale(1)",
             transition: {
               duration:
-                clamp(duration || MOTION_ENTER_DURATION, 0.7, 1.35) *
-                0.88 *
+                clamp(duration || MOTION_ENTER_DURATION, 0.6, 1.2) *
+                0.86 *
                 tempo,
               delay:
                 (MOTION_STAGGER_STEP +

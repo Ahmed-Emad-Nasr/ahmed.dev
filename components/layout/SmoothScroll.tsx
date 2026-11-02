@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * Lenis smooth wheel scrolling (lerp 0.08, Sensei-Dev's feel). Touch keeps
+ * Lenis smooth wheel scrolling (lerp 0.1, Sensei-Dev's feel). Touch keeps
  * native scrolling; with "reduce motion" the wheel is native too. Jumps
  * (links, shortcuts) are instant and go through lib/scroll.ts.
  */
@@ -34,7 +34,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
   return (
     <ReactLenis
       root
-      options={{ lerp: 0.08, smoothWheel: smooth, autoRaf: smooth }}
+      options={{ lerp: 0.1, smoothWheel: smooth, autoRaf: smooth }}
     >
       <LenisBridge />
       {children}
