@@ -31,7 +31,7 @@ export const projectBullets: Record<string, string[]> = {
     "Engineered risk scoring & automated gap analysis generating remediation plans, cutting manual assessment effort by 30%.",
     "Accelerated assessments by 15% via automated control mapping across 150+ frameworks."
   ],
-  "Portfolio": [
+  "ahmed.dev": [
     "Developed & deployed a technical portfolio & blog, attracting 1,200+ organic visitors.",
     "Published 40+ security cases, CTFs, & complex lab solutions, earning 22+ GitHub stars from the security community."
   ]
@@ -167,11 +167,11 @@ export const staticProjectFallback = [
   {
     // From the CV — the site's own repo, built from SITE_BASE_URL in site.ts.
     id: 8,
-    name: "Portfolio",
+    name: "ahmed.dev",
     description: "Cybersecurity portfolio & technical blog built with Next.js, publishing information security case studies (SOC, DFIR, malware, IAM, cloud) and CTF write-ups.",
     language: "TypeScript",
-    html_url: "https://github.com/Ahmed-Emad-Nasr/Portfolio",
-    homepage: "https://ahmed-emad-nasr.github.io/Portfolio/",
+    html_url: "https://github.com/Ahmed-Emad-Nasr/ahmed.dev",
+    homepage: "https://ahmed-emad-nasr.github.io/ahmed.dev/",
     stargazers_count: 22,
     forks_count: 0,
     open_issues_count: 0,

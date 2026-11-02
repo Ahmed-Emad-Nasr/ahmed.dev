@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: absoluteUrl("/gallery"),
     type: "website",
-    siteName: "Ahmed Emad Nasr Portfolio",
+    siteName: "ahmed.dev",
     locale: "en_US",
     images: [OG_IMAGE],
   },
@@ -37,7 +37,7 @@ function structuredData() {
     isPartOf: { "@id": `${SITE_URL}#website` },
     image: PORTFOLIO_DATA.artGallery.map((item) => ({
       "@type": "ImageObject",
-      contentUrl: absoluteUrl(item.src.replace(/^\/Portfolio/, "")),
+      contentUrl: absoluteUrl(item.src.replace(/^\/ahmed\.dev/, "")),
       name: item.title,
       description: item.description,
       caption: item.title,

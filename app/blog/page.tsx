@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     url: absoluteUrl("/blog"),
     type: "website",
-    siteName: "Ahmed Emad Nasr Portfolio",
+    siteName: "ahmed.dev",
     locale: "en_US",
     images: [OG_IMAGE],
   },

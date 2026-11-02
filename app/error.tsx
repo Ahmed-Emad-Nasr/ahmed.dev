@@ -52,7 +52,7 @@ export default function Error({
             <button type="button" className={ctaPrimary} onClick={reset}>
               <RotateCcw size={16} /> Try again
             </button>
-            <Link href="/" className={ctaSecondary}>Portfolio</Link>
+            <Link href="/" className={ctaSecondary}>ahmed.dev</Link>
             <PageLink href="/blog#cases" className={ctaSecondary}>Case library</PageLink>
           </nav>
 

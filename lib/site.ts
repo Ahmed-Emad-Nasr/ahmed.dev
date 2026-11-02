@@ -1,7 +1,7 @@
 /* Absolute URLs for the sitemap, feed, canonical and OG tags. No trailing
    slash: next.config.mjs has no trailingSlash, so /blog is the real URL. */
 
-export const SITE_BASE_URL = "https://ahmed-emad-nasr.github.io/Portfolio";
+export const SITE_BASE_URL = "https://ahmed-emad-nasr.github.io/ahmed.dev";
 
 /** Turns an internal path into an absolute URL in the form crawlers expect */
 export const absoluteUrl = (path: string): string => {

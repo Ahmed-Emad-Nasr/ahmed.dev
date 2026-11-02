@@ -26,7 +26,7 @@ const MAX_ASSETS = 150;
 /* HTML + RSC payloads of the pages a visitor has opened */
 const MAX_PAGES = 60;
 
-/* The registration scope is the site root — /Portfolio/ in production. */
+/* The registration scope is the site root — /ahmed.dev/ in production. */
 const SCOPE = new URL(self.registration.scope).pathname;
 
 const HASHED_RE = /\/_next\/static\//;

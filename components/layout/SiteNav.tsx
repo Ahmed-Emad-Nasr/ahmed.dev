@@ -353,7 +353,7 @@ export default function SiteNav() {
                 <div className="flex flex-col gap-3">
                   <div className="w-16 h-[2px] bg-primary" aria-hidden="true" />
                   <span className="text-[0.625rem] font-mono text-foreground/60 tracking-[0.5em] uppercase">
-                    3omda Portfolio
+                    3omda · ahmed.dev
                   </span>
                 </div>
                 <button

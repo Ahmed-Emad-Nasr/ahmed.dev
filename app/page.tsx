@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     type: "website",
     /* A page-level openGraph replaces the layout's whole object */
-    siteName: "Ahmed Emad Nasr Portfolio",
+    siteName: "ahmed.dev",
     locale: "en_US",
     images: [OG_IMAGE],
   },

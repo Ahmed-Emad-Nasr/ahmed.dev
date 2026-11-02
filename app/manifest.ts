@@ -17,7 +17,7 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: "en",
     dir: "ltr",
     categories: ["security", "education", "business"],
-    /* The site lives under /Portfolio on GitHub Pages: "/" would open the
+    /* The site lives under /ahmed.dev on GitHub Pages: "/" would open the
        github.io root from an installed app */
     start_url: normalizePublicHref("/"),
     scope: normalizePublicHref("/"),

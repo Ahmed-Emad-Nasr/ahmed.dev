@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     title: "CV — Ahmed Emad Nasr",
     description: "Information Security Officer — GRC, SOC, DFIR, IAM and data security. Full CV.",
     url: `${SITE_BASE_URL}/cv`,
-    siteName: "Ahmed Emad Nasr Portfolio",
+    siteName: "ahmed.dev",
     locale: "en_US",
     type: "profile",
     firstName: "Ahmed",
@@ -236,7 +236,7 @@ export default function CvPage() {
               </a>
               <Link className={ctaSecondary} href="/">
                 <ArrowLeft size={14} className="text-primary-ink transition-transform duration-300 group-hover:-translate-x-0.5" />
-                Portfolio
+                ahmed.dev
               </Link>
             </div>
           </header>

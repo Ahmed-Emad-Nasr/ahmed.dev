@@ -16,7 +16,7 @@ export const CV_CONTACT = {
   phone: "+20 101 397 2690",
   linkedin: { label: "linkedin.com/in/ahmed-emad-nasr", href: "https://www.linkedin.com/in/ahmed-emad-nasr/" },
   github: { label: "github.com/Ahmed-Emad-Nasr", href: "https://github.com/Ahmed-Emad-Nasr" },
-  site: { label: "ahmed-emad-nasr.github.io/Portfolio", href: "https://ahmed-emad-nasr.github.io/Portfolio/" },
+  site: { label: "ahmed-emad-nasr.github.io/ahmed.dev", href: "https://ahmed-emad-nasr.github.io/ahmed.dev/" },
 } as const;
 
 /** Related coursework — present in the PDF, absent from experience.ts */
@@ -78,11 +78,11 @@ export const CV_PROJECTS: readonly CvProject[] = [
     /* The second PDF bullet still said "40+ security cases" — the count is
        read from the library here so the CV page can't fall behind it */
     bullets: [
-      bulletsOf("Portfolio")[0],
+      bulletsOf("ahmed.dev")[0],
       `Published ${publishedCaseCount} security cases — ${investigationReportCount} of them full investigation reports — plus CTFs and lab solutions, earning 22+ GitHub stars from the security community.`,
     ].filter(Boolean),
-    github: repo("Portfolio")?.html_url ?? "",
-    demo: repo("Portfolio")?.homepage,
+    github: repo("ahmed.dev")?.html_url ?? "",
+    demo: repo("ahmed.dev")?.homepage,
   },
 ];
 

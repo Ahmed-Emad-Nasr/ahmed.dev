@@ -85,7 +85,7 @@ export async function generateMetadata({
     openGraph: {
       title: shareTitle,
       description: shareDescription,
-      siteName: "Ahmed Emad Nasr Portfolio",
+      siteName: "ahmed.dev",
       locale: "en_US",
       url: caseUrl(item.id),
       type: "article",

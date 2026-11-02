@@ -19,7 +19,7 @@ if (!existsSync(OUT)) {
 }
 
 /* Must match basePath in next.config.mjs. If you change it, change it here. */
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "/Portfolio";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev";
 
 const files = [];
 const walk = (dir) => {

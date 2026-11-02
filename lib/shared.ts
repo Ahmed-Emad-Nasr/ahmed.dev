@@ -98,12 +98,12 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 /** The CV PDF, in public/ */
 export const CV_PDF_HREF = "Assets/cv/AhmedEmadNasr_CV.pdf";
 
-/** A public/ asset path with the deploy prefix (/Portfolio in production) */
+/** A public/ asset path with the deploy prefix (/ahmed.dev in production) */
 export const normalizePublicHref = (href: string): string => {
   if (/^https?:\/\//i.test(href)) return href;
   const basePath =
     process.env.NEXT_PUBLIC_BASE_PATH ??
-    (process.env.NODE_ENV === "production" ? "/Portfolio" : "");
+    (process.env.NODE_ENV === "production" ? "/ahmed.dev" : "");
   const normalized = href.startsWith("/") ? href : `/${href}`;
   return `${basePath}${normalized}`.replace(/\/\//g, "/");
 };

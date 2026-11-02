@@ -6,7 +6,7 @@
 
 `GRC` · `SOC` · `IR/DFIR` · `Malware Analysis` · `IAM` · `Data Security`
 
-<a href="https://ahmed-emad-nasr.github.io/Portfolio/">
+<a href="https://ahmed-emad-nasr.github.io/ahmed.dev/">
   <img src="https://img.shields.io/badge/LIVE_PORTFOLIO-visit-cc0033?style=for-the-badge&logo=github&logoColor=white" alt="Visit the live portfolio">
 </a>
 <a href="https://github.com/Ahmed-Emad-Nasr">
@@ -40,7 +40,7 @@ The portfolio covers:
 - IAM, PAM, DLP, cloud security, data security, and security assessments
 - Practical web security labs, attack simulations, and technical write-ups
 
-**Live system:** <https://ahmed-emad-nasr.github.io/Portfolio/>
+**Live system:** <https://ahmed-emad-nasr.github.io/ahmed.dev/>
 
 ---
 
@@ -106,8 +106,8 @@ code splitting, and asset ownership.
 ## `05 // QUICK START`
 
 ```bash
-git clone https://github.com/Ahmed-Emad-Nasr/Portfolio.git
-cd Portfolio
+git clone https://github.com/Ahmed-Emad-Nasr/ahmed.dev.git
+cd ahmed.dev
 npm install
 npm run dev
 ```
@@ -149,7 +149,7 @@ components/
   gallery/    proof gallery and lightbox
 data/         portfolio content as typed TypeScript
 lib/          routes, SEO, scrolling, parsing, and performance helpers
-scripts/      audits, asset generation, and build checks
+scripts/      asset generation and build checks
 public/       images, reports, icons, and service worker
 screenshots/  README visual previews
 gif/          README animated visuals

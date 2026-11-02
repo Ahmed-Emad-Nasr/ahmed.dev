@@ -1,4 +1,4 @@
-/* /sitemap.xml with absolute URLs (the site lives under /Portfolio), plus
+/* /sitemap.xml with absolute URLs (the site lives under /ahmed.dev), plus
    image and video extensions. Case PDFs are listed as documents of their own. */
 
 import type { MetadataRoute } from "next";

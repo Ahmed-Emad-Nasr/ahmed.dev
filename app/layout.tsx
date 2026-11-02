@@ -47,11 +47,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   referrer: "strict-origin-when-cross-origin",
   metadataBase: new URL(SITE_URL),
-  applicationName: "Ahmed Emad Nasr Portfolio",
+  applicationName: "ahmed.dev",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Ahmed Portfolio",
+    title: "ahmed.dev",
     /* Absolute: Next does not add the basePath to startupImage */
     startupImage: [`${SITE_URL}icons/icon-512.png`],
   },
@@ -96,7 +96,7 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     locale: "en_US",
-    siteName: "Ahmed Emad Nasr Portfolio",
+    siteName: "ahmed.dev",
     images: [OG_IMAGE],
   },
   twitter: {
@@ -200,8 +200,8 @@ const STRUCTURED_DATA_JSON = jsonLd({
     {
       "@type": "WebSite",
       "@id": WEBSITE_ID,
-      name: "Ahmed Emad Nasr Portfolio",
-      alternateName: ["Ahmed Emad Nasr", "3omda Portfolio", "Ahmed Emad Nasr — Information Security"],
+      name: "ahmed.dev",
+      alternateName: ["Ahmed Emad Nasr", "3omda", "Ahmed Emad Nasr — Information Security"],
       url: SITE_URL,
       description: "The information security portfolio of Ahmed Emad Nasr: GRC, SOC, incident response, DFIR, malware analysis, IAM and data security — with case reports, projects, videos and certifications.",
       inLanguage: "en",

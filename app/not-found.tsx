@@ -41,7 +41,7 @@ export default function NotFound() {
 
           <nav className={statusActions} aria-label="Main destinations">
             <Link href="/" className={ctaPrimary}>
-              <Home size={16} /> Portfolio
+              <Home size={16} /> ahmed.dev
             </Link>
             <PageLink href="/blog#cases" className={ctaSecondary}>
               <FolderSearch size={14} className="text-primary-ink" /> Case library

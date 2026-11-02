@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 
-/* The site lives under /Portfolio on GitHub Pages. basePath prefixes Next's
+/* The site lives under /ahmed.dev on GitHub Pages. basePath prefixes Next's
    own files and links; normalizePublicHref() (lib/shared.ts) prefixes plain
    asset paths with the same value. */
 const BASE_PATH =
   process.env.NEXT_PUBLIC_BASE_PATH ??
-  (process.env.NODE_ENV === "production" ? "/Portfolio" : "");
+  (process.env.NODE_ENV === "production" ? "/ahmed.dev" : "");
 
 const nextConfig = {
   reactStrictMode: true,

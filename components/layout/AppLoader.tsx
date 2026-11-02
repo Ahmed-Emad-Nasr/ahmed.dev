@@ -88,7 +88,7 @@ export default function AppLoader() {
             Ahmed<span className="text-primary-ink">.</span>
           </p>
           <p className="mt-1 font-mono text-[0.625rem] uppercase tracking-[0.45em] text-foreground/60">
-            Portfolio
+            ahmed.dev
           </p>
 
           <div className="mt-10 w-56 md:w-72">

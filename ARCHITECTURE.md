@@ -1,7 +1,7 @@
 # Architecture
 
 A static Next.js 16 export (`output: "export"`) served by GitHub Pages under
-`/Portfolio`. Three primary pages (`/`, `/blog` and `/gallery`) plus one
+`/ahmed.dev`. Three primary pages (`/`, `/blog` and `/gallery`) plus one
 static page per case.
 Everything is built at build time; there is no server.
 

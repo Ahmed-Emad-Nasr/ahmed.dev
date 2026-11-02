@@ -35,7 +35,7 @@ export function pageOf(id: string): SitePage {
  * Inline script for the home page: an old link to one of the blog's or
  * gallery's sections opens the target page with the same filters and anchor.
  * Runs before paint, so the home page never flashes first. `base` is the
- * deploy prefix ("/Portfolio" in production).
+ * deploy prefix ("/ahmed.dev" in production).
  */
 export function homeForwardScript(base: string): string {
   const ids = JSON.stringify([...BLOG_IDS]);
