@@ -111,7 +111,6 @@ function TechniqueTile({ technique, tactic, max }: { technique: CoverageTechniqu
         role="dialog"
         aria-labelledby={`${id}-title`}
         className="attack-pop"
-        data-lenis-prevent=""
       >
         <div className="flex items-start justify-between gap-4">
           <p className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">

@@ -79,7 +79,7 @@ export default function DetectionLibrary() {
             <span>Fires on</span>
             <span>ATT&amp;CK</span>
           </div>
-          <ul key={group ?? "all"} className="max-h-[34rem] overflow-y-auto divide-y divide-foreground/5" data-lenis-prevent="">
+          <ul key={group ?? "all"} className="max-h-[34rem] overflow-y-auto divide-y divide-foreground/5">
             {rules.map((r, i) => (
               <li
                 key={r.id}

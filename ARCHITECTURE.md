@@ -71,8 +71,8 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
 
 ## Motion
 
-- Wheel scrolling: Lenis (`components/layout/SmoothScroll.tsx`); touch and
-  reduced motion stay native.
+- Scrolling: native browser scrolling, with instant in-page jumps handled by
+  `lib/scroll.ts`.
 - Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
   only, staggered top to bottom). framer-motion loads lazily
   (`LazyMotion` + `m`).

@@ -7,7 +7,7 @@
  * (CSS transitions switched on once, skipped with reduced motion).
  */
 
-import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
+import { useCallback, useRef, useState, type ReactNode } from "react";
 import { useInView as useFramerInView } from "framer-motion";
 import {
   AlertOctagon, Check, ClipboardCopy, Copy, FileText, Fingerprint, GitBranch, History,
@@ -255,7 +255,7 @@ function Detection({ items }: { items: NonNullable<CaseDetail["detection"]> }) {
               {copied === `${k}` ? <Check size={12} /> : <Copy size={12} />} {copied === `${k}` ? "Copied" : d.lang}
             </button>
           </figcaption>
-          <pre className="overflow-x-auto p-4 text-[0.75rem] leading-relaxed text-white/85 font-mono" tabIndex={0} aria-label={`${d.title} — code`} data-lenis-prevent="">
+          <pre className="overflow-x-auto p-4 text-[0.75rem] leading-relaxed text-white/85 font-mono" tabIndex={0} aria-label={`${d.title} — code`}>
             {d.code.split("\n").map((line, i) => (
               <span key={i} className="block">
                 <span className="inline-block w-8 select-none text-right pr-4 text-white/20" aria-hidden="true">{i + 1}</span>

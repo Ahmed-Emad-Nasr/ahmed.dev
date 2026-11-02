@@ -269,11 +269,7 @@
     scrollbar-color: var(--primary) var(--background);
     scrollbar-width: thin;
   }
-  /* …but not inherited by the whole page. Every element with transition-all
-     (dozens of cards and buttons) treated the inherited value as changed on
-     each root style change — Lenis toggles a class on <html> whenever a
-     scroll starts and stops — and ran a transition: ~25 at once, at the
-     start and the end of every scroll. */
+  /* …but not inherited by the whole page. */
   body {
     scrollbar-color: auto;
   }
@@ -609,8 +605,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Only the root scrolls smoothly (Lenis drives it); no need to match
-     every element on the page */
   html {
     scroll-behavior: auto !important;
   }
@@ -1314,21 +1308,6 @@
 :where(main, footer) [class*="backdrop-blur"]:not(.fixed, .sticky, .absolute) {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-}
-
-/* ─── No hover work while the page is gliding ──────────────────────────
-   With a mouse resting on the page, every card that slides under it during
-   a smooth scroll switches its hover state — spotlight, tilt, border and
-   colour transitions — frame after frame. Lenis marks the root with
-   .lenis-scrolling while it moves the page; for that time the content
-   ignores the pointer. The nav, the menu and the toasts stay live. Touch
-   screens (no hover) are not affected. */
-@media (hover: hover) {
-  html.lenis-scrolling
-    :where(main, footer)
-    > :not([data-site-header], #mobile-menu, [role="status"]) {
-    pointer-events: none;
-  }
 }
 
 /* ─── Browsers without [popover] (Safari < 17, Firefox < 125) ignore the

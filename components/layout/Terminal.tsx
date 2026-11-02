@@ -378,7 +378,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        <div ref={bodyRef} className="flex-1 overflow-y-auto overscroll-contain px-4 py-3.5 font-mono text-[0.8125rem] leading-[1.65] max-sm:text-xs" data-lenis-prevent>
+        <div ref={bodyRef} className="flex-1 overflow-y-auto overscroll-contain px-4 py-3.5 font-mono text-[0.8125rem] leading-[1.65] max-sm:text-xs">
           {lines.map((line) => (
             <p key={line.id} className={LINE_CLASS[line.kind]}>
               {line.text}

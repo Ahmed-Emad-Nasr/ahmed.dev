@@ -90,8 +90,8 @@ rules, ATT&CK coverage, videos, a proof gallery, and a printable CV.
 Next.js 16       App Router + static export
 React 19         TypeScript
 Tailwind CSS v4  Framer Motion + GSAP
-Lenis            next-themes
-Lucide React     Yet Another React Lightbox
+next-themes      Lucide React
+Yet Another React Lightbox
 ```
 
 The application is exported as a static site and deployed to GitHub Pages.

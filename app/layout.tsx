@@ -1,6 +1,6 @@
 /*
  * Root layout: providers, site-wide metadata and the Person / WebSite JSON-LD.
- * The visual system (theme transition, Lenis, katana cursor, boot screen,
+ * The visual system (theme transition, katana cursor, boot screen,
  * command palette) is the Sensei-Dev design
  * (github.com/MostafaSensei106/Sensei-Dev, GPL-3.0).
  */
@@ -19,7 +19,6 @@ import { skillGroups } from "@/data/skills";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ThemeFxProvider } from "@/components/layout/ThemeFxProvider";
 import PaletteMount from "@/components/layout/PaletteMount";
-import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import CursorMount from "@/components/layout/CursorMount";
 import MotionProvider from "@/components/layout/MotionProvider";
 import { CONTENT_SECURITY_POLICY } from "@/lib/security";
@@ -250,10 +249,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <PaletteMount />
             <KeyboardShortcuts />
             <DeferredGlobalEffects />
-            <SmoothScroll>
-              <CursorMount />
-              {children}
-            </SmoothScroll>
+            <CursorMount />
+            {children}
             <ServiceWorkerRegister />
           </ThemeFxProvider>
         </ThemeProvider>

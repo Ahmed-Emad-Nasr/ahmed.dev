@@ -121,7 +121,7 @@ export default function SiteNav() {
     };
   }, [mounted, onHome, pathname]);
 
-  /* While the menu is open: freeze the page (Lenis included), close on
+  /* While the menu is open: freeze the page, close on
      Escape, and move focus into the menu; on close, focus returns to the
      button that opened it. */
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -260,7 +260,6 @@ export default function SiteNav() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="fixed inset-0 z-[95] lg:hidden bg-background/95 backdrop-blur-2xl overflow-y-auto overscroll-contain"
-            data-lenis-prevent=""
             onClick={() => setIsOpen(false)}
           >
             {/* Background Decorative Kanji */}
