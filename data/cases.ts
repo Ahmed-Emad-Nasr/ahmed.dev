@@ -18,6 +18,7 @@ const buildScreenshotRange = (
     .map((n) => `Assets/Cases/${folder}/Screenshot (${n}).webp`);
 
 export const caseScreenshotsByEvidenceId: Record<string, string[]> = {
+  "threat-intelligence-for-soc": Array.from({ length: 20 }, (_, i) => `Assets/Cases/Threat Inteligence For SOC/Screenshot (${531 + i}).webp`),
   "vulnerability-scanning-tools": Array.from({ length: 25 }, (_, i) => `Assets/Cases/Vulnerability Scanning Tools/Screenshot (${418 + i}).webp`),
   "guided-pentest-infrastructure": Array.from({ length: 29 }, (_, i) => `Assets/Cases/Guided Pentest Infrastructure/Screenshot (${387 + i}).webp`),
   "password-reset-broken-logic": Array.from({ length: 13 }, (_, i) => `Assets/Cases/Lab Password reset broken logic/Screenshot (${371 + i}).webp`),
@@ -1398,6 +1399,21 @@ export const caseEvidenceLibrary: CaseEvidence[] = [
     readTime: 7,
     date: "2026-04-08",
     image: "Assets/Cases/SET TOOL Writeup/Screenshot (32).webp",
+  },
+{
+    id: "threat-intelligence-for-soc",
+    title: "Threat Intelligence for SOC Walkthrough (Kibana, Uncoder.io, Sigma & ElastAlert)",
+    description: "Completed an end-to-end Cyber Threat Intelligence (CTI) and Detection Engineering investigation in TryHackMe's 'Threat Intelligence for SOC' room. Phase 1 — Threat Intelligence Feeds & IOC Hunting: Analyzed Strategic, Technical, Tactical, and Operational CTI classifications and the roles of CTI Producers and Consumers. Processed a raw, defanged IOC feed using Uncoder.io to strip defanging brackets, remove duplicates across 11 unique IPv4 indicators, and generate an Elastic Stack Query (`destination.ip:(\"135.181.103.89\" OR \"185.224.126.215\" OR \"185.224.128.215\" ...)`). Executed the query in Kibana against the `filebeat-*` index (timeframe `02/14/2023` to `02/17/2023`), uncovering 48 total IOC hits across 7 unique destination IPs, 21 outbound connections to `185.224.128.215`, port `80` traffic to `107.175.202.151`, and identifying the compromised internal host as `10.10.196.49`. Phase 2 — Intelligence-Driven Prevention & DNS Sinkhole Hunting: Evaluated firewall IP blocking, email gateway domain filtering, and DNS sinkholing. Queried Kibana DNS telemetry (`dns.question.name: \"agrosaoxe.info\"`), identifying 11 DNS queries that resolved to external IPs `104.21.48.143` and `172.67.186.179` prior to sinkhole deployment, and internal sinkhole IP `192.168.5.13` post-deployment. Hunted all sinkholed traffic using `dns.answers.data: \"192.168.5.13\"`, correlating 115 total hits across 12 unique malicious domains. Phase 3 — Intelligence-Driven Detection with Sigma & ElastAlert: Translated a DNS Sinkhole Sigma rule hunting `0.0.0.0` resolutions into an ElastAlert rule via Uncoder.io (`alert: debug`). Connected to the target Linux machine via SSH, configured `~/elastalert/rules/sinkhole.yaml` targeting the `filebeat-*` index, and executed `elastalert --start 2023-02-16T00:00:00 --verbose 2>&1 | tee output.txt`, generating 40 alerts across 7 unique sinkholed domains and isolating the malicious `.ru` domain `twizt.ru`.",
+    platform: "TryHackMe",
+    type: "Walkthrough",
+    category: "Threat Intelligence",
+    difficulty: "Medium",
+    tags: ["TryHackMe", "Threat Intelligence", "CTI", "SOC", "Kibana", "ELK", "Sigma", "ElastAlert", "Uncoder.io", "DNS Sinkhole"],
+    tools: ["Elastic Stack (Kibana)", "Uncoder.io", "Sigma Rules", "ElastAlert", "SSH / Linux CLI"],
+    skillsGained: ["IOC Feed Ingestion & Hunting", "KQL / Lucene Querying in Kibana", "DNS Sinkhole Telemetry Analysis", "Sigma-to-ElastAlert Rule Translation", "Automated Alert Generation"],
+    readTime: 16,
+    date: "2026-11-02",
+    image: "Assets/Cases/Threat Inteligence For SOC/Screenshot (551).webp",
   },
 ] as const;
 
