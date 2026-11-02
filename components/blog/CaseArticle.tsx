@@ -27,10 +27,7 @@ import {
 import { normalizePublicHref, getThumbnail, formatDate } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
 import CaseSummary from "@/components/blog/CaseSummary";
-import CaseFile, {
-  ReadingProgress,
-  VerdictBar,
-} from "@/components/blog/CaseFile";
+import CaseFile, { VerdictBar } from "@/components/blog/CaseFile";
 import type { CaseDetail } from "@/data/case-details";
 import {
   btnOutline,
@@ -200,7 +197,6 @@ export default function CaseArticle({
       id="case-body"
       className="relative px-6 md:px-20 pt-36 md:pt-44 pb-24 overflow-hidden"
     >
-      <ReadingProgress />
       <KanjiWatermark chars="報告書" side="right" />
 
       <div className="max-w-5xl mx-auto relative z-10">

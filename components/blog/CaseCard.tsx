@@ -15,7 +15,7 @@ import {
   AlertTriangle,
   ArrowRight,
 } from "lucide-react";
-import { TiltCard } from "@/components/ui/Motion";
+import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import { getThumbnail, normalizePublicHref } from "@/lib/shared";
 import type { PdfResource } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
@@ -77,10 +77,7 @@ function CaseCard({
       className="scroll-mt-28"
     >
       <TiltCard className="spotlight group relative bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500 flex flex-col h-full overflow-hidden">
-        <div
-          className="absolute top-0 left-0 z-10 w-full h-[2px] bg-gradient-to-r from-primary via-primary/40 to-transparent opacity-70"
-          aria-hidden="true"
-        />
+        <CardEffects index={index + 1} />
 
         {cover && (
           <button

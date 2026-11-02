@@ -7,7 +7,7 @@ import { prefersReducedMotion } from "@/lib/fx";
 const BOOT_WORDS = ["起動中", "武士道", "鍛錬", "技術調整", "出陣"];
 
 /**
- * Minimal boot screen: monogram, cycling kanji, hairline progress.
+ * Minimal boot screen: monogram and cycling kanji.
  * Click anywhere to skip. Respects reduced-motion (short + static).
  * The loader is intentionally brief so it does not delay the first useful
  * content on repeat visits (it also covers the hero's GSAP set-up).
@@ -90,21 +90,6 @@ export default function AppLoader() {
           <p className="mt-1 font-mono text-[0.625rem] uppercase tracking-[0.45em] text-foreground/60">
             ahmed.dev
           </p>
-
-          <div className="mt-10 w-56 md:w-72">
-            <div className="h-px w-full bg-foreground/10" aria-hidden="true">
-              <div
-                className="h-px bg-primary transition-[width] duration-100"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <div className="mt-3 flex items-center justify-between font-mono text-[0.625rem] tracking-[0.3em] text-foreground/60">
-              <span>LOADING</span>
-              <span aria-hidden="true" className="tabular-nums">
-                {String(progress).padStart(3, "0")}%
-              </span>
-            </div>
-          </div>
 
           <span className="absolute bottom-6 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">
             tap anywhere to skip

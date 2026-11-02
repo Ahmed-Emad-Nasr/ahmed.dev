@@ -9,7 +9,7 @@
 import { memo, useCallback, useState } from "react";
 import Image from "next/image";
 import { Play, ExternalLink, ListVideo, ChevronDown, FileText } from "lucide-react";
-import { TiltCard } from "@/components/ui/Motion";
+import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import { CountUp } from "@/components/ui/CountUp";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Youtube } from "@/components/ui/BrandIcons";
@@ -128,7 +128,7 @@ export default function MediaSections() {
               {videos.slice(0, visible).map((video, idx) => (
                 <FadeIn y={32} duration={0.7} delay={(idx % 3) * 0.1} key={video.videoId} className="flex">
                   <TiltCard className="spotlight group relative w-full flex flex-col bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500 overflow-hidden">
-                    <div className="absolute top-0 left-0 z-10 w-full h-[2px] bg-gradient-to-r from-primary via-primary/40 to-transparent opacity-70" aria-hidden="true" />
+                    <CardEffects index={idx + 1} />
                     <Embed
                       id={`video-${video.videoId}`}
                       src={`https://www.youtube-nocookie.com/embed/${video.videoId}`}

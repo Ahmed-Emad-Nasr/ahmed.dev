@@ -3,14 +3,19 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
-import { ALL_GALLERY_CERTIFICATES, type GalleryCertGroup } from "@/data/certifications";
-import { TiltCard } from "@/components/ui/Motion";
+import {
+  ALL_GALLERY_CERTIFICATES,
+  type GalleryCertGroup,
+} from "@/data/certifications";
+import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import { Eyebrow, filterTab } from "@/components/ui/kit";
 import dynamic from "next/dynamic";
 import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 
-const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), { ssr: false });
+const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
+  ssr: false,
+});
 
 const FIRST = 12;
 const PAGE = 12;
@@ -50,10 +55,15 @@ const CERT_FILTERS: { id: GalleryCertGroup | "all"; label: string }[] = [
   { id: "badges", label: "Verified Badges" },
 ];
 
-const CERT_INDICES = new Set(ALL_GALLERY_CERTIFICATES.map((c) => c.galleryIndex));
+const CERT_INDICES = new Set(
+  ALL_GALLERY_CERTIFICATES.map((c) => c.galleryIndex),
+);
 
 export default function ArtGallery() {
-  const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+  const searchParams =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search)
+      : null;
   const certParam = searchParams ? searchParams.get("cert") : null;
 
   useEffect(() => {
@@ -68,7 +78,9 @@ export default function ArtGallery() {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [certFilter, setCertFilter] = useState<GalleryCertGroup | "all">("all");
-  const [archiveFilter, setArchiveFilter] = useState<"all" | "certs" | "photos">("all");
+  const [archiveFilter, setArchiveFilter] = useState<
+    "all" | "certs" | "photos"
+  >("all");
   const [visible, setVisible] = useState(FIRST);
 
   const filteredCerts = useMemo(
@@ -107,7 +119,10 @@ export default function ArtGallery() {
     setOpen(true);
   };
 
-  const handleStartHereClick = (action: "core" | "labs" | "photos", targetId: string) => {
+  const handleStartHereClick = (
+    action: "core" | "labs" | "photos",
+    targetId: string,
+  ) => {
     if (action === "photos") {
       setArchiveFilter("photos");
       setVisible(FIRST);
@@ -119,22 +134,36 @@ export default function ArtGallery() {
   };
 
   return (
-    <section id="art" aria-labelledby="art-title" className="relative pt-36 md:pt-44 pb-24 md:pb-32 px-6 md:px-20 bg-background overflow-hidden">
+    <section
+      id="art"
+      aria-labelledby="art-title"
+      className="relative pt-36 md:pt-44 pb-24 md:pb-32 px-6 md:px-20 bg-background overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── 01 · Main Header ─── */}
         <div className="mb-16 md:mb-20 flex flex-col md:flex-row justify-between items-end gap-8">
           <FadeIn x={-40} y={0} duration={0.8} className="max-w-3xl">
-            <h1 id="art-title" className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]">
+            <h1
+              id="art-title"
+              className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]"
+            >
               <span className="text-foreground">Proof</span> <br />
               <span className="text-primary italic">Gallery.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-base md:text-lg font-light leading-relaxed text-foreground/65 [text-wrap:pretty]">
-              {PORTFOLIO_DATA.artGallery.length} certificates, events, classroom moments and digital badges — the complete proof behind my cybersecurity journey.
+              {PORTFOLIO_DATA.artGallery.length} certificates, events, classroom
+              moments and digital badges — the complete proof behind my
+              cybersecurity journey.
             </p>
           </FadeIn>
 
           {/* Counter Badges */}
-          <FadeIn y={20} duration={0.6} delay={0.3} className="flex flex-wrap gap-4">
+          <FadeIn
+            y={20}
+            duration={0.6}
+            delay={0.3}
+            className="flex flex-wrap gap-4"
+          >
             <div className="relative px-6 py-3 border border-accent/40 bg-surface/60 backdrop-blur-sm">
               <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-accent" />
               <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-accent" />
@@ -174,58 +203,90 @@ export default function ArtGallery() {
         </div>
 
         {/* ─── 02 · Start Here (Fast Track // Quick Access) ─── */}
-        <section id="gallery-start-here" className="relative mb-24" aria-labelledby="gallery-start-here-title">
+        <section
+          id="gallery-start-here"
+          className="relative mb-24"
+          aria-labelledby="gallery-start-here-title"
+        >
           <Eyebrow japanese="入門">Fast Track // Quick Access</Eyebrow>
-          <h2 id="gallery-start-here-title" className="font-display text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-3">
+          <h2
+            id="gallery-start-here-title"
+            className="font-display text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-3"
+          >
             Start <span className="text-primary italic">Here.</span>
           </h2>
           <p className="mb-10 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Want to check my top certificates? Three to start with — core certifications, hands-on labs and peer endorsements. The complete certificate directory and visual archive are below.
+            Want to check my top certificates? Three to start with — core
+            certifications, hands-on labs and peer endorsements. The complete
+            certificate directory and visual archive are below.
           </p>
           <ol className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {START_HERE_CARDS.map((card) => (
-              <li key={card.n}>
-                <button
-                  type="button"
-                  onClick={() => handleStartHereClick(card.action, card.targetId)}
-                  className="relative spotlight block w-full h-full text-left bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500 group cursor-pointer"
-                >
-                  <div
-                    className="font-mono text-5xl font-black text-foreground/[0.06] absolute top-4 right-5 select-none"
-                    aria-hidden="true"
-                    data-deco={card.n}
-                  />
-                  <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.3em] uppercase mb-3">
-                    {card.meta}
-                  </div>
-                  <h3 className="font-display text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
-                    {card.title}
-                  </h3>
-                  <p className="text-sm text-foreground/60 font-light leading-relaxed">
-                    {card.why}
-                  </p>
-                </button>
-              </li>
+              <FadeIn
+                as="li"
+                y={24}
+                duration={0.7}
+                delay={(Number(card.n) - 1) * 0.1}
+                key={card.n}
+              >
+                <TiltCard className="spotlight group relative h-full bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500">
+                  <CardEffects index={Number(card.n)} />
+                  <button
+                    type="button"
+                    onClick={() =>
+                      handleStartHereClick(card.action, card.targetId)
+                    }
+                    className="relative z-20 block w-full h-full text-left p-7 cursor-pointer"
+                  >
+                    <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.3em] uppercase mb-3">
+                      {card.meta}
+                    </div>
+                    <h3 className="font-display text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
+                      {card.title}
+                    </h3>
+                    <p className="text-sm text-foreground/60 font-light leading-relaxed">
+                      {card.why}
+                    </p>
+                  </button>
+                </TiltCard>
+              </FadeIn>
             ))}
           </ol>
         </section>
 
         {/* ─── 03 · All Certificates Directory (Literally every certificate) ─── */}
-        <section id="all-certificates" className="relative mb-28 scroll-mt-28" aria-labelledby="all-certificates-title">
-          <Eyebrow japanese="認定">Complete Record // Every Certificate</Eyebrow>
-          <h2 id="all-certificates-title" className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3">
+        <section
+          id="all-certificates"
+          className="relative mb-28 scroll-mt-28"
+          aria-labelledby="all-certificates-title"
+        >
+          <Eyebrow japanese="認定">
+            Complete Record // Every Certificate
+          </Eyebrow>
+          <h2
+            id="all-certificates-title"
+            className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"
+          >
             All <span className="text-primary italic">Certificates.</span>
           </h2>
           <p className="mb-8 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Every documented certificate, ministry scholarship track, bootcamp, exam score report and verified digital badge ({ALL_GALLERY_CERTIFICATES.length} total). Click any card to inspect the original certificate scan.
+            Every documented certificate, ministry scholarship track, bootcamp,
+            exam score report and verified digital badge (
+            {ALL_GALLERY_CERTIFICATES.length} total). Click any card to inspect
+            the original certificate scan.
           </p>
 
-          <div className="flex flex-wrap gap-2.5 mb-10" role="tablist" aria-label="Filter certificates by category">
+          <div
+            className="flex flex-wrap gap-2.5 mb-10"
+            role="tablist"
+            aria-label="Filter certificates by category"
+          >
             {CERT_FILTERS.map((f) => {
               const count =
                 f.id === "all"
                   ? ALL_GALLERY_CERTIFICATES.length
-                  : ALL_GALLERY_CERTIFICATES.filter((c) => c.group === f.id).length;
+                  : ALL_GALLERY_CERTIFICATES.filter((c) => c.group === f.id)
+                      .length;
               return (
                 <button
                   key={f.id}
@@ -248,38 +309,42 @@ export default function ArtGallery() {
             {filteredCerts.map((cert, idx) => {
               const num = String(idx + 1).padStart(2, "0");
               return (
-                <FadeIn as="li" y={20} duration={0.5} delay={(idx % 6) * 0.05} key={cert.galleryIndex}>
-                  <button
-                    type="button"
-                    onClick={() => openCertificateScan(cert.galleryIndex)}
-                    className="relative spotlight flex flex-col justify-between w-full h-full text-left bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500 group cursor-pointer"
-                  >
-                    <div>
-                      <div
-                        className="font-mono text-5xl font-black text-foreground/[0.06] absolute top-4 right-5 select-none"
-                        aria-hidden="true"
-                        data-deco={num}
-                      />
-                      <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.25em] uppercase mb-3 pr-12">
-                        {num} • {cert.issuer}
+                <FadeIn
+                  as="li"
+                  y={20}
+                  duration={0.5}
+                  delay={(idx % 6) * 0.05}
+                  key={cert.galleryIndex}
+                >
+                  <TiltCard className="spotlight group relative h-full bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500">
+                    <CardEffects index={Number(num)} />
+                    <button
+                      type="button"
+                      onClick={() => openCertificateScan(cert.galleryIndex)}
+                      className="relative z-20 flex flex-col justify-between w-full h-full text-left p-7 cursor-pointer"
+                    >
+                      <div>
+                        <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.25em] uppercase mb-3 pr-12">
+                          {num} • {cert.issuer}
+                        </div>
+                        <h3 className="font-display text-lg md:text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
+                          {cert.title}
+                        </h3>
+                        <p className="text-sm text-foreground/60 font-light leading-relaxed">
+                          {cert.summary}
+                        </p>
                       </div>
-                      <h3 className="font-display text-lg md:text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
-                        {cert.title}
-                      </h3>
-                      <p className="text-sm text-foreground/60 font-light leading-relaxed">
-                        {cert.summary}
-                      </p>
-                    </div>
 
-                    <div className="mt-6 pt-4 border-t border-foreground/5 flex items-center justify-between gap-3 w-full">
-                      <span className="font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-accent">
-                        {cert.kind}
-                      </span>
-                      <span className="inline-flex items-center gap-1.5 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60 group-hover:text-primary-ink transition-colors">
-                        View scan <Maximize2 size={11} />
-                      </span>
-                    </div>
-                  </button>
+                      <div className="mt-6 pt-4 border-t border-foreground/5 flex items-center justify-between gap-3 w-full">
+                        <span className="font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-accent">
+                          {cert.kind}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60 group-hover:text-primary-ink transition-colors">
+                          View scan <Maximize2 size={11} />
+                        </span>
+                      </div>
+                    </button>
+                  </TiltCard>
                 </FadeIn>
               );
             })}
@@ -287,20 +352,46 @@ export default function ArtGallery() {
         </section>
 
         {/* ─── 04 · Visual Archive (Masonry Grid of Scans & Event Photos) ─── */}
-        <section id="visual-archive" className="relative scroll-mt-28" aria-labelledby="visual-archive-title">
+        <section
+          id="visual-archive"
+          className="relative scroll-mt-28"
+          aria-labelledby="visual-archive-title"
+        >
           <Eyebrow japanese="証拠">Proof in Frame // Visual Grid</Eyebrow>
-          <h2 id="visual-archive-title" className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3">
+          <h2
+            id="visual-archive-title"
+            className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"
+          >
             Visual <span className="text-primary italic">Archive.</span>
           </h2>
           <p className="mb-8 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Browse the original certificate scans alongside classroom sessions, competitions and community events.
+            Browse the original certificate scans alongside classroom sessions,
+            competitions and community events.
           </p>
 
-          <div className="flex flex-wrap gap-2.5 mb-10" role="tablist" aria-label="Filter visual archive">
+          <div
+            className="flex flex-wrap gap-2.5 mb-10"
+            role="tablist"
+            aria-label="Filter visual archive"
+          >
             {[
-              { id: "all" as const, label: "All Visuals", count: PORTFOLIO_DATA.artGallery.length },
-              { id: "certs" as const, label: "Certificate Scans", count: ALL_GALLERY_CERTIFICATES.length },
-              { id: "photos" as const, label: "Events & Classroom", count: PORTFOLIO_DATA.artGallery.length - ALL_GALLERY_CERTIFICATES.length },
+              {
+                id: "all" as const,
+                label: "All Visuals",
+                count: PORTFOLIO_DATA.artGallery.length,
+              },
+              {
+                id: "certs" as const,
+                label: "Certificate Scans",
+                count: ALL_GALLERY_CERTIFICATES.length,
+              },
+              {
+                id: "photos" as const,
+                label: "Events & Classroom",
+                count:
+                  PORTFOLIO_DATA.artGallery.length -
+                  ALL_GALLERY_CERTIFICATES.length,
+              },
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -335,6 +426,7 @@ export default function ArtGallery() {
                   max={5}
                   className="spotlight relative group overflow-hidden bg-surface border border-foreground/5 transition-all duration-700 hover:border-primary/40"
                 >
+                  <CardEffects index={idx + 1} />
                   <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
                   <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
                   <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
@@ -381,17 +473,25 @@ export default function ArtGallery() {
                       <div className="flex items-center gap-2 text-primary-ink mb-2">
                         <Sparkles size={12} />
                         <span className="font-mono text-[0.625rem] font-bold tracking-[0.3em] uppercase">
-                          Visual Entry {String(img.slideIndex + 1).padStart(2, "0")}
+                          Visual Entry{" "}
+                          {String(img.slideIndex + 1).padStart(2, "0")}
                         </span>
                       </div>
                       <h3 className="font-display text-lg font-black text-foreground uppercase tracking-tight">
                         {img.title}
                       </h3>
-                      <p className="mt-2 text-xs text-foreground/70 leading-relaxed">{img.description}</p>
-                      <p className="mt-2 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-tertiary">{img.category}</p>
+                      <p className="mt-2 text-xs text-foreground/70 leading-relaxed">
+                        {img.description}
+                      </p>
+                      <p className="mt-2 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-tertiary">
+                        {img.category}
+                      </p>
                       <div className="mt-4 flex items-center justify-between">
                         <div className="w-10 h-[1px] bg-primary/40" />
-                        <Maximize2 size={14} className="text-on-surface-variant" />
+                        <Maximize2
+                          size={14}
+                          className="text-on-surface-variant"
+                        />
                       </div>
                     </div>
                   </div>
@@ -404,10 +504,15 @@ export default function ArtGallery() {
             <div className="mt-14 flex justify-center">
               <button
                 type="button"
-                onClick={() => setVisible((n) => Math.min(archiveItems.length, n + PAGE))}
+                onClick={() =>
+                  setVisible((n) => Math.min(archiveItems.length, n + PAGE))
+                }
                 className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5 active:translate-y-0"
               >
-                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5" />
+                <ChevronDown
+                  size={14}
+                  className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5"
+                />
                 Show more
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
                   {visible}/{archiveItems.length}

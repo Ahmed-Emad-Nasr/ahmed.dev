@@ -1,14 +1,19 @@
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
-import { TiltCard } from "@/components/ui/Motion";
-import { Calendar, MapPin, CheckCircle2, ExternalLink, Award, FolderSearch } from "lucide-react";
+import { CardEffects, TiltCard } from "@/components/ui/Motion";
+import {
+  Calendar,
+  MapPin,
+  CheckCircle2,
+  ExternalLink,
+  Award,
+  FolderSearch,
+} from "lucide-react";
 import CaseFilterLink from "@/components/blog/CaseFilterLink";
 import FadeIn from "@/components/ui/FadeIn";
 
 export default function ExperienceTimeline() {
   return (
-    <section
-      className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden"
-    >
+    <section className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
       {/* ─── Background Decorative Kanji ─── */}
       <div
         className="absolute top-20 right-10 pointer-events-none select-none text-foreground/[0.03] text-[15vw] font-black z-0 vertical-text uppercase"
@@ -24,19 +29,34 @@ export default function ExperienceTimeline() {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Section Header ─── */}
         <div className="exp-header mb-16 md:mb-20">
-          <FadeIn as="h2" y={40} duration={1} delay={0.15} className="font-display title-fit [--title-n:12] font-black tracking-tighter uppercase leading-[0.85]">
+          <FadeIn
+            as="h2"
+            y={40}
+            duration={1}
+            delay={0.15}
+            className="font-display title-fit [--title-n:12] font-black tracking-tighter uppercase leading-[0.85]"
+          >
             <span className="text-foreground">Professional</span> <br />
             <span className="text-primary italic">Experience.</span>
           </FadeIn>
-          <FadeIn y={40} duration={1} delay={0.3} className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-            A record of the roles, responsibilities and measurable work behind the security practice.
+          <FadeIn
+            y={40}
+            duration={1}
+            delay={0.3}
+            className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed"
+          >
+            A record of the roles, responsibilities and measurable work behind
+            the security practice.
           </FadeIn>
         </div>
 
         {/* ─── Experience Cards ─── */}
         <div className="flex flex-col gap-14 md:gap-20">
           {PORTFOLIO_DATA.experience.map((item, idx) => (
-            <FadeIn x={idx % 2 === 0 ? -100 : 100} y={0} duration={1.2}
+            <FadeIn
+              x={idx % 2 === 0 ? -100 : 100}
+              y={0}
+              duration={1.2}
               key={idx}
               className="exp-item group relative grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-10 lg:gap-16 items-start"
             >
@@ -88,11 +108,16 @@ export default function ExperienceTimeline() {
 
               {/* Right Column: Service Record Panel */}
               <TiltCard className="spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm group-hover:border-primary/20 transition-all duration-700 overflow-hidden">
+                <CardEffects index={idx + 1} />
                 {/* Red left accent border */}
                 <div className="absolute top-0 left-0 w-[3px] h-full bg-primary" />
 
                 {/* Large Index Number */}
-                <div className="absolute top-6 right-6 font-mono text-7xl md:text-8xl font-black text-foreground/[0.04] leading-none select-none group-hover:text-primary/10 transition-colors duration-700" aria-hidden="true" data-deco={`0${idx + 1}`} />
+                <div
+                  className="absolute top-6 right-6 font-mono text-7xl md:text-8xl font-black text-foreground/[0.04] leading-none select-none group-hover:text-primary/10 transition-colors duration-700"
+                  aria-hidden="true"
+                  data-deco={`0${idx + 1}`}
+                />
 
                 {/* Panel Header */}
                 <div className="relative z-10 px-6 md:px-12 pt-6 md:pt-8 pb-4 border-b border-foreground/5 flex items-center justify-between">
@@ -156,7 +181,12 @@ export default function ExperienceTimeline() {
                         rel="noopener noreferrer"
                         className="group/proof inline-flex items-center gap-2 px-3 py-2 border border-accent/30 bg-accent/5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-accent hover:bg-accent hover:text-background transition-colors duration-300"
                       >
-                        <Award size={12} className="transition-transform duration-300 group-hover/proof:rotate-12" aria-hidden="true" /> {item.proof.label}
+                        <Award
+                          size={12}
+                          className="transition-transform duration-300 group-hover/proof:rotate-12"
+                          aria-hidden="true"
+                        />{" "}
+                        {item.proof.label}
                       </a>
                     )}
                     {item.cases && (
@@ -164,7 +194,12 @@ export default function ExperienceTimeline() {
                         params={item.cases.params}
                         className="group/cases inline-flex items-center gap-2 px-3 py-2 border border-tertiary/30 bg-tertiary/5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-tertiary hover:bg-tertiary hover:text-background transition-colors duration-300"
                       >
-                        <FolderSearch size={12} className="transition-transform duration-300 group-hover/cases:scale-110" aria-hidden="true" /> {item.cases.label}
+                        <FolderSearch
+                          size={12}
+                          className="transition-transform duration-300 group-hover/cases:scale-110"
+                          aria-hidden="true"
+                        />{" "}
+                        {item.cases.label}
                       </CaseFilterLink>
                     )}
                   </div>
@@ -173,7 +208,8 @@ export default function ExperienceTimeline() {
                 {/* Panel Footer */}
                 <div className="px-6 md:px-12 py-4 border-t border-foreground/5 flex items-center justify-between">
                   <span className="font-mono text-[0.5625rem] text-foreground/65 tracking-[0.2em] uppercase">
-                    {item.details.length} {item.details.length === 1 ? "entry" : "entries"} logged
+                    {item.details.length}{" "}
+                    {item.details.length === 1 ? "entry" : "entries"} logged
                   </span>
                   <div className="flex items-center gap-2">
                     <div className="w-1 h-1 bg-primary/40" />
