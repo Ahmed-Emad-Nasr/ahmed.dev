@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { m as motion, useMotionValue, useSpring } from "framer-motion";
 
 /**
@@ -14,21 +14,30 @@ export default function CursorOverlay() {
   const [enabled, setEnabled] = useState(false);
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
+  const pendingPosition = useRef({ x: -100, y: -100 });
+  const moveFrame = useRef<number | null>(null);
 
-  const springConfig = { damping: 25, stiffness: 400, mass: 0.5 };
+  const springConfig = { damping: 28, stiffness: 340, mass: 0.5 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
 
   useEffect(() => {
     const fine = window.matchMedia("(pointer: fine)").matches;
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
     if (!fine || reduced) return;
     setEnabled(true);
     document.body.classList.add("custom-cursor-on");
 
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
+      pendingPosition.current = { x: e.clientX, y: e.clientY };
+      if (moveFrame.current !== null) return;
+      moveFrame.current = requestAnimationFrame(() => {
+        moveFrame.current = null;
+        cursorX.set(pendingPosition.current.x);
+        cursorY.set(pendingPosition.current.y);
+      });
     };
 
     const handleElementHover = (e: MouseEvent) => {
@@ -64,6 +73,7 @@ export default function CursorOverlay() {
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mouseover", handleElementHover);
       window.removeEventListener("mousedown", handleSlash);
+      if (moveFrame.current !== null) cancelAnimationFrame(moveFrame.current);
     };
   }, [cursorX, cursorY]);
 
@@ -128,7 +138,12 @@ export default function CursorOverlay() {
           <span className="font-mono text-[0.5625rem] text-primary-ink tracking-widest font-black uppercase leading-none">
             Target
           </span>
-          <span className="brush-jp text-sm text-foreground/80 leading-none mt-0.5" lang="ja" aria-hidden="true" data-jp="斬" />
+          <span
+            className="brush-jp text-sm text-foreground/80 leading-none mt-0.5"
+            lang="ja"
+            aria-hidden="true"
+            data-jp="斬"
+          />
         </motion.div>
       </motion.div>
 
@@ -144,9 +159,10 @@ export default function CursorOverlay() {
       >
         <div
           className={`transition-all duration-300 transform rotate-45
-            ${isHovering
-              ? "w-2 h-2 bg-primary shadow-[0_0_15px_rgba(226,0,26,0.9)]"
-              : "w-2 h-2 bg-accent shadow-[0_0_15px_rgba(255,215,0,0.8)]"
+            ${
+              isHovering
+                ? "w-2 h-2 bg-primary shadow-[0_0_15px_rgba(226,0,26,0.9)]"
+                : "w-2 h-2 bg-accent shadow-[0_0_15px_rgba(255,215,0,0.8)]"
             }`}
         />
       </motion.div>
@@ -172,7 +188,12 @@ export default function CursorOverlay() {
         <motion.div
           key={id}
           className="fixed top-0 left-0 pointer-events-none z-[10001]"
-          style={{ x: cursorX, y: cursorY, translateX: "-50%", translateY: "-50%" }}
+          style={{
+            x: cursorX,
+            y: cursorY,
+            translateX: "-50%",
+            translateY: "-50%",
+          }}
         >
           <motion.div
             initial={{ scaleX: 0, opacity: 1, rotate: -30 }}
