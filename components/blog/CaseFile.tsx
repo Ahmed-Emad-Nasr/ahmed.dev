@@ -13,7 +13,6 @@ import {
   AlertOctagon, Check, ClipboardCopy, Copy, FileText, Fingerprint, GitBranch, History,
   ListChecks, Paperclip, ShieldCheck, Users, BookOpen, Code2,
 } from "lucide-react";
-import ScrambleText from "@/components/ui/ScrambleText";
 import { defang, normalizePublicHref } from "@/lib/shared";
 import type { CaseDetail, IocType } from "@/data/case-details";
 import FadeIn from "@/components/ui/FadeIn";
@@ -245,10 +244,9 @@ function Iocs({ iocs }: { iocs: NonNullable<CaseDetail["iocs"]> }) {
                 <span className="sr-only">Copy </span>
                 <span className="font-mono text-[0.5625rem] font-bold uppercase tracking-[0.25em] text-foreground/60 pt-0.5">{IOC_LABEL[i.type]}</span>
                 <span className="min-w-0">
-                  <ScrambleText
-                    text={value}
-                    className={`block font-mono text-xs [overflow-wrap:anywhere] ${i.type === "hash" ? "text-primary-ink" : NETWORK_IOC.has(i.type) ? "text-accent" : "text-tertiary"}`}
-                  />
+                  <span className={`block font-mono text-xs [overflow-wrap:anywhere] ${i.type === "hash" ? "text-primary-ink" : NETWORK_IOC.has(i.type) ? "text-accent" : "text-tertiary"}`}>
+                    {value}
+                  </span>
                   {i.note && <span className="block mt-1 text-xs text-foreground/60">{i.note}</span>}
                 </span>
                 <span className="hidden md:flex items-center text-foreground/30 group-hover:text-foreground/70 transition-colors" aria-hidden="true">
