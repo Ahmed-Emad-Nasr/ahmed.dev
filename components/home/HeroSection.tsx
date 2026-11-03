@@ -264,7 +264,7 @@ export default function HeroSection({
         {/* Badge */}
         <div className="flex items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8 backdrop-blur-sm">
           <div className="w-2 h-2 bg-primary animate-pulse" />
-          <span className="text-xs font-mono font-bold uppercase tracking-[0.3em] text-on-surface-variant">
+          <span className="whitespace-nowrap text-[0.5rem] font-mono font-bold uppercase tracking-[0.15em] text-on-surface-variant sm:text-xs sm:tracking-[0.3em]">
             {PORTFOLIO_DATA.profile.japaneseTitle}
           </span>
         </div>
