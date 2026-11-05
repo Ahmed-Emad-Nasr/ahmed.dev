@@ -120,7 +120,7 @@ function Chain({ chain }: { chain: NonNullable<CaseDetail["chain"]> }) {
       {chain.map((c, i) => (
         <li key={i} className="relative pb-5 last:pb-0">
           <span
-            className="absolute -left-8 top-0.5 flex h-6 w-6 items-center justify-center border border-foreground/20 bg-background font-mono text-[0.5625rem] font-bold text-foreground/60 transition-all duration-500 data-[on=true]:border-primary data-[on=true]:text-primary-ink data-[on=true]:shadow-[0_0_14px_-2px_var(--primary)]"
+            className="absolute -left-8 top-0.5 flex h-6 w-6 items-center justify-center border border-foreground/20 bg-background font-mono text-[0.5625rem] font-bold text-foreground/60 transition-all duration-500 data-[on=true]:border-primary data-[on=true]:text-primary-ink"
             style={{ transitionDelay: `${i * step}s` }}
             data-on={inView}
             aria-hidden="true"

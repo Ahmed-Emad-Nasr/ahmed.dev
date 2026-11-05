@@ -360,7 +360,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
         initial={{ opacity: 0, y: -12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.22 }}
-        className="relative flex h-[min(520px,76vh)] w-full max-w-2xl flex-col overflow-hidden border border-foreground/10 bg-surface shadow-2xl"
+        className="relative flex h-[min(520px,76vh)] w-full max-w-2xl flex-col overflow-hidden border border-foreground/10 bg-surface"
         onClick={() => inputRef.current?.focus()}
       >
         <div className="absolute top-0 left-0 h-[2px] w-full bg-gradient-to-r from-primary via-primary/40 to-transparent" aria-hidden="true" />

@@ -329,7 +329,7 @@ export default function ContactFooter() {
               <button
                 type="submit"
                 disabled={sendState === "sending"}
-                className="btn-sheen relative overflow-hidden mt-4 w-full py-5 bg-primary text-white font-mono font-black uppercase tracking-[0.3em] text-sm hover:bg-foreground hover:text-background active:scale-[0.98] transition-all duration-300 shadow-2xl shadow-primary/20 disabled:cursor-wait"
+                className="btn-sheen relative overflow-hidden mt-4 w-full py-5 bg-primary text-white font-mono font-black uppercase tracking-[0.3em] text-sm hover:bg-foreground hover:text-background active:scale-[0.98] transition-all duration-300 disabled:cursor-wait"
               >
                 {/* Transmission bar while the message is on its way */}
                 {sendState === "sending" && <span className="send-progress absolute inset-y-0 left-0 bg-white/20" aria-hidden="true" />}

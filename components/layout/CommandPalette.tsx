@@ -293,7 +293,7 @@ export default function CommandPalette() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: 0.22 }}
-            className="w-full max-w-xl overflow-hidden border border-foreground/10 bg-surface shadow-2xl"
+            className="w-full max-w-xl overflow-hidden border border-foreground/10 bg-surface"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center gap-3 border-b border-foreground/10 px-4">

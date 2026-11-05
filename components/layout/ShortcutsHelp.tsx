@@ -74,7 +74,7 @@ export default function ShortcutsHelp({ onClose }: { onClose: () => void }) {
         initial={{ opacity: 0, y: -12, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.22 }}
-        className="w-full max-w-xl max-h-[72vh] overflow-y-auto border border-foreground/10 bg-surface shadow-2xl"
+        className="w-full max-w-xl max-h-[72vh] overflow-y-auto border border-foreground/10 bg-surface"
       >
         <div className="flex items-center gap-3 border-b border-foreground/10 px-4 py-4">
           <Keyboard size={16} className="shrink-0 text-primary-ink" />

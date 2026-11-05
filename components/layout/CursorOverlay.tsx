@@ -113,10 +113,10 @@ export default function CursorOverlay() {
             }}
             transition={{ duration: 0.2 }}
           >
-            <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary shadow-[0_0_10px_rgba(226,0,26,0.5)]" />
-            <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary shadow-[0_0_10px_rgba(226,0,26,0.5)]" />
-            <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary shadow-[0_0_10px_rgba(226,0,26,0.5)]" />
-            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary shadow-[0_0_10px_rgba(226,0,26,0.5)]" />
+            <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary" />
+            <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary" />
+            <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-primary" />
+            <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-primary" />
           </motion.div>
         </div>
       </motion.div>
@@ -161,8 +161,8 @@ export default function CursorOverlay() {
           className={`transition-all duration-300 transform rotate-45
             ${
               isHovering
-                ? "w-2 h-2 bg-primary shadow-[0_0_15px_rgba(226,0,26,0.9)]"
-                : "w-2 h-2 bg-accent shadow-[0_0_15px_rgba(255,215,0,0.8)]"
+                ? "w-2 h-2 bg-primary"
+                : "w-2 h-2 bg-accent"
             }`}
         />
       </motion.div>
