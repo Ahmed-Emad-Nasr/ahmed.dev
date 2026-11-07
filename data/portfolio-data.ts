@@ -36,45 +36,55 @@ const ROLE_PROOF: Record<string, Pick<Experience, "proof" | "cases">> = {
   "Google Developer Groups (GDG)": { proof: { label: "GDG bootcamp certificate", href: normalizePublicHref(galleryImagePath(36)) } },
 };
 
-const ROLE_INTRO: Record<string, { intro: string; location: string }> = {
+const ROLE_INTRO: Record<string, { intro: string; japanese: string; location: string }> = {
   "AMIT Learning": {
     intro: "Teaching the 160-hour security track end to end — networking and Linux first, then SOC, pentest, IAM and GRC labs.",
+    japanese: "サイバーセキュリティ講師",
     location: "Cairo, Egypt",
   },
   "National Telecommunication Institute (NTI)": {
     intro: "Instructing hands-on cohorts in Linux administration, enterprise networking, SOC operations and web/network VAPT.",
+    japanese: "技術講師・NTI",
     location: "Cairo / Benha, Egypt",
   },
   "Banque Misr": {
     intro: "Auditing GRC (ISO 27001, PCI DSS, COBIT, SWIFT), IAM/PAM architecture and SOC/DFIR workflows inside one of Egypt's largest banks.",
+    japanese: "情報セキュリティ・インターン",
     location: "Cairo, Egypt",
   },
   "Digital Egypt Pioneers Initiative (DEPI)": {
     intro: "Alert triage, DFIR investigations and Wazuh/Suricata/YARA detection engineering following NIST 800-61.",
+    japanese: "インシデント対応アナリスト",
     location: "Cairo, Egypt",
   },
   iSchool: {
     intro: "Coordinating technical coding labs, session operations and mentoring for 470+ students across DEPI and DECI programs.",
+    japanese: "技術指導・委員",
     location: "Cairo, Egypt",
   },
   "Information Technology Institute (ITI)": {
     intro: "Offensive security training: vulnerability assessment, exploitation, network pivoting, PortSwigger labs and the eJPT v2 path.",
+    japanese: "ペネトレーションテスター研修生",
     location: "Benha, Egypt",
   },
   Huawei: {
     intro: "Enterprise routing, switching and cloud security architectures on Huawei eNSP, earning HCIA-Datacom, HCIA-Cloud and HCCDA.",
+    japanese: "網・雲研修",
     location: "Cairo, Egypt",
   },
   "Google Developer Groups (GDG)": {
     intro: "Delivering 35+ cybersecurity workshops and designing 10+ CTF challenges — ranked 1st among 250 instructors.",
+    japanese: "サイバーセキュリティ講師",
     location: "Benha, Egypt",
   },
   IEEE: {
     intro: "C and Python programming instruction for student engineering teams building autonomous Arduino robotics projects.",
+    japanese: "技術講師・委員",
     location: "Benha, Egypt",
   },
   "Benha University": {
     intro: "B.Sc. in Computer Science (Information Security & Digital Forensics) — Distinction with Honor, GPA 3.78/4.0, Ranked 8th of 900.",
+    japanese: "コンピューターサイエンス学士",
     location: "Benha, Egypt",
   },
 };
@@ -91,6 +101,7 @@ const experience: Experience[] = [...knowledgeEducationItems]
       company: item.subTag,
       link: item.subTagHyperlink,
       role: item.tag,
+      japaneseRole: meta?.japanese,
       location: meta?.location ?? "Egypt",
       period: `${monthYear(item.startDate)} – ${end}`,
       description: meta?.intro ?? item.desc.split("•")[0].trim(),
@@ -229,6 +240,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
   profile: {
     name: "Ahmed Emad Nasr",
     title: "Information Security Officer",
+    japaneseTitle: "情報セキュリティ担当 • Information Security Officer",
     availability: "Open to InfoSec roles: Officer, Engineer, GRC, SOC, IR/DFIR, IAM and Security Education",
     /* The areas shown on the hero's "Focus" row */
     focus: ["GRC", "SOC", "IR & DFIR", "Malware", "IAM", "Data Security"],
@@ -254,6 +266,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
     },
     hero: {
       tagline: "From the risk register to the root cause.",
+      japaneseTagline: "統治から根本原因まで。",
       /* The "Technical Specifications" strip under the name */
       specs: [
         { label: "Set the rules", value: "ISO 27001, PCI DSS, NIST CSF" },

@@ -164,7 +164,7 @@ export default function ArtGallery() {
           className="relative mb-28 scroll-mt-28"
           aria-labelledby="all-certificates-title"
         >
-          <Eyebrow>
+          <Eyebrow japanese="認定">
             Every certificate
           </Eyebrow>
           <h2
@@ -270,7 +270,7 @@ export default function ArtGallery() {
           className="relative scroll-mt-28"
           aria-labelledby="visual-archive-title"
         >
-          <Eyebrow>Photos</Eyebrow>
+          <Eyebrow japanese="証拠">Photos</Eyebrow>
           <h2
             id="visual-archive-title"
             className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"

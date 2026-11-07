@@ -2,18 +2,19 @@
 
 import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 
-type TeachingStat = { value: string; label: string };
+type TeachingStat = { value: string; label: string; japanese: string };
 
 export const TEACHING_STATS: TeachingStat[] = [
-  { value: "300+", label: "Students at AMIT & NTI" },
-  { value: "10/10", label: "Avg. student feedback" },
-  { value: "1st", label: "Of 250 instructors · GDG" },
-  { value: "60K+", label: "YouTube views" },
+  { value: "300+", label: "Students at AMIT & NTI", japanese: "受講生" },
+  { value: "10/10", label: "Avg. student feedback", japanese: "評価" },
+  { value: "1st", label: "Of 250 instructors · GDG", japanese: "首位" },
+  { value: "60K+", label: "YouTube views", japanese: "視聴" },
 ];
 
 /* The SOC & Cybersecurity Diploma — the curriculum taught end to end */
 export const DIPLOMA = {
   title: "SOC & Cybersecurity Diploma",
+  japanese: "課程",
   hours: 160,
   summary:
     "A 160-hour course that takes a beginner to job-ready: how networks and operating systems work, how attackers break in, how defenders spot and stop them, and how a security team handles real alerts. Every session ends with a hands-on lab.",

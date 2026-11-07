@@ -172,7 +172,7 @@ export default async function Home() {
       <RolesCards />
       <StatsBar stats={LIVE_COPY.stats} />
 
-      <SlashDivider label="01 // Evidence" origin="left" />
+      <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
       <TickerStrip />
 
       <WorkShowcase items={workItems} />

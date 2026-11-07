@@ -20,7 +20,7 @@ export default function StartHere({
 
   return (
     <section id="start-here" className="relative mb-20" aria-labelledby="start-here-title">
-      <Eyebrow>Short on time</Eyebrow>
+      <Eyebrow japanese="入門">Short on time</Eyebrow>
       <H id="start-here-title" className="font-display text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-3">
         Start <span className="text-primary italic">here.</span>
       </H>

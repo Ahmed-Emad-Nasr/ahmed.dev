@@ -241,6 +241,7 @@ export default function CaseLibrarySection() {
             <h2 className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
               All case studies
             </h2>
+            <span className="jp-eyebrow text-[0.6875rem] text-foreground/30" lang="ja" aria-hidden="true" data-jp="全件" />
           </div>
 
           <CaseFilters
@@ -329,6 +330,7 @@ export default function CaseLibrarySection() {
           {visiblePdfs.length === 0 && (
             <div className="relative bg-surface/60 border border-foreground/10 p-10 md:p-14 text-center">
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent" aria-hidden="true" />
+              <p className="brush-jp text-4xl text-accent/80 mb-4" lang="ja" aria-hidden="true" data-jp="該当なし" />
               <p className="font-mono text-sm text-foreground/60 tracking-wider mb-2">Nothing matches these filters.</p>
               <p className="text-sm text-foreground/60 font-light mb-4">Try a shorter search word, or clear the filters to see every case study.</p>
               <button
@@ -343,7 +345,7 @@ export default function CaseLibrarySection() {
         </div>
       </section>
 
-      <SlashDivider label="02 // Case files" origin="left" />
+      <SlashDivider label="02 // Case files" japanese="調査" origin="left" />
       <TickerStrip reverse items={["報告", "証拠", "調査", "記録", "FOLLOW THE EVIDENCE"]} />
 
       <div id="videos" className="px-6 md:px-20 pt-16 bg-background">

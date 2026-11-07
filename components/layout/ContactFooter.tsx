@@ -44,6 +44,8 @@ export function FooterBar({ className = "" }: { className?: string }) {
             Ahmed Emad Nasr
           </a>
         </span>
+        <span className="text-primary-ink">•</span>
+        <span lang="ja" aria-hidden="true" data-jp="次のレベル" />
       </div>
     </div>
   );
@@ -222,7 +224,7 @@ export default function ContactFooter() {
             {/* Briefing header */}
             <div className="flex items-center gap-3 mb-2">
               <span className="font-mono text-[0.5625rem] text-primary-ink tracking-[0.4em] uppercase font-bold">
-                Send a message
+                Send a message // 依頼
               </span>
             </div>
             <h3 className="font-display text-3xl font-black mb-3 uppercase tracking-tight text-foreground">

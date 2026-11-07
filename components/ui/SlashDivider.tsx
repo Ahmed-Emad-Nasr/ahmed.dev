@@ -6,9 +6,11 @@ import { MOTION_EASE } from "@/lib/motion";
 
 export default function SlashDivider({
   label,
+  japanese,
   origin = "left",
 }: {
   label: string;
+  japanese: string;
   origin?: "left" | "right";
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -37,6 +39,7 @@ export default function SlashDivider({
       <span className="relative z-10 flex items-center gap-3 bg-background px-4">
         <span className="inline-block h-1.5 w-1.5 rotate-45 bg-primary/70" />
         <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">{label}</span>
+        <span className="brush-jp text-base text-foreground/70" lang="ja">{japanese}</span>
         <span className="inline-block h-1.5 w-1.5 rotate-45 bg-primary/70" />
       </span>
     </div>

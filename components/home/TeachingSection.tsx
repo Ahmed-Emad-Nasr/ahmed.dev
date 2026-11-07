@@ -66,6 +66,12 @@ export default function TeachingSection() {
                   <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
                     {s.label}
                   </span>
+                  <span
+                    className="jp-eyebrow text-[0.5625rem] text-foreground/25"
+                    lang="ja"
+                    aria-hidden="true"
+                    data-jp={s.japanese}
+                  />
                 </dt>
                 <dd className="order-1 font-mono text-xl md:text-2xl font-black tabular-nums text-accent">
                   {s.value}
@@ -91,6 +97,12 @@ export default function TeachingSection() {
               <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
                 The course I wrote · {DIPLOMA.hours} hours
               </span>
+              <span
+                className="jp-eyebrow text-[0.625rem] text-foreground/30"
+                lang="ja"
+                aria-hidden="true"
+                data-jp={DIPLOMA.japanese}
+              />
             </div>
             <h3 className="mt-5 font-display text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight leading-[0.95]">
               {DIPLOMA.title}

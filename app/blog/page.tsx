@@ -139,7 +139,7 @@ export default function BlogPage() {
         <CaseLibrarySection />
       </div>
 
-      <SlashDivider label="01 // How attacks are detected" origin="right" />
+      <SlashDivider label="01 // How attacks are detected" japanese="検知" origin="right" />
       <TickerStrip items={["戦術", "技術", "網羅", "証拠", "READ THE RECORD"]} />
 
       {/* ─── The library on MITRE ATT&CK, the rule pack, one real alert ─── */}
@@ -147,7 +147,7 @@ export default function BlogPage() {
       <LazyDetectionLibrary />
       <LazyTriage />
 
-      <SlashDivider label="02 // How I test security" origin="left" />
+      <SlashDivider label="02 // How I test security" japanese="実務" origin="left" />
       <TickerStrip reverse items={["継続", "改善", "実務", "計測", "BUILD THE RECORD"]} />
       <HomeLab />
       <LazyContributions />

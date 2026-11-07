@@ -17,6 +17,7 @@ interface HeroSpec {
 
 interface HeroInfo {
   tagline: string;
+  japaneseTagline: string;
   /** The "Technical Specifications" strip in the hero */
   specs: HeroSpec[];
   photo: string;
@@ -26,6 +27,7 @@ interface HeroInfo {
 interface Profile {
   name: string;
   title: string;
+  japaneseTitle: string;
   availability: string;
   /** The areas on the hero's "Focus" row */
   focus: string[];
@@ -39,6 +41,7 @@ export interface Experience {
   company: string;
   link: string;
   role: string;
+  japaneseRole?: string;
   kind?: "work" | "volunteer" | "education";
   location: string;
   period: string;
@@ -101,6 +104,7 @@ export interface Stat {
   target: number;
   suffix: string;
   label: string;
+  japanese: string;
   /** Where the number is proven: a section anchor or an external page */
   href?: string;
 }

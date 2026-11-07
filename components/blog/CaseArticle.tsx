@@ -133,13 +133,14 @@ function Chapter({ id, children }: { id: ChapterId; children: ReactNode }) {
   );
 }
 
-function BlockTitle({ children, id }: { children: ReactNode; id?: string }) {
+function BlockTitle({ children, japanese, id }: { children: ReactNode; japanese?: string; id?: string }) {
   return (
     <div className="flex items-center gap-3 mb-5">
       <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
       <h3 id={id} className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">
         {children}
       </h3>
+      {japanese && <span className="brush-jp text-base text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />}
     </div>
   );
 }
@@ -268,6 +269,7 @@ export default function CaseArticle({
                 {kindLabel}
               </span>
             )}
+            <span className="jp-eyebrow text-[0.6875rem] text-foreground/30" lang="ja" aria-hidden="true" data-jp="事件" />
           </div>
           <h1
             style={{ "--title-n": Math.max(...item.title.split(/\s+/).map((w) => w.length)) } as React.CSSProperties}
@@ -312,7 +314,7 @@ export default function CaseArticle({
                 <span>
                   <strong className="font-semibold text-foreground">The answer: </strong>
                   {guide.verdict}
-                  {guide.severity && <> Severity — {guide.severity}</>}
+                  {guide.severity && <> Severity: {guide.severity}</>}
                 </span>
               </p>
             )}
@@ -405,7 +407,7 @@ export default function CaseArticle({
           <CaseSummary description={item.description} part="actions" />
           <section className="grid grid-cols-1 md:grid-cols-2 gap-10" aria-label="Tools and skills">
             <FadeIn y={16} duration={0.6}>
-              <BlockTitle>Tools I used</BlockTitle>
+              <BlockTitle japanese="道具">Tools I used</BlockTitle>
               <div className="flex flex-wrap gap-2">
                 {item.tools.map((tool) => (
                   <span key={tool} className={`${chipTertiary} inline-flex items-center gap-1.5`}>
@@ -416,7 +418,7 @@ export default function CaseArticle({
               </div>
             </FadeIn>
             <FadeIn y={16} duration={0.6} delay={0.08}>
-              <BlockTitle>Skills it shows</BlockTitle>
+              <BlockTitle japanese="技能">Skills it shows</BlockTitle>
               <div className="flex flex-wrap gap-2">
                 {item.skillsGained.map((skill) => (
                   <span key={skill} className={chipAccent}>
@@ -460,7 +462,7 @@ export default function CaseArticle({
         <Chapter id="evidence">
           {screenshots.length > 0 && (
             <section aria-labelledby="case-evidence-title">
-              <BlockTitle id="case-evidence-title">
+              <BlockTitle japanese="証拠" id="case-evidence-title">
                 Screenshots — {screenshots.length}
               </BlockTitle>
               <p className="-mt-2 mb-5 text-sm text-foreground/60 font-light">Click any screenshot to see it full size and step through the rest.</p>
@@ -476,7 +478,7 @@ export default function CaseArticle({
 
           {techniques.length > 0 && (
             <section aria-labelledby="case-attack-title">
-              <BlockTitle id="case-attack-title">
+              <BlockTitle japanese="戦術" id="case-attack-title">
                 Attack techniques (MITRE ATT&amp;CK) — {techniques.length}
               </BlockTitle>
               <p className="-mt-2 mb-5 max-w-3xl text-sm text-foreground/60 font-light leading-relaxed">
@@ -508,7 +510,7 @@ export default function CaseArticle({
 
           {relatedVideos.length > 0 && (
             <section aria-labelledby="case-videos-title">
-              <BlockTitle id="case-videos-title">
+              <BlockTitle japanese="動画" id="case-videos-title">
                 Video walkthrough
               </BlockTitle>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -539,7 +541,7 @@ export default function CaseArticle({
 
         {/* Tags */}
         <section className="mb-16" aria-labelledby="case-tags-title">
-          <BlockTitle id="case-tags-title">
+          <BlockTitle japanese="標識" id="case-tags-title">
             Topics — find similar cases
           </BlockTitle>
           <div className="flex flex-wrap gap-2">
@@ -557,7 +559,7 @@ export default function CaseArticle({
 
         {related.length > 0 && (
           <section className="mb-16" aria-labelledby="case-related-title">
-            <BlockTitle id="case-related-title">
+            <BlockTitle japanese="関連" id="case-related-title">
               Read next
             </BlockTitle>
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

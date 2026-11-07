@@ -4,10 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import { m as motion, useMotionValue, useSpring } from "framer-motion";
 
 /**
- * Katana cursor — a ring that follows the normal mouse pointer (which stays
- * visible). States: gold ring (default) → red lock-on (over something
- * clickable) → slash flash (click). Desktop fine-pointers only; off on touch
- * and with reduced motion.
+ * Katana cursor  your blade for browsing the dojo.
+ * States: gold blade (default) → red lock-on (interactive) → slash flash (click).
+ * Desktop fine-pointers only; touch keeps the native cursor.
  */
 export default function CursorOverlay() {
   const [isHovering, setIsHovering] = useState(false);
@@ -148,8 +147,25 @@ export default function CursorOverlay() {
         </motion.div>
       </motion.div>
 
-      {/* No blade tip at the pointer itself: the normal mouse pointer stays
-          visible (globals.css), and a dot on top of it would hide its tip */}
+      {/* Blade tip  gold at rest, red on lock-on */}
+      <motion.div
+        className="fixed top-0 left-0 pointer-events-none z-[10000]"
+        style={{
+          x: cursorX,
+          y: cursorY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+      >
+        <div
+          className={`transition-all duration-300 transform rotate-45
+            ${
+              isHovering
+                ? "w-2 h-2 bg-primary"
+                : "w-2 h-2 bg-accent"
+            }`}
+        />
+      </motion.div>
 
       {/* Trailing gold ghost */}
       <motion.div

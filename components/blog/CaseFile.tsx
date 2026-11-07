@@ -40,12 +40,13 @@ function useCopy() {
   return { copied, copy };
 }
 
-function SectionTitle({ icon, children, id }: { icon: ReactNode; children: ReactNode; id?: string }) {
+function SectionTitle({ icon, children, japanese, id }: { icon: ReactNode; children: ReactNode; japanese?: string; id?: string }) {
   return (
     <div className="flex items-center gap-3 mb-6">
       <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
       <span className="text-primary-ink" aria-hidden="true">{icon}</span>
       <h3 id={id} className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">{children}</h3>
+      {japanese && <span className="brush-jp text-base text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />}
       <span className="flex-1 h-px bg-gradient-to-r from-foreground/10 to-transparent" aria-hidden="true" />
     </div>
   );
@@ -323,7 +324,7 @@ export function TeamBanner({ team }: { team: string }) {
 export function CaseFacts({ facts }: { facts: NonNullable<CaseDetail["facts"]> }) {
   return (
     <div>
-      <SectionTitle icon={<Fingerprint size={13} />}>Key facts</SectionTitle>
+      <SectionTitle icon={<Fingerprint size={13} />} japanese="概要">Key facts</SectionTitle>
       <Facts facts={facts} />
     </div>
   );
@@ -332,7 +333,7 @@ export function CaseFacts({ facts }: { facts: NonNullable<CaseDetail["facts"]> }
 export function CaseChain({ chain }: { chain: NonNullable<CaseDetail["chain"]> }) {
   return (
     <div>
-      <SectionTitle icon={<GitBranch size={13} />}>How the attack unfolded</SectionTitle>
+      <SectionTitle icon={<GitBranch size={13} />} japanese="連鎖">How the attack unfolded</SectionTitle>
       <Chain chain={chain} />
       <p className="mt-4 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60">
         The codes (T1190 …) are MITRE ATT&amp;CK technique IDs — click one for the public description
@@ -344,7 +345,7 @@ export function CaseChain({ chain }: { chain: NonNullable<CaseDetail["chain"]> }
 export function CaseTimeline({ timeline }: { timeline: NonNullable<CaseDetail["timeline"]> }) {
   return (
     <div>
-      <SectionTitle icon={<History size={13} />}>Timeline</SectionTitle>
+      <SectionTitle icon={<History size={13} />} japanese="時系列">Timeline</SectionTitle>
       <Timeline timeline={timeline} />
     </div>
   );
@@ -353,7 +354,7 @@ export function CaseTimeline({ timeline }: { timeline: NonNullable<CaseDetail["t
 export function CaseIocs({ iocs }: { iocs: NonNullable<CaseDetail["iocs"]> }) {
   return (
     <div>
-      <SectionTitle icon={<Fingerprint size={13} />}>Indicators of compromise (IOCs) — {iocs.length}</SectionTitle>
+      <SectionTitle icon={<Fingerprint size={13} />} japanese="痕跡">Indicators of compromise (IOCs) — {iocs.length}</SectionTitle>
       <p className="mb-4 max-w-3xl text-sm text-foreground/60 font-light leading-relaxed">
         The clues the attacker left — addresses, domains, accounts and file fingerprints. Defenders search for and block these.
       </p>
@@ -365,7 +366,7 @@ export function CaseIocs({ iocs }: { iocs: NonNullable<CaseDetail["iocs"]> }) {
 export function CaseResponse({ response }: { response: NonNullable<CaseDetail["response"]> }) {
   return (
     <div>
-      <SectionTitle icon={<ShieldCheck size={13} />}>What was done to stop and fix it</SectionTitle>
+      <SectionTitle icon={<ShieldCheck size={13} />} japanese="対応">What was done to stop and fix it</SectionTitle>
       <ul className="grid sm:grid-cols-2 gap-3">
         {response.map((r, i) => (
           <FadeIn as="li" y={14} duration={0.5} delay={Math.min(i, 6) * 0.06} key={i} className="flex gap-3 border border-foreground/5 bg-surface/40 px-4 py-3">
@@ -381,7 +382,7 @@ export function CaseResponse({ response }: { response: NonNullable<CaseDetail["r
 export function CaseDetection({ items }: { items: NonNullable<CaseDetail["detection"]> }) {
   return (
     <div>
-      <SectionTitle icon={<Code2 size={13} />}>Detection rules written for it</SectionTitle>
+      <SectionTitle icon={<Code2 size={13} />} japanese="検知">Detection rules written for it</SectionTitle>
       <p className="mb-4 max-w-3xl text-sm text-foreground/60 font-light leading-relaxed">
         Rules that make security tools raise an alarm automatically the next time this happens. Click the language label to copy one.
       </p>
@@ -393,7 +394,7 @@ export function CaseDetection({ items }: { items: NonNullable<CaseDetail["detect
 export function CaseLessons({ lessons }: { lessons: string }) {
   return (
     <div>
-      <SectionTitle icon={<BookOpen size={13} />}>What I&apos;d do differently</SectionTitle>
+      <SectionTitle icon={<BookOpen size={13} />} japanese="教訓">What I&apos;d do differently</SectionTitle>
       <p className="text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-5">{lessons}</p>
     </div>
   );
@@ -402,7 +403,7 @@ export function CaseLessons({ lessons }: { lessons: string }) {
 export function CaseAttachments({ attachments }: { attachments: NonNullable<CaseDetail["attachments"]> }) {
   return (
     <div>
-      <SectionTitle icon={<Paperclip size={13} />}>Supporting files</SectionTitle>
+      <SectionTitle icon={<Paperclip size={13} />} japanese="添付">Supporting files</SectionTitle>
       <ul className="flex flex-wrap gap-3">
         {attachments.map((a) => (
           <li key={a.href}>
@@ -424,7 +425,7 @@ export function CaseAttachments({ attachments }: { attachments: NonNullable<Case
 export function CaseReport({ href, title, pages }: { href: string; title: string; pages?: number }) {
   return (
     <div>
-      <SectionTitle icon={<FileText size={13} />}>
+      <SectionTitle icon={<FileText size={13} />} japanese="報告書">
         The full technical report{pages ? ` — ${pages} pages` : ""}
       </SectionTitle>
       <ReportViewer href={href} title={title} />

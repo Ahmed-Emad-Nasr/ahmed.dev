@@ -87,5 +87,5 @@ ${files.join("\n")}
 };
 `;
 
-fs.writeFileSync(target, out);
+fs.writeFileSync(target, out.replace(/\n/g, "\r\n")); // the repo uses CRLF
 console.log(`logos: ${marks.length} brand marks, ${files.length} logo files → ${path.relative(root, target)}`);

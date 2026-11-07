@@ -22,6 +22,7 @@ export default function StatsBar({ stats }: { stats: Stat[] }) {
             </span>
             <span className="flex flex-col">
               <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">{s.label}</span>
+              <span className="jp-eyebrow text-[0.5625rem] text-foreground/25" lang="ja" aria-hidden="true" data-jp={s.japanese} />
             </span>
             <span className="ml-auto font-mono text-xs text-foreground/20 group-hover:text-accent transition-all duration-300 group-hover:translate-x-0.5" aria-hidden="true">→</span>
           </FadeIn>

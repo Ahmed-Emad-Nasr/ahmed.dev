@@ -25,12 +25,12 @@ import {
    says in a few words what is there (shown in the phone menu and as the
    desktop tooltip). */
 const navItems = [
-  { name: "Home", href: "#home", icon: Home, hint: "Who I am, in one screen" },
-  { name: "Projects", href: "#work", icon: Code2, hint: "Things I have built and tested" },
-  { name: "Experience", href: "#experience", icon: Briefcase, hint: "Jobs, training and teaching" },
-  { name: "Blog", href: "/blog", icon: BookOpen, hint: "Case studies and videos, explained" },
-  { name: "Gallery", href: "/gallery", icon: Images, hint: "Certificates and photos" },
-  { name: "Contact", href: "#contact", icon: Mail, hint: "Send me a message" },
+  { name: "Home", href: "#home", icon: Home, hint: "Who I am, in one screen", katakana: "ホーム" },
+  { name: "Projects", href: "#work", icon: Code2, hint: "Things I have built and tested", katakana: "仕事" },
+  { name: "Experience", href: "#experience", icon: Briefcase, hint: "Jobs, training and teaching", katakana: "経験" },
+  { name: "Blog", href: "/blog", icon: BookOpen, hint: "Case studies and videos, explained", katakana: "記録" },
+  { name: "Gallery", href: "/gallery", icon: Images, hint: "Certificates and photos", katakana: "証明" },
+  { name: "Contact", href: "#contact", icon: Mail, hint: "Send me a message", katakana: "連絡" },
 ];
 
 /* Where each item's part of the home page ends. */
@@ -336,6 +336,8 @@ export default function SiteNav() {
                       {item.name}
                     </span>
                     <span className="font-mono text-[0.625rem] text-foreground/60 tracking-[0.15em]">
+                      <span className="tracking-[0.3em]" lang="ja">{item.katakana}</span>
+                      <span className="text-primary-ink mx-2" aria-hidden="true">·</span>
                       {item.hint}
                     </span>
                   </div>

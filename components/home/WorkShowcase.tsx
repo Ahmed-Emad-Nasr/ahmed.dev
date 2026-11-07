@@ -21,12 +21,12 @@ import { Github } from "@/components/ui/BrandIcons";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import FadeIn from "@/components/ui/FadeIn";
 
-const FILTERS: { id: WorkType | "all"; label: string }[] = [
-  { id: "all", label: "All" },
-  { id: "lab", label: "Labs" },
-  { id: "research", label: "Research" },
-  { id: "tool", label: "Tools" },
-  { id: "platform", label: "Platforms" },
+const FILTERS: { id: WorkType | "all"; label: string; japanese: string }[] = [
+  { id: "all", label: "All", japanese: "全部" },
+  { id: "lab", label: "Labs", japanese: "実験" },
+  { id: "research", label: "Research", japanese: "研究" },
+  { id: "tool", label: "Tools", japanese: "道具" },
+  { id: "platform", label: "Platforms", japanese: "基盤" },
 ];
 
 const TYPE_ICON = {
@@ -91,7 +91,13 @@ export default function WorkShowcase({
                   : "bg-foreground/[0.03] text-foreground/70 border-foreground/10 hover:border-primary/50 hover:text-foreground"
               }`}
             >
-              {f.label}
+              {f.label}{" "}
+              <span
+                className="ml-2 text-[0.5625rem]"
+                lang="ja"
+                aria-hidden="true"
+                data-jp={f.japanese}
+              />
             </button>
           ))}
         </div>

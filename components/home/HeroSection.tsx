@@ -265,7 +265,7 @@ export default function HeroSection({
         <div className="flex items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8 backdrop-blur-sm">
           <div className="w-2 h-2 bg-primary animate-pulse" />
           <span className="whitespace-nowrap text-[0.5rem] font-mono font-bold uppercase tracking-[0.15em] text-on-surface-variant sm:text-xs sm:tracking-[0.3em]">
-            {PORTFOLIO_DATA.profile.title}
+            {PORTFOLIO_DATA.profile.japaneseTitle}
           </span>
         </div>
 
@@ -277,7 +277,7 @@ export default function HeroSection({
               and in the md row it pushed the portrait past the screen edge. */}
           <div className="text-center md:text-left order-2 md:order-1 w-full md:w-auto md:flex-1 min-w-0">
             <p className="font-mono text-[0.6875rem] md:text-xs font-bold uppercase tracking-[0.4em] text-primary-ink mb-3">
-              Portfolio
+              Portfolio · 履歴書
             </p>
             {/* Phones: the size follows the screen (min of the design's 6xl
                 and 15vw) — "AHMED" at a fixed 60px is 338px wide, wider than a
@@ -299,6 +299,12 @@ export default function HeroSection({
                 style={{ WebkitTextStroke: "2px #BC002D" }}
               />
             </h1>
+            <p
+              className="brush-jp text-xl md:text-2xl text-foreground/40 mt-4 [word-break:auto-phrase] [text-wrap:balance]"
+              lang="ja"
+              aria-hidden="true"
+              data-jp="アハメド・エマド・ナスル  情報セキュリティ"
+            />
             <RoleTicker
               roles={PORTFOLIO_DATA.profile.roles}
               className="mt-5 text-sm sm:text-base md:text-lg"
@@ -469,6 +475,12 @@ export default function HeroSection({
                   />
                   Download CV
                   <span className="sr-only"> (PDF)</span>
+                  <span
+                    className="brush-jp text-base normal-case tracking-normal opacity-70"
+                    lang="ja"
+                    aria-hidden="true"
+                    data-jp="履歴書"
+                  />
                 </a>
                 <a
                   href="#work"
@@ -479,6 +491,12 @@ export default function HeroSection({
                     className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5"
                   />
                   See my projects
+                  <span
+                    className="brush-jp text-base normal-case tracking-normal text-foreground/50"
+                    lang="ja"
+                    aria-hidden="true"
+                    data-jp="仕事"
+                  />
                 </a>
               </div>
 
@@ -521,6 +539,12 @@ export default function HeroSection({
               <span className="font-mono text-[0.625rem] font-bold tracking-[0.35em] uppercase text-primary-ink">
                 At a glance
               </span>
+              <span
+                className="brush-jp text-base text-foreground/30"
+                lang="ja"
+                aria-hidden="true"
+                data-jp="記録"
+              />
             </div>
             <dl className="flex flex-col">
               <FieldRow
@@ -552,7 +576,7 @@ export default function HeroSection({
       >
         <div className="w-8 h-[1px] bg-primary/40" />
         <p className="text-[0.625rem] text-foreground/60 font-mono font-bold uppercase tracking-[0.5em]">
-          PERSEVERANCE IS POWER
+          継続は力なり · PERSEVERANCE IS POWER
         </p>
       </div>
     </section>
