@@ -12,6 +12,7 @@ import { Eyebrow, filterTab } from "@/components/ui/kit";
 import dynamic from "next/dynamic";
 import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
+import { scrollToElement } from "@/lib/scroll";
 
 const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
   ssr: false,
@@ -129,8 +130,7 @@ export default function ArtGallery() {
     } else {
       setCertFilter(action);
     }
-    const el = document.getElementById(targetId);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    scrollToElement(document.getElementById(targetId));
   };
 
   return (

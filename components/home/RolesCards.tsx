@@ -195,115 +195,122 @@ const ROLES: Role[] = [
 
 export function RolesCards() {
   return (
-    <div
+    <section
       id="roles"
-      aria-label="Services and roles I fit"
-      className="relative mt-20 md:mt-28 w-full overflow-hidden"
+      aria-labelledby="roles-title"
+      className="relative mt-20 md:mt-28 w-full px-6 md:px-20 overflow-hidden"
     >
-      <p className="mx-auto mb-10 max-w-3xl text-center text-lg text-on-surface-variant font-light leading-relaxed">
-        These are the roles I fit and can work in, combining governance,
-        security operations, incident response, data security and hands-on
-        training.
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        {ROLES.map((r, idx) => {
-          const Icon = r.icon;
-          return (
-            <FadeIn y={36} duration={0.7} delay={idx * 0.1} key={r.id}>
-              <TiltCard className="group spotlight relative h-full flex flex-col bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500 overflow-hidden">
-                <CardEffects index={idx + 1} />
-                <div className="flex items-center mb-4">
-                  <div className="p-2.5 bg-primary/10 border border-primary/30">
-                    <Icon
-                      size={18}
-                      className="text-primary-ink transition-transform duration-500 group-hover:scale-110"
-                    />
+      <div className="max-w-7xl mx-auto">
+        {/* Screen readers only: the h2 above the cards' h3 titles, so the
+            page goes h1 → h2 → h3 with no skipped level. Invisible on screen. */}
+        <h2 id="roles-title" className="sr-only">
+          Services and roles I fit
+        </h2>
+        <p className="mx-auto mb-10 max-w-3xl text-center text-lg text-on-surface-variant font-light leading-relaxed">
+          These are the roles I fit and can work in, combining governance,
+          security operations, incident response, data security and hands-on
+          training.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+          {ROLES.map((r, idx) => {
+            const Icon = r.icon;
+            return (
+              <FadeIn y={36} duration={0.7} delay={idx * 0.1} key={r.id}>
+                <TiltCard className="group spotlight relative h-full flex flex-col bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500 overflow-hidden">
+                  <CardEffects index={idx + 1} />
+                  <div className="flex items-center mb-4">
+                    <div className="p-2.5 bg-primary/10 border border-primary/30">
+                      <Icon
+                        size={18}
+                        className="text-primary-ink transition-transform duration-500 group-hover:scale-110"
+                      />
+                    </div>
                   </div>
-                </div>
-                <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-tertiary mb-1.5">
-                  {r.serviceArea}
-                </span>
-                <h3 className="font-display text-xl font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
-                  {r.title}
-                </h3>
-                <p className="text-sm text-foreground/60 font-light leading-relaxed mb-5">
-                  {r.pitch}
-                </p>
-                <ul
-                  className="mb-5 flex flex-wrap gap-2"
-                  aria-label={`${r.title} focus areas`}
-                >
-                  {r.focus.map((focus) => (
-                    <li
-                      key={focus}
-                      className="px-2 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.12em] text-tertiary bg-tertiary/10 border border-tertiary/20"
-                    >
-                      {focus}
-                    </li>
-                  ))}
-                </ul>
-                <div className="mb-5 py-2.5 px-3 border-l-2 border-accent bg-accent/5 font-mono text-[0.625rem] text-accent tracking-[0.15em] uppercase">
-                  → {r.deliverable}
-                </div>
-                <span className="font-mono text-[0.5625rem] uppercase tracking-[0.3em] text-foreground/60 mb-2">
-                  Proof
-                </span>
-                <ul className="grid gap-2 mb-6">
-                  {r.proof.map((p, i) => {
-                    const cls =
-                      "group/p flex items-start gap-2 text-sm text-foreground/80 hover:text-primary-ink transition-colors";
-                    const inner = (
-                      <>
-                        <span className="mt-0.5 font-mono text-[0.5625rem] font-bold text-primary-ink tabular-nums">
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
-                        <span className="flex-1">{p.label}</span>
-                        <ArrowUpRight
-                          size={13}
-                          className="mt-0.5 shrink-0 opacity-40 transition-all duration-300 group-hover/p:opacity-100 group-hover/p:translate-x-0.5 group-hover/p:-translate-y-0.5"
-                          aria-hidden="true"
-                        />
-                      </>
-                    );
-                    return (
-                      <li key={p.label}>
-                        {p.params ? (
-                          <CaseFilterLink params={p.params} className={cls}>
-                            {inner}
-                          </CaseFilterLink>
-                        ) : p.href?.startsWith("#") ? (
-                          <a href={p.href} className={cls}>
-                            {inner}
-                          </a>
-                        ) : (
-                          <PageLink href={p.href ?? "/"} className={cls}>
-                            {inner}
-                          </PageLink>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-                <div className="mt-auto pt-4 border-t border-foreground/5 flex items-center justify-between gap-3">
-                  <span className="font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-accent leading-snug">
-                    {r.credential}
+                  <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-tertiary mb-1.5">
+                    {r.serviceArea}
                   </span>
-                  <a
-                    href={normalizePublicHref(CV_PDF_HREF)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 p-2 border border-foreground/10 text-foreground/60 hover:text-white hover:bg-primary hover:border-primary transition-colors"
-                    aria-label={`Download the CV (${r.title})`}
-                    title="Download the CV"
+                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
+                    {r.title}
+                  </h3>
+                  <p className="text-sm text-foreground/60 font-light leading-relaxed mb-5">
+                    {r.pitch}
+                  </p>
+                  <ul
+                    className="mb-5 flex flex-wrap gap-2"
+                    aria-label={`${r.title} focus areas`}
                   >
-                    <Download size={13} />
-                  </a>
-                </div>
-              </TiltCard>
-            </FadeIn>
-          );
-        })}
+                    {r.focus.map((focus) => (
+                      <li
+                        key={focus}
+                        className="px-2 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.12em] text-tertiary bg-tertiary/10 border border-tertiary/20"
+                      >
+                        {focus}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mb-5 py-2.5 px-3 border-l-2 border-accent bg-accent/5 font-mono text-[0.625rem] text-accent tracking-[0.15em] uppercase">
+                    → {r.deliverable}
+                  </div>
+                  <span className="font-mono text-[0.5625rem] uppercase tracking-[0.3em] text-foreground/60 mb-2">
+                    Proof
+                  </span>
+                  <ul className="grid gap-2 mb-6">
+                    {r.proof.map((p, i) => {
+                      const cls =
+                        "group/p flex items-start gap-2 text-sm text-foreground/80 hover:text-primary-ink transition-colors";
+                      const inner = (
+                        <>
+                          <span className="mt-0.5 font-mono text-[0.5625rem] font-bold text-primary-ink tabular-nums">
+                            {String(i + 1).padStart(2, "0")}
+                          </span>
+                          <span className="flex-1">{p.label}</span>
+                          <ArrowUpRight
+                            size={13}
+                            className="mt-0.5 shrink-0 opacity-40 transition-all duration-300 group-hover/p:opacity-100 group-hover/p:translate-x-0.5 group-hover/p:-translate-y-0.5"
+                            aria-hidden="true"
+                          />
+                        </>
+                      );
+                      return (
+                        <li key={p.label}>
+                          {p.params ? (
+                            <CaseFilterLink params={p.params} className={cls}>
+                              {inner}
+                            </CaseFilterLink>
+                          ) : p.href?.startsWith("#") ? (
+                            <a href={p.href} className={cls}>
+                              {inner}
+                            </a>
+                          ) : (
+                            <PageLink href={p.href ?? "/"} className={cls}>
+                              {inner}
+                            </PageLink>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <div className="mt-auto pt-4 border-t border-foreground/5 flex items-center justify-between gap-3">
+                    <span className="font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-accent leading-snug">
+                      {r.credential}
+                    </span>
+                    <a
+                      href={normalizePublicHref(CV_PDF_HREF)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="shrink-0 p-2 border border-foreground/10 text-foreground/60 hover:text-white hover:bg-primary hover:border-primary transition-colors"
+                      aria-label={`Download the CV (${r.title})`}
+                      title="Download the CV"
+                    >
+                      <Download size={13} />
+                    </a>
+                  </div>
+                </TiltCard>
+              </FadeIn>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

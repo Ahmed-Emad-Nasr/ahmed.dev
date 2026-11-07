@@ -9,7 +9,7 @@ import FadeIn from "@/components/ui/FadeIn";
 export default function StatsBar({ stats }: { stats: Stat[] }) {
   return (
     <section aria-label="Highlights" className="relative px-6 md:px-20 bg-background">
-      <div className="max-w-7xl mx-auto -mt-2 grid grid-cols-2 lg:grid-cols-4 border border-foreground/10 bg-surface/50 backdrop-blur-md divide-x divide-foreground/5 divide-y lg:divide-y-0">
+      <div className="max-w-7xl mx-auto mt-16 md:mt-20 grid grid-cols-2 lg:grid-cols-4 border border-foreground/10 bg-surface/50 backdrop-blur-md divide-x divide-foreground/5 divide-y lg:divide-y-0">
         {stats.map((s, i) => (
           <FadeIn as="a" y={16} duration={0.55} delay={i * 0.07}
             key={s.label}

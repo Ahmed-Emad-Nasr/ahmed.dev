@@ -133,11 +133,6 @@
   html {
     font-size: 100%;
   }
-
-  /* Route changes should land immediately; section jumps use lib/scroll.ts. */
-  html {
-    scroll-behavior: auto;
-  }
   @media (min-width: 1800px) {
     html {
       font-size: 112.5%;
@@ -597,10 +592,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto !important;
-  }
-
   /* Infinite indicators are decoration, not information. */
   .animate-pulse {
     animation: none !important;
