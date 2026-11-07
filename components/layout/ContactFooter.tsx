@@ -232,9 +232,12 @@ export default function ContactFooter() {
               {PORTFOLIO_DATA.profile.availability} — training and collaborations welcome too.
             </p>
             <ol className="mb-8 grid gap-1.5 text-sm text-foreground/60 font-light">
-              <li><span className="font-mono text-primary-ink mr-2">1</span>Write your name, your email and a few lines.</li>
-              <li><span className="font-mono text-primary-ink mr-2">2</span>Press “Send message”.</li>
-              <li><span className="font-mono text-primary-ink mr-2">3</span>I reply to your email within one to two days.</li>
+              {["Write your name, your email and a few lines.", "Press “Send message”.", "I reply to your email within one to two days."].map((step, i) => (
+                <FadeIn as="li" key={step} x={-12} y={0} duration={0.5} delay={0.1 + i * 0.08}>
+                  <span className="font-mono text-primary-ink mr-2">{i + 1}</span>
+                  {step}
+                </FadeIn>
+              ))}
             </ol>
 
             <form

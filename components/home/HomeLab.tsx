@@ -94,14 +94,14 @@ export default function HomeLab() {
 
         <ol className="-mt-6 md:-mt-10 mb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-foreground/10 border border-foreground/10">
           {STEPS.map((s, i) => (
-            <li key={s.title} className="flex flex-col gap-3 bg-background px-5 py-5">
+            <FadeIn as="li" y={18} duration={0.6} delay={i * 0.08} key={s.title} className="flex flex-col gap-3 bg-background px-5 py-5">
               <span className="flex items-center gap-3">
                 <span className="font-mono text-[0.625rem] font-bold text-primary-ink tabular-nums">{String(i + 1).padStart(2, "0")}</span>
                 <s.icon size={16} className="text-accent" aria-hidden="true" />
                 <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.25em] text-foreground">{s.title}</span>
               </span>
               <p className="text-sm text-foreground/60 font-light leading-relaxed">{s.text}</p>
-            </li>
+            </FadeIn>
           ))}
         </ol>
 
@@ -181,14 +181,14 @@ export default function HomeLab() {
         {/* Every part, in plain words */}
         <h3 className="mt-14 mb-6 font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">What each part does</h3>
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {NODES.map((n) => (
-            <li key={n.id} className="flex gap-4 border border-foreground/5 bg-surface/40 p-4">
+          {NODES.map((n, i) => (
+            <FadeIn as="li" y={16} duration={0.55} delay={(i % 3) * 0.06} key={n.id} className="flex gap-4 border border-foreground/5 bg-surface/40 p-4">
               <Logo name={n.logo} size={40} />
               <div className="min-w-0">
                 <p className="font-display text-sm font-black uppercase tracking-tight text-foreground">{n.title}</p>
                 <p className="mt-1 text-sm text-foreground/60 font-light leading-relaxed">{n.plain}</p>
               </div>
-            </li>
+            </FadeIn>
           ))}
         </ul>
       </div>

@@ -57,13 +57,13 @@ export default function BlogGuide() {
             <div>
               <h3 className="mb-4 font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">Four kinds of case</h3>
               <ul className="grid gap-3">
-                {KINDS.map((k) => (
-                  <li key={k.id} className="flex gap-3">
+                {KINDS.map((k, i) => (
+                  <FadeIn as="li" key={k.id} y={12} duration={0.55} delay={0.15 + i * 0.07} className="flex gap-3">
                     <k.icon size={16} className="mt-1 shrink-0 text-tertiary" aria-hidden="true" />
                     <p className="text-sm text-foreground/70 font-light leading-relaxed">
                       <strong className="font-semibold text-foreground">{k.label}</strong> — {KIND_GUIDE[k.id].long}
                     </p>
-                  </li>
+                  </FadeIn>
                 ))}
               </ul>
             </div>
@@ -71,12 +71,12 @@ export default function BlogGuide() {
               <h3 className="mb-4 font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">Every case answers five questions</h3>
               <ol className="grid gap-2">
                 {QUESTIONS.map(([q, a], i) => (
-                  <li key={q} className="flex items-baseline gap-3 border-b border-foreground/5 pb-2 last:border-b-0">
+                  <FadeIn as="li" key={q} y={12} duration={0.55} delay={0.15 + i * 0.07} className="flex items-baseline gap-3 border-b border-foreground/5 pb-2 last:border-b-0">
                     <span className="font-mono text-[0.625rem] font-bold text-primary-ink tabular-nums">{String(i + 1).padStart(2, "0")}</span>
                     <span className="text-sm text-foreground/70 font-light">
                       <strong className="font-semibold text-foreground">{q}</strong> {a}
                     </span>
-                  </li>
+                  </FadeIn>
                 ))}
               </ol>
             </div>

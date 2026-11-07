@@ -60,14 +60,14 @@ export default function DetectionLibrary() {
 
         {/* How it works, in three steps */}
         <ol className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-px bg-foreground/10 border border-foreground/10">
-          {HOW.map((s) => (
-            <li key={s.title} className="flex gap-4 bg-background px-5 py-5">
+          {HOW.map((s, i) => (
+            <FadeIn as="li" y={18} duration={0.6} delay={i * 0.08} key={s.title} className="flex gap-4 bg-background px-5 py-5">
               <s.icon size={18} className="mt-0.5 shrink-0 text-primary-ink" aria-hidden="true" />
               <div>
                 <h3 className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-foreground">{s.title}</h3>
                 <p className="mt-2 text-sm text-foreground/60 font-light leading-relaxed">{s.text}</p>
               </div>
-            </li>
+            </FadeIn>
           ))}
         </ol>
 
@@ -95,9 +95,13 @@ export default function DetectionLibrary() {
           })}
         </div>
 
-        <p className="mb-6 max-w-3xl text-sm text-foreground/70 font-light leading-relaxed" aria-live="polite">
+        {/* Stable live region; the sentence inside fades in again on each
+            change (answer-in, globals.css — off with reduced motion) */}
+        <div aria-live="polite" className="mb-6 max-w-3xl">
+        <p key={group ?? "all"} className="answer-in text-sm text-foreground/70 font-light leading-relaxed">
           {group ? <><strong className="font-semibold text-foreground">{RULE_GROUP_LABEL[group]}:</strong> {RULE_GROUP_PLAIN[group]}</> : `All ${detectionRules.length} rules, from password guessing to ransomware. Pick a family above to see what it catches.`}
         </p>
+        </div>
 
         {/* The console */}
         <div className="border border-foreground/10 bg-surface/60 backdrop-blur-sm">

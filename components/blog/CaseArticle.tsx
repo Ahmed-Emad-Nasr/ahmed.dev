@@ -294,7 +294,7 @@ export default function CaseArticle({
         </FadeIn>
 
         {/* ── In plain words: the whole case for a non-technical reader ── */}
-        <div className="spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm hover:border-primary/20 transition-all duration-700 overflow-hidden mb-10">
+        <FadeIn y={24} duration={0.7} delay={0.1} className="spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm hover:border-primary/20 transition-all duration-700 overflow-hidden mb-10">
           <div className="absolute top-0 left-0 w-[3px] h-full bg-primary" />
           <div className="relative z-10 px-6 md:px-12 pt-6 md:pt-8 pb-4 border-b border-foreground/5 flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -355,10 +355,10 @@ export default function CaseArticle({
               <span aria-live="polite">{copyState === "done" ? "Link copied" : copyState === "error" ? "Copy failed" : "Copy link"}</span>
             </button>
           </div>
-        </div>
+        </FadeIn>
 
         {/* ── On this page ── */}
-        <nav aria-label="On this page" className="mb-16 flex flex-wrap items-center gap-2">
+        <FadeIn as="nav" y={12} duration={0.55} delay={0.2} aria-label="On this page" className="mb-16 flex flex-wrap items-center gap-2">
           <span className="mr-2 font-mono text-[0.5625rem] uppercase tracking-[0.3em] text-foreground/60">On this page</span>
           {CHAPTERS.map((c, i) => (
             <a
@@ -369,7 +369,7 @@ export default function CaseArticle({
               <span className="text-primary-ink tabular-nums">{String(i + 1).padStart(2, "0")}</span> {c.title}
             </a>
           ))}
-        </nav>
+        </FadeIn>
 
         {/* ── 01 The goal ── */}
         <Chapter id="goal">
@@ -391,12 +391,12 @@ export default function CaseArticle({
               ) : null}
             </>
           ) : (
-            <p className="max-w-3xl text-base md:text-lg text-foreground/80 font-light leading-relaxed border-l-2 border-accent pl-5">
+            <FadeIn as="p" y={16} duration={0.6} className="max-w-3xl text-base md:text-lg text-foreground/80 font-light leading-relaxed border-l-2 border-accent pl-5">
               {guide.kind === "lab" || guide.kind === "note"
                 ? "There was no real victim here — this was a safe practice environment. What “happened” is the weakness itself, and the steps below show exactly how it was found and used."
                 : "The full story is in the steps below and in the technical report under “Evidence & supporting files”."}
               {guide.topic && <span className="block mt-3 text-foreground/60 text-base">{guide.topic}</span>}
-            </p>
+            </FadeIn>
           )}
         </Chapter>
 
@@ -404,7 +404,7 @@ export default function CaseArticle({
         <Chapter id="what-i-did">
           <CaseSummary description={item.description} part="actions" />
           <section className="grid grid-cols-1 md:grid-cols-2 gap-10" aria-label="Tools and skills">
-            <div>
+            <FadeIn y={16} duration={0.6}>
               <BlockTitle>Tools I used</BlockTitle>
               <div className="flex flex-wrap gap-2">
                 {item.tools.map((tool) => (
@@ -414,8 +414,8 @@ export default function CaseArticle({
                   </span>
                 ))}
               </div>
-            </div>
-            <div>
+            </FadeIn>
+            <FadeIn y={16} duration={0.6} delay={0.08}>
               <BlockTitle>Skills it shows</BlockTitle>
               <div className="flex flex-wrap gap-2">
                 {item.skillsGained.map((skill) => (
@@ -424,7 +424,7 @@ export default function CaseArticle({
                   </span>
                 ))}
               </div>
-            </div>
+            </FadeIn>
           </section>
         </Chapter>
 

@@ -208,9 +208,11 @@ export default function ArtGallery() {
             })}
           </div>
 
-          <p className="mb-10 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-foreground/60" aria-live="polite">
-            {CERT_FILTERS.find((f) => f.id === certFilter)?.hint}
-          </p>
+          <div className="mb-10" aria-live="polite">
+            <p key={certFilter} className="answer-in font-mono text-[0.625rem] uppercase tracking-[0.2em] text-foreground/60">
+              {CERT_FILTERS.find((f) => f.id === certFilter)?.hint}
+            </p>
+          </div>
 
           <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCerts.map((cert, idx) => {
@@ -223,7 +225,8 @@ export default function ArtGallery() {
                   delay={(idx % 6) * 0.05}
                   key={cert.galleryIndex}
                 >
-                  <TiltCard className="spotlight group relative h-full bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500">
+                  {/* No tilt: these cards are for reading. The spotlight still follows the pointer. */}
+                  <TiltCard max={0} className="spotlight group relative h-full bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500">
                     <CardEffects index={Number(num)} />
                     <button
                       type="button"

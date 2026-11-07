@@ -79,7 +79,8 @@ function CaseCard({
       id={`case-${id}`}
       className="scroll-mt-28"
     >
-      <TiltCard className="spotlight group relative bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500 flex flex-col h-full overflow-hidden">
+      {/* No tilt: these cards are for reading. The spotlight still follows the pointer. */}
+      <TiltCard max={0} className="spotlight group relative bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500 flex flex-col h-full overflow-hidden">
         <CardEffects index={index + 1} />
 
         {cover && (

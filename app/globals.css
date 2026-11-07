@@ -178,14 +178,9 @@
     }
   }
 
-  /* Custom cursor only on precise pointers; touch keeps native cursor */
-  @media (pointer: fine) {
-    body.custom-cursor-on,
-    body.custom-cursor-on a,
-    body.custom-cursor-on button {
-      cursor: none;
-    }
-  }
+  /* The katana cursor (CursorOverlay) is drawn on top of the normal mouse
+     pointer, never instead of it — the pointer stays visible so every
+     visitor knows where they are pointing and what is clickable. */
 
   :focus-visible {
     outline: 2px solid var(--primary);
