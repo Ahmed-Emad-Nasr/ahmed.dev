@@ -30,9 +30,9 @@ const videos: ChannelVideo[] = [
 ];
 
 const stats = [
-  { value: libraryCounts.total, label: "Total cases", japanese: "事件" },
-  { value: libraryCounts.withScreenshots, label: "With screenshots", japanese: "証拠" },
-  { value: libraryCounts.screenshots, label: "Screenshot assets", japanese: "画像" },
+  { value: libraryCounts.total, label: "Total cases" },
+  { value: libraryCounts.withScreenshots, label: "With screenshots" },
+  { value: libraryCounts.screenshots, label: "Screenshot assets" },
 ];
 
 const Embed = memo(function Embed({
@@ -99,7 +99,6 @@ export default function MediaSections() {
               </span>
               <span className="flex flex-col">
                 <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">{s.label}</span>
-                <span className="jp-eyebrow text-[0.5625rem] text-foreground/25" lang="ja" aria-hidden="true" data-jp={s.japanese} />
               </span>
             </FadeIn>
           ))}
@@ -200,7 +199,6 @@ export default function MediaSections() {
                 <h3 id="blog-playlists-title" className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
                   Playlists
                 </h3>
-                <span className="brush-jp text-lg text-foreground/30" lang="ja" aria-hidden="true" data-jp="連続" />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {playlists.map((playlist, idx) => (
@@ -221,9 +219,9 @@ export default function MediaSections() {
                       active={Boolean(activeEmbeds[`playlist-${playlist.playlistId}`])}
                       onActivate={onActivateEmbed}
                     />
-                    <div className="flex flex-col flex-1 p-6">
+                    <div className="@container flex flex-col flex-1 p-6">
                       <div className="flex items-center justify-between gap-3 mb-3">
-                        <h4 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300">
+                        <h4 className="min-w-0 font-display text-[min(1.125rem,10cqi)] font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300">
                           {playlist.title}
                         </h4>
                         <ListVideo size={14} className="shrink-0 text-foreground/25 group-hover:text-tertiary transition-colors duration-300" />

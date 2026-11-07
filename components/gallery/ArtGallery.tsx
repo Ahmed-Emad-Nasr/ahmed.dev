@@ -12,7 +12,7 @@ import { Eyebrow, filterTab } from "@/components/ui/kit";
 import dynamic from "next/dynamic";
 import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
-import { scrollToElement } from "@/lib/scroll";
+import Logo from "@/components/ui/Logo";
 
 const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
   ssr: false,
@@ -21,39 +21,12 @@ const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
 const FIRST = 12;
 const PAGE = 12;
 
-const START_HERE_CARDS = [
-  {
-    n: "01",
-    meta: "01 • VALIDATED CERTIFICATE",
-    title: "Information Security Officer",
-    why: "Validated by top certifications including INE eJPT v2, Red Hat RH124, Cisco CCNA, CCEP, Huawei HCIA and security fundamentals.",
-    action: "core" as const,
-    targetId: "all-certificates",
-  },
-  {
-    n: "02",
-    meta: "02 • HANDS-ON LABS",
-    title: "Tactical Hands-On Training & Labs",
-    why: "Over 79 documented cases, CTFs, TryHackMe SOC Level 1 & 2, DEPI Incident Response & Forensics tracks, and ITI Pentesting Bootcamp.",
-    action: "labs" as const,
-    targetId: "all-certificates",
-  },
-  {
-    n: "03",
-    meta: "03 • ENDORSEMENTS",
-    title: "Community Events & Endorsements",
-    why: "Photos from classrooms, 300+ students taught at AMIT & NTI, hackathons, cybersecurity events and peer endorsements.",
-    action: "photos" as const,
-    targetId: "visual-archive",
-  },
-] as const;
-
-const CERT_FILTERS: { id: GalleryCertGroup | "all"; label: string }[] = [
-  { id: "all", label: "All Certificates" },
-  { id: "core", label: "Core & Tracks" },
-  { id: "labs", label: "Hands-On Labs & Prep" },
-  { id: "exams", label: "Exam Scores" },
-  { id: "badges", label: "Verified Badges" },
+const CERT_FILTERS: { id: GalleryCertGroup | "all"; label: string; hint: string }[] = [
+  { id: "all", label: "All", hint: "Every certificate, training programme, exam result and badge." },
+  { id: "core", label: "Main certificates", hint: "Professional certifications, internships and long government-funded training programmes." },
+  { id: "labs", label: "Labs & training", hint: "Shorter hands-on courses and practice labs that prepared me for the exams." },
+  { id: "exams", label: "Exam results", hint: "Official score reports — the mark I got, not only a pass." },
+  { id: "badges", label: "Digital badges", hint: "Online badges that can be checked on the issuer's own website." },
 ];
 
 const CERT_INDICES = new Set(
@@ -79,9 +52,6 @@ export default function ArtGallery() {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
   const [certFilter, setCertFilter] = useState<GalleryCertGroup | "all">("all");
-  const [archiveFilter, setArchiveFilter] = useState<
-    "all" | "certs" | "photos"
-  >("all");
   const [visible, setVisible] = useState(FIRST);
 
   const filteredCerts = useMemo(
@@ -92,16 +62,15 @@ export default function ArtGallery() {
     [certFilter],
   );
 
-  const archiveItems = useMemo(() => {
-    const all = PORTFOLIO_DATA.artGallery.map((img, i) => ({
-      ...img,
-      slideIndex: i,
-      isCert: CERT_INDICES.has(i + 1),
-    }));
-    if (archiveFilter === "certs") return all.filter((x) => x.isCert);
-    if (archiveFilter === "photos") return all.filter((x) => !x.isCert);
-    return all;
-  }, [archiveFilter]);
+  /* Photos only: every certificate scan is already one click away in the
+     certificate list above, so the archive no longer repeats them */
+  const archiveItems = useMemo(
+    () =>
+      PORTFOLIO_DATA.artGallery
+        .map((img, i) => ({ ...img, slideIndex: i }))
+        .filter((img) => !CERT_INDICES.has(img.slideIndex + 1)),
+    [],
+  );
 
   const shownArchive = archiveItems.slice(0, visible);
 
@@ -120,19 +89,6 @@ export default function ArtGallery() {
     setOpen(true);
   };
 
-  const handleStartHereClick = (
-    action: "core" | "labs" | "photos",
-    targetId: string,
-  ) => {
-    if (action === "photos") {
-      setArchiveFilter("photos");
-      setVisible(FIRST);
-    } else {
-      setCertFilter(action);
-    }
-    scrollToElement(document.getElementById(targetId));
-  };
-
   return (
     <section
       id="art"
@@ -141,7 +97,7 @@ export default function ArtGallery() {
     >
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── 01 · Main Header ─── */}
-        <div className="mb-16 md:mb-20 flex flex-col md:flex-row justify-between items-end gap-8">
+        <div className="mb-16 md:mb-20 flex flex-col xl:flex-row justify-between xl:items-end gap-8">
           <FadeIn x={-40} y={0} duration={0.8} className="max-w-3xl">
             <h1
               id="art-title"
@@ -151,9 +107,9 @@ export default function ArtGallery() {
               <span className="text-primary italic">Gallery.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-base md:text-lg font-light leading-relaxed text-foreground/65 [text-wrap:pretty]">
-              {PORTFOLIO_DATA.artGallery.length} certificates, events, classroom
-              moments and digital badges — the complete proof behind my
-              cybersecurity journey.
+              Two parts: first every certificate and badge I hold — each card
+              says who issued it and what it covers, and opens the original —
+              then photos from the classes I teach and the events I joined.
             </p>
           </FadeIn>
 
@@ -187,14 +143,14 @@ export default function ArtGallery() {
               <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary" />
               <div className="flex items-center gap-3">
                 <span className="font-mono text-primary-ink text-2xl font-black tabular-nums">
-                  {String(PORTFOLIO_DATA.artGallery.length).padStart(2, "0")}
+                  {String(PORTFOLIO_DATA.artGallery.length - ALL_GALLERY_CERTIFICATES.length).padStart(2, "0")}
                 </span>
                 <div className="flex flex-col">
                   <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    Total Items
+                    Photos
                   </span>
                   <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    Indexed
+                    Teaching &amp; events
                   </span>
                 </div>
               </div>
@@ -202,82 +158,29 @@ export default function ArtGallery() {
           </FadeIn>
         </div>
 
-        {/* ─── 02 · Start Here (Fast Track // Quick Access) ─── */}
-        <section
-          id="gallery-start-here"
-          className="relative mb-24"
-          aria-labelledby="gallery-start-here-title"
-        >
-          <Eyebrow japanese="入門">Fast Track // Quick Access</Eyebrow>
-          <h2
-            id="gallery-start-here-title"
-            className="font-display text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-3"
-          >
-            Start <span className="text-primary italic">Here.</span>
-          </h2>
-          <p className="mb-10 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Want to check my top certificates? Three to start with — core
-            certifications, hands-on labs and peer endorsements. The complete
-            certificate directory and visual archive are below.
-          </p>
-          <ol className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {START_HERE_CARDS.map((card) => (
-              <FadeIn
-                as="li"
-                y={24}
-                duration={0.7}
-                delay={(Number(card.n) - 1) * 0.1}
-                key={card.n}
-              >
-                <TiltCard className="spotlight group relative h-full bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500">
-                  <CardEffects index={Number(card.n)} />
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleStartHereClick(card.action, card.targetId)
-                    }
-                    className="relative z-20 block w-full h-full text-left p-7 cursor-pointer"
-                  >
-                    <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.3em] uppercase mb-3">
-                      {card.meta}
-                    </div>
-                    <h3 className="font-display text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
-                      {card.title}
-                    </h3>
-                    <p className="text-sm text-foreground/60 font-light leading-relaxed">
-                      {card.why}
-                    </p>
-                  </button>
-                </TiltCard>
-              </FadeIn>
-            ))}
-          </ol>
-        </section>
-
         {/* ─── 03 · All Certificates Directory (Literally every certificate) ─── */}
         <section
           id="all-certificates"
           className="relative mb-28 scroll-mt-28"
           aria-labelledby="all-certificates-title"
         >
-          <Eyebrow japanese="認定">
-            Complete Record // Every Certificate
+          <Eyebrow>
+            Every certificate
           </Eyebrow>
           <h2
             id="all-certificates-title"
-            className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"
+            className="font-display text-[min(1.875rem,8.2vw)] md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"
           >
             All <span className="text-primary italic">Certificates.</span>
           </h2>
           <p className="mb-8 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Every documented certificate, ministry scholarship track, bootcamp,
-            exam score report and verified digital badge (
-            {ALL_GALLERY_CERTIFICATES.length} total). Click any card to inspect
-            the original certificate scan.
+            {ALL_GALLERY_CERTIFICATES.length} in total. Each card says who issued
+            it and what it covers in one line. Click a card to see the original
+            certificate.
           </p>
 
           <div
-            className="flex flex-wrap gap-2.5 mb-10"
+            className="flex flex-wrap gap-2.5 mb-4"
             role="tablist"
             aria-label="Filter certificates by category"
           >
@@ -305,6 +208,10 @@ export default function ArtGallery() {
             })}
           </div>
 
+          <p className="mb-10 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-foreground/60" aria-live="polite">
+            {CERT_FILTERS.find((f) => f.id === certFilter)?.hint}
+          </p>
+
           <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCerts.map((cert, idx) => {
               const num = String(idx + 1).padStart(2, "0");
@@ -321,13 +228,16 @@ export default function ArtGallery() {
                     <button
                       type="button"
                       onClick={() => openCertificateScan(cert.galleryIndex)}
-                      className="relative z-20 flex flex-col justify-between w-full h-full text-left p-7 cursor-pointer"
+                      className="@container relative z-20 flex flex-col justify-between w-full h-full text-left p-7 cursor-pointer"
                     >
                       <div>
-                        <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.25em] uppercase mb-3 pr-12">
-                          {num} • {cert.issuer}
+                        <div className="flex items-center gap-3 mb-4 pr-12">
+                          <Logo name={cert.issuer} size={36} />
+                          <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.25em] uppercase">
+                            {num} • {cert.issuer}
+                          </div>
                         </div>
-                        <h3 className="font-display text-lg md:text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
+                        <h3 className="font-display text-[min(1.125rem,7.6cqi)] md:text-[min(1.25rem,7.6cqi)] font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
                           {cert.title}
                         </h3>
                         <p className="text-sm text-foreground/60 font-light leading-relaxed">
@@ -340,7 +250,7 @@ export default function ArtGallery() {
                           {cert.kind}
                         </span>
                         <span className="inline-flex items-center gap-1.5 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60 group-hover:text-primary-ink transition-colors">
-                          View scan <Maximize2 size={11} />
+                          View certificate <Maximize2 size={11} />
                         </span>
                       </div>
                     </button>
@@ -357,60 +267,18 @@ export default function ArtGallery() {
           className="relative scroll-mt-28"
           aria-labelledby="visual-archive-title"
         >
-          <Eyebrow japanese="証拠">Proof in Frame // Visual Grid</Eyebrow>
+          <Eyebrow>Photos</Eyebrow>
           <h2
             id="visual-archive-title"
             className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"
           >
-            Visual <span className="text-primary italic">Archive.</span>
+            Teaching &amp; <span className="text-primary italic">Events.</span>
           </h2>
           <p className="mb-8 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Browse the original certificate scans alongside classroom sessions,
-            competitions and community events.
+            {archiveItems.length} photos from the classes I teach at AMIT and
+            NTI, competitions, hackathons and security events. Click any photo
+            to see it full size.
           </p>
-
-          <div
-            className="flex flex-wrap gap-2.5 mb-10"
-            role="tablist"
-            aria-label="Filter visual archive"
-          >
-            {[
-              {
-                id: "all" as const,
-                label: "All Visuals",
-                count: PORTFOLIO_DATA.artGallery.length,
-              },
-              {
-                id: "certs" as const,
-                label: "Certificate Scans",
-                count: ALL_GALLERY_CERTIFICATES.length,
-              },
-              {
-                id: "photos" as const,
-                label: "Events & Classroom",
-                count:
-                  PORTFOLIO_DATA.artGallery.length -
-                  ALL_GALLERY_CERTIFICATES.length,
-              },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={archiveFilter === tab.id}
-                onClick={() => {
-                  setArchiveFilter(tab.id);
-                  setVisible(FIRST);
-                }}
-                className={filterTab(archiveFilter === tab.id)}
-              >
-                {tab.label}{" "}
-                <span className="ml-1.5 font-mono text-[0.625rem] tabular-nums">
-                  ({tab.count})
-                </span>
-              </button>
-            ))}
-          </div>
 
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {shownArchive.map((img, idx) => (
@@ -473,8 +341,7 @@ export default function ArtGallery() {
                       <div className="flex items-center gap-2 text-primary-ink mb-2">
                         <Sparkles size={12} />
                         <span className="font-mono text-[0.625rem] font-bold tracking-[0.3em] uppercase">
-                          Visual Entry{" "}
-                          {String(img.slideIndex + 1).padStart(2, "0")}
+                          Photo {String(idx + 1).padStart(2, "0")}
                         </span>
                       </div>
                       <h3 className="font-display text-lg font-black text-foreground uppercase tracking-tight">

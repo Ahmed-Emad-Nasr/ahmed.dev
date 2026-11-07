@@ -367,7 +367,6 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
         <div className="flex items-center gap-3 border-b border-foreground/10 px-4 py-3">
           <span className="h-2 w-2 bg-primary" aria-hidden="true" />
           <span className="flex-1 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">3omda@portfolio: ~</span>
-          <span className="brush-jp text-base text-foreground/30" lang="ja" aria-hidden="true" data-jp="端末" />
           <button
             type="button"
             className="border border-foreground/15 p-1.5 text-foreground/40 transition-colors hover:border-primary hover:text-primary-ink"

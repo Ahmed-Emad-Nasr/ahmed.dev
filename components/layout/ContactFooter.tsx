@@ -7,6 +7,7 @@ import { MessageCircle, ArrowUpRight, Mail, Copy, Check } from "lucide-react";
 import { Github, Linkedin, Youtube, Instagram, XLogo } from "@/components/ui/BrandIcons";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { useCopyLink } from "@/lib/use-copy-link";
+import { CV_PDF_HREF, normalizePublicHref } from "@/lib/shared";
 import FadeIn from "@/components/ui/FadeIn";
 
 /* The last line of every page: the mark, the copyright, the legal pages and
@@ -29,7 +30,7 @@ export function FooterBar({ className = "" }: { className?: string }) {
         <span className="text-primary-ink" aria-hidden="true">•</span>
         <PageLink href="/gallery" className="hover:text-primary-ink transition-colors">Gallery</PageLink>
         <span className="text-primary-ink" aria-hidden="true">•</span>
-        <PageLink href="/cv" className="hover:text-primary-ink transition-colors">CV</PageLink>
+        <a href={normalizePublicHref(CV_PDF_HREF)} target="_blank" rel="noopener noreferrer" className="hover:text-primary-ink transition-colors">CV (PDF)</a>
       </nav>
       <div className="flex items-center gap-2 text-on-surface-variant">
         <span>
@@ -43,8 +44,6 @@ export function FooterBar({ className = "" }: { className?: string }) {
             Ahmed Emad Nasr
           </a>
         </span>
-        <span className="text-primary-ink">•</span>
-        <span lang="ja" aria-hidden="true" data-jp="次のレベル" />
       </div>
     </div>
   );
@@ -118,10 +117,15 @@ export default function ContactFooter() {
               {/* Sized to its column: the fixed text-9xl ran past the half-width
                   column into the form on every desktop width */}
               <h2 className="font-display text-[clamp(2rem,10.5vw,5rem)] lg:text-[clamp(3rem,4.8vw,8rem)] font-black uppercase leading-[0.8] mb-12 tracking-tighter">
-                Forge <br /> <span className="text-primary italic">Together.</span>
+                Let&apos;s <br /> <span className="text-primary italic">Talk.</span>
               </h2>
-              <p className="mb-8 max-w-xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-                Have a security problem to solve or a team that needs practical security work? Let&apos;s start with the context and find the next useful step.
+              <p className="mb-4 max-w-xl text-base md:text-lg text-foreground/70 font-light leading-relaxed">
+                Hiring for a security role, need a security review, or want training for your team? Send me a message —
+                I read every one and reply within one to two days.
+              </p>
+              <p className="mb-8 max-w-xl text-sm text-foreground/60 font-light leading-relaxed">
+                The quickest ways to reach me are below: email, WhatsApp, or the form on this page. You don&apos;t need to
+                know anything technical — just tell me what you need in your own words.
               </p>
 
               {/* Direct email: the one channel a recruiter usually wants,
@@ -145,7 +149,20 @@ export default function ContactFooter() {
                 </button>
               </div>
 
+              {/* WhatsApp: the second direct channel, as visible as the email */}
+              <a
+                href={`https://wa.me/${PORTFOLIO_DATA.profile.contact.whatsapp}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mb-10 inline-flex w-fit items-center gap-3 px-5 py-3 border border-[#25d366]/40 bg-[#25d366]/[0.06] hover:border-[#25d366] transition-colors duration-300"
+              >
+                <MessageCircle size={18} className="shrink-0 text-[#25d366]" aria-hidden="true" />
+                <span className="font-mono text-sm text-foreground">Message me on WhatsApp</span>
+                <ArrowUpRight size={14} className="text-foreground/60" aria-hidden="true" />
+              </a>
+
               {/* Social Links  sharp-edged tags */}
+              <p className="mb-3 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">Or find me on</p>
               <div className="flex flex-wrap gap-3 mb-10">
                 {socialLinks.map((social) => (
                   <a
@@ -205,15 +222,20 @@ export default function ContactFooter() {
             {/* Briefing header */}
             <div className="flex items-center gap-3 mb-2">
               <span className="font-mono text-[0.5625rem] text-primary-ink tracking-[0.4em] uppercase font-bold">
-                Mission Briefing // 依頼
+                Send a message
               </span>
             </div>
             <h3 className="font-display text-3xl font-black mb-3 uppercase tracking-tight text-foreground">
-              Seal Intent
+              Tell me what you need
             </h3>
-            <p className="font-mono text-[0.6875rem] text-foreground/60 tracking-wider mb-8">
+            <p className="font-mono text-[0.6875rem] text-foreground/60 tracking-wider mb-4">
               {PORTFOLIO_DATA.profile.availability} — training and collaborations welcome too.
             </p>
+            <ol className="mb-8 grid gap-1.5 text-sm text-foreground/60 font-light">
+              <li><span className="font-mono text-primary-ink mr-2">1</span>Write your name, your email and a few lines.</li>
+              <li><span className="font-mono text-primary-ink mr-2">2</span>Press “Send message”.</li>
+              <li><span className="font-mono text-primary-ink mr-2">3</span>I reply to your email within one to two days.</li>
+            </ol>
 
             <form
               className="flex flex-col gap-6"
@@ -271,34 +293,34 @@ export default function ContactFooter() {
             >
               <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
               <div className="relative">
-                <label htmlFor="name" className="sr-only">
-                  Name / Organization
+                <label htmlFor="name" className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">
+                  Your name (and company, if any)
                 </label>
                 <input
                   id="name"
                   type="text"
                   name="name"
                   required
-                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light placeholder:text-foreground/60 font-mono"
-                  placeholder="Name / Organization"
+                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light placeholder:text-foreground/40 font-mono"
+                  placeholder="e.g. Sara Ali, Acme Bank"
                 />
               </div>
               <div className="relative">
-                <label htmlFor="email" className="sr-only">
-                  Email
+                <label htmlFor="email" className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">
+                  Your email — so I can reply
                 </label>
                 <input
                   id="email"
                   type="email"
                   name="email"
                   required
-                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light placeholder:text-foreground/60 font-mono"
-                  placeholder="Email"
+                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light placeholder:text-foreground/40 font-mono"
+                  placeholder="you@example.com"
                 />
               </div>
               <div className="relative">
                 <label htmlFor="type" className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">
-                  Reason
+                  What is it about?
                 </label>
                 <select
                   id="type"
@@ -314,16 +336,16 @@ export default function ContactFooter() {
                 </select>
               </div>
               <div className="relative">
-                <label htmlFor="message" className="sr-only">
-                  Project details
+                <label htmlFor="message" className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">
+                  Your message
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   required
                   rows={3}
-                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light resize-none placeholder:text-foreground/60 font-mono"
-                  placeholder="The role or the project: team, timeline, links"
+                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light resize-none placeholder:text-foreground/40 font-mono"
+                  placeholder="A few lines about the role or the work — and any links"
                 />
               </div>
               <button
@@ -334,7 +356,7 @@ export default function ContactFooter() {
                 {/* Transmission bar while the message is on its way */}
                 {sendState === "sending" && <span className="send-progress absolute inset-y-0 left-0 bg-white/20" aria-hidden="true" />}
                 <span className="relative">
-                  {sendState === "sending" ? "TRANSMITTING…" : sendState === "sent" ? "MESSAGE DELIVERED ✓" : "DISPATCH MESSAGE"}
+                  {sendState === "sending" ? "Sending…" : sendState === "sent" ? "Message sent ✓" : "Send message"}
                 </span>
               </button>
 
@@ -347,7 +369,7 @@ export default function ContactFooter() {
                     role="status"
                     className="border-l-2 border-tertiary bg-tertiary/5 px-5 py-4 font-mono text-[0.6875rem] leading-relaxed text-foreground/80"
                   >
-                    Received — it is in my inbox. I reply within a day or two.
+                    Thank you — your message has arrived. I&apos;ll reply to your email within one to two days.
                   </motion.p>
                 )}
               </AnimatePresence>
@@ -365,7 +387,9 @@ export default function ContactFooter() {
                     className="border-l-2 border-primary bg-foreground/[0.03] px-5 py-4"
                   >
                     <p className="font-mono text-[0.6875rem] leading-relaxed text-foreground/70">
-                      Your mail app should open with the message ready. Nothing opened?
+                      {sendState === "error"
+                        ? "The message couldn't be sent from the page, so your email app should open with it ready to send. Nothing opened? Use one of these:"
+                        : "Your email app should open with the message ready — just press send there. Nothing opened? Use one of these:"}
                     </p>
                     <div className="mt-3 flex flex-wrap gap-3">
                       <a

@@ -129,10 +129,10 @@ export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AhmedEmad-0x3omda";
 export type CaseKind = "investigation" | "project" | "lab" | "note";
 
 export const CASE_KINDS: readonly { id: CaseKind; label: string; short: string }[] = [
-  { id: "investigation", label: "Investigations & reports", short: "Investigation" },
-  { id: "project", label: "Projects & rule packs", short: "Project" },
-  { id: "lab", label: "Labs & write-ups", short: "Lab" },
-  { id: "note", label: "Learning notes", short: "Note" },
+  { id: "investigation", label: "Investigations", short: "Investigation" },
+  { id: "project", label: "Projects", short: "Project" },
+  { id: "lab", label: "Practice labs", short: "Practice lab" },
+  { id: "note", label: "Study notes", short: "Study notes" },
 ];
 
 const REPORT_TYPES = new Set(["PDF Report", "DOCX & PDF Report", "PDF & DOCX Report", "Report"]);

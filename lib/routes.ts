@@ -16,11 +16,11 @@
 type SitePage = "/" | "/blog" | "/gallery";
 
 /** Section ids that live on /blog (plus every #case-… and #tactic-… anchor) */
-const BLOG_IDS = new Set(["start-here", "cases", "videos", "youtube", "attack", "detections", "triage", "lab", "process", "contributions"]);
+const BLOG_IDS = new Set(["how-to-read", "start-here", "cases", "videos", "youtube", "attack", "detections", "triage", "lab", "contributions"]);
 const BLOG_PREFIX = /^(case|tactic)-/;
 
 /** Section ids that live on /gallery */
-const GALLERY_IDS = new Set(["art", "gallery-start-here", "all-certificates", "visual-archive"]);
+const GALLERY_IDS = new Set(["art", "all-certificates", "visual-archive"]);
 
 /** Search params that belong to the case library's filters */
 export const LIBRARY_PARAMS = ["q", "cat", "tools", "kind", "sort", "view"] as const;

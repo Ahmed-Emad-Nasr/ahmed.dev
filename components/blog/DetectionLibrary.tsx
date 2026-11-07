@@ -7,10 +7,26 @@
 
 import { useMemo, useState } from "react";
 import PageLink from "@/components/ui/PageLink";
-import { ArrowUpRight, Radar } from "lucide-react";
+import { ArrowUpRight, Radar, ScrollText, ScanSearch, Siren } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { KanjiWatermark, CounterBadge } from "@/components/ui/kit";
-import { detectionRules, RULE_GROUP_LABEL } from "@/data/detection-rules";
+import { detectionRules, RULE_GROUP_LABEL, RULE_GROUP_PLAIN } from "@/data/detection-rules";
+import Logo from "@/components/ui/Logo";
+
+/* How a rule works, before any rule is shown */
+const HOW = [
+  { icon: ScrollText, title: "1 · Computers keep a diary", text: "Every login, program and network connection is written to a log and sent to Wazuh, the security system watching the network." },
+  { icon: ScanSearch, title: "2 · Rules read the diary", text: "Each rule below describes one suspicious pattern — for example “the same address failed to log in 8 times in 2 minutes”." },
+  { icon: Siren, title: "3 · A match raises the alarm", text: "The alert says what happened, how urgent it is (level 0–15) and which known attack technique it looks like." },
+];
+
+/* The urgency bands of the level bar */
+const LEVELS = [
+  { tone: "bg-foreground/40", label: "Up to 9 · worth a look" },
+  { tone: "bg-tertiary", label: "10–11 · suspicious" },
+  { tone: "bg-accent", label: "12–13 · likely an attack" },
+  { tone: "bg-primary", label: "14–15 · act now" },
+];
 import FadeIn from "@/components/ui/FadeIn";
 
 const GROUPS = Object.keys(RULE_GROUP_LABEL).filter((g) => detectionRules.some((r) => r.group === g));
@@ -34,7 +50,7 @@ export default function DetectionLibrary() {
           <SectionHeader
             titleA="Detection"
             titleB="Library."
-            description="My custom Wazuh rule pack, rule by rule: what fires, how loud (Wazuh level 0–15) and which ATT&CK technique it watches. Filter by family; the full XML is in the report."
+            description={`A detection rule is an automatic tripwire: when a computer's logs show something that looks like an attack, it raises an alarm. These are the ${detectionRules.length} rules I wrote for the Wazuh security system — what each one catches, how urgent it is, and which known attack it watches for.`}
           />
           <div className="mb-16 md:mb-20 flex flex-wrap gap-3 shrink-0">
             <CounterBadge value={detectionRules.length} top="Custom" bottom="Rules" />
@@ -42,7 +58,21 @@ export default function DetectionLibrary() {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 mb-6" role="group" aria-label="Filter rules by family">
+        {/* How it works, in three steps */}
+        <ol className="mb-12 grid grid-cols-1 md:grid-cols-3 gap-px bg-foreground/10 border border-foreground/10">
+          {HOW.map((s) => (
+            <li key={s.title} className="flex gap-4 bg-background px-5 py-5">
+              <s.icon size={18} className="mt-0.5 shrink-0 text-primary-ink" aria-hidden="true" />
+              <div>
+                <h3 className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-foreground">{s.title}</h3>
+                <p className="mt-2 text-sm text-foreground/60 font-light leading-relaxed">{s.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <p className="mb-3 font-mono text-[0.625rem] uppercase tracking-[0.25em] text-foreground/60">Pick a family of rules</p>
+        <div className="flex flex-wrap gap-2 mb-4" role="group" aria-label="Filter rules by family">
           {[null, ...GROUPS].map((g) => {
             const active = group === g;
             const n = g ? detectionRules.filter((r) => r.group === g).length : detectionRules.length;
@@ -65,19 +95,24 @@ export default function DetectionLibrary() {
           })}
         </div>
 
+        <p className="mb-6 max-w-3xl text-sm text-foreground/70 font-light leading-relaxed" aria-live="polite">
+          {group ? <><strong className="font-semibold text-foreground">{RULE_GROUP_LABEL[group]}:</strong> {RULE_GROUP_PLAIN[group]}</> : `All ${detectionRules.length} rules, from password guessing to ransomware. Pick a family above to see what it catches.`}
+        </p>
+
         {/* The console */}
         <div className="border border-foreground/10 bg-surface/60 backdrop-blur-sm">
           <div className="flex items-center justify-between gap-4 px-5 py-3 border-b border-foreground/10">
             <span className="flex items-center gap-3 font-mono text-[0.5625rem] uppercase tracking-[0.3em] text-foreground/60">
+              <Logo name="Wazuh" variant="tile" size={22} />
               <Radar size={13} className="text-primary-ink radar-spin" aria-hidden="true" /> local_rules.xml
             </span>
             <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60 tabular-nums">{rules.length} loaded</span>
           </div>
           <div className="hidden md:grid grid-cols-[5.5rem_7rem_1fr_6.5rem] gap-4 px-5 py-2.5 border-b border-foreground/5 font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
-            <span>Rule</span>
-            <span>Level</span>
-            <span>Fires on</span>
-            <span>ATT&amp;CK</span>
+            <span>Rule no.</span>
+            <span>Urgency</span>
+            <span>Raises an alarm when</span>
+            <span>Attack ID</span>
           </div>
           <ul key={group ?? "all"} className="max-h-[34rem] overflow-y-auto divide-y divide-foreground/5">
             {rules.map((r, i) => (
@@ -110,14 +145,23 @@ export default function DetectionLibrary() {
         </div>
 
         <FadeIn y={12} duration={0.5} className="mt-6 flex flex-wrap items-center justify-between gap-4">
-          <p className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
-            $(…) = Wazuh field placeholders, filled in when the alert fires
-          </p>
+          <div className="grid gap-3">
+            <ul className="flex flex-wrap gap-x-5 gap-y-2 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60" aria-label="Urgency levels">
+              {LEVELS.map((l) => (
+                <li key={l.label} className="flex items-center gap-2">
+                  <span className={`h-1.5 w-5 ${l.tone}`} aria-hidden="true" /> {l.label}
+                </li>
+              ))}
+            </ul>
+            <p className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
+              $(…) = blanks Wazuh fills in when the alarm fires (the attacker&apos;s address, the file name …) · Attack ID = the technique in MITRE ATT&amp;CK
+            </p>
+          </div>
           <PageLink
             href="/blog/3omda-custom-detection-rules"
             className="group inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary-ink"
           >
-            The full rule pack (XML) <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            Read the full case study (with the XML) <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </PageLink>
         </FadeIn>
       </div>

@@ -15,6 +15,19 @@ type DetectionRule = {
   mitre: string;
 };
 
+/* What each family of rules catches, in plain words */
+export const RULE_GROUP_PLAIN: Record<string, string> = {
+  "authentication": "Someone guessing passwords, or logging in after many failed tries.",
+  "malware": "Harmful programs landing on a computer — including ransomware encrypting files.",
+  "privilege_escalation": "A normal account trying to become an administrator.",
+  "lateral_movement": "An attacker spreading from one computer to others, or talking to their own server.",
+  "web_attacks": "Attacks sent to a website: database tricks, injected scripts, scanners.",
+  "exfiltration": "Data being copied or sent out of the company.",
+  "defense_evasion": "An attacker hiding their tracks — wiping logs, switching off antivirus.",
+  "linux": "Changes that let an attacker come back to a Linux server later.",
+  "network": "Suspicious network traffic: port scans, hidden tunnels, anonymising proxies.",
+};
+
 export const RULE_GROUP_LABEL: Record<string, string> = {
   "authentication": "Brute force & auth",
   "malware": "Malware & ransomware",

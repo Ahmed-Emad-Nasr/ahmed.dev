@@ -189,8 +189,9 @@ export default function AttackCoverage() {
               <span className="text-primary italic">ATT&amp;CK.</span>
             </h2>
             <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              The case library on the Enterprise matrix, in kill-chain order. Every tile is a technique backed by at
-              least one report — open it to see the evidence.
+              MITRE ATT&amp;CK is a free public catalogue of the techniques attackers use, grouped by their goal —
+              getting in, staying hidden, stealing data and so on. Each tile below is a technique I have investigated
+              or detected in at least one case study. Click a tile to see which cases.
             </p>
           </div>
           <div className="flex flex-wrap lg:flex-col lg:items-end gap-3 shrink-0">
@@ -203,8 +204,8 @@ export default function AttackCoverage() {
         {/* ─── Kill-chain strip: the whole matrix at a glance ─── */}
         <FadeIn className="mb-14 md:mb-16">
           <div className="mb-3 flex items-center justify-between gap-4 font-mono text-[0.625rem] uppercase tracking-[0.25em] text-foreground/60">
-            <span>Kill chain // Enterprise v19</span>
-            <span className="hidden sm:inline">Heat = techniques per tactic</span>
+            <span>The attacker&apos;s goals, in order</span>
+            <span className="hidden sm:inline">Brighter = more techniques covered</span>
           </div>
           <ol className="attack-strip">
             {tactics.map((t) => {
@@ -284,7 +285,7 @@ export default function AttackCoverage() {
         <div className="mt-8 flex flex-col md:flex-row md:items-center justify-between gap-4 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-foreground/60">
           <span className="flex items-center gap-3">
             <span className="attack-pips" style={{ "--n": 1, "--max": 1 } as CSSProperties} aria-hidden="true" />
-            = one report · tint = depth of evidence
+            = one case study · brighter = more evidence
           </span>
           <span>
             Mapping per report · ATT&amp;CK Enterprise v19 ·{" "}

@@ -216,7 +216,7 @@ export function RolesCards() {
             const Icon = r.icon;
             return (
               <FadeIn y={36} duration={0.7} delay={idx * 0.1} key={r.id}>
-                <TiltCard className="group spotlight relative h-full flex flex-col bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500 overflow-hidden">
+                <TiltCard className="@container group spotlight relative h-full flex flex-col bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500 overflow-hidden">
                   <CardEffects index={idx + 1} />
                   <div className="flex items-center mb-4">
                     <div className="p-2.5 bg-primary/10 border border-primary/30">
@@ -229,7 +229,7 @@ export function RolesCards() {
                   <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-tertiary mb-1.5">
                     {r.serviceArea}
                   </span>
-                  <h3 className="font-display text-xl font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
+                  <h3 className="font-display text-[min(1.25rem,8.6cqi)] font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
                     {r.title}
                   </h3>
                   <p className="text-sm text-foreground/60 font-light leading-relaxed mb-5">

@@ -100,7 +100,7 @@ export default function TriageChallenge() {
         <SectionHeader
           titleA="Triage"
           titleB="This Alert."
-          description="A real alert from the case library. Three calls an analyst makes in the first minutes — make them, then see how the investigation went."
+          description="Try the job for a minute. Below is a real alert from one of my cases. Answer the three questions a security analyst asks first — no experience needed: every answer explains why it is right or wrong."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] gap-8 items-start">

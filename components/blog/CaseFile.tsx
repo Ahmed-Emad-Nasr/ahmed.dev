@@ -1,9 +1,9 @@
 "use client";
 
 /*
- * CaseFile — the structured half of a case page (data/case-details.ts):
- * verdict, facts, attack chain, timeline, indicators, response, detection
- * and the report. The chain and timeline draw themselves as they scroll in
+ * CaseFile — the structured half of a case page (data/case-details.ts) as
+ * pieces CaseArticle places under its five headings: verdict, facts, attack
+ * chain, timeline, indicators, response, detection, lessons, files, report. The chain and timeline draw themselves as they scroll in
  * (CSS transitions switched on once, skipped with reduced motion).
  */
 
@@ -40,13 +40,12 @@ function useCopy() {
   return { copied, copy };
 }
 
-function SectionTitle({ icon, children, japanese, id }: { icon: ReactNode; children: ReactNode; japanese: string; id?: string }) {
+function SectionTitle({ icon, children, id }: { icon: ReactNode; children: ReactNode; id?: string }) {
   return (
     <div className="flex items-center gap-3 mb-6">
       <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
       <span className="text-primary-ink" aria-hidden="true">{icon}</span>
-      <h2 id={id} className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">{children}</h2>
-      <span className="brush-jp text-base text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />
+      <h3 id={id} className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">{children}</h3>
       <span className="flex-1 h-px bg-gradient-to-r from-foreground/10 to-transparent" aria-hidden="true" />
     </div>
   );
@@ -69,7 +68,12 @@ const attackUrl = (id: string) => `https://attack.mitre.org/techniques/${id.repl
 
 /* ── Verdict ─────────────────────────────────────────────────────────── */
 
-export function VerdictBar({ verdict, severity }: Pick<CaseDetail, "verdict" | "severity">) {
+export function VerdictBar({
+  verdict,
+  severity,
+  verdictPlain,
+  severityPlain,
+}: Pick<CaseDetail, "verdict" | "severity"> & { verdictPlain?: string; severityPlain?: string }) {
   if (!verdict) return null;
   return (
     <FadeIn y={16} duration={0.6}
@@ -79,7 +83,14 @@ export function VerdictBar({ verdict, severity }: Pick<CaseDetail, "verdict" | "
       <div className="flex items-center gap-3 shrink-0">
         <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.35em] text-foreground/60">Verdict</span>
       </div>
-      <p className="flex-1 text-base md:text-lg text-foreground font-light leading-snug">{verdict}</p>
+      <div className="flex-1">
+        <p className="text-base md:text-lg text-foreground font-light leading-snug">{verdict}</p>
+        {(verdictPlain || severityPlain) && (
+          <p className="mt-2 text-sm text-foreground/60 font-light leading-relaxed">
+            {[verdictPlain, severityPlain && `Severity: ${severityPlain}`].filter(Boolean).join(" ")}
+          </p>
+        )}
+      </div>
       {severity && (
         <span className={`self-start sm:self-auto inline-flex items-center gap-2 px-3 py-1.5 border font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] ${SEVERITY_TONE[severity]}`}>
           <AlertOctagon size={12} aria-hidden="true" /> {severity}
@@ -189,7 +200,7 @@ function Iocs({ iocs }: { iocs: NonNullable<CaseDetail["iocs"]> }) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
         <p className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
-          Network indicators are defanged · click a row to copy
+          Addresses are “defanged” (84.38.130[.]118) so they can&apos;t be clicked by accident · click a row to copy
         </p>
         <button
           type="button"
@@ -283,8 +294,8 @@ function ReportViewer({ href, title }: { href: string; title: string }) {
           className="group relative w-full border border-dashed border-foreground/15 bg-surface/40 px-6 py-10 flex flex-col items-center gap-3 hover:border-primary/50 transition-colors"
         >
           <FileText size={28} className="text-primary-ink transition-transform duration-500 group-hover:-translate-y-1" aria-hidden="true" />
-          <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.3em] text-foreground">Read the report here</span>
-          <span className="text-xs text-foreground/60">Opens the PDF inside this page — or use View PDF above</span>
+          <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.3em] text-foreground">Read the PDF on this page</span>
+          <span className="text-xs text-foreground/60">Opens the technical report right here — or use “View technical PDF” at the top</span>
         </button>
       ) : (
         <div className="border border-foreground/10 bg-surface">
@@ -298,106 +309,125 @@ function ReportViewer({ href, title }: { href: string; title: string }) {
   );
 }
 
-/* ── The case file ───────────────────────────────────────────────────── */
+/* ── The pieces, for components/blog/CaseArticle.tsx ─────────────────── */
 
-export default function CaseFile({ detail, href, title }: { detail: CaseDetail; href?: string; title: string }) {
-  const hasChainOrFacts = Boolean(detail.facts?.length || detail.chain?.length);
+export function TeamBanner({ team }: { team: string }) {
   return (
-    <div className="grid gap-14 mb-16">
-      {detail.team && (
-        <FadeIn y={12} duration={0.5} className="flex items-start gap-3 border border-tertiary/30 bg-tertiary/5 px-5 py-4">
-          <Users size={16} className="text-tertiary mt-0.5 shrink-0" aria-hidden="true" />
-          <p className="text-sm text-foreground/80"><span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-tertiary mr-2">Team project</span>{detail.team}</p>
-        </FadeIn>
-      )}
+    <FadeIn y={12} duration={0.5} className="flex items-start gap-3 border border-tertiary/30 bg-tertiary/5 px-5 py-4">
+      <Users size={16} className="text-tertiary mt-0.5 shrink-0" aria-hidden="true" />
+      <p className="text-sm text-foreground/80"><span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-tertiary mr-2">Team project</span>{team}</p>
+    </FadeIn>
+  );
+}
 
-      {hasChainOrFacts && (
-        <section aria-labelledby="case-file-title" className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-10">
-          {detail.facts?.length ? (
-            <div>
-              <SectionTitle icon={<Fingerprint size={13} />} japanese="概要" id="case-file-title">Case facts</SectionTitle>
-              <Facts facts={detail.facts} />
-            </div>
-          ) : <span id="case-file-title" className="sr-only">Case file</span>}
-          {detail.chain?.length ? (
-            <div>
-              <SectionTitle icon={<GitBranch size={13} />} japanese="連鎖">Attack chain</SectionTitle>
-              <Chain chain={detail.chain} />
-            </div>
-          ) : null}
-        </section>
-      )}
+export function CaseFacts({ facts }: { facts: NonNullable<CaseDetail["facts"]> }) {
+  return (
+    <div>
+      <SectionTitle icon={<Fingerprint size={13} />}>Key facts</SectionTitle>
+      <Facts facts={facts} />
+    </div>
+  );
+}
 
-      {detail.timeline?.length ? (
-        <section aria-labelledby="case-timeline-title">
-          <SectionTitle icon={<History size={13} />} japanese="時系列" id="case-timeline-title">Timeline</SectionTitle>
-          <Timeline timeline={detail.timeline} />
-        </section>
-      ) : null}
+export function CaseChain({ chain }: { chain: NonNullable<CaseDetail["chain"]> }) {
+  return (
+    <div>
+      <SectionTitle icon={<GitBranch size={13} />}>How the attack unfolded</SectionTitle>
+      <Chain chain={chain} />
+      <p className="mt-4 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60">
+        The codes (T1190 …) are MITRE ATT&amp;CK technique IDs — click one for the public description
+      </p>
+    </div>
+  );
+}
 
-      {detail.iocs?.length ? (
-        <section aria-labelledby="case-iocs-title">
-          <SectionTitle icon={<Fingerprint size={13} />} japanese="痕跡" id="case-iocs-title">Indicators of compromise — {detail.iocs.length}</SectionTitle>
-          <Iocs iocs={detail.iocs} />
-        </section>
-      ) : null}
+export function CaseTimeline({ timeline }: { timeline: NonNullable<CaseDetail["timeline"]> }) {
+  return (
+    <div>
+      <SectionTitle icon={<History size={13} />}>Timeline</SectionTitle>
+      <Timeline timeline={timeline} />
+    </div>
+  );
+}
 
-      {detail.response?.length ? (
-        <section aria-labelledby="case-response-title">
-          <SectionTitle icon={<ShieldCheck size={13} />} japanese="対応" id="case-response-title">Containment &amp; remediation</SectionTitle>
-          <ul className="grid sm:grid-cols-2 gap-3">
-            {detail.response.map((r, i) => (
-              <FadeIn as="li" y={14} duration={0.5} delay={Math.min(i, 6) * 0.06} key={i} className="flex gap-3 border border-foreground/5 bg-surface/40 px-4 py-3">
-                <ListChecks size={14} className="text-accent shrink-0 mt-0.5" aria-hidden="true" />
-                <span className="text-sm text-foreground/80 leading-relaxed">{r}</span>
-              </FadeIn>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+export function CaseIocs({ iocs }: { iocs: NonNullable<CaseDetail["iocs"]> }) {
+  return (
+    <div>
+      <SectionTitle icon={<Fingerprint size={13} />}>Indicators of compromise (IOCs) — {iocs.length}</SectionTitle>
+      <p className="mb-4 max-w-3xl text-sm text-foreground/60 font-light leading-relaxed">
+        The clues the attacker left — addresses, domains, accounts and file fingerprints. Defenders search for and block these.
+      </p>
+      <Iocs iocs={iocs} />
+    </div>
+  );
+}
 
-      {detail.detection?.length ? (
-        <section aria-labelledby="case-detection-title">
-          <SectionTitle icon={<Code2 size={13} />} japanese="検知" id="case-detection-title">Detection content</SectionTitle>
-          <Detection items={detail.detection} />
-        </section>
-      ) : null}
+export function CaseResponse({ response }: { response: NonNullable<CaseDetail["response"]> }) {
+  return (
+    <div>
+      <SectionTitle icon={<ShieldCheck size={13} />}>What was done to stop and fix it</SectionTitle>
+      <ul className="grid sm:grid-cols-2 gap-3">
+        {response.map((r, i) => (
+          <FadeIn as="li" y={14} duration={0.5} delay={Math.min(i, 6) * 0.06} key={i} className="flex gap-3 border border-foreground/5 bg-surface/40 px-4 py-3">
+            <ListChecks size={14} className="text-accent shrink-0 mt-0.5" aria-hidden="true" />
+            <span className="text-sm text-foreground/80 leading-relaxed">{r}</span>
+          </FadeIn>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
-      {detail.lessons && (
-        <section aria-labelledby="case-lessons-title">
-          <SectionTitle icon={<BookOpen size={13} />} japanese="教訓" id="case-lessons-title">What I&apos;d do differently</SectionTitle>
-          <p className="text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-5">{detail.lessons}</p>
-        </section>
-      )}
+export function CaseDetection({ items }: { items: NonNullable<CaseDetail["detection"]> }) {
+  return (
+    <div>
+      <SectionTitle icon={<Code2 size={13} />}>Detection rules written for it</SectionTitle>
+      <p className="mb-4 max-w-3xl text-sm text-foreground/60 font-light leading-relaxed">
+        Rules that make security tools raise an alarm automatically the next time this happens. Click the language label to copy one.
+      </p>
+      <Detection items={items} />
+    </div>
+  );
+}
 
-      {detail.attachments?.length ? (
-        <section aria-labelledby="case-attachments-title">
-          <SectionTitle icon={<Paperclip size={13} />} japanese="添付" id="case-attachments-title">Attachments</SectionTitle>
-          <ul className="flex flex-wrap gap-3">
-            {detail.attachments.map((a) => (
-              <li key={a.href}>
-                <a
-                  href={a.href.startsWith("http") ? a.href : normalizePublicHref(a.href)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2.5 border border-foreground/10 text-sm text-foreground/80 hover:border-primary/50 hover:text-foreground transition-colors"
-                >
-                  <Paperclip size={13} className="text-primary-ink" aria-hidden="true" /> {a.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+export function CaseLessons({ lessons }: { lessons: string }) {
+  return (
+    <div>
+      <SectionTitle icon={<BookOpen size={13} />}>What I&apos;d do differently</SectionTitle>
+      <p className="text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-5">{lessons}</p>
+    </div>
+  );
+}
 
-      {href && (
-        <section aria-labelledby="case-report-title">
-          <SectionTitle icon={<FileText size={13} />} japanese="報告書" id="case-report-title">
-            The report{detail.pages ? ` — ${detail.pages} pages` : ""}
-          </SectionTitle>
-          <ReportViewer href={href} title={title} />
-        </section>
-      )}
+export function CaseAttachments({ attachments }: { attachments: NonNullable<CaseDetail["attachments"]> }) {
+  return (
+    <div>
+      <SectionTitle icon={<Paperclip size={13} />}>Supporting files</SectionTitle>
+      <ul className="flex flex-wrap gap-3">
+        {attachments.map((a) => (
+          <li key={a.href}>
+            <a
+              href={a.href.startsWith("http") ? a.href : normalizePublicHref(a.href)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2.5 border border-foreground/10 text-sm text-foreground/80 hover:border-primary/50 hover:text-foreground transition-colors"
+            >
+              <Paperclip size={13} className="text-primary-ink" aria-hidden="true" /> {a.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export function CaseReport({ href, title, pages }: { href: string; title: string; pages?: number }) {
+  return (
+    <div>
+      <SectionTitle icon={<FileText size={13} />}>
+        The full technical report{pages ? ` — ${pages} pages` : ""}
+      </SectionTitle>
+      <ReportViewer href={href} title={title} />
     </div>
   );
 }

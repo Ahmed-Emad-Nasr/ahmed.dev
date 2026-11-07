@@ -70,13 +70,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: galleryImages,
     },
     {
-      url: absoluteUrl("/cv"),
-      lastModified: latestCaseDate,
-      changeFrequency: "monthly",
-      priority: 0.9,
-      images: [PERSON_IMAGE],
-    },
-    {
       url: absoluteUrl("/Assets/cv/AhmedEmadNasr_CV.pdf"),
       lastModified: latestCaseDate,
       changeFrequency: "monthly",

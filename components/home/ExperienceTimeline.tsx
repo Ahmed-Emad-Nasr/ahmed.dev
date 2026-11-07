@@ -10,6 +10,24 @@ import {
 } from "lucide-react";
 import CaseFilterLink from "@/components/blog/CaseFilterLink";
 import FadeIn from "@/components/ui/FadeIn";
+import Logo from "@/components/ui/Logo";
+
+const KIND_LABEL = { work: "Job", volunteer: "Volunteer", education: "Education" } as const;
+
+/* "Information Technology Institute (ITI)" → the name, plus "ITI" as a chip */
+const splitName = (company: string) => {
+  const m = /^(.*?)\s*\(([^)]+)\)$/.exec(company);
+  return m ? { name: m[1], short: m[2] } : { name: company, short: undefined };
+};
+
+/* The display face is wide: size the name by its longest word so a word
+   never has to break in the middle ("Informatio-n") */
+const nameSize = (name: string) => {
+  const longest = Math.max(...name.split(/\s+/).map((w) => w.length));
+  if (longest >= 14) return "text-[1.25rem] sm:text-2xl md:text-[1.75rem] lg:text-[1.375rem] xl:text-3xl";
+  if (longest >= 9 || name.length > 18) return "text-2xl sm:text-3xl md:text-[2rem] lg:text-3xl xl:text-4xl";
+  return "text-3xl md:text-5xl";
+};
 
 export default function ExperienceTimeline() {
   return (
@@ -45,8 +63,10 @@ export default function ExperienceTimeline() {
             delay={0.3}
             className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed"
           >
-            A record of the roles, responsibilities and measurable work behind
-            the security practice.
+            Where I have worked, trained and studied — newest first. Each card
+            says what the place is, what I did there in one line, and the
+            results; the certificate and the related case studies are one
+            click away.
           </FadeIn>
         </div>
 
@@ -75,35 +95,46 @@ export default function ExperienceTimeline() {
                   {item.role}
                 </span>
 
-                {/* Company Name */}
+                {/* Company: logo + name. Words wrap whole; the abbreviation
+                    in brackets becomes a chip under the name. */}
                 <a
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/link flex items-center gap-3 w-fit"
+                  className="group/link flex flex-col items-start gap-4 w-full min-w-0"
                 >
-                  <h3 className="font-display text-3xl md:text-5xl font-black text-foreground group-hover/link:text-primary transition-colors duration-500">
-                    {item.company}
-                  </h3>
-                  <ExternalLink
-                    size={18}
-                    className="text-foreground/15 group-hover/link:text-primary-ink transition-colors duration-300"
-                  />
+                  <Logo name={item.company} size={56} className="transition-transform duration-500 group-hover/link:-translate-y-0.5" />
+                  <div className="flex w-full items-start gap-3">
+                    <h3
+                      className={`min-w-0 font-display font-black leading-[1.05] text-foreground group-hover/link:text-primary transition-colors duration-500 [hyphens:manual] [text-wrap:balance] ${nameSize(splitName(item.company).name)}`}
+                    >
+                      {splitName(item.company).name}
+                      {splitName(item.company).short && <span className="sr-only"> ({splitName(item.company).short})</span>}
+                    </h3>
+                    <ExternalLink
+                      size={18}
+                      className="mt-1 shrink-0 text-foreground/15 group-hover/link:text-primary-ink transition-colors duration-300"
+                    />
+                  </div>
                 </a>
 
-                {/* Location */}
-                <div className="flex items-center gap-2 text-on-surface-variant text-sm font-mono">
-                  <MapPin size={12} strokeWidth={2} />
-                  <span className="text-xs">{item.location}</span>
+                {/* Location + what kind of entry this is */}
+                <div className="flex flex-wrap items-center gap-3 text-on-surface-variant text-sm font-mono">
+                  <span className="flex items-center gap-2">
+                    <MapPin size={12} strokeWidth={2} />
+                    <span className="text-xs">{item.location}</span>
+                  </span>
+                  {splitName(item.company).short && (
+                    <span className="px-2 py-0.5 border border-primary/30 text-[0.5625rem] font-bold uppercase tracking-[0.25em] text-primary-ink" aria-hidden="true">
+                      {splitName(item.company).short}
+                    </span>
+                  )}
+                  {item.kind && (
+                    <span className="px-2 py-0.5 border border-foreground/15 text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
+                      {KIND_LABEL[item.kind]}
+                    </span>
+                  )}
                 </div>
-
-                {/* Japanese Role Tag */}
-                {item.japaneseRole && (
-                  <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 bg-foreground/[0.03] border-l-2 border-primary text-[0.625rem] font-mono font-bold text-foreground/60 tracking-[0.15em] w-fit">
-                    <span className="text-primary-ink">JP</span>
-                    <span>{item.japaneseRole}</span>
-                  </div>
-                )}
               </div>
 
               {/* Right Column: Service Record Panel */}
@@ -124,7 +155,7 @@ export default function ExperienceTimeline() {
                   <div className="flex items-center gap-3">
                     <div className="w-2 h-2 bg-accent" />
                     <span className="font-mono text-[0.5625rem] text-foreground/60 tracking-[0.3em] uppercase">
-                      Record #{String(idx + 1).padStart(2, "0")}
+                      In short
                     </span>
                   </div>
                   <span className="font-mono text-[0.5625rem] text-foreground/60 tracking-wider uppercase">
@@ -209,7 +240,7 @@ export default function ExperienceTimeline() {
                 <div className="px-6 md:px-12 py-4 border-t border-foreground/5 flex items-center justify-between">
                   <span className="font-mono text-[0.5625rem] text-foreground/65 tracking-[0.2em] uppercase">
                     {item.details.length}{" "}
-                    {item.details.length === 1 ? "entry" : "entries"} logged
+                    {item.details.length === 1 ? "key result" : "key results"}
                   </span>
                   <div className="flex items-center gap-2">
                     <div className="w-1 h-1 bg-primary/40" />

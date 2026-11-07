@@ -17,6 +17,17 @@ Everything is built at build time; there is no server.
 | `lib/` | Helpers with no UI: URLs (`site.ts`), JSON-LD (`seo.ts`), paths and case kinds (`shared.ts`), section → page routing (`routes.ts`), scrolling (`scroll.ts`). |
 | `lib/perf/` | Everything that decides *when* work happens. |
 
+## Plain language first
+
+Every page is written for non-technical visitors first: section intros say
+what the section is before the technical detail. A case page
+(`components/blog/CaseArticle.tsx`) opens with "In plain words" and then five
+chapters — The goal · What happened? · What I did · How to prevent it ·
+Evidence & supporting files. The plain-language layer (kind of work, topic,
+verdict and severity in words, general prevention advice, a glossary of the
+terms on the page) is built on the server by `lib/case-guide.ts`; the report's
+own facts, chain, timeline, IOCs, response, detections and PDF are unchanged.
+
 ## Server and client
 
 Server Components ship no JavaScript, so pages and text sections stay on the

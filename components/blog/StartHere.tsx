@@ -9,7 +9,7 @@ const KNOWN_IDS = new Set(caseEvidenceLibrary.map((item) => item.id));
 const ENTRIES = startHere.filter((entry) => KNOWN_IDS.has(entry.id));
 
 export default function StartHere({
-  note = "Three reports to start with — detection engineering, a full DFIR investigation and a malware teardown. The full library is below.",
+  note = "Only have five minutes? Read one of these three. They show the main kinds of work: building automatic attack alarms, investigating a data theft from start to finish, and taking apart a famous piece of ransomware. Every other case study is below.",
   headingLevel: H = "h2",
 }: {
   note?: string;
@@ -20,7 +20,7 @@ export default function StartHere({
 
   return (
     <section id="start-here" className="relative mb-20" aria-labelledby="start-here-title">
-      <Eyebrow japanese="入門">Short on time</Eyebrow>
+      <Eyebrow>Short on time</Eyebrow>
       <H id="start-here-title" className="font-display text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-3">
         Start <span className="text-primary italic">here.</span>
       </H>

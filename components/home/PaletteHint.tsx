@@ -74,10 +74,10 @@ export default function PaletteHint() {
       <span className="absolute top-0 left-0 h-[2px] w-full origin-left bg-primary hint-timer" data-on={open} aria-hidden="true" />
       <Command size={16} className="mt-0.5 text-primary-ink shrink-0" aria-hidden="true" />
       <p className="text-sm text-foreground/80 leading-relaxed">
-        Press{" "}
-        <kbd className="px-1.5 py-0.5 border border-foreground/20 font-mono text-xs">{mac ? "⌘" : "Ctrl"} K</kbd> to search every case and
-        section, <kbd className="px-1.5 py-0.5 border border-foreground/20 font-mono text-xs">?</kbd> for shortcuts — or just type{" "}
-        <span className="font-mono text-primary-ink">3omda</span>.
+        Looking for something? Press{" "}
+        <kbd className="px-1.5 py-0.5 border border-foreground/20 font-mono text-xs">{mac ? "⌘" : "Ctrl"} K</kbd> to search the whole
+        site, or use the <span className="font-semibold text-foreground">Search</span> button at the top.{" "}
+        <kbd className="px-1.5 py-0.5 border border-foreground/20 font-mono text-xs">?</kbd> lists every shortcut.
       </p>
       <button type="button" onClick={() => setOpen(false)} className="text-foreground/60 hover:text-foreground" aria-label="Dismiss">
         <X size={14} />

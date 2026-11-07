@@ -35,15 +35,15 @@ export default function Error({
         <div className={statusInner}>
           <div className="flex items-center gap-4 mb-2">
             <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-            <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">Error // Runtime</span>
-            <span className="jp-eyebrow text-[0.6875rem] text-foreground/30" lang="ja" aria-hidden="true" data-jp="故障" />
+            <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">Error · Page problem</span>
           </div>
           <p className={statusCode} aria-hidden="true">ERR</p>
 
-          <h1 className={statusTitle}>Something <span className="text-primary italic">broke.</span></h1>
+          <h1 className={statusTitle}>Something went <span className="text-primary italic">wrong.</span></h1>
           <p className={statusLede}>
-            An unexpected error stopped this section from rendering. The rest of
-            the site still works.
+            Part of this page didn&apos;t load — it&apos;s not something you did.
+            Press “Try again” first; if it happens again, reload the page or go
+            back home. The rest of the site still works.
           </p>
 
           <nav className={statusActions} aria-label="Recovery options">
@@ -52,14 +52,21 @@ export default function Error({
             <button type="button" className={ctaPrimary} onClick={reset}>
               <RotateCcw size={16} /> Try again
             </button>
-            <Link href="/" className={ctaSecondary}>ahmed.dev</Link>
-            <PageLink href="/blog#cases" className={ctaSecondary}>Case library</PageLink>
+            <button type="button" className={ctaSecondary} onClick={() => window.location.reload()}>
+              Reload the page
+            </button>
+            <Link href="/" className={ctaSecondary}>Go to the home page</Link>
+            <PageLink href="/blog#cases" className={ctaSecondary}>Browse case studies</PageLink>
           </nav>
 
           {/* digest is the hash Next generates for the error. It's shown so that if someone
               reports a problem they can give you this number instead of a vague description. */}
           {error.digest && (
-            <p className={statusReport}>Error reference: {error.digest}</p>
+            <p className={statusReport}>
+              Still broken?{" "}
+              <a href={`mailto:ahmed.em.nasr@gmail.com?subject=${encodeURIComponent(`Site error ${error.digest}`)}`}>Email me</a>{" "}
+              this code so I can find the problem: {error.digest}
+            </p>
           )}
         </div>
       </section>

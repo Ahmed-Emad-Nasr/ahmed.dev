@@ -24,7 +24,6 @@ const CONFIG_FILES = [
   "data/cases.ts",
   "data/case-details.ts",
   "data/certifications.ts",
-  "data/cv.ts",
   "data/experience.ts",
   "data/portfolio-data.ts",
   "data/projects.ts",

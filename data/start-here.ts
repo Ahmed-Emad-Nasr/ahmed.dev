@@ -18,19 +18,19 @@ export const startHere: readonly StartHereEntry[] = [
   {
     id: "3omda-custom-detection-rules",
     label: "Custom Wazuh detection rules",
-    why: "Detection engineering — 52 Wazuh rules, each mapped to ATT&CK, from SSH brute force to ransomware and DNS tunnelling.",
+    why: "52 automatic alarms I wrote for the Wazuh security system — they catch password guessing, ransomware, data theft and more, each linked to the attack it watches for.",
     minutes: 17,
   },
   {
     id: "data-exfiltration-investigation",
     label: "Data exfiltration & credential compromise",
-    why: "Memory forensics end to end: the copy to USB recovered from the console buffer, the NTLM hashes dumped and cracked, and the timeline.",
+    why: "A full investigation of stolen data: rebuilding, from a computer's memory, how files were copied to a USB stick and how passwords were stolen — with a minute-by-minute timeline.",
     minutes: 16,
   },
   {
     id: "malware-analysis-wannacry",
     label: "WannaCry analysis & response",
-    why: "Static and dynamic analysis of a modified WannaCry build — IOCs, three YARA rules, the ATT&CK mapping and a mitigation plan.",
+    why: "Taking apart a version of WannaCry, the ransomware that hit 200,000+ computers in 2017: what it does, how to detect it, and how to protect against it.",
     minutes: 27,
   },
 ];

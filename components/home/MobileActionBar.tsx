@@ -65,7 +65,7 @@ export default function MobileActionBar() {
     >
       <span className="absolute top-0 left-0 h-[2px] w-full bg-gradient-to-r from-primary via-primary/50 to-transparent" aria-hidden="true" />
       <a href={normalizePublicHref(CV_PDF_HREF)} target="_blank" rel="noopener noreferrer" className={`${item} bg-primary text-white`}>
-        <Download size={15} aria-hidden="true" /> Resume
+        <Download size={15} aria-hidden="true" /> Download CV
       </a>
       <a href={normalizePublicHref("/blog")} className={`${item} text-foreground/80 hover:text-primary-ink`}>
         <FolderSearch size={15} aria-hidden="true" /> Blog

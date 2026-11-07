@@ -7,20 +7,59 @@
 import SectionHeader from "@/components/ui/SectionHeader";
 import { KanjiWatermark } from "@/components/ui/kit";
 import FadeIn from "@/components/ui/FadeIn";
+import Logo from "@/components/ui/Logo";
+import { logoFor } from "@/data/logos";
+import { LOGO_FILES, LOGO_MARKS } from "@/components/ui/logo-data";
+import { normalizePublicHref } from "@/lib/shared";
+import { Crosshair, FileSearch, Radar, ShieldCheck } from "lucide-react";
 
-type Node = { id: string; x: number; y: number; w: number; h: number; title: string; sub: string; tone: "primary" | "accent" | "tertiary" | "muted" };
+type Node = {
+  id: string; x: number; y: number; w: number; h: number; title: string; sub: string; tone: "primary" | "accent" | "tertiary" | "muted";
+  /** The name its logo is found by (data/logos.ts) */
+  logo: string;
+  /** What it does, for someone who has never heard of it */
+  plain: string;
+};
 
 const NODES: Node[] = [
-  { id: "kali", x: 20, y: 40, w: 210, h: 74, title: "Kali Linux", sub: "Atomic Red Team · manual", tone: "primary" },
-  { id: "pfsense", x: 20, y: 190, w: 210, h: 74, title: "pfSense", sub: "Firewall · segmentation", tone: "muted" },
-  { id: "ids", x: 20, y: 340, w: 210, h: 74, title: "Suricata + Zeek", sub: "Network IDS · traffic logs", tone: "tertiary" },
-  { id: "win", x: 310, y: 40, w: 210, h: 74, title: "Windows hosts", sub: "Sysmon · Wazuh agent · FIM", tone: "muted" },
-  { id: "linux", x: 310, y: 190, w: 210, h: 74, title: "Linux hosts", sub: "auditd · Wazuh agent · FIM", tone: "muted" },
-  { id: "wazuh", x: 600, y: 150, w: 210, h: 154, title: "Wazuh SIEM", sub: "Manager · indexer · dashboard", tone: "primary" },
-  { id: "vt", x: 850, y: 40, w: 180, h: 74, title: "VirusTotal", sub: "Hash enrichment (API)", tone: "accent" },
-  { id: "yara", x: 850, y: 190, w: 180, h: 74, title: "YARA + script", sub: "Scan · auto-quarantine", tone: "accent" },
-  { id: "hive", x: 850, y: 340, w: 180, h: 74, title: "TheHive", sub: "Case management", tone: "tertiary" },
+  { id: "kali", x: 20, y: 40, w: 210, h: 74, title: "Kali Linux", sub: "Atomic Red Team · manual", tone: "primary", logo: "Kali Linux", plain: "The attacker's computer. I use it to launch real attack techniques against the lab." },
+  { id: "pfsense", x: 20, y: 190, w: 210, h: 74, title: "pfSense", sub: "Firewall · segmentation", tone: "muted", logo: "pfSense", plain: "The firewall — the lab's front door, deciding which traffic may pass between networks." },
+  { id: "ids", x: 20, y: 340, w: 210, h: 74, title: "Suricata + Zeek", sub: "Network IDS · traffic logs", tone: "tertiary", logo: "Suricata", plain: "Network watchers. They read every packet and flag traffic that matches known attacks." },
+  { id: "win", x: 310, y: 40, w: 210, h: 74, title: "Windows hosts", sub: "Sysmon · Wazuh agent · FIM", tone: "muted", logo: "Windows", plain: "Ordinary office PCs — the targets. Sysmon records every program they start." },
+  { id: "linux", x: 310, y: 190, w: 210, h: 74, title: "Linux hosts", sub: "auditd · Wazuh agent · FIM", tone: "muted", logo: "Linux", plain: "Servers — also targets. auditd records who did what, and file changes are tracked." },
+  { id: "wazuh", x: 600, y: 150, w: 210, h: 154, title: "Wazuh SIEM", sub: "Manager · indexer · dashboard", tone: "primary", logo: "Wazuh", plain: "The brain. It collects every log in one place and checks it against my detection rules." },
+  { id: "vt", x: 850, y: 40, w: 180, h: 74, title: "VirusTotal", sub: "Hash enrichment (API)", tone: "accent", logo: "VirusTotal", plain: "A free service that checks a file against dozens of antivirus engines at once." },
+  { id: "yara", x: 850, y: 190, w: 180, h: 74, title: "YARA + script", sub: "Scan · auto-quarantine", tone: "accent", logo: "YARA", plain: "Scans suspicious files for known malware patterns and moves bad ones into quarantine automatically." },
+  { id: "hive", x: 850, y: 340, w: 180, h: 74, title: "TheHive", sub: "Case management", tone: "tertiary", logo: "TheHive", plain: "Where each alert becomes a case to investigate, with notes and evidence in one place." },
 ];
+
+/* The test loop, before the diagram */
+const STEPS = [
+  { icon: Crosshair, title: "Attack", text: "I play the attacker from Kali Linux, running real attack techniques — scripted (Atomic Red Team) and by hand." },
+  { icon: FileSearch, title: "Record", text: "Every machine writes down what happens: Sysmon on Windows, auditd on Linux, Suricata and Zeek on the network." },
+  { icon: Radar, title: "Detect", text: "All of it flows into Wazuh, which checks it against my detection rules and raises an alert when one matches." },
+  { icon: ShieldCheck, title: "Respond", text: "The alert is checked against VirusTotal, a YARA scan quarantines bad files, and a case opens in TheHive. Missed something? I fix the rule and attack again." },
+];
+
+/* A node's logo inside the SVG: the file, else the brand mark (no monogram — the title is right there) */
+function NodeLogo({ name, x, y }: { name: string; x: number; y: number }) {
+  const spec = logoFor(name);
+  if (!spec) return null;
+  const file = LOGO_FILES[spec.slug];
+  if (file) return <image href={normalizePublicHref(file)} x={x} y={y} width="20" height="20" preserveAspectRatio="xMidYMid meet" />;
+  const mark = spec.icon ? LOGO_MARKS[spec.icon] : undefined;
+  if (!mark) return null;
+  return (
+    <svg x={x} y={y} width="20" height="20" viewBox="0 0 24 24" fill={mark[1] ?? "currentColor"} aria-hidden="true">
+      <path d={mark[2]} />
+    </svg>
+  );
+}
+
+const hasNodeLogo = (name: string) => {
+  const spec = logoFor(name);
+  return Boolean(spec && (LOGO_FILES[spec.slug] || (spec.icon && LOGO_MARKS[spec.icon])));
+};
 
 const TONE: Record<Node["tone"], string> = {
   primary: "var(--primary)",
@@ -48,10 +87,27 @@ export default function HomeLab() {
       <KanjiWatermark chars="道場" side="right" />
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
-          titleA="The"
-          titleB="Home Lab."
-          description="The SOC lab most of the projects run on: attacked from Kali with Atomic Red Team, watched by Sysmon, auditd, Suricata and Zeek, correlated in Wazuh, enriched by VirusTotal, answered by a YARA scan and a quarantine script, and handed to TheHive as a case."
+          titleA="How I Test"
+          titleB="Security."
+          description="I built a small company network at home — my “home lab” — to attack it safely and check that the defences notice. Most of my projects and detection rules were built and tested here. It works in four steps:"
         />
+
+        <ol className="-mt-6 md:-mt-10 mb-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-foreground/10 border border-foreground/10">
+          {STEPS.map((s, i) => (
+            <li key={s.title} className="flex flex-col gap-3 bg-background px-5 py-5">
+              <span className="flex items-center gap-3">
+                <span className="font-mono text-[0.625rem] font-bold text-primary-ink tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+                <s.icon size={16} className="text-accent" aria-hidden="true" />
+                <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.25em] text-foreground">{s.title}</span>
+              </span>
+              <p className="text-sm text-foreground/60 font-light leading-relaxed">{s.text}</p>
+            </li>
+          ))}
+        </ol>
+
+        <p className="mb-4 font-mono text-[0.625rem] uppercase tracking-[0.25em] text-foreground/60">
+          The lab as a map — the moving dots show which way the data flows
+        </p>
 
         {/* Scrolls sideways on narrow screens — focusable so keyboard users can
             scroll it too (arrow keys), and named for screen readers */}
@@ -93,10 +149,11 @@ export default function HomeLab() {
               <g key={n.id} className="lab-node">
                 <rect x={n.x} y={n.y} width={n.w} height={n.h} fill="var(--surface)" stroke={TONE[n.tone]} strokeOpacity="0.55" />
                 <rect x={n.x} y={n.y} width="3" height={n.h} fill={TONE[n.tone]} />
+                <NodeLogo name={n.logo} x={n.x + 16} y={n.y + (n.h > 100 ? 18 : 16)} />
                 {n.id === "wazuh" && (
                   <circle cx={n.x + n.w - 16} cy={n.y + 16} r="5" fill="var(--primary)" className="lab-beacon" />
                 )}
-                <text x={n.x + 16} y={n.y + (n.h > 100 ? 66 : 32)} className="lab-title" fill="currentColor">
+                <text x={n.x + (hasNodeLogo(n.logo) && n.h <= 100 ? 44 : 16)} y={n.y + (n.h > 100 ? 66 : 32)} className="lab-title" fill="currentColor">
                   {n.title}
                 </text>
                 <text x={n.x + 16} y={n.y + (n.h > 100 ? 90 : 54)} className="lab-sub" fill="currentColor">
@@ -120,6 +177,20 @@ export default function HomeLab() {
             <span className="flex items-center gap-2"><span className="h-[2px] w-5 bg-accent" /> enrichment &amp; response</span>
           </figcaption>
         </FadeIn>
+
+        {/* Every part, in plain words */}
+        <h3 className="mt-14 mb-6 font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">What each part does</h3>
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {NODES.map((n) => (
+            <li key={n.id} className="flex gap-4 border border-foreground/5 bg-surface/40 p-4">
+              <Logo name={n.logo} size={40} />
+              <div className="min-w-0">
+                <p className="font-display text-sm font-black uppercase tracking-tight text-foreground">{n.title}</p>
+                <p className="mt-1 text-sm text-foreground/60 font-light leading-relaxed">{n.plain}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

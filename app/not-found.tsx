@@ -5,7 +5,8 @@ import PageLink from "@/components/ui/PageLink";
 import type { Metadata } from "next";
 import { startHere } from "@/data/start-here";
 import { caseEvidenceLibrary } from "@/data/cases";
-import { Home, FolderSearch, FileText } from "lucide-react";
+import { Home, FolderSearch, Download, Mail } from "lucide-react";
+import { CV_PDF_HREF, normalizePublicHref } from "@/lib/shared";
 import {
   statusActions, statusCode, statusInner, statusLede, statusPage, statusReport, statusTitle,
 } from "@/components/ui/kit";
@@ -28,26 +29,28 @@ export default function NotFound() {
         <div className={statusInner}>
           <div className="flex items-center gap-4 mb-2">
             <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-            <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">Error // Not found</span>
-            <span className="jp-eyebrow text-[0.6875rem] text-foreground/30" lang="ja" aria-hidden="true" data-jp="迷子" />
+            <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">Error 404 · Page not found</span>
           </div>
           <p className={statusCode} aria-hidden="true">404</p>
 
-          <h1 className={statusTitle}>This page doesn&apos;t <span className="text-primary italic">exist.</span></h1>
+          <h1 className={statusTitle}>This page isn&apos;t <span className="text-primary italic">here.</span></h1>
           <p className={statusLede}>
-            The link may be outdated, or the address may have a typo. Everything
-            below still works.
+            The link may be old, or there may be a small typo in the address.
+            Nothing is broken on your side — pick one of these to carry on.
           </p>
 
           <nav className={statusActions} aria-label="Main destinations">
             <Link href="/" className={ctaPrimary}>
-              <Home size={16} /> ahmed.dev
+              <Home size={16} /> Go to the home page
             </Link>
             <PageLink href="/blog#cases" className={ctaSecondary}>
-              <FolderSearch size={14} className="text-primary-ink" /> Case library
+              <FolderSearch size={14} className="text-primary-ink" /> Browse case studies
             </PageLink>
-            <Link href="/cv" className={ctaSecondary}>
-              <FileText size={14} className="text-primary-ink" /> CV
+            <a href={normalizePublicHref(CV_PDF_HREF)} download className={ctaSecondary}>
+              <Download size={14} className="text-primary-ink" /> Download CV
+            </a>
+            <Link href="/#contact" className={ctaSecondary}>
+              <Mail size={14} className="text-primary-ink" /> Contact me
             </Link>
           </nav>
 
@@ -56,10 +59,10 @@ export default function NotFound() {
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
                 <h2 id="nf-suggest" className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">
-                  Or start with one of these
+                  Or read one of my best case studies
                 </h2>
               </div>
-              <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {SUGGESTIONS.map((entry) => (
                   <li key={entry.id}>
                     <Link
@@ -78,8 +81,8 @@ export default function NotFound() {
           )}
 
           <p className={statusReport}>
-            Landed here from a link on this site?{" "}
-            <a href="mailto:ahmed.em.nasr@gmail.com?subject=Broken%20link%20on%20portfolio">Tell me which one</a>{" "}
+            Got here from a link on this site?{" "}
+            <a href="mailto:ahmed.em.nasr@gmail.com?subject=Broken%20link%20on%20portfolio">Email me which one</a>{" "}
             and I&apos;ll fix it.
           </p>
         </div>

@@ -1,11 +1,12 @@
 /*
- * CaseSummary — a case description drawn as an incident briefing
- * (objective → actions → outcome → artifacts), parsed by lib/case-summary.ts.
+ * CaseSummary — a case description drawn as an incident briefing, parsed by
+ * lib/case-summary.ts: the goal, the steps taken and the result, or the
+ * indicators it names — one part at a time (see `part`).
  */
 
 import { useMemo, type ReactNode } from "react";
 import { useCopyLink } from "@/lib/use-copy-link";
-import { Check, Copy, Crosshair, ListChecks, Route, ShieldCheck, Fingerprint } from "lucide-react";
+import { Check, Copy, ListChecks, Route, ShieldCheck, Fingerprint } from "lucide-react";
 import { parseCaseSummary, type Artifact, type SummaryStep } from "@/lib/case-summary";
 import FadeIn from "@/components/ui/FadeIn";
 
@@ -127,32 +128,55 @@ function ArtifactChip({ artifact }: { artifact: Artifact }) {
   );
 }
 
-/* ── The briefing ──────────────────────────────────────────────────────── */
+/* ── The briefing ──────────────────────────────────────────────────────
+   The case page shows the description in three places: the goal (its first
+   sentence), what was done (the steps or phases and the outcome), and the
+   indicators it mentions (with the evidence). `part` picks one. */
 
-export default function CaseSummary({ description }: { description: string }) {
+type Part = "objective" | "actions" | "artifacts";
+
+export default function CaseSummary({ description, part }: { description: string; part: Part }) {
   const s = useMemo(() => parseCaseSummary(description), [description]);
-  let n = 1;
-  const next = () => String(n++).padStart(2, "0");
 
+  if (part === "objective") {
+    return (
+      <p className="text-lg md:text-xl text-foreground leading-relaxed font-light border-l-2 border-primary pl-5">
+        <Rich text={s.objective} code={s.code} />
+      </p>
+    );
+  }
+
+  if (part === "artifacts") {
+    if (s.artifacts.length === 0) return null;
+    return (
+      <section>
+        <Label index="IOC" icon={<Fingerprint size={13} />}>Indicators mentioned in the write-up</Label>
+        <div className="flex flex-wrap gap-2">
+          {s.artifacts.map((a, i) => (
+            <FadeIn y={10} duration={0.45} delay={Math.min(i, 10) * 0.04} key={`${a.kind}:${a.value}`}>
+              <ArtifactChip artifact={a} />
+            </FadeIn>
+          ))}
+        </div>
+        <p className="mt-3 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/65">Click an indicator to copy it</p>
+      </section>
+    );
+  }
+
+  const hasSteps = s.steps.length > 0 || s.phases.length > 0;
+  if (!hasSteps && !s.outcome) return null;
   return (
     <div className="grid gap-9">
-      <section>
-        <Label index={next()} icon={<Crosshair size={13} />}>Objective</Label>
-        <p className="text-lg md:text-xl text-foreground leading-relaxed font-light border-l-2 border-primary pl-5">
-          <Rich text={s.objective} code={s.code} />
-        </p>
-      </section>
-
       {s.steps.length > 0 && (
         <section>
-          <Label index={next()} icon={<ListChecks size={13} />}>{s.phases.length ? "Scope" : "Actions taken"}</Label>
+          <Label index="01" icon={<ListChecks size={13} />}>{s.phases.length ? "Scope" : "Step by step"}</Label>
           <Steps steps={s.steps} code={s.code} />
         </section>
       )}
 
       {s.phases.length > 0 && (
         <section>
-          <Label index={next()} icon={<Route size={13} />}>Phases — {s.phases.length}</Label>
+          <Label index={s.steps.length ? "02" : "01"} icon={<Route size={13} />}>Phases — {s.phases.length}</Label>
           <div className="grid gap-5">
             {s.phases.map((phase) => (
               <div key={phase.index} className="border border-foreground/5 bg-foreground/[0.015]">
@@ -175,27 +199,13 @@ export default function CaseSummary({ description }: { description: string }) {
 
       {s.outcome && (
         <section>
-          <Label index={next()} icon={<ShieldCheck size={13} />}>Outcome</Label>
+          <Label index="✓" icon={<ShieldCheck size={13} />}>The result</Label>
           <div className="flex gap-4 border border-accent/25 bg-accent/[0.06] px-5 py-4">
             <ShieldCheck size={18} className="text-accent shrink-0 mt-0.5" aria-hidden="true" />
             <p className="text-[0.95rem] md:text-base text-foreground/85 leading-relaxed font-light">
               <Rich text={s.outcome} code={s.code} />
             </p>
           </div>
-        </section>
-      )}
-
-      {s.artifacts.length > 0 && (
-        <section>
-          <Label index={next()} icon={<Fingerprint size={13} />}>Artifacts &amp; indicators</Label>
-          <div className="flex flex-wrap gap-2">
-            {s.artifacts.map((a, i) => (
-              <FadeIn y={10} duration={0.45} delay={Math.min(i, 10) * 0.04} key={`${a.kind}:${a.value}`}>
-                <ArtifactChip artifact={a} />
-              </FadeIn>
-            ))}
-          </div>
-          <p className="mt-3 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/65">Click an indicator to copy it</p>
         </section>
       )}
     </div>

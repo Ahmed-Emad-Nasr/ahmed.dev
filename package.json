@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "predev": "node scripts/generate-logos.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/generate-logos.mjs",
     "build": "next build",
     "lint": "eslint .",
     "type-check": "node -e \"for (const d of ['.next/types', '.next/dev/types']) require('fs').rmSync(d, { recursive: true, force: true })\" && next typegen && tsc --noEmit",
@@ -18,11 +20,12 @@
     "check:links": "node scripts/check-links.mjs",
     "check:a11y": "node scripts/a11y-audit.mjs",
     "check:layout": "node scripts/layout-audit.mjs",
-    "prepare:assets": "npm run pdf:clean && npm run thumbs && npm run hero:sizes && npm run icons && npm run og:cases",
+    "prepare:assets": "npm run pdf:clean && npm run thumbs && npm run hero:sizes && npm run icons && npm run logos && npm run og:cases",
     "pdf:clean": "node scripts/run-python.mjs scripts/pdf-clean.py public/Assets/Cases",
     "thumbs": "node scripts/generate-thumbs.mjs",
     "hero:sizes": "node scripts/generate-hero-sizes.mjs",
     "icons": "node scripts/generate-icons.cjs",
+    "logos": "node scripts/generate-logos.mjs",
     "og:cases": "node scripts/og/generate-case-og.mjs"
   },
   "dependencies": {
@@ -49,6 +52,7 @@
     "postcss": "^8.5.31",
     "prettier": "^3.9.9",
     "sharp": "^0.35.5",
+    "simple-icons": "^16.36.0",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
   },

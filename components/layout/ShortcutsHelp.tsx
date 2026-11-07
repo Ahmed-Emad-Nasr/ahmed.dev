@@ -7,33 +7,38 @@ import { useFocusTrap } from "@/lib/use-focus-trap";
 import { m as motion } from "framer-motion";
 import { Keyboard } from "lucide-react";
 
-const GROUPS: { title: string; items: { keys: string[]; label: string }[] }[] = [
+/* keys joined by "+" are pressed together; by "then", one after the other */
+const GROUPS: { title: string; note?: string; join: "+" | "then"; items: { keys: string[]; label: string }[] }[] = [
   {
-    title: "General",
+    title: "Basics",
+    join: "+",
     items: [
-      { keys: ["Ctrl", "K"], label: "Command palette" },
-      { keys: ["/"], label: "Command palette (quick)" },
-      { keys: ["?"], label: "This help sheet" },
-      { keys: ["Esc"], label: "Close any overlay" },
+      { keys: ["Ctrl", "K"], label: "Search the site (⌘ K on a Mac)" },
+      { keys: ["/"], label: "Search the site — quicker" },
+      { keys: ["?"], label: "Show this list" },
+      { keys: ["Esc"], label: "Close any window" },
     ],
   },
   {
-    title: "Go to",
+    title: "Jump to a section",
+    note: "Press G, let go, then press the second key within a second.",
+    join: "then",
     items: [
-      { keys: ["g", "h"], label: "Home" },
-      { keys: ["g", "w"], label: "Selected work" },
-      { keys: ["g", "e"], label: "Experience" },
-      { keys: ["g", "l"], label: "Teaching" },
-      { keys: ["g", "p"], label: "Practice platforms" },
-      { keys: ["g", "c"], label: "All certificates" },
-      { keys: ["g", "a"], label: "ATT&CK coverage" },
-      { keys: ["g", "b"], label: "Case library" },
-      { keys: ["g", "t"], label: "Back to top" },
+      { keys: ["G", "H"], label: "Home" },
+      { keys: ["G", "W"], label: "Projects" },
+      { keys: ["G", "E"], label: "Experience" },
+      { keys: ["G", "L"], label: "Teaching" },
+      { keys: ["G", "P"], label: "Training sites" },
+      { keys: ["G", "C"], label: "All certificates" },
+      { keys: ["G", "A"], label: "Attack map (MITRE ATT&CK)" },
+      { keys: ["G", "B"], label: "All case studies" },
+      { keys: ["G", "T"], label: "Back to the top" },
     ],
   },
   {
-    title: "Hidden",
-    items: [{ keys: ["type", "3omda"], label: "…try it" }],
+    title: "Just for fun",
+    join: "then",
+    items: [{ keys: ["Type", "3omda"], label: "Opens a hidden terminal" }],
   },
 ];
 
@@ -91,23 +96,28 @@ export default function ShortcutsHelp({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
+        <p className="border-b border-foreground/5 px-5 py-3 text-sm text-foreground/60 font-light">
+          Optional — everything also works with a mouse or a finger. These keys are only shortcuts.
+        </p>
+
         <div className="grid gap-6 p-5">
           {GROUPS.map((group) => (
             <section key={group.title}>
-              <h3 className="mb-3 font-mono text-[0.5625rem] uppercase tracking-[0.3em] text-foreground/60">
+              <h3 className="mb-1 font-mono text-[0.5625rem] uppercase tracking-[0.3em] text-foreground/60">
                 {group.title}
               </h3>
+              {group.note && <p className="mb-3 text-xs text-foreground/60">{group.note}</p>}
               <ul className="grid gap-1">
                 {group.items.map((item) => (
                   <li key={item.label} className="flex items-center gap-4 px-2 py-1.5">
-                    <span className="flex min-w-[110px] shrink-0 gap-1.5">
-                      {item.keys.map((key) => (
-                        <kbd
-                          key={key}
-                          className="border border-foreground/15 bg-foreground/[0.03] px-1.5 py-0.5 font-mono text-[0.625rem] text-accent"
-                        >
-                          {key}
-                        </kbd>
+                    <span className="flex min-w-[130px] shrink-0 items-center gap-1.5">
+                      {item.keys.map((key, k) => (
+                        <span key={key} className="flex items-center gap-1.5">
+                          {k > 0 && <span className="font-mono text-[0.5625rem] text-foreground/50">{group.join}</span>}
+                          <kbd className="border border-foreground/15 bg-foreground/[0.03] px-1.5 py-0.5 font-mono text-[0.625rem] text-accent">
+                            {key}
+                          </kbd>
+                        </span>
                       ))}
                     </span>
                     <span className="text-sm text-foreground/70">{item.label}</span>

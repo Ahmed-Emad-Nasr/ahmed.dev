@@ -146,48 +146,38 @@ export default function CommandPalette() {
     const c = PORTFOLIO_DATA.profile.contact;
     const isDark = resolvedTheme === "dark";
     return [
-      { id: "home", group: "Go to", label: "Home", icon: Home, run: () => go("#home") },
-      { id: "work", group: "Go to", label: "Selected work", icon: Code2, run: () => go("#work") },
-      { id: "lab", group: "Go to", label: "Home lab architecture", icon: Code2, run: () => go("#lab") },
-      { id: "experience", group: "Go to", label: "Experience", icon: Briefcase, run: () => go("#experience") },
-      { id: "teaching", group: "Go to", label: "Teaching", icon: GraduationCap, run: () => go("#teaching") },
-      { id: "platforms", group: "Go to", label: "Practice platforms (THM, HTB …)", icon: Trophy, run: () => go("#platforms") },
-      { id: "gallery", group: "Pages", label: "Proof gallery", icon: Palette, run: () => visit("/gallery") },
-      { id: "all-certs", group: "Go to", label: `All certificates (${ALL_GALLERY_CERTIFICATES.length})`, icon: Award, run: () => go("#all-certificates") },
-      { id: "attack", group: "Go to", label: "MITRE ATT&CK coverage", icon: Crosshair, run: () => go("#attack") },
-      { id: "detections", group: "Go to", label: "Detection library (Wazuh rules)", icon: Crosshair, run: () => go("#detections") },
-      { id: "triage", group: "Go to", label: "Triage challenge", icon: Crosshair, run: () => go("#triage") },
-      { id: "wsa", group: "Go to", label: "PortSwigger Web Security Academy labs (29)", icon: FolderSearch, run: () => visit("/blog?q=PortSwigger#cases") },
-      { id: "contact", group: "Go to", label: "Contact", icon: Mail, run: () => go("#contact") },
-      { id: "blog-page", group: "Pages", label: "Blog — cases, ATT&CK, videos", icon: FileText, run: () => visit("/blog") },
-      { id: "blog", group: "Go to", label: "Case library", icon: FolderSearch, run: () => go("#cases") },
-      { id: "process", group: "Go to", label: "How I work (process)", icon: Briefcase, run: () => go("#process") },
-      { id: "videos", group: "Go to", label: "Videos", icon: PlayCircle, run: () => go("#videos") },
-      { id: "cv-page", group: "Pages", label: "CV", icon: FileText, run: () => visit("/cv") },
+      /* Pages */
+      { id: "home", group: "Pages", label: "Home page", hint: "Who I am", icon: Home, run: () => go("#home") },
+      { id: "blog-page", group: "Pages", label: "Blog — case studies & videos", icon: FileText, run: () => visit("/blog") },
+      { id: "gallery", group: "Pages", label: "Gallery — certificates & photos", icon: Palette, run: () => visit("/gallery") },
+      /* Home page */
+      { id: "work", group: "Home page", label: "Projects I built", icon: Code2, run: () => go("#work") },
+      { id: "experience", group: "Home page", label: "Work experience", icon: Briefcase, run: () => go("#experience") },
+      { id: "teaching", group: "Home page", label: "Teaching — the course I wrote", icon: GraduationCap, run: () => go("#teaching") },
+      { id: "platforms", group: "Home page", label: "Training sites (TryHackMe, Hack The Box …)", icon: Trophy, run: () => go("#platforms") },
+      { id: "contact", group: "Home page", label: "Contact — send me a message", icon: Mail, run: () => go("#contact") },
+      /* Blog */
+      { id: "how-to-read", group: "Blog", label: "New here? How to read the blog", icon: FileText, run: () => go("#how-to-read") },
+      { id: "start", group: "Blog", label: "Start here — the 3 best case studies", icon: FolderSearch, run: () => go("#start-here") },
+      { id: "blog", group: "Blog", label: "All case studies", icon: FolderSearch, run: () => go("#cases") },
+      { id: "videos", group: "Blog", label: "Videos", icon: PlayCircle, run: () => go("#videos") },
+      { id: "attack", group: "Blog", label: "Attack map (MITRE ATT&CK)", icon: Crosshair, run: () => go("#attack") },
+      { id: "detections", group: "Blog", label: "Detection rules — my automatic attack alarms", icon: Crosshair, run: () => go("#detections") },
+      { id: "triage", group: "Blog", label: "Try a quiz: is this alert a real attack?", icon: Crosshair, run: () => go("#triage") },
+      { id: "lab", group: "Blog", label: "How I test security (home lab)", icon: Code2, run: () => go("#lab") },
+      { id: "wsa", group: "Blog", label: "Website hacking track — 29 PortSwigger labs", icon: FolderSearch, run: () => visit("/blog?q=PortSwigger#cases") },
+      /* Gallery */
+      { id: "all-certs", group: "Gallery", label: `All certificates (${ALL_GALLERY_CERTIFICATES.length})`, icon: Award, run: () => go("#all-certificates") },
+      /* Actions */
       {
-        id: "theme", group: "Appearance", label: isDark ? "Switch to light mode" : "Switch to dark mode",
-        icon: isDark ? Sun : Moon,
+        id: "cv", group: "Actions", label: "Download CV (PDF)", icon: Download,
         run: () => {
+          window.open(PORTFOLIO_DATA.profile.hero.cvUrl, "_blank");
           setOpen(false);
-          transitionTo(isDark ? "light" : "dark", {
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2,
-          });
         },
       },
-      ...FX_DURATIONS.map((ms) => ({
-        id: `fx-${ms}`,
-        group: "Appearance",
-        label: `Transition speed ${ms}ms${fxDuration === ms ? " (current)" : ""}`,
-        hint: `${ms}ms`,
-        icon: Gauge,
-        run: () => {
-          setFxDuration(ms);
-          setFxDurationState(ms);
-        },
-      })),
       {
-        id: "copy-email", group: "Actions", label: copied ? "Email copied!" : "Copy email address",
+        id: "copy-email", group: "Actions", label: copied ? "Email copied!" : "Copy my email address",
         hint: c.email, icon: copied ? Check : Copy,
         run: async () => {
           try {
@@ -199,23 +189,40 @@ export default function CommandPalette() {
           }
         },
       },
+      { id: "gh", group: "Links", label: "GitHub — my code", hint: c.github, icon: Github, run: () => { window.open(`https://github.com/${c.github}`, "_blank"); setOpen(false); } },
+      { id: "li", group: "Links", label: "LinkedIn", icon: Linkedin, run: () => { window.open(c.linkedin, "_blank"); setOpen(false); } },
+      { id: "wa", group: "Links", label: "WhatsApp — message me", icon: MessageCircle, run: () => { window.open(`https://wa.me/${c.whatsapp}`, "_blank"); setOpen(false); } },
+      /* Settings */
       {
-        id: "cv", group: "Actions", label: "Download CV (PDF)", icon: Download,
+        id: "theme", group: "Settings", label: isDark ? "Switch to light mode" : "Switch to dark mode",
+        icon: isDark ? Sun : Moon,
         run: () => {
-          window.open(PORTFOLIO_DATA.profile.hero.cvUrl, "_blank");
           setOpen(false);
+          transitionTo(isDark ? "light" : "dark", {
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+          });
         },
       },
-      { id: "gh", group: "Social", label: "Open GitHub", hint: c.github, icon: Github, run: () => { window.open(`https://github.com/${c.github}`, "_blank"); setOpen(false); } },
-      { id: "li", group: "Social", label: "Open LinkedIn", icon: Linkedin, run: () => { window.open(c.linkedin, "_blank"); setOpen(false); } },
-      { id: "wa", group: "Social", label: "Open WhatsApp", icon: MessageCircle, run: () => { window.open(`https://wa.me/${c.whatsapp}`, "_blank"); setOpen(false); } },
-      {
-        id: "terminal", group: "Extras", label: "Open the terminal", hint: "3omda", icon: SquareTerminal,
-        run: () => { setOpen(false); window.dispatchEvent(new Event("sensei:open-terminal")); },
-      },
+      ...FX_DURATIONS.map((ms, i) => ({
+        id: `fx-${ms}`,
+        group: "Settings",
+        label: `Theme switch animation: ${["fast", "normal", "slow"][i] ?? `${ms}ms`}${fxDuration === ms ? " (current)" : ""}`,
+        hint: `${ms}ms`,
+        icon: Gauge,
+        run: () => {
+          setFxDuration(ms);
+          setFxDurationState(ms);
+        },
+      })),
+      /* Extras */
       {
         id: "shortcuts", group: "Extras", label: "Keyboard shortcuts", hint: "?", icon: Keyboard,
         run: () => { setOpen(false); window.dispatchEvent(new Event("sensei:open-shortcuts")); },
+      },
+      {
+        id: "terminal", group: "Extras", label: "Open the hidden terminal (for fun)", hint: "3omda", icon: SquareTerminal,
+        run: () => { setOpen(false); window.dispatchEvent(new Event("sensei:open-terminal")); },
       },
     ];
   }, [go, visit, resolvedTheme, transitionTo, copied, fxDuration]);
@@ -225,7 +232,7 @@ export default function CommandPalette() {
     () =>
       cases.map((item) => ({
         id: `case-${item.id}`,
-        group: "Cases",
+        group: "Case study",
         label: item.title,
         hint: item.category,
         icon: FolderSearch,
@@ -238,7 +245,7 @@ export default function CommandPalette() {
     () =>
       ALL_GALLERY_CERTIFICATES.map((cert) => ({
         id: `cert-${cert.galleryIndex}`,
-        group: "Certificates",
+        group: "Certificate",
         label: cert.title,
         hint: `${cert.issuer} · ${cert.kind}`,
         icon: Award,
@@ -286,7 +293,7 @@ export default function CommandPalette() {
           ref={dialogRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Command palette"
+          aria-label="Search the site"
         >
           <motion.div
             initial={{ opacity: 0, y: -12, scale: 0.98 }}
@@ -303,19 +310,24 @@ export default function CommandPalette() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={onKeyDown}
-                placeholder="Type a command, case, or certificate…"
+                placeholder="Search pages, case studies, certificates…"
                 className="w-full bg-transparent py-4 text-sm text-foreground outline-none placeholder:text-foreground/60"
-                aria-label="Search commands"
+                aria-label="Search the site"
               />
               <kbd className="shrink-0 border border-foreground/15 px-1.5 py-0.5 font-mono text-[0.625rem] text-foreground/60">
                 ESC
               </kbd>
             </div>
 
-            <div className="max-h-[46vh] overflow-y-auto p-2" role="listbox">
+            {!query && (
+              <p className="border-b border-foreground/5 px-4 py-2.5 text-xs text-foreground/60">
+                Type to search everything on the site — or pick a place below. Every case study and certificate is searchable.
+              </p>
+            )}
+            <div className="max-h-[46vh] overflow-y-auto p-2" role="listbox" aria-label="Results">
               {filtered.length === 0 && (
                 <p className="px-3 py-6 text-center font-mono text-xs text-foreground/60">
-                  No commands match “{query}”.
+                  Nothing found for “{query}”. Try one word, like “phishing”, “CV” or “Wazuh”.
                 </p>
               )}
               {filtered.map((cmd, i) => (
@@ -351,13 +363,13 @@ export default function CommandPalette() {
 
             <div className="flex items-center gap-4 border-t border-foreground/10 px-4 py-2.5 font-mono text-[0.625rem] text-foreground/60">
               <span className="flex items-center gap-1.5">
-                <kbd className="border border-foreground/15 px-1">↑↓</kbd> navigate
+                <kbd className="border border-foreground/15 px-1">↑↓</kbd> move
               </span>
               <span className="flex items-center gap-1.5">
-                <kbd className="border border-foreground/15 px-1">↵</kbd> run
+                <kbd className="border border-foreground/15 px-1">Enter</kbd> open
               </span>
               <span className="ml-auto flex items-center gap-1.5">
-                <kbd className="border border-foreground/15 px-1">Ctrl K</kbd> toggle
+                <kbd className="border border-foreground/15 px-1">Esc</kbd> close
               </span>
             </div>
           </motion.div>

@@ -189,7 +189,7 @@ export default function HeroSection({
      "Full-Stack" with none. The areas are now stated in the data. */
   const focusLabel = PORTFOLIO_DATA.profile.focus.join(" · ");
   const shippedLabel = `${PORTFOLIO_DATA.work.length} open-source projects`;
-  const tongueCodes = PORTFOLIO_DATA.languages.map((l) => l.code).join(" · ");
+  const tongueCodes = PORTFOLIO_DATA.languages.map((l) => l.name).join(" · ");
 
   return (
     <section
@@ -265,7 +265,7 @@ export default function HeroSection({
         <div className="flex items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8 backdrop-blur-sm">
           <div className="w-2 h-2 bg-primary animate-pulse" />
           <span className="whitespace-nowrap text-[0.5rem] font-mono font-bold uppercase tracking-[0.15em] text-on-surface-variant sm:text-xs sm:tracking-[0.3em]">
-            {PORTFOLIO_DATA.profile.japaneseTitle}
+            {PORTFOLIO_DATA.profile.title}
           </span>
         </div>
 
@@ -277,7 +277,7 @@ export default function HeroSection({
               and in the md row it pushed the portrait past the screen edge. */}
           <div className="text-center md:text-left order-2 md:order-1 w-full md:w-auto md:flex-1 min-w-0">
             <p className="font-mono text-[0.6875rem] md:text-xs font-bold uppercase tracking-[0.4em] text-primary-ink mb-3">
-              Portfolio · 履歴書
+              Portfolio
             </p>
             {/* Phones: the size follows the screen (min of the design's 6xl
                 and 15vw) — "AHMED" at a fixed 60px is 338px wide, wider than a
@@ -299,12 +299,6 @@ export default function HeroSection({
                 style={{ WebkitTextStroke: "2px #BC002D" }}
               />
             </h1>
-            <p
-              className="brush-jp text-xl md:text-2xl text-foreground/40 mt-4 [word-break:auto-phrase] [text-wrap:balance]"
-              lang="ja"
-              aria-hidden="true"
-              data-jp="アハメド・エマド・ナスル  情報セキュリティ"
-            />
             <RoleTicker
               roles={PORTFOLIO_DATA.profile.roles}
               className="mt-5 text-sm sm:text-base md:text-lg"
@@ -421,7 +415,7 @@ export default function HeroSection({
               <div className="border-b border-foreground/5 px-4 py-2 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-primary" />
                 <span className="font-mono text-[0.625rem] text-foreground/60 uppercase tracking-[0.3em]">
-                  Technical Specifications
+                  What I do — and the tools I use
                 </span>
               </div>
               <div className="px-4 py-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -473,14 +467,8 @@ export default function HeroSection({
                     aria-hidden="true"
                     className="transition-transform duration-300 group-hover:translate-y-0.5"
                   />
-                  RESUME.pdf
-                  <span className="sr-only"> (download)</span>
-                  <span
-                    className="brush-jp text-base normal-case tracking-normal opacity-70"
-                    lang="ja"
-                    aria-hidden="true"
-                    data-jp="履歴書"
-                  />
+                  Download CV
+                  <span className="sr-only"> (PDF)</span>
                 </a>
                 <a
                   href="#work"
@@ -490,13 +478,7 @@ export default function HeroSection({
                     size={14}
                     className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5"
                   />
-                  View Work
-                  <span
-                    className="brush-jp text-base normal-case tracking-normal text-foreground/50"
-                    lang="ja"
-                    aria-hidden="true"
-                    data-jp="仕事"
-                  />
+                  See my projects
                 </a>
               </div>
 
@@ -531,37 +513,31 @@ export default function HeroSection({
           {/* Field record  live portfolio data, zero hardcodes */}
           <aside
             className="relative border border-foreground/10 bg-foreground/[0.02] backdrop-blur-sm p-5 md:p-6"
-            aria-label="Field record"
+            aria-label="At a glance"
           >
             <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/50 pointer-events-none" />
             <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/50 pointer-events-none" />
             <div className="flex items-center gap-3 mb-5">
               <span className="font-mono text-[0.625rem] font-bold tracking-[0.35em] uppercase text-primary-ink">
-                Field Record
+                At a glance
               </span>
-              <span
-                className="brush-jp text-base text-foreground/30"
-                lang="ja"
-                aria-hidden="true"
-                data-jp="記録"
-              />
             </div>
             <dl className="flex flex-col">
               <FieldRow
-                label="Status"
+                label="Open to"
                 value={PORTFOLIO_DATA.profile.availability}
                 hot
               />
               <FieldRow label="Role" value={PORTFOLIO_DATA.profile.title} />
               <FieldRow
-                label="Base"
+                label="Based in"
                 value={PORTFOLIO_DATA.profile.contact.location}
               />
               <FieldRow label="Focus" value={focusLabel} wide />
               {evidenceLabel && (
-                <FieldRow label="Evidence" value={evidenceLabel} />
+                <FieldRow label="Proof" value={evidenceLabel} />
               )}
-              <FieldRow label="Shipped" value={shippedLabel} wide />
+              <FieldRow label="Built" value={shippedLabel} wide />
               <FieldRow label="Languages" value={tongueCodes} wide />
             </dl>
           </aside>
@@ -576,7 +552,7 @@ export default function HeroSection({
       >
         <div className="w-8 h-[1px] bg-primary/40" />
         <p className="text-[0.625rem] text-foreground/60 font-mono font-bold uppercase tracking-[0.5em]">
-          継続は力なり · PERSEVERANCE IS POWER
+          PERSEVERANCE IS POWER
         </p>
       </div>
     </section>

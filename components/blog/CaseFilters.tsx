@@ -60,8 +60,8 @@ function CaseFilters({
           type="search"
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
-          placeholder="Search cases, tools, tags…"
-          aria-label="Search cases"
+          placeholder="Search — e.g. phishing, Wazuh, ransomware…"
+          aria-label="Search case studies"
           autoComplete="off"
           spellCheck={false}
           className="w-full bg-transparent py-4 focus:outline-none text-lg font-light placeholder:text-foreground/60 font-mono"
@@ -72,7 +72,7 @@ function CaseFilters({
             onClick={onReset}
             className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 border border-primary/40 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary-ink hover:bg-primary hover:text-white transition-colors duration-300"
           >
-            <X size={12} /> Clear
+            <X size={12} /> Clear all
           </button>
         )}
       </div>
@@ -81,7 +81,7 @@ function CaseFilters({
           bar whose active segment slides under the label */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div className="flex flex-wrap border border-foreground/10 bg-surface/40 w-fit" role="group" aria-label="Filter by kind of work">
-          {[{ value: null, label: "Everything", count: totalCount }, ...kinds].map((k) => {
+          {[{ value: null, label: "All kinds", count: totalCount }, ...kinds].map((k) => {
             const active = activeKind === k.value;
             return (
               <button
@@ -107,14 +107,14 @@ function CaseFilters({
 
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
-            Sort
+            Order
             <select
               value={sort}
               onChange={(e) => onSortChange(e.target.value === "newest" ? "newest" : "recommended")}
               className="bg-surface border border-foreground/10 px-2 py-1.5 font-mono text-[0.625rem] uppercase tracking-[0.15em] text-foreground focus:outline-none focus:border-primary"
             >
-              <option value="recommended">Recommended</option>
-              <option value="newest">Newest</option>
+              <option value="recommended">Best first</option>
+              <option value="newest">Newest first</option>
             </select>
           </label>
           <div className="flex border border-foreground/10" role="group" aria-label="Layout">
@@ -134,14 +134,14 @@ function CaseFilters({
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-3" role="group" aria-label="Filter by category">
+      <div className="flex flex-wrap gap-3" role="group" aria-label="Filter by topic">
         <button
           type="button"
           className={filterTab(activeCategory === null)}
           onClick={() => onCategoryChange(null)}
           aria-pressed={activeCategory === null}
         >
-          All <span className="ml-2 text-[0.5625rem] tabular-nums">{totalCount}</span>
+          All topics <span className="ml-2 text-[0.5625rem] tabular-nums">{totalCount}</span>
         </button>
         {categories.map(({ value, count }) => (
           <button
@@ -157,7 +157,7 @@ function CaseFilters({
       </div>
 
       <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by tool">
-        <span className="mr-2 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">Tools</span>
+        <span className="mr-2 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">Tool used</span>
         {tools.map(({ value, count }) => {
           const active = activeTools.includes(value);
           return (
@@ -180,8 +180,8 @@ function CaseFilters({
 
       <p className="flex items-center gap-3 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60" role="status" aria-live="polite">
         <span className="w-2 h-2 bg-primary" aria-hidden="true" />
-        {resultCount} of {totalCount} case(s)
-        {isFiltered ? " match your filters" : " in the library"}
+        Showing {resultCount} of {totalCount} case studies
+        {isFiltered ? " — filtered" : ""}
       </p>
     </div>
   );

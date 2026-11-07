@@ -17,18 +17,20 @@ import {
   BookOpen,
   Images,
   Mail,
-  Command,
+  Search,
 } from "lucide-react";
 
 /* The home page's sections (hash links — from another page they become
-   /#work …) plus the blog, which is its own page. */
+   /#work …) plus the blog and gallery, which are their own pages. `hint`
+   says in a few words what is there (shown in the phone menu and as the
+   desktop tooltip). */
 const navItems = [
-  { name: "Home", href: "#home", icon: Home, katakana: "ホーム" },
-  { name: "Work", href: "#work", icon: Code2, katakana: "仕事" },
-  { name: "Experience", href: "#experience", icon: Briefcase, katakana: "経験" },
-  { name: "Blog", href: "/blog", icon: BookOpen, katakana: "記録" },
-  { name: "Gallery", href: "/gallery", icon: Images, katakana: "証明" },
-  { name: "Contact", href: "#contact", icon: Mail, katakana: "連絡" },
+  { name: "Home", href: "#home", icon: Home, hint: "Who I am, in one screen" },
+  { name: "Projects", href: "#work", icon: Code2, hint: "Things I have built and tested" },
+  { name: "Experience", href: "#experience", icon: Briefcase, hint: "Jobs, training and teaching" },
+  { name: "Blog", href: "/blog", icon: BookOpen, hint: "Case studies and videos, explained" },
+  { name: "Gallery", href: "/gallery", icon: Images, hint: "Certificates and photos" },
+  { name: "Contact", href: "#contact", icon: Mail, hint: "Send me a message" },
 ];
 
 /* Where each item's part of the home page ends. */
@@ -50,6 +52,7 @@ function NavLink({
   children: ReactNode;
   onClick?: () => void;
   "aria-current"?: "page" | undefined;
+  title?: string;
 }) {
   if (href.startsWith("#") && onHome) {
     return (
@@ -193,6 +196,7 @@ export default function SiteNav() {
               href={item.href}
               onHome={onHome}
               aria-current={active === item.href ? "page" : undefined}
+              title={item.hint}
               className={`relative flex items-center gap-2 text-[0.625rem] font-mono font-bold uppercase tracking-[0.22em] transition-all duration-300 group ${
                 active === item.href ? "text-foreground" : "text-foreground/60 hover:text-foreground"
               }`}
@@ -230,12 +234,13 @@ export default function SiteNav() {
           <button
             type="button"
             onClick={() => window.dispatchEvent(new Event("sensei:palette"))}
-            aria-label="Open command palette (Ctrl+K)"
-            title="Commands (Ctrl+K)"
+            aria-label="Search the site (Ctrl+K)"
+            title="Search the site — or press Ctrl+K"
             className="flex items-center gap-1.5 border border-foreground/10 bg-foreground/[0.03] px-2.5 py-2.5 font-mono text-[0.625rem] text-foreground/60 transition-colors duration-300 hover:border-primary hover:text-primary-ink"
           >
-            <Command size={14} />
-            <kbd>K</kbd>
+            <Search size={14} aria-hidden="true" />
+            <span className="hidden xl:inline font-bold uppercase tracking-[0.2em]">Search</span>
+            <kbd className="hidden xl:inline border border-foreground/15 px-1 text-[0.5625rem]">Ctrl K</kbd>
           </button>
           <ThemeToggle />
         </div>
@@ -330,8 +335,8 @@ export default function SiteNav() {
                     <span className={`font-display text-[clamp(1.375rem,7.2vw,1.875rem)] leading-tight font-black uppercase tracking-tight transition-colors duration-300 group-hover:text-primary ${active === item.href ? "text-primary-ink" : "text-foreground"}`}>
                       {item.name}
                     </span>
-                    <span className="font-mono text-[0.625rem] text-foreground/60 tracking-[0.3em]" lang="ja">
-                      {item.katakana}
+                    <span className="font-mono text-[0.625rem] text-foreground/60 tracking-[0.15em]">
+                      {item.hint}
                     </span>
                   </div>
 
@@ -363,8 +368,8 @@ export default function SiteNav() {
                   }}
                   className="flex items-center gap-2 border border-foreground/15 px-4 py-3 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-foreground/70 transition-colors hover:border-primary hover:text-primary-ink"
                 >
-                  <Command size={14} aria-hidden="true" />
-                  Search
+                  <Search size={14} aria-hidden="true" />
+                  Search the site
                 </button>
               </motion.div>
             </div>

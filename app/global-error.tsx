@@ -29,14 +29,15 @@ export default function GlobalError({
         }}
       >
         <p style={{ margin: 0, color: "#bc002d", letterSpacing: "0.3em", fontSize: "0.85rem" }}>
-          FATAL
+          ERROR
         </p>
         <h1 style={{ margin: 0, fontSize: "1.5rem", fontWeight: 700 }}>
-          The site failed to load
+          The site didn&apos;t load properly
         </h1>
         <p style={{ margin: 0, maxWidth: "42ch", lineHeight: 1.6, color: "#a59f90" }}>
-          Something went wrong before the page could render. Reloading usually
-          fixes it.
+          Something went wrong before the page could appear — it&apos;s not
+          something you did. Pressing the button below usually fixes it. If it
+          doesn&apos;t, reload the page or come back in a minute.
         </p>
         <button
           type="button"
@@ -52,11 +53,11 @@ export default function GlobalError({
             cursor: "pointer",
           }}
         >
-          Reload
+          Try again
         </button>
         {error.digest && (
           <p style={{ margin: 0, fontSize: "0.75rem", color: "#6a6a6a" }}>
-            Error reference: {error.digest}
+            Error code (helps me fix it): {error.digest}
           </p>
         )}
       </body>

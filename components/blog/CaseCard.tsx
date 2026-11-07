@@ -28,6 +28,8 @@ import {
 } from "@/components/ui/kit";
 import { caseCardBlurb } from "@/lib/case-summary";
 import FadeIn from "@/components/ui/FadeIn";
+import Logo from "@/components/ui/Logo";
+import { logoFor } from "@/data/logos";
 
 type CaseCardProps = PdfResource & {
   index: number;
@@ -65,6 +67,7 @@ function CaseCard({
     void copy(`${window.location.origin}${normalizePublicHref(detailPath)}`);
   }, [detailPath, copy]);
 
+  const platformLogo = logoFor(platform);
   const shownTools = (tools ?? []).slice(0, 4);
   const moreTools = Math.max(0, (tools ?? []).length - shownTools.length);
 
@@ -106,12 +109,16 @@ function CaseCard({
           </button>
         )}
 
-        <div className="flex flex-col flex-1 p-8">
+        <div className="@container flex flex-col flex-1 p-8">
           <div className="flex items-start justify-between gap-4 mb-5">
             <div className="flex items-center gap-3 min-w-0">
-              <div className="p-2.5 bg-foreground/5 border border-foreground/10 shrink-0">
-                <ShieldAlert size={18} className="text-tertiary" />
-              </div>
+              {platformLogo ? (
+                <Logo spec={platformLogo} size={40} />
+              ) : (
+                <div className="p-2.5 bg-foreground/5 border border-foreground/10 shrink-0">
+                  <ShieldAlert size={18} className="text-tertiary" />
+                </div>
+              )}
               <div className="min-w-0">
                 <div className="font-mono text-[0.5625rem] uppercase tracking-[0.3em] text-tertiary truncate">
                   {type}
@@ -133,7 +140,7 @@ function CaseCard({
                       ? "text-accent border-accent/30 bg-accent/10"
                       : "text-tertiary border-tertiary/30 bg-tertiary/10"
                 }`}
-                title="Alert severity"
+                title="How serious the alert was"
               >
                 <AlertTriangle size={11} /> {severity}
               </span>
@@ -144,7 +151,7 @@ function CaseCard({
             ) : null}
           </div>
 
-          <h3 className="font-display text-xl md:text-lg lg:text-2xl font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
+          <h3 className="font-display text-[min(1.25rem,8cqi)] md:text-[min(1.125rem,8cqi)] lg:text-[min(1.5rem,8cqi)] font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
             <PageLink
               href={detailPath}
               className="hover:text-primary-ink transition-colors duration-300"
@@ -170,7 +177,8 @@ function CaseCard({
           {shownTools.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-3">
               {shownTools.map((t) => (
-                <span key={t} className={chipTertiary}>
+                <span key={t} className={`${chipTertiary} inline-flex items-center gap-1.5`}>
+                  <Logo name={t} variant="inline" size={11} />
                   {t}
                 </span>
               ))}
@@ -191,7 +199,7 @@ function CaseCard({
 
           <div className="flex flex-wrap gap-3 mt-auto pt-5 border-t border-foreground/5">
             <PageLink href={detailPath} className={btnPrimary}>
-              Open case <ArrowRight size={13} />
+              Read the case <ArrowRight size={13} />
             </PageLink>
             {href && (
               <>
@@ -201,7 +209,7 @@ function CaseCard({
                   rel="noopener noreferrer"
                   className={btnOutline}
                 >
-                  <ExternalLink size={13} /> PDF
+                  <ExternalLink size={13} /> Technical PDF
                 </a>
                 <a
                   href={normalizePublicHref(href)}

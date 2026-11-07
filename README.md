@@ -174,7 +174,7 @@ To add a case:
 - `/blog` — case library, videos, ATT&CK coverage, detections, and triage
 - `/blog/<case-id>` — detailed case report
 - `/gallery` — certificates, events, classroom, and security journey
-- `/cv` — printable HTML CV
+- the CV is a PDF only (`public/Assets/cv/AhmedEmadNasr_CV.pdf`)
 - `/sitemap.xml` — machine-readable sitemap
 
 Hidden operator tools include `Ctrl/⌘ K` for the command palette, `?` for
@@ -189,6 +189,36 @@ Copy `.env.example` to `.env.local` when local configuration is needed:
 - `NEXT_PUBLIC_WEB3FORMS_KEY` for the contact form
 
 Without a Web3Forms key, the contact form opens the visitor's mail app.
+
+### Logos
+
+Every company, platform, certificate issuer and tool gets a logo
+(`components/ui/Logo.tsx`, names mapped in `data/logos.ts`). For each one the
+site uses, in order:
+
+1. **An official logo file** in `public/Assets/logos/<slug>.svg|webp|png|jpg`
+2. **The brand mark** from [simple-icons](https://simpleicons.org) (CC0), when it has one
+3. **A monogram** in the site's style (`BM`, `NTI` …)
+
+Logo files to add (the slug is the file name):
+
+| Slug | For | Slug | For |
+|---|---|---|---|
+| `banque-misr` | Banque Misr | `nti` | National Telecommunication Institute |
+| `amit` | AMIT Learning | `depi` | Digital Egypt Pioneers Initiative |
+| `ischool` | iSchool | `iti` | Information Technology Institute |
+| `benha-university` | Benha University | `cybertalents` | CyberTalents |
+| `letsdefend` | LetsDefend | `ine` | INE |
+| `red-team-leaders` | Red Team Leaders | `mahara-tech` | Mahara-Tech |
+| `netriders` | NetRiders | `arcx` | arcX |
+| `wazuh` | Wazuh | `suricata` | Suricata |
+| `yara` | YARA | `thehive` | TheHive |
+| `windows` | Windows | `microsoft` | Microsoft |
+
+`npm run dev` and `npm run build` regenerate `components/ui/logo-data.ts`
+from that folder automatically (`npm run logos` does it by hand). Square or
+wide logos on a transparent or white background look best; they are shown on
+a white tile so dark logos stay readable in dark mode.
 
 ---
 

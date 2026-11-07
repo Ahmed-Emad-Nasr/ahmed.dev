@@ -16,6 +16,7 @@ import { caseDetails } from "@/data/case-details";
 import { caseKindOf, CASE_KINDS } from "@/lib/shared";
 import { jsonLd, PERSON_ID, PERSON_NAME, SITE_URL } from "@/lib/seo";
 import { blogYoutubeVideos } from "@/data/youtube";
+import { buildCaseGuide } from "@/lib/case-guide";
 
 const findCase = (slug: string) => caseEvidenceLibrary.find((item) => item.id === slug);
 
@@ -123,6 +124,30 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
       sourceUrl: `https://youtu.be/${video.videoId}`,
     }));
 
+  /* The plain-language layer: what kind of work, what the topic means,
+     prevention advice and the jargon on the page (lib/case-guide.ts) */
+  const detail = caseDetails[item.id];
+  const guide = buildCaseGuide({
+    kind: caseKindOf(item),
+    category: item.category,
+    verdict: detail?.verdict,
+    severity: detail?.severity,
+    text: [
+      item.id.replace(/-/g, " "),
+      item.title,
+      item.description,
+      ...item.tags,
+      ...item.tools,
+      detail?.verdict,
+      ...(detail?.chain ?? []).map((c) => c.step),
+      ...(detail?.response ?? []),
+      ...(detail?.iocs?.length ? ["indicator"] : []),
+      ...(techniquesForCase(item.id).length ? ["MITRE ATT&CK"] : []),
+    ]
+      .filter(Boolean)
+      .join(" "),
+  });
+
   /* Previous / next follow the library order */
   const index = caseEvidenceLibrary.findIndex((c) => c.id === item.id);
   const previous = index > 0 ? caseEvidenceLibrary[index - 1] : null;
@@ -197,7 +222,8 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         techniques={techniquesForCase(item.id)}
         related={relatedTo(item)}
         relatedVideos={relatedVideos}
-        detail={caseDetails[item.id]}
+        detail={detail}
+        guide={guide}
         kindLabel={CASE_KINDS.find((k) => k.id === caseKindOf(item))?.short ?? "Case"}
         collection={item.platform === "PortSwigger" ? { href: "/blog?q=PortSwigger#cases", title: "Web Security Academy Track" } : undefined}
         />

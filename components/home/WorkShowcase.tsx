@@ -13,18 +13,20 @@ import {
   Lock,
   PlayCircle,
   FileText,
+  ArrowUpRight,
 } from "lucide-react";
+import Logo from "@/components/ui/Logo";
 import PageLink from "@/components/ui/PageLink";
 import { Github } from "@/components/ui/BrandIcons";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import FadeIn from "@/components/ui/FadeIn";
 
-const FILTERS: { id: WorkType | "all"; label: string; japanese: string }[] = [
-  { id: "all", label: "All", japanese: "全部" },
-  { id: "lab", label: "Labs", japanese: "実験" },
-  { id: "research", label: "Research", japanese: "研究" },
-  { id: "tool", label: "Tools", japanese: "道具" },
-  { id: "platform", label: "Platforms", japanese: "基盤" },
+const FILTERS: { id: WorkType | "all"; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "lab", label: "Labs" },
+  { id: "research", label: "Research" },
+  { id: "tool", label: "Tools" },
+  { id: "platform", label: "Platforms" },
 ];
 
 const TYPE_ICON = {
@@ -59,8 +61,18 @@ export default function WorkShowcase({
         <SectionHeader
           titleA="Built &"
           titleB="Tested."
-          description="A GRC platform, labs built to be attacked, research done in isolation, and tools that came out of real triage. Every number below is in the repo."
+          description="Things I have built: a compliance platform, practice networks built to be attacked, malware research, and small tools. Each card says the problem, what I did, and the result — every number is in the source code."
         />
+
+        <FadeIn y={12} duration={0.5} className="-mt-8 md:-mt-12 mb-10">
+          <PageLink
+            href="/blog#lab"
+            className="group inline-flex items-center gap-2 border border-foreground/10 bg-foreground/[0.03] px-3.5 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:border-primary hover:text-foreground"
+          >
+            How I test security
+            <ArrowUpRight size={12} className="text-primary-ink transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+          </PageLink>
+        </FadeIn>
 
         <div
           className="flex flex-wrap gap-3 mb-12"
@@ -79,13 +91,7 @@ export default function WorkShowcase({
                   : "bg-foreground/[0.03] text-foreground/70 border-foreground/10 hover:border-primary/50 hover:text-foreground"
               }`}
             >
-              {f.label}{" "}
-              <span
-                className="ml-2 text-[0.5625rem]"
-                lang="ja"
-                aria-hidden="true"
-                data-jp={f.japanese}
-              />
+              {f.label}
             </button>
           ))}
         </div>
@@ -95,7 +101,7 @@ export default function WorkShowcase({
             const Icon = TYPE_ICON[w.type];
             return (
               <FadeIn y={32} duration={0.7} delay={(idx % 2) * 0.1} key={w.id}>
-                <TiltCard className="spotlight group relative bg-surface/60 border border-foreground/5 p-8 hover:border-primary/40 transition-colors duration-500 flex flex-col h-full">
+                <TiltCard className="@container spotlight group relative bg-surface/60 border border-foreground/5 p-8 hover:border-primary/40 transition-colors duration-500 flex flex-col h-full">
                   <CardEffects index={idx + 1} />
                   <div className="flex items-start justify-between gap-4 mb-5">
                     <div className="flex items-center gap-3">
@@ -118,7 +124,7 @@ export default function WorkShowcase({
                     )}
                   </div>
 
-                  <h3 className="font-display text-2xl md:text-[1.375rem] lg:text-3xl font-black uppercase tracking-tight text-foreground mb-2">
+                  <h3 className="font-display text-[min(1.5rem,10cqi)] md:text-[min(1.375rem,10cqi)] lg:text-[min(1.875rem,10cqi)] font-black uppercase tracking-tight text-foreground mb-2">
                     {w.title}
                   </h3>
                   <p className="text-foreground/80 font-medium mb-3">
@@ -126,13 +132,13 @@ export default function WorkShowcase({
                   </p>
                   <p className="text-sm text-foreground/60 font-light leading-relaxed mb-2">
                     <span className="text-foreground/60 font-mono text-[0.625rem] uppercase tracking-[0.2em]">
-                      Problem{" "}
+                      The problem{" "}
                     </span>
                     {w.problem}
                   </p>
                   <p className="text-sm text-foreground/60 font-light leading-relaxed mb-5">
                     <span className="text-foreground/60 font-mono text-[0.625rem] uppercase tracking-[0.2em]">
-                      Role{" "}
+                      What I did{" "}
                     </span>
                     {w.role}
                   </p>
@@ -141,8 +147,9 @@ export default function WorkShowcase({
                     {w.stack.map((s) => (
                       <span
                         key={s}
-                        className="px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-tertiary bg-tertiary/10 border border-tertiary/25"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-tertiary bg-tertiary/10 border border-tertiary/25"
                       >
+                        <Logo name={s} variant="inline" size={11} />
                         {s}
                       </span>
                     ))}
@@ -166,7 +173,7 @@ export default function WorkShowcase({
                         rel="noopener noreferrer"
                         className="btn-sheen flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] hover:bg-foreground hover:text-background transition-colors"
                       >
-                        <Github size={13} /> Source
+                        <Github size={13} /> Source code
                       </a>
                     )}
                     {w.links.live && (
@@ -198,7 +205,7 @@ export default function WorkShowcase({
                           size={13}
                           className="transition-transform duration-300 group-hover/cs:-translate-y-0.5"
                         />{" "}
-                        Case study
+                        Read the case study
                       </PageLink>
                     )}
                     {!w.links.github &&

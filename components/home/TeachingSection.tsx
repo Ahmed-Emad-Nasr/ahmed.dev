@@ -13,6 +13,7 @@ import {
   chipTertiary,
 } from "@/components/ui/kit";
 import { DIPLOMA, TEACHING_ROLES, TEACHING_STATS } from "@/data/teaching";
+import Logo from "@/components/ui/Logo";
 
 export default function TeachingSection() {
   return (
@@ -40,9 +41,10 @@ export default function TeachingSection() {
               <span className="text-primary italic">Forward.</span>
             </h2>
             <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              Explaining an attack to a room of forty is a harder test than
-              running it once. The curriculum I wrote, and the rooms I taught it
-              in.
+              I also teach security. On the left is the full course I wrote —
+              six parts, from how networks work to running a security
+              operations centre. On the right are the places I taught it and
+              the results my students got.
             </p>
           </div>
           <CounterBadge
@@ -64,12 +66,6 @@ export default function TeachingSection() {
                   <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
                     {s.label}
                   </span>
-                  <span
-                    className="jp-eyebrow text-[0.5625rem] text-foreground/25"
-                    lang="ja"
-                    aria-hidden="true"
-                    data-jp={s.japanese}
-                  />
                 </dt>
                 <dd className="order-1 font-mono text-xl md:text-2xl font-black tabular-nums text-accent">
                   {s.value}
@@ -93,14 +89,8 @@ export default function TeachingSection() {
 
             <div className="flex items-center justify-between gap-4">
               <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
-                Curriculum // {DIPLOMA.hours} hours
+                The course I wrote · {DIPLOMA.hours} hours
               </span>
-              <span
-                className="jp-eyebrow text-[0.625rem] text-foreground/30"
-                lang="ja"
-                aria-hidden="true"
-                data-jp={DIPLOMA.japanese}
-              />
             </div>
             <h3 className="mt-5 font-display text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight leading-[0.95]">
               {DIPLOMA.title}
@@ -152,7 +142,8 @@ export default function TeachingSection() {
               <FadeIn key={r.org} delay={i * 0.05} y={16} duration={0.5}>
                 <article className="group py-6 border-b border-foreground/10">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0">
+                    <Logo name={r.org} size={44} />
+                    <div className="min-w-0 flex-1">
                       <h3 className="font-display text-lg md:text-xl font-black uppercase tracking-tight leading-tight">
                         {r.link ? (
                           <a

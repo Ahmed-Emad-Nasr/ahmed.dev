@@ -666,6 +666,20 @@
  * per letter is Dela Gothic One's widest-case advance. 3rem / 10rem are the
  * section's side padding (px-6 / md:px-20); 80rem is max-w-7xl.
  */
+/* A case page's title (components/blog/CaseArticle.tsx): the design sizes
+   (text-3xl → md:text-5xl → lg:text-6xl), capped so the title's longest word
+   (--title-n characters, set inline) fits the column whole. 0.9em per
+   capital: a little more than title-fit below, for words heavy in W and M. */
+@utility case-title-fit {
+  font-size: min(1.875rem, calc((100vw - 3rem) / (var(--title-n, 10) * 0.9)));
+  @media (width >= 48rem) {
+    font-size: min(3rem, calc(min(100vw - 10rem, 64rem) / (var(--title-n, 10) * 0.9)));
+  }
+  @media (width >= 64rem) {
+    font-size: min(3.75rem, calc(min(100vw - 10rem, 64rem) / (var(--title-n, 10) * 0.9)));
+  }
+}
+
 @utility title-fit {
   font-size: min(3rem, calc((100vw - 3rem) / (var(--title-n, 10) * 0.86)));
   @media (width >= 48rem) {

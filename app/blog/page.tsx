@@ -17,9 +17,9 @@ import {
   LazyContributions,
   LazyDetectionLibrary,
   LazyTriage,
-  ProcessSection,
 } from "@/components/blog/dynamic";
 import PageEffects from "@/lib/perf/PageEffects";
+import BlogGuide from "@/components/blog/BlogGuide";
 import { attackCoverage, libraryCounts, libraryStructuredData } from "@/lib/library-data";
 import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
 import { CHANNEL_ID, PERSON_REF, SITE_URL, jsonLd, youtubeEmbed, youtubeThumb, youtubeWatch } from "@/lib/seo";
@@ -27,6 +27,10 @@ import { absoluteUrl, OG_IMAGE } from "@/lib/site";
 
 const DESCRIPTION =
   "Incident reports, DFIR investigations, malware analysis, detection rules mapped to MITRE ATT&CK, and cybersecurity videos by Ahmed Emad Nasr.";
+
+/* The page's own intro — plain words for every visitor; DESCRIPTION stays for search */
+const INTRO =
+  "Real security work, explained. Each case study says what happened, what I did and how to stop it happening again — in plain words first, with the technical detail and the original report after.";
 
 export const metadata: Metadata = {
   title: "Blog — Case Library, ATT&CK & Videos",
@@ -115,23 +119,27 @@ export default function BlogPage() {
         id="blog-top"
         titleA="The"
         titleB="Blog."
-        description={DESCRIPTION}
+        description={INTRO}
         links={[
+          { href: "#how-to-read", label: "New here? Read this" },
           { href: "#start-here", label: "Start here" },
-          { href: "#cases", label: "Case library", n: libraryCounts.total },
+          { href: "#cases", label: "All case studies", n: libraryCounts.total },
           { href: "#videos", label: "Videos", n: blogYoutubeVideos.length },
-          { href: "#attack", label: "ATT&CK coverage", n: attackCoverage.techniqueCount },
+          { href: "#attack", label: "Attack map", n: attackCoverage.techniqueCount },
           { href: "#detections", label: "Detection rules" },
-          { href: "#triage", label: "Triage challenge" },
+          { href: "#triage", label: "Try a quiz" },
+          { href: "#lab", label: "How I test security" },
         ]}
       />
+
+      <BlogGuide />
 
       {/* ─── Start here, the case library (filters, cards) and the videos ─── */}
       <div className={DEFER}>
         <CaseLibrarySection />
       </div>
 
-      <SlashDivider label="01 // Detection" japanese="検知" origin="right" />
+      <SlashDivider label="01 // How attacks are detected" origin="right" />
       <TickerStrip items={["戦術", "技術", "網羅", "証拠", "READ THE RECORD"]} />
 
       {/* ─── The library on MITRE ATT&CK, the rule pack, one real alert ─── */}
@@ -139,10 +147,9 @@ export default function BlogPage() {
       <LazyDetectionLibrary />
       <LazyTriage />
 
-      <SlashDivider label="02 // Operating model" japanese="実務" origin="left" />
+      <SlashDivider label="02 // How I test security" origin="left" />
       <TickerStrip reverse items={["継続", "改善", "実務", "計測", "BUILD THE RECORD"]} />
       <HomeLab />
-      <ProcessSection />
       <LazyContributions />
     </PageShell>
   );

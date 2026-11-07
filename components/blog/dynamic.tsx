@@ -16,9 +16,6 @@ export const CaseLibrarySection = dynamic(() => import("@/components/blog/CaseLi
 export const HomeLab = dynamic(() => import("@/components/home/HomeLab"), {
   loading: () => <SectionSkeleton lines={3} />,
 });
-export const ProcessSection = dynamic(() => import("@/components/home/ProcessSection"), {
-  loading: () => <SectionSkeleton lines={3} />,
-});
 const AttackCoverage = preloadable(() => import("@/components/blog/AttackCoverage"));
 const DetectionLibrary = preloadable(() => import("@/components/blog/DetectionLibrary"));
 
