@@ -27,6 +27,7 @@ import DeferredGlobalEffects from "@/components/layout/DeferredGlobalEffects";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
 import { normalizePublicHref, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { OG_IMAGE } from "@/lib/site";
+import { homeDataFixScript } from "@/lib/routes";
 import {
   CHANNEL_ID, jsonLd, KEYWORDS, OCCUPATION, PERSON_ID, PERSON_IMAGE, PERSON_NAME, PERSON_REF,
   SAME_AS, SITE_KEYWORDS, SITE_URL, WEBSITE_ID,
@@ -212,6 +213,9 @@ const STRUCTURED_DATA_JSON = jsonLd({
   ],
 });
 
+/* Before hydration: send the home page's data request to the real file (lib/routes.ts) */
+const HOME_DATA_FIX = homeDataFixScript(normalizePublicHref("/").replace(/\/$/, ""));
+
 // ─── Layout ───────────────────────────────────────────────────────────────────
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -231,6 +235,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               'try{var d=document.documentElement,e=document.createElement("i");e.style.cssText="position:absolute;font-size:medium";d.appendChild(e);if(parseFloat(getComputedStyle(e).fontSize)>=20)d.classList.add("large-text");d.removeChild(e)}catch(e){}',
           }}
         />
+        {HOME_DATA_FIX && <script dangerouslySetInnerHTML={{ __html: HOME_DATA_FIX }} />}
         {/* framer-motion entrances start at opacity 0 in the HTML; without
             JavaScript they would never play, so show them as they are */}
         <noscript>

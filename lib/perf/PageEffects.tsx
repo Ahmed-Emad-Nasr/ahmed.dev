@@ -1,7 +1,7 @@
 "use client";
 
 /*
- * PageEffects — mounted once on each long page (home, blog). Renders
+ * PageEffects — mounted once on each long page (home, blog, gallery). Renders
  * nothing; it does two jobs:
  *
  *   1. Jumps. Takes over in-page #links, filtered-library links and

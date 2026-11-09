@@ -6,11 +6,12 @@
  */
 
 import type { Metadata } from "next";
-import { DEFER, PageShell } from "@/components/ui/kit";
-import AreaIntro from "@/components/ui/AreaIntro";
+import { PageShell } from "@/components/ui/kit";
+import LazySection from "@/lib/perf/lazy";
 import SlashDivider from "@/components/ui/SlashDivider";
 import TickerStrip from "@/components/ui/TickerStrip";
 import {
+  AreaIntro,
   CaseLibrarySection,
   HomeLab,
   LazyAttackCoverage,
@@ -127,9 +128,9 @@ export default function BlogPage() {
       />
 
       {/* ─── Start here, the case library (filters, cards) and the videos ─── */}
-      <div className={DEFER}>
+      <LazySection id="start-here" size="lazy-h-cases">
         <CaseLibrarySection />
-      </div>
+      </LazySection>
 
       <SlashDivider label="01 // Detection" japanese="検知" origin="right" />
       <TickerStrip items={["戦術", "技術", "網羅", "証拠", "READ THE RECORD"]} />
@@ -141,8 +142,12 @@ export default function BlogPage() {
 
       <SlashDivider label="02 // Operating model" japanese="実務" origin="left" />
       <TickerStrip reverse items={["継続", "改善", "実務", "計測", "BUILD THE RECORD"]} />
-      <HomeLab />
-      <ProcessSection />
+      <LazySection id="lab" size="lazy-h-lab">
+        <HomeLab />
+      </LazySection>
+      <LazySection id="process" size="lazy-h-process">
+        <ProcessSection />
+      </LazySection>
       <LazyContributions />
     </PageShell>
   );

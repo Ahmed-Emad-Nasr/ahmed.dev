@@ -55,7 +55,8 @@
   "overrides": {
     "micromatch": "4.0.8",
     "braces": "3.0.3",
-    "glob": "10.4.5"
+    "glob": "10.4.5",
+    "minimatch@^10": "^11.0.5"
   },
   "allowScripts": {
     "unrs-resolver@1.12.2": true

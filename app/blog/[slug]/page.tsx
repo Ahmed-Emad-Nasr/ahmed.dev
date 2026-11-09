@@ -8,7 +8,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { notFound } from "next/navigation";
 import { caseEvidenceLibrary, caseScreenshotsByEvidenceId } from "@/data/cases";
-import CaseArticle from "@/components/blog/CaseArticle";
+import { CaseArticle } from "@/components/blog/dynamic";
 import { PageShell } from "@/components/ui/kit";
 import { absoluteUrl, caseUrl, summarize } from "@/lib/site";
 import { caseAttackMapping, parentTechnique, techniquesForCase } from "@/data/attack";

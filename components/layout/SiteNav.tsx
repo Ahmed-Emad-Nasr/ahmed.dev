@@ -37,6 +37,12 @@ const AREA_OF: Record<string, string> = {
   platforms: "#platforms",
 };
 
+/* Each page renders its own SiteNav, so it remounts on every page change.
+   The drop-in plays on the first page only; after that the bar is simply
+   there, instead of vanishing and bouncing back in on /blog, /gallery and
+   every case page. */
+let navEntered = false;
+
 function NavLink({
   href,
   onHome,
@@ -84,6 +90,10 @@ export default function SiteNav() {
 
   useEffect(() => {
     setMounted(true);
+    navEntered = true;
+    /* Arriving mid-page (back button, reload): start at the right width
+       instead of full width until the next scroll */
+    setScrolled(window.scrollY > 100);
   }, []);
 
   useEffect(() => {
@@ -166,7 +176,7 @@ export default function SiteNav() {
           borderTop: "2px solid #BC002D",
           clipPath: "polygon(0 0, 100% 0, 98% 100%, 2% 100%)",
         }}
-        initial={{ y: -100, opacity: 0 }}
+        initial={navEntered ? false : { y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
       >

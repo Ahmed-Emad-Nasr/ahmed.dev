@@ -5,8 +5,13 @@ export default function SectionSkeleton({
   lines?: number;
   tall?: boolean;
 }) {
+  /* data-lazy-pending: a section whose code is still on its way. A jump to an
+     anchor (lib/perf/jump.ts → revealAll) waits for these to go, so a
+     navbar link from /blog or /gallery to /#work lands on the section, not
+     on a skeleton that is about to change height. */
   return (
     <section
+      data-lazy-pending=""
       aria-hidden="true"
       className={`mx-auto w-full max-w-7xl px-6 md:px-20 ${tall ? "py-32" : "py-24"}`}
     >

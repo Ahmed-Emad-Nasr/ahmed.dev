@@ -1,15 +1,17 @@
 "use client";
 
 /*
- * The blog page's dynamic imports (next/dynamic only code-splits when called
- * from a Client Component). The library remains server-rendered; ATT&CK,
- * detections and the triage quiz mount lazily near the viewport.
+ * The blog's dynamic imports (next/dynamic only code-splits when called from
+ * a Client Component). Every section is its own chunk and mounts lazily —
+ * in idle time or near the viewport (LazySection, lib/perf/lazy.tsx).
  */
 
 import dynamic from "next/dynamic";
 import LazySection, { preloadable } from "@/lib/perf/lazy";
 import SectionSkeleton from "@/components/ui/SectionSkeleton";
 
+export const AreaIntro = dynamic(() => import("@/components/ui/AreaIntro"));
+export const CaseArticle = dynamic(() => import("@/components/blog/CaseArticle"));
 export const CaseLibrarySection = dynamic(() => import("@/components/blog/CaseLibrarySection"), {
   loading: () => <SectionSkeleton lines={4} tall />,
 });

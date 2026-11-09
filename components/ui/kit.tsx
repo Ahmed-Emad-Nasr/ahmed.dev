@@ -123,10 +123,6 @@ export function PageShell({ children, className = "", showLoader = false }: { ch
 
 /* ── The 404 and error pages (not-found.tsx, error.tsx) ── */
 
-/* A below-the-fold section the browser may skip until it nears the viewport
-   (pre-rendered in idle time by lib/perf/PageEffects.tsx) */
-export const DEFER = "cv-defer [content-visibility:auto] [contain-intrinsic-size:auto_1200px]";
-
 export const statusPage = "relative min-h-screen flex items-center px-6 md:px-20 pt-36 pb-24 overflow-hidden";
 export const statusInner = "relative z-10 w-full max-w-4xl mx-auto";
 export const statusCode =

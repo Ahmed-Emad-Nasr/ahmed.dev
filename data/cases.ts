@@ -4,8 +4,7 @@
  * id.
  */
 
-import type { CaseEvidence } from "@/app/core/lib/shared";
-import { isReportType } from "@/app/core/lib/shared";
+import { isReportType, type CaseEvidence } from "@/lib/shared";
 
 const buildScreenshotRange = (
   folder: string,

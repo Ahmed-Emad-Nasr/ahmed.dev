@@ -32,6 +32,20 @@ export function pageOf(id: string): SitePage {
 }
 
 /**
+ * Inline script for every page (layout.tsx). With a basePath, Next's static
+ * export fetches the home page's data from "/ahmed.dev.txt" — outside the
+ * site, so on GitHub Pages every client-side trip back home 404'd and fell
+ * back to a full reload. The file really is "/ahmed.dev/index.txt"; this
+ * points that one request there. `base` is the deploy prefix.
+ */
+export function homeDataFixScript(base: string): string {
+  if (!base) return "";
+  const bad = JSON.stringify(`${base}.txt`);
+  const good = JSON.stringify(`${base}/index.txt`);
+  return `(function(){var f=window.fetch;if(!f)return;window.fetch=function(i,o){try{var r=typeof i==="string"||i instanceof URL,u=new URL(r?String(i):i.url,location.href);if(u.origin===location.origin&&u.pathname===${bad}){u.pathname=${good};i=r?u.href:new Request(u.href,i)}}catch(e){}return f.call(this,i,o)}})();`;
+}
+
+/**
  * Inline script for the home page: an old link to one of the blog's or
  * gallery's sections opens the target page with the same filters and anchor.
  * Runs before paint, so the home page never flashes first. `base` is the

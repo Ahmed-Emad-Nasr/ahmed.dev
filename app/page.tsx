@@ -3,19 +3,20 @@
  * contact, with a door to /blog. Section order follows the Sensei-Dev portfolio
  * (github.com/MostafaSensei106/Sensei-Dev, GPL-3.0).
  *
- * Loading: text sections are in the HTML; interactive ones are split
- * per section; off-screen sections use
- * content-visibility (DEFER) and off-screen loops pause (lib/perf/).
+ * Loading: the hero is its own chunk; every section after it is lazy —
+ * not in the HTML, its code fetched and the section mounted in idle time or
+ * when the reader nears it (LazySection, lib/perf/lazy.tsx). Off-screen
+ * loops pause (lib/perf/).
  */
 
 import type { Metadata } from "next";
-import HeroSection from "@/components/home/HeroSection";
 import { RolesCards } from "@/components/home/RolesCards";
 import StatsBar from "@/components/home/StatsBar";
 import SiteNav from "@/components/layout/SiteNav";
 import PageEffects from "@/lib/perf/PageEffects";
 import AppLoader from "@/components/layout/AppLoader";
 import {
+  HeroSection,
   WorkShowcase,
   ExperienceTimeline,
   TeachingSection,
@@ -32,7 +33,7 @@ import { knowledgeEducationItems } from "@/data/experience";
 import { OG_IMAGE } from "@/lib/site";
 import { KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd } from "@/lib/seo";
 import { normalizePublicHref } from "@/lib/shared";
-import { DEFER } from "@/components/ui/kit";
+import LazySection from "@/lib/perf/lazy";
 import { homeForwardScript } from "@/lib/routes";
 import SlashDivider from "@/components/ui/SlashDivider";
 import TickerStrip from "@/components/ui/TickerStrip";
@@ -169,29 +170,37 @@ export default async function Home() {
 
       {/* ═══ 01 · The pitch: who → roles → proof → experience ═══ */}
       <HeroSection description={LIVE_COPY.heroDescription} evidenceLabel={LIVE_COPY.heroEvidence} />
-      <RolesCards />
-      <StatsBar stats={LIVE_COPY.stats} />
+      <LazySection id="roles" size="lazy-h-roles">
+        <RolesCards />
+      </LazySection>
+      <LazySection size="lazy-h-stats">
+        <StatsBar stats={LIVE_COPY.stats} />
+      </LazySection>
 
       <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
       <TickerStrip />
 
-      <WorkShowcase items={workItems} />
+      <LazySection id="work" size="lazy-h-work">
+        <WorkShowcase items={workItems} />
+      </LazySection>
       <div id="experience">
-        <ExperienceTimeline />
+        <LazySection size="lazy-h-experience">
+          <ExperienceTimeline />
+        </LazySection>
       </div>
 
-      {/* Everything below the experience timeline uses no scroll-measured
-          animation, so the browser may skip it until it nears the viewport. */}
-      <div className={DEFER}>
+      <LazySection id="teaching" size="lazy-h-teaching">
         <TeachingSection />
-      </div>
+      </LazySection>
 
-      <div className={DEFER}>
+      <LazySection id="platforms" size="lazy-h-platforms">
         <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
-      </div>
+      </LazySection>
 
-      <div id="contact" className={`mt-20 ${DEFER}`}>
-        <ContactFooter />
+      <div id="contact" className="mt-20">
+        <LazySection size="lazy-h-contact">
+          <ContactFooter />
+        </LazySection>
       </div>
     </main>
   );

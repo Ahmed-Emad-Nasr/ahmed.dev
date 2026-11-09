@@ -1422,6 +1422,111 @@
   contain-intrinsic-size: auto var(--lazy-h, 100svh);
 }
 /* Expected heights, measured on the built site (phone / tablet / desktop) */
+/* Every lazy section's expected height (measured), so anchors and the
+   scrollbar are right before it mounts */
+.lazy-h-roles {
+  --lazy-h: 4300px;
+}
+.lazy-h-stats {
+  --lazy-h: 170px;
+}
+.lazy-h-work {
+  --lazy-h: 6550px;
+}
+.lazy-h-experience {
+  --lazy-h: 10300px;
+}
+.lazy-h-teaching {
+  --lazy-h: 3600px;
+}
+.lazy-h-platforms {
+  --lazy-h: 2150px;
+}
+.lazy-h-contact {
+  --lazy-h: 1780px;
+}
+.lazy-h-cases {
+  --lazy-h: 8250px;
+}
+.lazy-h-lab {
+  --lazy-h: 960px;
+}
+.lazy-h-process {
+  --lazy-h: 1350px;
+}
+.lazy-h-gallery {
+  --lazy-h: 21900px;
+}
+@media (min-width: 48rem) {
+  .lazy-h-roles {
+    --lazy-h: 2450px;
+  }
+  .lazy-h-stats {
+    --lazy-h: 150px;
+  }
+  .lazy-h-work {
+    --lazy-h: 4250px;
+  }
+  .lazy-h-experience {
+    --lazy-h: 9200px;
+  }
+  .lazy-h-teaching {
+    --lazy-h: 2850px;
+  }
+  .lazy-h-platforms {
+    --lazy-h: 2100px;
+  }
+  .lazy-h-contact {
+    --lazy-h: 1700px;
+  }
+  .lazy-h-cases {
+    --lazy-h: 5100px;
+  }
+  .lazy-h-lab {
+    --lazy-h: 1030px;
+  }
+  .lazy-h-process {
+    --lazy-h: 980px;
+  }
+  .lazy-h-gallery {
+    --lazy-h: 12400px;
+  }
+}
+@media (min-width: 64rem) {
+  .lazy-h-roles {
+    --lazy-h: 1420px;
+  }
+  .lazy-h-stats {
+    --lazy-h: 80px;
+  }
+  .lazy-h-work {
+    --lazy-h: 3200px;
+  }
+  .lazy-h-experience {
+    --lazy-h: 6400px;
+  }
+  .lazy-h-teaching {
+    --lazy-h: 1850px;
+  }
+  .lazy-h-platforms {
+    --lazy-h: 1280px;
+  }
+  .lazy-h-contact {
+    --lazy-h: 1100px;
+  }
+  .lazy-h-cases {
+    --lazy-h: 3900px;
+  }
+  .lazy-h-lab {
+    --lazy-h: 1220px;
+  }
+  .lazy-h-process {
+    --lazy-h: 760px;
+  }
+  .lazy-h-gallery {
+    --lazy-h: 8350px;
+  }
+}
 .lazy-h-contributions {
   --lazy-h: 1110px;
 }

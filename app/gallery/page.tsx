@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { PageShell } from "@/components/ui/kit";
-import ArtGallery from "@/components/gallery/ArtGallery";
+import { ArtGallery } from "@/components/gallery/dynamic";
+import LazySection from "@/lib/perf/lazy";
+import PageEffects from "@/lib/perf/PageEffects";
 import { absoluteUrl, OG_IMAGE } from "@/lib/site";
 import { jsonLd, PERSON_REF, SITE_URL } from "@/lib/seo";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
@@ -51,7 +53,10 @@ export default function GalleryPage() {
   return (
     <PageShell showLoader>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData() }} />
-      <ArtGallery />
+      <PageEffects />
+      <LazySection id="art" size="lazy-h-gallery">
+        <ArtGallery />
+      </LazySection>
     </PageShell>
   );
 }
