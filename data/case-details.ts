@@ -1743,4 +1743,102 @@ export const caseDetails: Record<string, CaseDetail> = {
       "Cryptographically bind every password reset token to the single user ID that requested it in the backend database, and ignore client-supplied username fields",
     ],
   },
+  "threat-intelligence-for-soc": {
+    verdict: "Compromised internal host (10.10.196.49) and 12 sinkholed domains (including twizt.ru) identified via Kibana, Uncoder.io, Sigma & ElastAlert",
+    severity: "High",
+    facts: [
+      { label: "Platform", value: "TryHackMe · Threat Intelligence for SOC" },
+      { label: "SIEM / Index", value: "Elastic Stack (Kibana) · filebeat-* (2023-02-14 to 2023-02-17)" },
+      { label: "Compromised Host", value: "10.10.196.49 (48 IOC hits across 7 unique C2 IPs)" },
+      { label: "DNS Sinkhole IP", value: "192.168.5.13 (115 hits across 12 unique domains)" },
+      { label: "Tools", value: "Kibana, Uncoder.io, Sigma Rules, ElastAlert, SSH / Linux CLI" },
+    ],
+    chain: [
+      { step: "Normalized a raw defanged IOC feed (11 unique IPv4s) in Uncoder.io and queried Kibana (destination.ip), isolating 48 hits from host 10.10.196.49", technique: "T1071" },
+      { step: "Tracked 21 outbound connections to 185.224.128.215 and HTTP port 80 connections to 107.175.202.151", technique: "T1071.001" },
+      { step: "Queried DNS telemetry for agrosaoxe.info (11 hits) and sinkhole IP 192.168.5.13 (115 hits across 12 malicious domains)", technique: "T1071.004" },
+      { step: "Translated a DNS Sinkhole Sigma rule into an ElastAlert rule (~/elastalert/rules/sinkhole.yaml) and generated 40 alerts across 7 domains including twizt.ru" },
+    ],
+    iocs: [
+      { type: "ip", value: "10.10.196.49", note: "Compromised internal host" },
+      { type: "ip", value: "185.224.128.215", note: "External C2 IP (21 connections)" },
+      { type: "ip", value: "107.175.202.151", note: "External C2 IP (TCP port 80)" },
+      { type: "ip", value: "192.168.5.13", note: "Internal DNS sinkhole resolver" },
+      { type: "domain", value: "agrosaoxe.info", note: "Sinkholed malicious domain (11 queries)" },
+      { type: "domain", value: "twizt.ru", note: "Malicious .ru domain flagged by ElastAlert" },
+    ],
+    detection: [
+      {
+        title: "Kibana KQL — DNS Sinkhole & IOC Feed Hunting",
+        lang: "kql",
+        code: `destination.ip:("135.181.103.89" OR "185.224.126.215" OR "185.224.128.215" OR "107.175.202.151")
+dns.question.name: "agrosaoxe.info"
+dns.answers.data: "192.168.5.13"`,
+      },
+    ],
+    response: [
+      "Isolate host 10.10.196.49 for full endpoint forensic triage and malware eradication",
+      "Block all 11 external C2 IPv4 indicators at the perimeter firewall and route newly discovered C2 domains to the DNS sinkhole (192.168.5.13)",
+      "Deploy the Sigma-derived ElastAlert rule in production to trigger real-time SOC alerts whenever internal hosts query sinkholed domains",
+    ],
+  },
+  "ir-timeline-analysis": {
+    verdict: "Reconstructed Windows & Linux breach timelines via Plaso (Log2Timeline, Pinfo, Psort) and Timesketch, uncovering cron persistence (app.py) and SSH compromise on PID 1669",
+    severity: "High",
+    facts: [
+      { label: "Platform", value: "TryHackMe · IR Timeline Analysis" },
+      { label: "Analysis Host", value: "10.129.151.23 (DFIR_Timelines_v3 · SSH & Timesketch :8080)" },
+      { label: "Evidence Files", value: "Jimmy_timeline.plaso, Forensic_Image_b4dm755.E01, Timeline_Challenge.plaso (.dd)" },
+      { label: "Events Parsed", value: "482,017 (Jimmy) · 48 (B4DM755) · 824,802 across 189,100 sources (Challenge)" },
+      { label: "Tools", value: "Plaso (log2timeline v20240308, pinfo.py, psort.py), Timesketch, grep" },
+    ],
+    chain: [
+      { step: "Audited Jimmy_timeline.plaso with pinfo.py (4,982 event sources, 482,017 total events, 50 firefox_history events) and processed Forensic_Image_b4dm755.E01 via log2timeline --storage-file & psort to pinpoint /interview.txt creation at 14:02:34 UTC" },
+      { step: "Analyzed Jimmy Supertimeline in Timesketch across 48 data types and 34,870 EVTX Gap Analysis entries, uncovering a Bing search for 'how to disappear without a trace?' and Microsoft Antimalware Service execution (MsMpEng.exe)", technique: "T1070" },
+      { step: "Examined Timeline_Challenge.plaso (189,100 sources, 824,802 events, 14,718 dpkg events, 5,408 tags with login_failed highest) by exporting challenge_events.csv via psort.py" },
+      { step: "Identified a persistent cronjob executing /usr/bin/python3 /var/opt/app/app.py under user smokey", technique: "T1053.003" },
+      { step: "Correlated auth.log and systemd_journal records for sshd[1669], confirming failed login attempts followed by an accepted SSH login for user smokey from 10.10.147.234:39802", technique: "T1110.001" },
+    ],
+    timeline: [
+      { time: "2021-12-07 01:04:30 UTC", event: "CRON[711] executes /usr/bin/python3 /var/opt/app/app.py as user smokey" },
+      { time: "2021-12-07 02:16:24 UTC", event: "/var/opt/app/app.py file stat Modification & Creation timestamps recorded (UID 1000)" },
+      { time: "2023-03-30 22:52:52 UTC", event: "Content Modification Time recorded for TSK:/interview.txt in B4DM755 image" },
+      { time: "2023-03-31 14:02:34 UTC", event: "Creation Time (Birth) & Last Access Time (14:02:36 UTC) recorded for TSK:/interview.txt" },
+      { time: "2024-03-27 06:15:30 UTC", event: "sshd[1669]: PAM authentication failure for user smokey from 10.10.147.234 port 39802" },
+      { time: "2024-03-27 06:15:47 UTC", event: "sshd[1669]: Accepted password for user smokey from 10.10.147.234 port 39802 ssh2 (session opened)" },
+    ],
+    iocs: [
+      { type: "ip", value: "10.10.147.234", note: "Attacker IP performing SSH brute force & login as smokey (port 39802)" },
+      { type: "account", value: "smokey", note: "Compromised Linux account running persistent cronjob & SSH session (PID 1669)" },
+      { type: "file", value: "/var/opt/app/app.py", note: "Python script executed repeatedly via smokey's cronjob" },
+      { type: "file", value: "C:\\Program Files\\Microsoft Security Client\\MsMpEng.exe", note: "Microsoft Antimalware Service binary in Jimmy Supertimeline" },
+      { type: "file", value: "/interview.txt", note: "Target artifact in Forensic_Image_b4dm755.E01 (created 14:02:34 UTC)" },
+      { type: "hash", value: "a2407e0f3c80d01d2369f15e2b8aa279e790eaa0b1d20ab71cd35c2c7f5aee71", note: "Timesketch event hash for successful SSH login on PID 1669" },
+    ],
+    detection: [
+      {
+        title: "Plaso (Log2Timeline, Pinfo & Psort) — Forensic Timeline Extraction & Filtering",
+        lang: "bash",
+        code: `# Inspect Plaso storage metadata & parser counts
+pinfo.py /home/analyst/Desktop/Timelines/Task4/Jimmy_timeline.plaso | grep "Total :"
+pinfo.py /home/analyst/Desktop/Timelines/Task4/Jimmy_timeline.plaso | grep "firefox_history"
+pinfo.py /home/analyst/Desktop/Timelines/Task6/Timeline_Challenge.plaso
+
+# Generate Plaso supertimeline from E01 image & export to CSV
+log2timeline.py --storage-file Forensic_Image_b4dm755.plaso Forensic_Image_b4dm755.E01
+psort.py -o dynamic -w b4dm755.csv Forensic_Image_b4dm755.plaso
+grep -i "interview.txt" b4dm755.csv
+
+# Export Challenge timeline & hunt cron persistence and SSH PID 1669
+psort.py -o dynamic -w challenge_events.csv Timeline_Challenge.plaso
+grep -a -i "app.py" challenge_events.csv
+grep -a -i "sshd" challenge_events.csv | grep -a "1669"`,
+      },
+    ],
+    response: [
+      "Remove the unauthorized cronjob entry for user smokey and quarantine /var/opt/app/app.py for reverse engineering",
+      "Terminate active sessions for user smokey, rotate credentials, and block attacker IP 10.10.147.234 at the host and perimeter firewalls",
+      "Enforce SSH key-based authentication with fail2ban rate limiting and monitor /var/log/auth.log and systemd-journald in real time",
+    ],
+  },
 };

@@ -1,11 +1,11 @@
 /*
  * The case library: every report, write-up and lab, with its screenshots.
  * A case's id is its URL (/blog/<id>); other data files reference cases by
- * id (npm run check:data verifies them).
+ * id.
  */
 
-import type { CaseEvidence } from "@/lib/shared";
-import { isReportType } from "@/lib/shared";
+import type { CaseEvidence } from "@/app/core/lib/shared";
+import { isReportType } from "@/app/core/lib/shared";
 
 const buildScreenshotRange = (
   folder: string,
@@ -18,6 +18,7 @@ const buildScreenshotRange = (
     .map((n) => `Assets/Cases/${folder}/Screenshot (${n}).webp`);
 
 export const caseScreenshotsByEvidenceId: Record<string, string[]> = {
+  "ir-timeline-analysis": Array.from({ length: 32 }, (_, i) => `Assets/Cases/IR Timeline/Screenshot (${555 + i}).webp`),
   "threat-intelligence-for-soc": Array.from({ length: 20 }, (_, i) => `Assets/Cases/Threat Inteligence For SOC/Screenshot (${531 + i}).webp`),
   "vulnerability-scanning-tools": Array.from({ length: 25 }, (_, i) => `Assets/Cases/Vulnerability Scanning Tools/Screenshot (${418 + i}).webp`),
   "guided-pentest-infrastructure": Array.from({ length: 29 }, (_, i) => `Assets/Cases/Guided Pentest Infrastructure/Screenshot (${387 + i}).webp`),
@@ -1400,7 +1401,7 @@ export const caseEvidenceLibrary: CaseEvidence[] = [
     date: "2026-04-08",
     image: "Assets/Cases/SET TOOL Writeup/Screenshot (32).webp",
   },
-{
+  {
     id: "threat-intelligence-for-soc",
     title: "Threat Intelligence for SOC Walkthrough (Kibana, Uncoder.io, Sigma & ElastAlert)",
     description: "Completed an end-to-end Cyber Threat Intelligence (CTI) and Detection Engineering investigation in TryHackMe's 'Threat Intelligence for SOC' room. Phase 1 — Threat Intelligence Feeds & IOC Hunting: Analyzed Strategic, Technical, Tactical, and Operational CTI classifications and the roles of CTI Producers and Consumers. Processed a raw, defanged IOC feed using Uncoder.io to strip defanging brackets, remove duplicates across 11 unique IPv4 indicators, and generate an Elastic Stack Query (`destination.ip:(\"135.181.103.89\" OR \"185.224.126.215\" OR \"185.224.128.215\" ...)`). Executed the query in Kibana against the `filebeat-*` index (timeframe `02/14/2023` to `02/17/2023`), uncovering 48 total IOC hits across 7 unique destination IPs, 21 outbound connections to `185.224.128.215`, port `80` traffic to `107.175.202.151`, and identifying the compromised internal host as `10.10.196.49`. Phase 2 — Intelligence-Driven Prevention & DNS Sinkhole Hunting: Evaluated firewall IP blocking, email gateway domain filtering, and DNS sinkholing. Queried Kibana DNS telemetry (`dns.question.name: \"agrosaoxe.info\"`), identifying 11 DNS queries that resolved to external IPs `104.21.48.143` and `172.67.186.179` prior to sinkhole deployment, and internal sinkhole IP `192.168.5.13` post-deployment. Hunted all sinkholed traffic using `dns.answers.data: \"192.168.5.13\"`, correlating 115 total hits across 12 unique malicious domains. Phase 3 — Intelligence-Driven Detection with Sigma & ElastAlert: Translated a DNS Sinkhole Sigma rule hunting `0.0.0.0` resolutions into an ElastAlert rule via Uncoder.io (`alert: debug`). Connected to the target Linux machine via SSH, configured `~/elastalert/rules/sinkhole.yaml` targeting the `filebeat-*` index, and executed `elastalert --start 2023-02-16T00:00:00 --verbose 2>&1 | tee output.txt`, generating 40 alerts across 7 unique sinkholed domains and isolating the malicious `.ru` domain `twizt.ru`.",
@@ -1414,6 +1415,21 @@ export const caseEvidenceLibrary: CaseEvidence[] = [
     readTime: 16,
     date: "2026-11-02",
     image: "Assets/Cases/Threat Inteligence For SOC/Screenshot (551).webp",
+  },
+  {
+    id: "ir-timeline-analysis",
+    title: "IR Timeline Analysis Walkthrough (Plaso, Log2Timeline, Pinfo, Psort & Timesketch)",
+    description: "Completed an end-to-end Digital Forensics and Incident Response (DFIR) timeline investigation across all 7 tasks of TryHackMe's 'IR Timeline Analysis' room on host 10.129.151.23 (DFIR_Timelines_v3). Phase 1 — Timeline Fundamentals & Artifact Acquisition: Reviewed sequential event analysis, MACB timestamp tags (Modification, Access, Change, Birth), UTC time synchronization, time carving from unallocated space, and temporal correlation across logs and registry hives. Evaluated Quick, Super, and Mini timelines alongside evidence integrity controls (forensic imaging, chain of custody, cryptographic hashing) and compared Plaso against Autopsy for parsing file system metadata. Phase 2 — Supertimeline Generation & Filtering with Plaso (Log2Timeline, Pinfo & Psort): Connected via SSH (`analyst@10.129.151.23`) to examine forensic evidence in `/home/analyst/Desktop/Timelines/Task4/`. Audited `Jimmy_timeline.plaso` using `pinfo.py`, identifying 4,982 parsed event sources, 482,017 total events, and 50 `firefox_history` events. Generated a new Plaso storage file from `Forensic_Image_b4dm755.E01` using `log2timeline.py --storage-file Forensic_Image_b4dm755.plaso`, exported 48 MACB-grouped events to `b4dm755.csv` via `psort.py`, and extracted the exact creation (Birth) timestamp of `/interview.txt` (`2023-03-31T14:02:34 UTC`). Phase 3 — Collaborative Timeline Hunting with Timesketch & Practical Challenge: Investigated the `Jimmy Supertimeline` sketch in Timesketch (`http://10.129.151.23:8080`), analyzing 48 distinct data types, 34,870 `EVTX Gap Analysis` entries, `windows:evtx:record` telemetry, a Bing search for `\"how to disappear without a trace?\"`, and the execution path `C:\\Program Files\\Microsoft Security Client\\MsMpEng.exe`. Finally, investigated `Timeline_Challenge.plaso` (built from `Timeline_Challenge.dd`) in `/home/analyst/Desktop/Timelines/Task6/` using `pinfo.py`, `psort.py -o dynamic -w challenge_events.csv`, and Timesketch (`Challenge` sketch) — correlating 189,100 event sources, 824,802 total events, 14,718 `dpkg` events, and 5,408 tagged events (`login_failed` highest) to uncover a persistent cronjob executing `/usr/bin/python3 /var/opt/app/app.py` under user `smokey` and a successful SSH login on PID `1669` from `10.10.147.234` (event hash `a2407e0f3c80d01d2369f15e2b8aa279e790eaa0b1d20ab71cd35c2c7f5aee71`).",
+    platform: "TryHackMe",
+    type: "Walkthrough",
+    category: "Digital Forensics",
+    difficulty: "Medium",
+    tags: ["TryHackMe", "DFIR", "Incident Response", "Timeline Analysis", "Plaso", "Log2Timeline", "Timesketch", "MACB Timestamps", "EVTX"],
+    tools: ["Plaso (log2timeline.py, pinfo.py, psort.py)", "Timesketch", "Autopsy", "SSH / Linux CLI"],
+    skillsGained: ["Supertimeline Generation & Parsing", "MACB Timestamp & File Stat Analysis", "Timesketch Querying & EVTX Gap Analysis", "Cronjob Persistence & SSH Brute-Force Reconstruction", "Forensic Evidence Integrity"],
+    readTime: 18,
+    date: "2026-11-06",
+    image: "Assets/Cases/IR Timeline/Screenshot (586).webp",
   },
 ] as const;
 
