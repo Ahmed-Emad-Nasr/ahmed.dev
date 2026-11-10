@@ -17,10 +17,22 @@ import { prefersReducedMotion } from "@/lib/fx";
  *   1500         → safety timeout: it always disappears by then
  *   The slide-up exit animation is the `exit` prop on the motion.div below.
  * Click anywhere on it to skip.
+ *
+ * ONCE PER VISIT: it plays on the first page you open (whichever page that
+ * is). Moving around the site afterwards — Home, Blog, Gallery, a case —
+ * does not play it again. Reloading the page or opening the site in a new
+ * tab is a new visit, so it plays again then.
  */
 
 /* The kanji shown one after another while it loads (left → right = 0% → 100%) */
 const BOOT_WORDS = ["起動中", "武士道", "鍛錬", "技術調整", "出陣"];
+
+/* Set to true the first time the loader starts. It lives as long as the
+   page's JavaScript does, so in-site navigation (which keeps the JS) sees it,
+   while a reload or a new tab starts fresh with false. The first render
+   after a full load still starts visible, exactly as in the HTML — so React
+   finds the same markup it expects and nothing flickers. */
+let introPlayed = false;
 
 /**
  * Minimal boot screen: monogram and cycling kanji.
@@ -29,13 +41,16 @@ const BOOT_WORDS = ["起動中", "武士道", "鍛錬", "技術調整", "出陣"
  * content on repeat visits (it also covers the hero's GSAP set-up).
  */
 export default function AppLoader() {
-  const [loading, setLoading] = useState(true);
+  /* Already played during this visit → start (and stay) hidden */
+  const [loading, setLoading] = useState(() => !introPlayed);
   const [progress, setProgress] = useState(0);
   const [reduced] = useState(
     () => typeof window !== "undefined" && prefersReducedMotion(),
   );
 
   useEffect(() => {
+    if (!loading) return; // already played, or just finished
+    introPlayed = true;
     let raf = 0;
     let doneTimer: NodeJS.Timeout | undefined;
     const start = performance.now();
@@ -61,7 +76,7 @@ export default function AppLoader() {
       clearTimeout(fallback);
       if (doneTimer) clearTimeout(doneTimer);
     };
-  }, [reduced]);
+  }, [loading, reduced]);
 
   /* Which kanji to show for the current progress */
   const word =

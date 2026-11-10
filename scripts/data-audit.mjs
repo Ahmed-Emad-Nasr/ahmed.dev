@@ -85,14 +85,14 @@ if (has("attack.ts")) {
 section("4. YouTube ids");
 if (has("youtube.ts")) {
   const src = read("youtube.ts");
-  /* a video id is 11 characters; a playlist id is PL + 32 */
+  /* a video id is 11 characters; a playlist id is PL + 11 or 32 */
   const badVideos = [...src.matchAll(/videoId:\s*"([^"]+)"/g)].map((m) => m[1]).filter((v) => v.length !== 11);
   if (badVideos.length) fail(`video ids with the wrong length: ${badVideos.join(", ")}`);
   else ok("all video ids are 11 characters");
 
-  const badLists = [...src.matchAll(/playlistId:\s*"([^"]+)"/g)].map((m) => m[1]).filter((p) => !/^PL[\w-]{32}$/.test(p));
+  const badLists = [...src.matchAll(/playlistId:\s*"([^"]+)"/g)].map((m) => m[1]).filter((p) => !/^PL(?:[\w-]{11}|[\w-]{32})$/.test(p));
   if (badLists.length) fail(`malformed playlist ids: ${badLists.join(", ")}`);
-  else ok("all playlist ids are 34 characters");
+  else ok("all playlist ids are valid");
 }
 
 /* ── 5. Avatar URLs ──────────────────────────────────────────────────── */

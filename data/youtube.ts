@@ -382,21 +382,21 @@ export const blogFeaturedYoutubeVideo: FeaturedYoutubeVideo = {
 };
 
 export const blogYoutubePlaylists: BlogYoutubePlaylist[] = [
-  {
+ {
     playlistId: "PLO1VSSKnwZUgbiE0ev1TUr5wPI9kxxbgL",
     title: "Wazuh",
     description: "Complete Wazuh SIEM setup, configuration, and operation tutorials for SOC environments.",
     sourceUrl: "https://youtube.com/playlist?list=PLO1VSSKnwZUgbiE0ev1TUr5wPI9kxxbgL&si=nVzc9L5Kmxhlc1Rc",
     tags: ["SIEM", "Wazuh", "Security", "Configuration"],
-    videoCount: 12,
+    videoCount: 14,
   },
   {
     playlistId: "PLO1VSSKnwZUgdrITjagQD0mikt6Xk64yX",
     title: "Wazuh Threat Emulation",
     description: "Threat emulation and attack simulation using Wazuh for advanced security testing.",
-    sourceUrl: "https://youtube.com/playlist?list=PLO1VSSKnwZUgdrITjagQD0mikt6Xk64yX&si=ANb4u1blPp4gyc5F",
+    sourceUrl: "https://youtube.com/playlist?list=PLO1VSSKnwZUgdrITjagQD0mikt6Xk64yX&si=72MssxkHfKRfA3wU",
     tags: ["Threat Emulation", "Wazuh", "Testing", "Red Team"],
-    videoCount: 8,
+    videoCount: 16,
   },
   {
     playlistId: "PLO1VSSKnwZUgGaiDZXU-mKuh8CUZx-gAd",
@@ -404,7 +404,39 @@ export const blogYoutubePlaylists: BlogYoutubePlaylist[] = [
     description: "A complete walkthrough of my malware analysis project. This series covers the step-by-step methodology, safe environment setup, and the practical use of industry-standard tools for both static and dynamic analysis.",
     sourceUrl: "https://youtube.com/playlist?list=PLO1VSSKnwZUgGaiDZXU-mKuh8CUZx-gAd",
     tags: ["SOC", "DFIR", "Cybersecurity"],
-    videoCount: 5,
+    videoCount: 11,
+  },
+  {
+    playlistId: "PLWgsM4fK9Xls",
+    title: "Cybersecurity Basics",
+    description: "Core cybersecurity and Blue Team fundamentals covering system hardening, vulnerability assessment vs. penetration testing, compliance, and essential security concepts.",
+    sourceUrl: "https://youtube.com/playlist?list=PLWgsM4fK9Xls&si=7cj70cmIeKRn9GF5",
+    tags: ["Cybersecurity", "Blue Team", "Fundamentals", "GRC"],
+    videoCount: 14,
+  },
+  {
+    playlistId: "PLcw8B9lEwARs",
+    title: "Enterprise Vulnerability Assessment & Attack Lifecycle Simulation",
+    description: "End-to-end vulnerability assessment, exploitation, and attack lifecycle simulation across an enterprise environment to identify and remediate security gaps.",
+    sourceUrl: "https://youtube.com/playlist?list=PLcw8B9lEwARs&si=-Z3X0Gl-D7zNusTF",
+    tags: ["Vulnerability Assessment", "Attack Simulation", "Pentesting", "Enterprise Security"],
+    videoCount: 18,
+  },
+  {
+    playlistId: "PLLzq933rD6WE",
+    title: "SOC Environment",
+    description: "Building and operating a complete Security Operations Center lab environment integrating SIEM, firewall, IDS/IPS, and automated detection rules.",
+    sourceUrl: "https://youtube.com/playlist?list=PLLzq933rD6WE&si=steXqlc1qRKFfqds",
+    tags: ["SOC", "SIEM", "Network Security", "Detection Engineering"],
+    videoCount: 10,
+  },
+  {
+    playlistId: "PLPDYYur6-Ax4",
+    title: "VerifAI360 Compliance Framework",
+    description: "Walkthrough and demonstrations of the VerifAI360 framework for automated security compliance verification, auditing, and governance.",
+    sourceUrl: "https://youtube.com/playlist?list=PLPDYYur6-Ax4&si=16M89hV_5VgBaHwV",
+    tags: ["Compliance", "GRC", "AI Security", "Auditing"],
+    videoCount: 1,
   },
   /*
    * Two playlists are parked here until their full ids are available:
