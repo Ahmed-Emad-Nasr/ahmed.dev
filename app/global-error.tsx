@@ -40,8 +40,8 @@ export default function GlobalError({
           The site failed to load
         </h1>
         <p style={{ margin: 0, maxWidth: "42ch", lineHeight: 1.6, color: "#a59f90" }}>
-          Something went wrong before the page could render. Reloading usually
-          fixes it.
+          The page could not be shown. The fault is on the site, not on your
+          device — reloading usually fixes it.
         </p>
         <button
           type="button"

@@ -15,6 +15,14 @@
  *   the PDF report → ReportViewer (embedded viewer + download)
  * The field names and allowed values are the CaseDetail type at the top of
  * data/case-details.ts. Add a field there + a block here to show something new.
+ *
+ * The case page is laid out as plain-language chapters, so the blocks are
+ * drawn one `part` at a time (see CaseArticle.tsx):
+ *   part="happened" → team, key facts, how the attack unfolded, timeline
+ *   part="prevent"  → fixes and safeguards, detection rules, lessons
+ *   part="evidence" → indicators, attachments, the embedded PDF report
+ * Every block keeps its full technical content; only the titles are plain,
+ * with one sentence saying what the block is.
  */
 
 import { useCallback, useRef, useState, type ReactNode } from "react";
@@ -50,14 +58,18 @@ function useCopy() {
   return { copied, copy };
 }
 
-function SectionTitle({ icon, children, japanese, id }: { icon: ReactNode; children: ReactNode; japanese: string; id?: string }) {
+/* hint = one plain sentence under the title, before the technical content */
+function SectionTitle({ icon, children, japanese, id, hint }: { icon: ReactNode; children: ReactNode; japanese: string; id?: string; hint?: string }) {
   return (
-    <div className="flex items-center gap-3 mb-6">
-      <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
-      <span className="text-primary-ink" aria-hidden="true">{icon}</span>
-      <h2 id={id} className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">{children}</h2>
-      <span className="brush-jp text-base text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />
-      <span className="flex-1 h-px bg-gradient-to-r from-foreground/10 to-transparent" aria-hidden="true" />
+    <div className="mb-6">
+      <div className="flex items-center gap-3">
+        <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
+        <span className="text-primary-ink" aria-hidden="true">{icon}</span>
+        <h3 id={id} className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">{children}</h3>
+        <span className="brush-jp text-base text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />
+        <span className="flex-1 h-px bg-gradient-to-r from-foreground/10 to-transparent" aria-hidden="true" />
+      </div>
+      {hint && <p className="mt-2 max-w-2xl text-sm text-foreground/60 font-light leading-relaxed">{hint}</p>}
     </div>
   );
 }
@@ -87,7 +99,7 @@ export function VerdictBar({ verdict, severity }: Pick<CaseDetail, "verdict" | "
     >
       <div className="absolute inset-y-0 left-0 w-[3px] bg-primary" aria-hidden="true" />
       <div className="flex items-center gap-3 shrink-0">
-        <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.35em] text-foreground/60">Verdict</span>
+        <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.35em] text-foreground/60">In one line</span>
       </div>
       <p className="flex-1 text-base md:text-lg text-foreground font-light leading-snug">{verdict}</p>
       {severity && (
@@ -292,9 +304,9 @@ function ReportViewer({ href, title }: { href: string; title: string }) {
           onClick={() => setOpen(true)}
           className="group relative w-full border border-dashed border-foreground/15 bg-surface/40 px-6 py-10 flex flex-col items-center gap-3 hover:border-primary/50 transition-colors"
         >
-          <FileText size={28} className="text-primary-ink transition-transform duration-500 group-hover:-translate-y-1" aria-hidden="true" />
-          <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.3em] text-foreground">Read the report here</span>
-          <span className="text-xs text-foreground/60">Opens the PDF inside this page — or use View PDF above</span>
+          <FileText size={28} className="text-primary-ink transition-transform duration-500 group-hover:-translate-y-[3.4px]" aria-hidden="true" />
+          <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.3em] text-foreground">Read the full report here</span>
+          <span className="text-xs text-foreground/60">Opens the technical PDF inside this page — nothing is downloaded</span>
         </button>
       ) : (
         <div className="border border-foreground/10 bg-surface">
@@ -310,79 +322,130 @@ function ReportViewer({ href, title }: { href: string; title: string }) {
 
 /* ── The case file ───────────────────────────────────────────────────── */
 
-export default function CaseFile({ detail, href, title }: { detail: CaseDetail; href?: string; title: string }) {
-  const hasChainOrFacts = Boolean(detail.facts?.length || detail.chain?.length);
+export type CaseFilePart = "happened" | "prevent" | "evidence";
+
+/* Which parts have something to show for this case (CaseArticle uses it to
+   decide which chapters exist) */
+export const caseFileHas = (detail: CaseDetail | undefined, href?: string): Record<CaseFilePart, boolean> => ({
+  happened: Boolean(detail && (detail.team || detail.facts?.length || detail.chain?.length || detail.timeline?.length)),
+  prevent: Boolean(detail && (detail.response?.length || detail.detection?.length || detail.lessons)),
+  evidence: Boolean(href || (detail && (detail.iocs?.length || detail.attachments?.length))),
+});
+
+export default function CaseFile({ detail, href, title, part }: { detail?: CaseDetail; href?: string; title: string; part: CaseFilePart }) {
+  /* ── What happened ── */
+  if (part === "happened") {
+    if (!detail) return null;
+    const hasChainOrFacts = Boolean(detail.facts?.length || detail.chain?.length);
+    return (
+      <div className="grid gap-14">
+        {detail.team && (
+          <FadeIn y={12} duration={0.5} className="flex items-start gap-3 border border-tertiary/30 bg-tertiary/5 px-5 py-4">
+            <Users size={16} className="text-tertiary mt-0.5 shrink-0" aria-hidden="true" />
+            <p className="text-sm text-foreground/80"><span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-tertiary mr-2">Team project</span>{detail.team}</p>
+          </FadeIn>
+        )}
+
+        {hasChainOrFacts && (
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-10">
+            {detail.facts?.length ? (
+              <div>
+                <SectionTitle icon={<Fingerprint size={13} />} japanese="概要" hint="Who and what was involved.">Key facts</SectionTitle>
+                <Facts facts={detail.facts} />
+              </div>
+            ) : null}
+            {detail.chain?.length ? (
+              <div>
+                <SectionTitle
+                  icon={<GitBranch size={13} />}
+                  japanese="連鎖"
+                  hint="The attacker's moves, one after another. The T-codes link to MITRE ATT&CK, the public catalogue of attack techniques."
+                >
+                  How the attack unfolded
+                </SectionTitle>
+                <Chain chain={detail.chain} />
+              </div>
+            ) : null}
+          </div>
+        )}
+
+        {detail.timeline?.length ? (
+          <div>
+            <SectionTitle icon={<History size={13} />} japanese="時系列" hint="The same events with their dates and times.">When it happened</SectionTitle>
+            <Timeline timeline={detail.timeline} />
+          </div>
+        ) : null}
+      </div>
+    );
+  }
+
+  /* ── How to stop it happening again ── */
+  if (part === "prevent") {
+    if (!detail) return null;
+    return (
+      <div className="grid gap-14">
+        {detail.response?.length ? (
+          <div>
+            <SectionTitle
+              icon={<ShieldCheck size={13} />}
+              japanese="対応"
+              hint="What was done — or should be done — to stop the damage and close the gap."
+            >
+              Fixes and safeguards
+            </SectionTitle>
+            <ul className="grid sm:grid-cols-2 gap-3">
+              {detail.response.map((r, i) => (
+                <FadeIn as="li" y={14} duration={0.5} delay={Math.min(i, 6) * 0.06} key={i} className="flex gap-3 border border-foreground/5 bg-surface/40 px-4 py-3">
+                  <ListChecks size={14} className="text-accent shrink-0 mt-0.5" aria-hidden="true" />
+                  <span className="text-sm text-foreground/80 leading-relaxed">{r}</span>
+                </FadeIn>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {detail.detection?.length ? (
+          <div>
+            <SectionTitle
+              icon={<Code2 size={13} />}
+              japanese="検知"
+              hint="Rules a monitoring system can run so the same behaviour raises an alarm next time. This part is technical — copy the code as it is."
+            >
+              Detection rules
+            </SectionTitle>
+            <Detection items={detail.detection} />
+          </div>
+        ) : null}
+
+        {detail.lessons && (
+          <div>
+            <SectionTitle icon={<BookOpen size={13} />} japanese="教訓">What I&apos;d do differently</SectionTitle>
+            <p className="text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-5">{detail.lessons}</p>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* ── Evidence & supporting files ── */
   return (
-    <div className="grid gap-14 mb-16">
-      {detail.team && (
-        <FadeIn y={12} duration={0.5} className="flex items-start gap-3 border border-tertiary/30 bg-tertiary/5 px-5 py-4">
-          <Users size={16} className="text-tertiary mt-0.5 shrink-0" aria-hidden="true" />
-          <p className="text-sm text-foreground/80"><span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-tertiary mr-2">Team project</span>{detail.team}</p>
-        </FadeIn>
-      )}
-
-      {hasChainOrFacts && (
-        <section aria-labelledby="case-file-title" className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-10">
-          {detail.facts?.length ? (
-            <div>
-              <SectionTitle icon={<Fingerprint size={13} />} japanese="概要" id="case-file-title">Case facts</SectionTitle>
-              <Facts facts={detail.facts} />
-            </div>
-          ) : <span id="case-file-title" className="sr-only">Case file</span>}
-          {detail.chain?.length ? (
-            <div>
-              <SectionTitle icon={<GitBranch size={13} />} japanese="連鎖">Attack chain</SectionTitle>
-              <Chain chain={detail.chain} />
-            </div>
-          ) : null}
-        </section>
-      )}
-
-      {detail.timeline?.length ? (
-        <section aria-labelledby="case-timeline-title">
-          <SectionTitle icon={<History size={13} />} japanese="時系列" id="case-timeline-title">Timeline</SectionTitle>
-          <Timeline timeline={detail.timeline} />
-        </section>
-      ) : null}
-
-      {detail.iocs?.length ? (
-        <section aria-labelledby="case-iocs-title">
-          <SectionTitle icon={<Fingerprint size={13} />} japanese="痕跡" id="case-iocs-title">Indicators of compromise — {detail.iocs.length}</SectionTitle>
+    <div className="grid gap-14">
+      {detail?.iocs?.length ? (
+        <div>
+          <SectionTitle
+            icon={<Fingerprint size={13} />}
+            japanese="痕跡"
+            hint="The traces the attacker left behind — addresses, files and fingerprints other defenders can search for (called indicators of compromise, or IOCs)."
+          >
+            Traces left behind — {detail.iocs.length}
+          </SectionTitle>
           <Iocs iocs={detail.iocs} />
-        </section>
+        </div>
       ) : null}
 
-      {detail.response?.length ? (
-        <section aria-labelledby="case-response-title">
-          <SectionTitle icon={<ShieldCheck size={13} />} japanese="対応" id="case-response-title">Containment &amp; remediation</SectionTitle>
-          <ul className="grid sm:grid-cols-2 gap-3">
-            {detail.response.map((r, i) => (
-              <FadeIn as="li" y={14} duration={0.5} delay={Math.min(i, 6) * 0.06} key={i} className="flex gap-3 border border-foreground/5 bg-surface/40 px-4 py-3">
-                <ListChecks size={14} className="text-accent shrink-0 mt-0.5" aria-hidden="true" />
-                <span className="text-sm text-foreground/80 leading-relaxed">{r}</span>
-              </FadeIn>
-            ))}
-          </ul>
-        </section>
-      ) : null}
-
-      {detail.detection?.length ? (
-        <section aria-labelledby="case-detection-title">
-          <SectionTitle icon={<Code2 size={13} />} japanese="検知" id="case-detection-title">Detection content</SectionTitle>
-          <Detection items={detail.detection} />
-        </section>
-      ) : null}
-
-      {detail.lessons && (
-        <section aria-labelledby="case-lessons-title">
-          <SectionTitle icon={<BookOpen size={13} />} japanese="教訓" id="case-lessons-title">What I&apos;d do differently</SectionTitle>
-          <p className="text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-5">{detail.lessons}</p>
-        </section>
-      )}
-
-      {detail.attachments?.length ? (
-        <section aria-labelledby="case-attachments-title">
-          <SectionTitle icon={<Paperclip size={13} />} japanese="添付" id="case-attachments-title">Attachments</SectionTitle>
+      {detail?.attachments?.length ? (
+        <div>
+          <SectionTitle icon={<Paperclip size={13} />} japanese="添付" hint="Extra documents that belong to this case.">Supporting files</SectionTitle>
           <ul className="flex flex-wrap gap-3">
             {detail.attachments.map((a) => (
               <li key={a.href}>
@@ -397,16 +460,20 @@ export default function CaseFile({ detail, href, title }: { detail: CaseDetail; 
               </li>
             ))}
           </ul>
-        </section>
+        </div>
       ) : null}
 
       {href && (
-        <section aria-labelledby="case-report-title">
-          <SectionTitle icon={<FileText size={13} />} japanese="報告書" id="case-report-title">
-            The report{detail.pages ? ` — ${detail.pages} pages` : ""}
+        <div>
+          <SectionTitle
+            icon={<FileText size={13} />}
+            japanese="報告書"
+            hint="The original report, with every command, screenshot and finding."
+          >
+            The full technical report{detail?.pages ? ` — ${detail.pages} pages` : ""}
           </SectionTitle>
           <ReportViewer href={href} title={title} />
-        </section>
+        </div>
       )}
     </div>
   );

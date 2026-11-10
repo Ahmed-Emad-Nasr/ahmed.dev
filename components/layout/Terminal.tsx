@@ -374,7 +374,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
       }}
     >
       <motion.div
-        initial={{ opacity: 0, y: -12, scale: 0.98 }}
+        initial={{ opacity: 0, y: -10, scale: 0.983 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.22 }}
         className="relative flex h-[min(520px,76vh)] w-full max-w-2xl flex-col overflow-hidden border border-foreground/10 bg-surface"

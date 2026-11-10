@@ -250,12 +250,12 @@ export default function CvPage() {
 
             <div className="mt-8 flex flex-wrap gap-4 print:hidden">
               <a className={ctaPrimary} href={normalizePublicHref(CV_PDF_HREF)} download style={{ clipPath: "polygon(0 0, 100% 0, 96% 100%, 4% 100%)" }}>
-                <Download size={16} className="transition-transform duration-300 group-hover:translate-y-0.5" />
+                <Download size={16} className="transition-transform duration-300 group-hover:translate-y-[1.7px]" />
                 RESUME.pdf
                 <span className="brush-jp text-base normal-case tracking-normal opacity-70" lang="ja" aria-hidden="true" data-jp="履歴書" />
               </a>
               <PageLink className={ctaSecondary} href="/">
-                <ArrowLeft size={14} className="text-primary-ink transition-transform duration-300 group-hover:-translate-x-0.5" />
+                <ArrowLeft size={14} className="text-primary-ink transition-transform duration-300 group-hover:-translate-x-[1.7px]" />
                 ahmed.dev
               </PageLink>
             </div>
@@ -343,7 +343,6 @@ export default function CvPage() {
                   key={group.label}
                   className="spotlight spotlight-blue group relative bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-500 break-inside-avoid print:bg-transparent print:border-0 print:p-0 print:flex print:gap-[6pt]"
                 >
-                  <div className="absolute top-0 left-0 w-full h-[2px] bg-tertiary/0 group-hover:bg-tertiary transition-colors duration-500 print:hidden" aria-hidden="true" />
                   <dt className="font-display text-base font-black uppercase tracking-tight text-foreground mb-3 print:mb-0 print:text-[9pt] print:font-bold print:normal-case print:tracking-normal print:text-black print:shrink-0">
                     {group.label}
                   </dt>

@@ -232,6 +232,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         relatedVideos={relatedVideos}
         detail={caseDetails[item.id]}
         kindLabel={CASE_KINDS.find((k) => k.id === caseKindOf(item))?.short ?? "Case"}
+        kind={caseKindOf(item)}
         /* Cases that belong to a series get a "part of …" link back to the filtered library */
         collection={item.platform === "PortSwigger" ? { href: "/blog?q=PortSwigger#cases", title: "Web Security Academy Track" } : undefined}
         />

@@ -39,6 +39,7 @@ import PageLink from "@/components/ui/PageLink";
 import { Github } from "@/components/ui/BrandIcons";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import FadeIn from "@/components/ui/FadeIn";
+import { BrandGlyph } from "@/components/ui/OrgLogo";
 
 /* The filter buttons, in order. id must be a WorkType (or "all"). */
 const FILTERS: { id: WorkType | "all"; label: string; japanese: string }[] = [
@@ -83,7 +84,7 @@ export default function WorkShowcase({
         <SectionHeader
           titleA="Built &"
           titleB="Tested."
-          description="A GRC platform, labs built to be attacked, research done in isolation, and tools that came out of real triage. Every number below is in the repo."
+          description="Things I built myself: a platform that checks a company against security standards, practice networks made to be attacked, malware research done in a sealed lab, and small tools I wrote while investigating. Each card says what problem it solves; the code is public on GitHub."
         />
 
         <div
@@ -165,8 +166,10 @@ export default function WorkShowcase({
                     {w.stack.map((s) => (
                       <span
                         key={s}
-                        className="px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-tertiary bg-tertiary/10 border border-tertiary/25"
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-tertiary bg-tertiary/10 border border-tertiary/25"
                       >
+                        {/* the tool's logo, when it has one (data/logos.ts) */}
+                        <BrandGlyph name={s} />
                         {s}
                       </span>
                     ))}
@@ -220,7 +223,7 @@ export default function WorkShowcase({
                       >
                         <FileText
                           size={13}
-                          className="transition-transform duration-300 group-hover/cs:-translate-y-0.5"
+                          className="transition-transform duration-300 group-hover/cs:-translate-y-[1.7px]"
                         />{" "}
                         Case study
                       </PageLink>

@@ -35,7 +35,7 @@ type PlatformStat = { value: string; label: string };
 export type Platform = {
   id: string;
   name: string;
-  /** Short monogram for the card's mark box (no brand logos) */
+  /** Short monogram, shown when the platform has no logo in data/logos.ts */
   mark: string;
   japanese: string;
   handle: string;

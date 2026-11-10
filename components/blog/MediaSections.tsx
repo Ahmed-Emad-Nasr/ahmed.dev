@@ -74,10 +74,10 @@ const Embed = memo(function Embed({
             decoding="async"
             fetchPriority="low"
             unoptimized
-            className="object-cover grayscale group-hover/play:grayscale-0 group-hover/play:scale-105 transition-all duration-1000"
+            className="object-cover grayscale group-hover/play:grayscale-0 group-hover/play:scale-[1.0425] transition-all duration-1000"
           />
           <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover/play:bg-transparent transition-all duration-700" />
-          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-5 py-3 bg-primary text-white font-mono text-[0.625rem] font-black uppercase tracking-[0.2em] transition-transform duration-300 group-hover/play:scale-105">
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-5 py-3 bg-primary text-white font-mono text-[0.625rem] font-black uppercase tracking-[0.2em] transition-transform duration-300 group-hover/play:scale-[1.0425]">
             <Play size={13} fill="currentColor" /> {label}
           </span>
         </button>
@@ -122,7 +122,7 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
             <SectionHeader
               titleA="Watch &"
               titleB="Learn."
-              description="Walkthroughs and labs from the channel — SIEM, malware analysis, web security and GRC basics, all in one place."
+              description="Prefer watching to reading? The same topics explained on video, step by step: monitoring systems, malware analysis, web security and security-management basics."
             />
             <div className="mb-16 md:mb-20 flex flex-col items-start gap-4">
               <CounterBadge value={videos.length} top="Videos" bottom="Indexed" />
@@ -190,9 +190,9 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
               <button
                 type="button"
                 onClick={() => setVisible((n) => Math.min(videos.length, n + VIDEO_PAGE))}
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5 active:translate-y-0"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0"
               >
-                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5" />
+                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-[1.7px]" />
                 Show more
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
                   {visible}/{videos.length}
@@ -219,7 +219,6 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                     key={playlist.playlistId}
                     className="group spotlight spotlight-blue relative bg-surface/60 border border-foreground/5 hover:border-tertiary/50 transition-colors duration-500 flex flex-col overflow-hidden"
                   >
-                    <div className="absolute top-0 left-0 z-10 w-full h-[2px] bg-tertiary/0 group-hover:bg-tertiary transition-colors duration-500" aria-hidden="true" />
                     <Embed
                       id={`playlist-${playlist.playlistId}`}
                       src={`https://www.youtube-nocookie.com/embed/videoseries?list=${playlist.playlistId}`}

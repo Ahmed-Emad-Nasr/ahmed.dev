@@ -41,10 +41,10 @@ import {
   Maximize2,
   PlayCircle,
 } from "lucide-react";
-import { normalizePublicHref, getThumbnail, formatDate } from "@/lib/shared";
+import { normalizePublicHref, getThumbnail, formatDate, type CaseKind } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
 import CaseSummary from "@/components/blog/CaseSummary";
-import CaseFile, { VerdictBar } from "@/components/blog/CaseFile";
+import CaseFile, { VerdictBar, caseFileHas } from "@/components/blog/CaseFile";
 import type { CaseDetail } from "@/data/case-details";
 import {
   btnOutline,
@@ -52,6 +52,7 @@ import {
   chipTertiary,
   ctaPrimary,
   ctaSecondary,
+  Chapter,
   KanjiWatermark,
 } from "@/components/ui/kit";
 import FadeIn from "@/components/ui/FadeIn";
@@ -96,30 +97,56 @@ type RelatedVideo = {
   sourceUrl: string;
 };
 
+/* A block inside a chapter (h3), or a closing section of the page (h2).
+   hint = one plain sentence under the title. */
+/* What each kind of case is, for a reader who has never worked in security.
+   Shown first in "The goal", above the case's own (technical) objective. */
+const PLAIN_GOAL: Record<CaseKind, string> = {
+  investigation:
+    "A security alert or a suspicious file landed on my desk. The job: work out whether it was a real attack, how far it got, and what has to be fixed.",
+  project:
+    "Something had to be built, not only studied — a working setup, a set of alarms or a plan that a security team could put to use the next day.",
+  lab:
+    "A hands-on practice exercise on a training platform: attack a deliberately vulnerable system the way a real attacker would, to learn exactly how to defend against it.",
+  note:
+    "Study notes from a guided course — the ideas a security analyst needs to understand before handling a real incident.",
+};
+
 function BlockTitle({
   children,
   japanese,
   id,
+  hint,
+  as: Heading = "h3",
 }: {
   children: ReactNode;
   japanese: string;
   id?: string;
+  hint?: string;
+  as?: "h2" | "h3";
 }) {
   return (
-    <div className="flex items-center gap-3 mb-5">
-      <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
-      <h2
-        id={id}
-        className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold"
-      >
-        {children}
-      </h2>
-      <span
-        className="brush-jp text-base text-foreground/30"
-        lang="ja"
-        aria-hidden="true"
-        data-jp={japanese}
-      />
+    <div className="mb-5">
+      <div className="flex items-center gap-3">
+        <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
+        <Heading
+          id={id}
+          className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold"
+        >
+          {children}
+        </Heading>
+        <span
+          className="brush-jp text-base text-foreground/30"
+          lang="ja"
+          aria-hidden="true"
+          data-jp={japanese}
+        />
+      </div>
+      {hint && (
+        <p className="mt-2 max-w-2xl text-sm text-foreground/60 font-light leading-relaxed">
+          {hint}
+        </p>
+      )}
     </div>
   );
 }
@@ -156,7 +183,7 @@ function Shot({
         decoding="async"
         fetchPriority="low"
         onError={() => setThumbFailed(true)}
-        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-[1.0425] transition-all duration-1000"
       />
       <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
@@ -180,6 +207,7 @@ export default function CaseArticle({
   relatedVideos = [],
   detail,
   kindLabel,
+  kind,
   collection,
 }: {
   item: CaseItem;
@@ -191,6 +219,8 @@ export default function CaseArticle({
   relatedVideos?: readonly RelatedVideo[];
   detail?: CaseDetail;
   kindLabel?: string;
+  /** investigation / project / lab / note → the plain sentence in "The goal" */
+  kind?: CaseKind;
   collection?: Collection;
 }) {
   const [galleryIndex, setGalleryIndex] = useState<number | null>(null);
@@ -211,6 +241,11 @@ export default function CaseArticle({
     [screenshots, item.title],
   );
 
+  /* Which chapters this case has, numbered in the order they appear */
+  const has = caseFileHas(detail, item.href);
+  let chapterNo = 0;
+  const chapter = () => ++chapterNo;
+
   return (
     <article
       id="case-body"
@@ -230,7 +265,7 @@ export default function CaseArticle({
           >
             <ArrowLeft
               size={12}
-              className="transition-transform duration-300 group-hover:-translate-x-1"
+              className="transition-transform duration-300 group-hover:-translate-x-[3.4px]"
             />{" "}
             All cases
           </PageLink>
@@ -298,188 +333,265 @@ export default function CaseArticle({
 
         <VerdictBar verdict={detail?.verdict} severity={detail?.severity} />
 
-        {/* Summary panel — the experience "service record" */}
-        {/* No tilt: on a panel this tall the 3D lean read as the page wobbling */}
-        <div className="spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm hover:border-primary/20 transition-all duration-700 overflow-hidden mb-14">
-          <div className="absolute top-0 left-0 w-[3px] h-full bg-primary" />
-          <div
-            className="absolute top-6 right-6 font-mono text-7xl md:text-8xl font-black text-foreground/[0.04] leading-none select-none"
-            aria-hidden="true"
-            data-deco={
-              screenshots.length
-                ? String(screenshots.length).padStart(2, "0")
-                : "00"
-            }
-          />
-          <div className="relative z-10 px-6 md:px-12 pt-6 md:pt-8 pb-4 border-b border-foreground/5 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-2 h-2 bg-accent" />
-              <h2 className="font-mono text-[0.5625rem] font-normal text-foreground/60 tracking-[0.3em] uppercase">
-                Case summary
-              </h2>
-              <span className="hidden sm:inline font-mono text-[0.5625rem] text-foreground/65 tracking-wider">
-                ~/cases/{item.id}/brief.md
+        {/* ═══ The case in plain-language chapters ═══
+            Goal → What happened → What I did → How to stop it happening
+            again → Evidence. Every technical block is still here; a chapter
+            only appears when the case has something to put in it. */}
+
+        {/* ── The goal ── */}
+        <section className="mb-16 md:mb-20" aria-labelledby="case-goal-title">
+          <Chapter n={chapter()} title="The goal" japanese="目的" id="case-goal-title">
+            Why this work was done, in one sentence — no technical background
+            needed.
+          </Chapter>
+          {/* No tilt: on a panel this tall the 3D lean read as the page wobbling */}
+          <div className="spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm hover:border-primary/20 transition-all duration-700 overflow-hidden">
+            <div className="absolute top-0 left-0 w-[3px] h-full bg-primary" />
+            <div
+              className="absolute top-6 right-6 font-mono text-7xl md:text-8xl font-black text-foreground/[0.04] leading-none select-none"
+              aria-hidden="true"
+              data-deco={
+                screenshots.length
+                  ? String(screenshots.length).padStart(2, "0")
+                  : "00"
+              }
+            />
+            <div className="relative z-10 px-6 md:px-12 pt-6 md:pt-8 pb-4 border-b border-foreground/5 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-2 h-2 bg-accent" />
+                <span className="font-mono text-[0.5625rem] font-normal text-foreground/60 tracking-[0.3em] uppercase">
+                  Case summary
+                </span>
+                <span className="hidden sm:inline font-mono text-[0.5625rem] text-foreground/65 tracking-wider">
+                  ~/cases/{item.id}/brief.md
+                </span>
+              </div>
+              <span className="font-mono text-[0.5625rem] text-foreground/60 tracking-wider uppercase">
+                {item.category}
               </span>
             </div>
-            <span className="font-mono text-[0.5625rem] text-foreground/60 tracking-wider uppercase">
-              {item.category}
-            </span>
-          </div>
-          <div className="relative z-10 px-6 md:px-12 py-7 md:py-10">
-            <CaseSummary description={item.description} />
-          </div>
-          <div className="relative z-10 px-6 md:px-12 pt-6 pb-8 flex flex-wrap gap-4 border-t border-foreground/5">
-            {item.href && (
-              <>
-                <a
-                  href={normalizePublicHref(item.href)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={ctaPrimary}
-                >
-                  <ExternalLink size={16} /> View PDF
-                </a>
-                <a
-                  href={normalizePublicHref(item.href)}
-                  download
+            <div className="relative z-10 px-6 md:px-12 py-7 md:py-10 grid gap-7">
+              {kind && (
+                <div>
+                  <p className="mb-2 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.3em] text-accent">
+                    In plain words
+                  </p>
+                  <p className="text-base md:text-lg text-foreground/80 leading-relaxed font-light">
+                    {PLAIN_GOAL[kind]}
+                  </p>
+                </div>
+              )}
+              <div>
+                <p className="mb-3 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.3em] text-foreground/60">
+                  The task itself
+                </p>
+                <CaseSummary description={item.description} part="goal" />
+              </div>
+            </div>
+            <div className="relative z-10 px-6 md:px-12 pt-6 pb-8 flex flex-wrap gap-4 border-t border-foreground/5">
+              {item.href && (
+                <>
+                  <a
+                    href={normalizePublicHref(item.href)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={ctaPrimary}
+                  >
+                    <ExternalLink size={16} /> View technical PDF
+                  </a>
+                  <a
+                    href={normalizePublicHref(item.href)}
+                    download
+                    className={ctaSecondary}
+                  >
+                    <Download size={14} className="text-primary-ink" /> Download PDF
+                  </a>
+                </>
+              )}
+              {screenshots.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setGalleryIndex(0)}
                   className={ctaSecondary}
                 >
-                  <Download size={14} className="text-primary-ink" /> Download
-                </a>
-              </>
-            )}
-            {screenshots.length > 0 && (
+                  <Images size={14} className="text-primary-ink" /> See the screenshots
+                  <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
+                    {screenshots.length}
+                  </span>
+                </button>
+              )}
               <button
                 type="button"
-                onClick={() => setGalleryIndex(0)}
-                className={ctaSecondary}
+                onClick={copyLink}
+                className={`${ctaSecondary} min-w-[12rem] justify-center`}
               >
-                <Images size={14} className="text-primary-ink" /> Evidence
-                <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
-                  {screenshots.length}
+                {copyState === "done" ? (
+                  <Check size={14} className="text-accent" />
+                ) : (
+                  <Copy size={14} className="text-primary-ink" />
+                )}
+                <span aria-live="polite">
+                  {copyState === "done"
+                    ? "Copied"
+                    : copyState === "error"
+                      ? "Copy failed"
+                      : "Copy link"}
                 </span>
               </button>
-            )}
-            <button
-              type="button"
-              onClick={copyLink}
-              className={`${ctaSecondary} min-w-[12rem] justify-center`}
-            >
-              {copyState === "done" ? (
-                <Check size={14} className="text-accent" />
-              ) : (
-                <Copy size={14} className="text-primary-ink" />
-              )}
-              <span aria-live="polite">
-                {copyState === "done"
-                  ? "Copied"
-                  : copyState === "error"
-                    ? "Copy failed"
-                    : "Copy link"}
-              </span>
-            </button>
-          </div>
-        </div>
-
-        {/* Details */}
-        <section
-          className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-16"
-          aria-label="Case details"
-        >
-          <div>
-            <BlockTitle japanese="道具">Tools</BlockTitle>
-            <div className="flex flex-wrap gap-2">
-              {item.tools.map((tool) => (
-                <span key={tool} className={chipTertiary}>
-                  {tool}
-                </span>
-              ))}
-            </div>
-          </div>
-          <div>
-            <BlockTitle japanese="技能">Skills</BlockTitle>
-            <div className="flex flex-wrap gap-2">
-              {item.skillsGained.map((skill) => (
-                <span key={skill} className={chipAccent}>
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-          <div>
-            <BlockTitle japanese="標識">Tags</BlockTitle>
-            <div className="flex flex-wrap gap-2">
-              {item.tags.map((tag) => (
-                <PageLink
-                  key={tag}
-                  href={`/blog?q=${encodeURIComponent(tag)}#cases`}
-                  className="px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-foreground/60 bg-foreground/[0.04] border border-foreground/10 hover:border-primary hover:text-primary-ink transition-colors"
-                >
-                  #{tag}
-                </PageLink>
-              ))}
             </div>
           </div>
         </section>
 
-        {detail && (
-          <CaseFile detail={detail} href={item.href} title={item.title} />
+        {/* ── What happened? ── */}
+        {has.happened && (
+          <section className="mb-16 md:mb-20" aria-labelledby="case-happened-title">
+            {/* In a practice lab the "attacker" is me, so the chapter is
+                about how the attack works rather than an incident */}
+            <Chapter
+              n={chapter()}
+              title={kind === "lab" || kind === "note" ? "How the attack works" : "What happened?"}
+              japanese="経緯"
+              id="case-happened-title"
+            >
+              {kind === "lab" || kind === "note"
+                ? "The weakness in the system, and the steps that take advantage of it."
+                : "The incident itself: who was involved, what the attacker did and in what order."}
+            </Chapter>
+            <CaseFile detail={detail} title={item.title} part="happened" />
+          </section>
         )}
 
-        {screenshots.length > 0 && (
-          <section className="mb-16" aria-labelledby="case-evidence-title">
-            <BlockTitle id="case-evidence-title" japanese="証拠">
-              Evidence — {screenshots.length} screenshot(s)
-            </BlockTitle>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {screenshots.map((shot, i) => (
-                <Shot
-                  key={shot}
-                  shot={shot}
-                  index={i}
-                  total={screenshots.length}
-                  title={item.title}
-                  onOpen={setGalleryIndex}
-                />
-              ))}
+        {/* ── What I did ── */}
+        <section className="mb-16 md:mb-20" aria-labelledby="case-did-title">
+          <Chapter n={chapter()} title="What I did" japanese="対応" id="case-did-title">
+            My own work on this case, step by step, and the tools I used for
+            it.
+          </Chapter>
+          <div className="space-y-12">
+            <CaseSummary description={item.description} part="work" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div>
+                <BlockTitle japanese="道具" hint="The software used in this case.">Tools I used</BlockTitle>
+                <div className="flex flex-wrap gap-2">
+                  {item.tools.map((tool) => (
+                    <span key={tool} className={chipTertiary}>
+                      {tool}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <BlockTitle japanese="技能" hint="What this work shows I can do.">Skills it shows</BlockTitle>
+                <div className="flex flex-wrap gap-2">
+                  {item.skillsGained.map((skill) => (
+                    <span key={skill} className={chipAccent}>
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
+          </div>
+        </section>
+
+        {/* ── How to stop it happening again ── */}
+        {has.prevent && (
+          <section className="mb-16 md:mb-20" aria-labelledby="case-prevent-title">
+            <Chapter n={chapter()} title="How to stop it happening again" japanese="予防" id="case-prevent-title">
+              The fixes, and the alarms that would catch the same attack next
+              time.
+            </Chapter>
+            <CaseFile detail={detail} title={item.title} part="prevent" />
           </section>
         )}
 
-        {techniques.length > 0 && (
-          <section className="mb-16" aria-labelledby="case-attack-title">
-            <BlockTitle id="case-attack-title" japanese="戦術">
-              MITRE ATT&amp;CK — {techniques.length} technique(s)
-            </BlockTitle>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {techniques.map((t) => (
-                <li key={t.id}>
-                  <a
-                    href={`https://attack.mitre.org/techniques/${t.id.replace(".", "/")}/`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group spotlight relative flex h-full items-baseline gap-4 bg-surface/60 border border-foreground/5 px-5 py-4 hover:border-primary/40 transition-colors duration-500"
+        {/* ── Evidence & supporting files ── */}
+        <section className="mb-16 md:mb-20" aria-labelledby="case-evidence-title">
+          <Chapter n={chapter()} title="Evidence & supporting files" japanese="証拠" id="case-evidence-title">
+            The proof behind everything above: screenshots, technical
+            identifiers and the full report.
+          </Chapter>
+          <div className="space-y-14">
+            {screenshots.length > 0 && (
+              <div>
+                <BlockTitle japanese="画像" hint="Taken while doing the work. Click one to enlarge it.">
+                  Screenshots — {screenshots.length}
+                </BlockTitle>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {screenshots.map((shot, i) => (
+                    <Shot
+                      key={shot}
+                      shot={shot}
+                      index={i}
+                      total={screenshots.length}
+                      title={item.title}
+                      onOpen={setGalleryIndex}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {has.evidence && (
+              <CaseFile detail={detail} href={item.href} title={item.title} part="evidence" />
+            )}
+
+            <CaseSummary description={item.description} part="artifacts" />
+
+            {techniques.length > 0 && (
+              <div>
+                <BlockTitle
+                  japanese="戦術"
+                  hint="MITRE ATT&CK is the public catalogue security teams use to name attacker techniques. These are the ones seen in this case."
+                >
+                  Attack techniques (MITRE ATT&amp;CK) — {techniques.length}
+                </BlockTitle>
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {techniques.map((t) => (
+                    <li key={t.id}>
+                      <a
+                        href={`https://attack.mitre.org/techniques/${t.id.replace(".", "/")}/`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group spotlight relative flex h-full items-baseline gap-4 bg-surface/60 border border-foreground/5 px-5 py-4 hover:border-primary/40 transition-colors duration-500"
+                      >
+                        <span className="font-mono text-xs font-black text-accent tabular-nums shrink-0">
+                          {t.id}
+                        </span>
+                        <span className="flex-1 text-sm text-foreground/80 group-hover:text-foreground transition-colors">
+                          {t.name}
+                        </span>
+                        <span className="hidden sm:block font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60 shrink-0">
+                          {t.tactic.replace(/-/g, " ")}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div>
+              <BlockTitle japanese="標識" hint="Click a topic to see every other case about it.">Topics</BlockTitle>
+              <div className="flex flex-wrap gap-2">
+                {item.tags.map((tag) => (
+                  <PageLink
+                    key={tag}
+                    href={`/blog?q=${encodeURIComponent(tag)}#cases`}
+                    className="px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-foreground/60 bg-foreground/[0.04] border border-foreground/10 hover:border-primary hover:text-primary-ink transition-colors"
                   >
-                    <span className="font-mono text-xs font-black text-accent tabular-nums shrink-0">
-                      {t.id}
-                    </span>
-                    <span className="flex-1 text-sm text-foreground/80 group-hover:text-foreground transition-colors">
-                      {t.name}
-                    </span>
-                    <span className="hidden sm:block font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60 shrink-0">
-                      {t.tactic.replace(/-/g, " ")}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+                    #{tag}
+                  </PageLink>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
         {relatedVideos.length > 0 && (
           <section className="mb-16" aria-labelledby="case-videos-title">
-            <BlockTitle id="case-videos-title" japanese="動画">
-              Related walkthroughs
+            <BlockTitle id="case-videos-title" japanese="動画" as="h2">
+              Watch it explained
             </BlockTitle>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {relatedVideos.map((video) => (
@@ -516,8 +628,8 @@ export default function CaseArticle({
 
         {related.length > 0 && (
           <section className="mb-16" aria-labelledby="case-related-title">
-            <BlockTitle id="case-related-title" japanese="関連">
-              Related reports
+            <BlockTitle id="case-related-title" japanese="関連" as="h2">
+              Similar cases
             </BlockTitle>
             <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {related.map((entry) => (
@@ -526,10 +638,6 @@ export default function CaseArticle({
                     href={`/blog/${entry.id}`}
                     className="group spotlight spotlight-blue relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-500"
                   >
-                    <div
-                      className="absolute top-0 left-0 w-full h-[2px] bg-tertiary/0 group-hover:bg-tertiary transition-colors duration-500"
-                      aria-hidden="true"
-                    />
                     <span className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300 mb-4">
                       {entry.title}
                     </span>
@@ -558,7 +666,7 @@ export default function CaseArticle({
               <span className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-primary-ink">
                 <ArrowLeft
                   size={12}
-                  className="transition-transform duration-300 group-hover:-translate-x-1"
+                  className="transition-transform duration-300 group-hover:-translate-x-[3.4px]"
                 />{" "}
                 Previous
               </span>
@@ -578,7 +686,7 @@ export default function CaseArticle({
                 Next{" "}
                 <ArrowRight
                   size={12}
-                  className="transition-transform duration-300 group-hover:translate-x-1"
+                  className="transition-transform duration-300 group-hover:translate-x-[3.4px]"
                 />
               </span>
               <span className="font-display text-base font-black uppercase tracking-tight text-foreground/80 group-hover:text-foreground">

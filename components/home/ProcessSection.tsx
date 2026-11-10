@@ -26,7 +26,7 @@ export default function ProcessSection() {
         <SectionHeader
           titleA="Risk to"
           titleB="Response."
-          description="One loop for every engagement — the NIST CSF functions, from the risk register to the incident report. Nothing is closed without a reason on record."
+          description="How I work on any security job, in five steps: know what needs protecting, protect it, spot an attack, respond to it, and recover. It follows NIST CSF, the framework most security teams use — and nothing is closed without the reason written down."
         />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {PORTFOLIO_DATA.process.map((p, idx) => (

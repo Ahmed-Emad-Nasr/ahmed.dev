@@ -54,7 +54,7 @@ import { absoluteUrl, OG_IMAGE } from "@/lib/site";
 
 /* Used for the meta description, the share cards and the text under the title */
 const DESCRIPTION =
-  "Incident reports, DFIR investigations, malware analysis, detection rules mapped to MITRE ATT&CK, and cybersecurity videos by Ahmed Emad Nasr.";
+  "Real security work, written up so anyone can follow it: what was attacked, what I did about it and how to stop it next time. Each case opens with a plain summary; the technical detail — reports, detection rules, MITRE ATT&CK — is underneath for those who want it.";
 
 export const metadata: Metadata = {
   title: "Blog — Case Library, ATT&CK & Videos",
@@ -163,9 +163,9 @@ export default function BlogPage() {
           { href: "#start-here", label: "Start here" },
           { href: "#cases", label: "Case library", n: libraryCounts.total },
           { href: "#videos", label: "Videos", n: blogYoutubeVideos.length },
-          { href: "#attack", label: "ATT&CK coverage", n: attackCoverage.techniqueCount },
-          { href: "#detections", label: "Detection rules" },
-          { href: "#triage", label: "Triage challenge" },
+          { href: "#attack", label: "Attack techniques covered", n: attackCoverage.techniqueCount },
+          { href: "#detections", label: "My alarm rules" },
+          { href: "#triage", label: "Try a real alert" },
         ]}
       />
 

@@ -16,22 +16,22 @@ const GROUPS: { title: string; items: { keys: string[]; label: string }[] }[] = 
   {
     title: "General",
     items: [
-      { keys: ["Ctrl", "K"], label: "Command palette" },
-      { keys: ["/"], label: "Command palette (quick)" },
-      { keys: ["?"], label: "This help sheet" },
-      { keys: ["Esc"], label: "Close any overlay" },
+      { keys: ["Ctrl", "K"], label: "Search the whole site" },
+      { keys: ["/"], label: "Search the whole site (one key)" },
+      { keys: ["?"], label: "Show this list" },
+      { keys: ["Esc"], label: "Close any open window" },
     ],
   },
   {
     title: "Go to",
     items: [
       { keys: ["g", "h"], label: "Home" },
-      { keys: ["g", "w"], label: "Selected work" },
+      { keys: ["g", "w"], label: "Projects" },
       { keys: ["g", "e"], label: "Experience" },
       { keys: ["g", "l"], label: "Teaching" },
-      { keys: ["g", "p"], label: "Practice platforms" },
+      { keys: ["g", "p"], label: "Training platforms" },
       { keys: ["g", "c"], label: "All certificates" },
-      { keys: ["g", "a"], label: "ATT&CK coverage" },
+      { keys: ["g", "a"], label: "Attack techniques covered" },
       { keys: ["g", "b"], label: "Case library" },
       { keys: ["g", "t"], label: "Back to top" },
     ],
@@ -76,7 +76,7 @@ export default function ShortcutsHelp({ onClose }: { onClose: () => void }) {
       }}
     >
       <motion.div
-        initial={{ opacity: 0, y: -12, scale: 0.98 }}
+        initial={{ opacity: 0, y: -10, scale: 0.983 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.22 }}
         className="w-full max-w-xl max-h-[72vh] overflow-y-auto border border-foreground/10 bg-surface"

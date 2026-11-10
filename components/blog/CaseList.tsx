@@ -60,7 +60,7 @@ export default function CaseList({ items }: { items: readonly PdfResource[] }) {
               <span className="font-mono text-[0.625rem] text-foreground/60 truncate">{item.category}</span>
               <span className="font-mono text-[0.625rem] text-foreground/60 truncate">{item.platform}</span>
               <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">{item.date ? formatDate(item.date) : ""}</span>
-              <ArrowUpRight size={14} className="hidden md:block text-foreground/30 group-hover:text-primary-ink transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
+              <ArrowUpRight size={14} className="hidden md:block text-foreground/30 group-hover:text-primary-ink transition-all duration-300 group-hover:-translate-y-[1.7px] group-hover:translate-x-[1.7px]" aria-hidden="true" />
             </PageLink>
           </FadeIn>
         ))}

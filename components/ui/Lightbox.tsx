@@ -23,7 +23,12 @@ export default function Lightbox({ close, index, slides }: { close: () => void; 
       index={index}
       slides={slides}
       plugins={[Zoom, Fullscreen, Thumbnails]}
-      styles={{ container: { backgroundColor: "rgba(0, 0, 0, 0.98)" } }}
+      /* --yarl__button_filter: the library draws a drop shadow under its
+         toolbar icons by default; the site has no shadows anywhere */
+      styles={{
+        root: { "--yarl__button_filter": "none" },
+        container: { backgroundColor: "rgba(0, 0, 0, 0.98)" },
+      }}
     />
   );
 }

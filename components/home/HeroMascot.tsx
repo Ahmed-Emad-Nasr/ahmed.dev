@@ -145,8 +145,8 @@ export function HeroMascot({ className }: { className?: string }) {
     setIndex((i) => (i + 1) % MASCOTS.length);
     if (!reduced) {
       bounce.start({
-        y: [0, -18, 0],
-        scale: [1, 1.06, 1],
+        y: [0, -15.3, 0],
+        scale: [1, 1.051, 1],
         transition: { duration: 0.5, ease: "easeOut" },
       });
     }
@@ -155,8 +155,8 @@ export function HeroMascot({ className }: { className?: string }) {
   return (
     <motion.div
       className={className}
-      animate={reduced ? {} : { y: [0, -5, 0] }}
-      transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+      animate={reduced ? {} : { y: [0, -4.25, 0] }}
+      transition={{ duration: 6.5, repeat: Infinity, ease: "easeInOut" }}
     >
       <motion.button
         type="button"

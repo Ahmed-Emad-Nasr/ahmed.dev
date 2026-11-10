@@ -44,6 +44,7 @@ import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
+import OrgLogo from "@/components/ui/OrgLogo";
 import { scrollToHash } from "@/lib/perf/jump";
 
 const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
@@ -57,7 +58,7 @@ const PAGE = 12;
 const START_HERE_CARDS = [
   {
     n: "01",
-    meta: "01 • VALIDATED CERTIFICATE",
+    meta: "01 • MAIN CERTIFICATES",
     title: "Information Security Officer",
     why: "Validated by top certifications including INE eJPT v2, Red Hat RH124, Cisco CCNA, CCEP, Huawei HCIA and security fundamentals.",
     action: "core" as const,
@@ -65,16 +66,16 @@ const START_HERE_CARDS = [
   },
   {
     n: "02",
-    meta: "02 • HANDS-ON LABS",
-    title: "Tactical Hands-On Training & Labs",
+    meta: "02 • HANDS-ON TRAINING",
+    title: "Hands-On Training & Labs",
     why: "Over 79 documented cases, CTFs, TryHackMe SOC Level 1 & 2, DEPI Incident Response & Forensics tracks, and ITI Pentesting Bootcamp.",
     action: "labs" as const,
     targetId: "all-certificates",
   },
   {
     n: "03",
-    meta: "03 • ENDORSEMENTS",
-    title: "Community Events & Endorsements",
+    meta: "03 • PHOTOS & EVENTS",
+    title: "Classrooms, Events & Recommendations",
     why: "Photos from classrooms, 300+ students taught at AMIT & NTI, hackathons, cybersecurity events and peer endorsements.",
     action: "photos" as const,
     targetId: "visual-archive",
@@ -185,9 +186,10 @@ export default function ArtGallery() {
               <span className="text-primary italic">Gallery.</span>
             </h1>
             <p className="mt-6 max-w-2xl text-base md:text-lg font-light leading-relaxed text-foreground/65 [text-wrap:pretty]">
-              {PORTFOLIO_DATA.artGallery.length} certificates, events, classroom
-              moments and digital badges — the complete proof behind my
-              cybersecurity journey.
+              The proof behind everything on this site:{" "}
+              {PORTFOLIO_DATA.artGallery.length} images — my degree, my
+              certificates, and photos from classrooms and events. Click any
+              image to see it full size.
             </p>
           </FadeIn>
 
@@ -242,7 +244,7 @@ export default function ArtGallery() {
           className="relative mb-24"
           aria-labelledby="gallery-start-here-title"
         >
-          <Eyebrow japanese="入門">Fast Track // Quick Access</Eyebrow>
+          <Eyebrow japanese="入門">Quick access</Eyebrow>
           <h2
             id="gallery-start-here-title"
             className="font-display text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-3"
@@ -250,9 +252,9 @@ export default function ArtGallery() {
             Start <span className="text-primary italic">Here.</span>
           </h2>
           <p className="mb-10 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Want to check my top certificates? Three to start with — core
-            certifications, hands-on labs and peer endorsements. The complete
-            certificate directory and visual archive are below.
+            Short on time? These three shortcuts take you straight to the
+            main certificates, the hands-on training, or the photos. The full
+            list is further down.
           </p>
           <ol className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {START_HERE_CARDS.map((card) => (
@@ -295,7 +297,7 @@ export default function ArtGallery() {
           aria-labelledby="all-certificates-title"
         >
           <Eyebrow japanese="認定">
-            Complete Record // Every Certificate
+            The full list // every certificate
           </Eyebrow>
           <h2
             id="all-certificates-title"
@@ -304,10 +306,11 @@ export default function ArtGallery() {
             All <span className="text-primary italic">Certificates.</span>
           </h2>
           <p className="mb-8 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Every documented certificate, ministry scholarship track, bootcamp,
-            exam score report and verified digital badge (
-            {ALL_GALLERY_CERTIFICATES.length} total). Click any card to inspect
-            the original certificate scan.
+            Every qualification I hold ({ALL_GALLERY_CERTIFICATES.length} in
+            total): my degree, professional certificates, government
+            scholarship tracks, bootcamps and exam results. Each card says who
+            issued it and what it covers — click one to see the original
+            document.
           </p>
 
           <div
@@ -358,8 +361,12 @@ export default function ArtGallery() {
                       className="relative z-20 flex flex-col justify-between w-full h-full text-left p-7 cursor-pointer"
                     >
                       <div>
-                        <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.25em] uppercase mb-3 pr-12">
-                          {num} • {cert.issuer}
+                        <div className="flex items-center gap-3 font-mono text-[0.625rem] text-primary-ink tracking-[0.25em] uppercase mb-3 pr-12">
+                          {/* who issued it: logo, or initials (data/logos.ts) */}
+                          <OrgLogo name={cert.issuer} size="sm" />
+                          <span>
+                            {num} • {cert.issuer}
+                          </span>
                         </div>
                         <h3 className="font-display text-lg md:text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
                           {cert.title}
@@ -391,7 +398,7 @@ export default function ArtGallery() {
           className="relative scroll-mt-28"
           aria-labelledby="visual-archive-title"
         >
-          <Eyebrow japanese="証拠">Proof in Frame // Visual Grid</Eyebrow>
+          <Eyebrow japanese="証拠">Certificates &amp; photos</Eyebrow>
           <h2
             id="visual-archive-title"
             className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"
@@ -399,8 +406,8 @@ export default function ArtGallery() {
             Visual <span className="text-primary italic">Archive.</span>
           </h2>
           <p className="mb-8 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Browse the original certificate scans alongside classroom sessions,
-            competitions and community events.
+            Everything in one grid: the original certificates, plus photos
+            from the classes I taught, competitions and community events.
           </p>
 
           <div
@@ -482,7 +489,7 @@ export default function ArtGallery() {
                     width={500}
                     height={500}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
+                    className="w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-[1.0425]"
                     loading="lazy"
                     decoding="async"
                     fetchPriority="low"
@@ -490,7 +497,7 @@ export default function ArtGallery() {
                   />
 
                   <div
-                    className="gallery-halftone pointer-events-none absolute inset-0 z-[5] opacity-0 transition-[opacity,transform] duration-[900ms] ease-out group-hover:scale-[1.2] group-hover:opacity-100"
+                    className="gallery-halftone pointer-events-none absolute inset-0 z-[5] opacity-0 transition-[opacity,transform] duration-[900ms] ease-out group-hover:scale-[1.17] group-hover:opacity-100"
                     aria-hidden="true"
                   />
 
@@ -541,11 +548,11 @@ export default function ArtGallery() {
                 onClick={() =>
                   setVisible((n) => Math.min(archiveItems.length, n + PAGE))
                 }
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5 active:translate-y-0"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0"
               >
                 <ChevronDown
                   size={14}
-                  className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5"
+                  className="text-primary-ink transition-transform duration-300 group-hover:translate-y-[1.7px]"
                 />
                 Show more
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">

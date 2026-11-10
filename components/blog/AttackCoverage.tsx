@@ -28,8 +28,8 @@ function MatrixView({ tactics, max }: { tactics: CoverageTactic[]; max: number }
   return (
     <div className="hidden md:block mb-14 md:mb-16">
       <div className="mb-3 flex items-center justify-between gap-4 font-mono text-[0.625rem] uppercase tracking-[0.25em] text-foreground/60">
-        <span>Matrix view // one cell per technique</span>
-        <span>Click a cell for its reports</span>
+        <span>Full view // one square per method</span>
+        <span>Click a square for its cases</span>
       </div>
       <div className="grid gap-1.5" style={{ gridTemplateColumns: `repeat(${tactics.length}, minmax(0, 1fr))` }}>
         {tactics.map((t, col) => (
@@ -198,8 +198,9 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
               <span className="text-primary italic">ATT&amp;CK.</span>
             </h2>
             <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              The case library on the Enterprise matrix, in kill-chain order. Every tile is a technique backed by at
-              least one report — open it to see the evidence.
+              MITRE ATT&amp;CK is the public catalogue of the methods attackers use, grouped by the stage of an
+              attack — from getting in to stealing data. Every tile below is one method I have handled in at least
+              one case; open it to read that case.
             </p>
           </div>
           <div className="flex flex-wrap lg:flex-col lg:items-end gap-3 shrink-0">
@@ -212,8 +213,8 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
         {/* ─── Kill-chain strip: the whole matrix at a glance ─── */}
         <FadeIn className="mb-14 md:mb-16">
           <div className="mb-3 flex items-center justify-between gap-4 font-mono text-[0.625rem] uppercase tracking-[0.25em] text-foreground/60">
-            <span>Kill chain // Enterprise v19</span>
-            <span className="hidden sm:inline">Heat = techniques per tactic</span>
+            <span>The stages of an attack // in order</span>
+            <span className="hidden sm:inline">Brighter = more methods covered</span>
           </div>
           <ol className="attack-strip">
             {tactics.map((t) => {
@@ -276,7 +277,7 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
                   </div>
 
                   {n === 0 ? (
-                    <p className="attack-empty">No report mapped to this tactic yet</p>
+                    <p className="attack-empty">No case covers this stage yet</p>
                   ) : (
                     <ul className="attack-grid">
                       {t.techniques.map((technique) => (

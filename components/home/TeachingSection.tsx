@@ -17,6 +17,7 @@
 
 import { ArrowUpRight } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
+import OrgLogo from "@/components/ui/OrgLogo";
 import {
   CounterBadge,
   KanjiWatermark,
@@ -52,9 +53,9 @@ export default function TeachingSection() {
               <span className="text-primary italic">Forward.</span>
             </h2>
             <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              Explaining an attack to a room of forty is a harder test than
-              running it once. The curriculum I wrote, and the rooms I taught it
-              in.
+              I teach security as well as practise it. Below: the full
+              course I wrote, what each module covers, and where I have
+              taught it — with the results.
             </p>
           </div>
           <CounterBadge
@@ -164,7 +165,8 @@ export default function TeachingSection() {
               <FadeIn key={r.org} delay={i * 0.05} y={16} duration={0.5}>
                 <article className="group py-6 border-b border-foreground/10">
                   <div className="flex items-start justify-between gap-4">
-                    <div className="min-w-0">
+                    <OrgLogo name={r.org} className="group-hover:border-primary" />
+                    <div className="min-w-0 flex-1">
                       <h3 className="font-display text-lg md:text-xl font-black uppercase tracking-tight leading-tight">
                         {r.link ? (
                           <a

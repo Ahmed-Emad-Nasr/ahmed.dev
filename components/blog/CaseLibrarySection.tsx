@@ -258,7 +258,7 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
             <SectionHeader
               titleA="Case"
               titleB="Library."
-              description={`${libraryCounts.total} published cases — ${libraryCounts.reports} full investigation reports, plus write-ups and walkthroughs across SOC incidents, DFIR, malware analysis, detection engineering, IAM, data and cloud security.`}
+              description={`${libraryCounts.total} pieces of security work, each written as a story: the goal, what happened, what I did and how to prevent it. ${libraryCounts.reports} are full investigations of real-style incidents; the rest are projects, practice labs and study notes. Search by a word, or pick a kind of work below.`}
             />
             <div className="mb-16 md:mb-20">
               <CounterBadge value={libraryCounts.total} top="Cases" bottom="Indexed" tone="accent" />
@@ -316,7 +316,7 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
                   </span>
                 </span>
                 <span className="flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-tertiary">
-                  Filter {WSA_LAB_COUNT} labs <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  Filter {WSA_LAB_COUNT} labs <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-[1.7px] group-hover:-translate-y-[1.7px]" />
                 </span>
               </button>
             </FadeIn>
@@ -344,9 +344,9 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
               <button
                 type="button"
                 onClick={() => setVisible((n) => Math.min(visiblePdfs.length, (view === "list" ? Math.max(n, 24) : n) + (view === "list" ? 24 : PAGE)))}
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5 active:translate-y-0"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0"
               >
-                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5" />
+                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-[1.7px]" />
                 Show more cases
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
                   {Math.min(view === "list" ? Math.max(visible, 24) : visible, visiblePdfs.length)}/{visiblePdfs.length}
@@ -359,7 +359,7 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
             <div className="relative bg-surface/60 border border-foreground/10 p-10 md:p-14 text-center">
               <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent" aria-hidden="true" />
               <p className="brush-jp text-4xl text-accent/80 mb-4" lang="ja" aria-hidden="true" data-jp="該当なし" />
-              <p className="font-mono text-sm text-foreground/60 tracking-wider mb-4">No case matches these filters.</p>
+              <p className="font-mono text-sm text-foreground/60 tracking-wider mb-4">Nothing matches these filters. Try a shorter word, or clear them to see every case.</p>
               <button
                 type="button"
                 onClick={resetFilters}

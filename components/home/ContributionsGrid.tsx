@@ -52,10 +52,6 @@ export default function ContributionsGrid() {
               rel="noopener noreferrer"
               className="group spotlight relative bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-500 flex flex-col"
             >
-              <div
-                className="absolute top-0 left-0 w-full h-[2px] bg-tertiary/0 group-hover:bg-tertiary transition-colors duration-500"
-                aria-hidden="true"
-              />
               <div className="flex items-center justify-between gap-3 mb-3">
                 <h3 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300">
                   {c.name}

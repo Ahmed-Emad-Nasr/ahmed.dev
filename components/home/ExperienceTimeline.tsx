@@ -9,6 +9,7 @@ import {
   FolderSearch,
 } from "lucide-react";
 import CaseFilterLink from "@/components/blog/CaseFilterLink";
+import OrgLogo from "@/components/ui/OrgLogo";
 import FadeIn from "@/components/ui/FadeIn";
 
 /*
@@ -93,6 +94,10 @@ export default function ExperienceTimeline() {
                 <span className="font-mono text-xs font-black uppercase tracking-[0.2em] text-accent">
                   {item.role}
                 </span>
+
+                {/* Company logo (data/logos.ts: a brand mark, your own image
+                    file, or the organisation's initials) */}
+                <OrgLogo name={item.company} className="group-hover:border-primary" />
 
                 {/* Company Name */}
                 <a
@@ -202,7 +207,7 @@ export default function ExperienceTimeline() {
                       >
                         <Award
                           size={12}
-                          className="transition-transform duration-300 group-hover/proof:rotate-12"
+                          className="transition-transform duration-300 group-hover/proof:rotate-[10.2deg]"
                           aria-hidden="true"
                         />{" "}
                         {item.proof.label}
@@ -215,7 +220,7 @@ export default function ExperienceTimeline() {
                       >
                         <FolderSearch
                           size={12}
-                          className="transition-transform duration-300 group-hover/cases:scale-110"
+                          className="transition-transform duration-300 group-hover/cases:scale-[1.085]"
                           aria-hidden="true"
                         />{" "}
                         {item.cases.label}

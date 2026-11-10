@@ -67,7 +67,7 @@ function CaseFilters({
           type="search"
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
-          placeholder="Search cases, tools, tags…"
+          placeholder="Search by word — phishing, ransomware, Wazuh…"
           aria-label="Search cases"
           autoComplete="off"
           spellCheck={false}

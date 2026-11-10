@@ -27,7 +27,7 @@ import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { galleryImagePath } from "@/data/certifications";
 
 /* Used for the meta description and share cards */
-const DESCRIPTION = "Certificates, events, the classroom and moments from Ahmed Emad Nasr's information security journey.";
+const DESCRIPTION = "Ahmed Emad Nasr's degree, certificates and photos from the classroom and security events — the proof behind the portfolio.";
 
 export const metadata: Metadata = {
   title: "Gallery — Proof, Certificates & Moments",

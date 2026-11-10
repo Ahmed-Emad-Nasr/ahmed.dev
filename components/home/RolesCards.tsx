@@ -226,9 +226,14 @@ export function RolesCards() {
   return (
     <div
       id="roles"
-      aria-label="Services and roles I fit"
+      aria-labelledby="roles-title"
       className="relative mt-20 md:mt-28 w-full overflow-hidden"
     >
+      {/* Screen-reader-only heading: the cards below are h3, and the page
+          title is h1 — without an h2 here the outline skipped a level */}
+      <h2 id="roles-title" className="sr-only">
+        Services and roles I fit
+      </h2>
       {/* Intro sentence above the cards */}
       <p className="mx-auto mb-10 max-w-3xl text-center text-lg text-on-surface-variant font-light leading-relaxed">
         These are the roles I fit and can work in, combining governance,
@@ -242,13 +247,13 @@ export function RolesCards() {
             /* FadeIn = slide-up entrance when scrolled into view (each card 0.1s later).
                TiltCard = 3D tilt on hover. CardEffects = the red top line / glow. */
             <FadeIn y={36} duration={0.7} delay={idx * 0.1} key={r.id}>
-              <TiltCard className="group spotlight relative h-full flex flex-col bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500 overflow-hidden">
-                <CardEffects index={idx + 1} />
+              <TiltCard className="group spotlight spotlight-blue relative h-full flex flex-col bg-surface/60 border border-foreground/5 p-7 hover:border-tertiary/40 transition-colors duration-500 overflow-hidden">
+                <CardEffects index={idx + 1} tone="blue" topLine />
                 <div className="flex items-center mb-4">
-                  <div className="p-2.5 bg-primary/10 border border-primary/30">
+                  <div className="p-2.5 bg-tertiary/10 border border-tertiary/30">
                     <Icon
                       size={18}
-                      className="text-primary-ink transition-transform duration-500 group-hover:scale-110"
+                      className="text-tertiary transition-transform duration-500 group-hover:scale-[1.085]"
                     />
                   </div>
                 </div>
@@ -292,7 +297,7 @@ export function RolesCards() {
                         <span className="flex-1">{p.label}</span>
                         <ArrowUpRight
                           size={13}
-                          className="mt-0.5 shrink-0 opacity-40 transition-all duration-300 group-hover/p:opacity-100 group-hover/p:translate-x-0.5 group-hover/p:-translate-y-0.5"
+                          className="mt-0.5 shrink-0 opacity-40 transition-all duration-300 group-hover/p:opacity-100 group-hover/p:translate-x-[1.7px] group-hover/p:-translate-y-[1.7px]"
                           aria-hidden="true"
                         />
                       </>

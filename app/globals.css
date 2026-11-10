@@ -60,6 +60,15 @@
   /* Shared site sections use a wider reading frame on large screens. */
   --container-7xl: 80rem;
 
+  /* Lighter effects: every blur radius is 15% under Tailwind's default
+     (8 / 12 / 24 / 40px), and the pulse loops 15% slower (default 2s).
+     To go back, delete these five lines. */
+  --blur-sm: 6.8px;
+  --blur-md: 10.2px;
+  --blur-xl: 20.4px;
+  --blur-2xl: 34px;
+  --animate-pulse: pulse 2.35s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
@@ -179,7 +188,7 @@
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     button:not(:disabled):hover,
     a[role="button"]:hover {
-      transform: translateY(-2px);
+      transform: translateY(-1.7px);
     }
 
     button:not(:disabled):active,
@@ -456,7 +465,7 @@
 .ticker-track {
   display: flex;
   min-width: max-content;
-  animation: ticker-scroll 80s linear infinite;
+  animation: ticker-scroll 94s linear infinite;
 }
 
 .ticker-strip:hover .ticker-track {
@@ -497,8 +506,8 @@
 
 @keyframes cell-pop {
   0% {
-    transform: scale(0.4);
-    filter: brightness(1.8);
+    transform: scale(0.49);
+    filter: brightness(1.68);
   }
 
   100% {
@@ -579,18 +588,6 @@
   /* Infinite indicators are decoration, not information. */
   .animate-pulse {
     animation: none !important;
-  }
-}
-
-@keyframes float-particle {
-  0% {
-    transform: translate3d(0, 0, 0);
-    opacity: 0.3;
-  }
-
-  100% {
-    transform: translate3d(10px, -20px, 0);
-    opacity: 0.1;
   }
 }
 
@@ -704,7 +701,7 @@
 }
 .attack-seg:hover {
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(-1.7px);
 }
 .attack-seg-n {
   font-family: var(--font-mono);
@@ -792,7 +789,7 @@
 .attack-tile:hover,
 .attack-tile:focus-visible {
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(-1.7px);
 }
 .attack-tile-top {
   display: flex;
@@ -831,7 +828,7 @@
   transition: transform 0.3s;
 }
 .attack-tile:hover .attack-tile-foot > span {
-  transform: translateX(3px);
+  transform: translateX(2.55px);
 }
 /* One element per pip row: --n of --max squares filled. A 5px square every
    7px is a mask over a two-tone bar — 1 node instead of 7 per tile. */
@@ -947,7 +944,7 @@
   transition: transform 0.2s;
 }
 .attack-pop-cases a:hover .attack-pop-go {
-  transform: translateX(3px);
+  transform: translateX(2.55px);
 }
 .attack-pop-ext {
   display: inline-block;
@@ -967,7 +964,7 @@
 @keyframes attack-pop-in {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.98);
+    transform: translateY(10px) scale(0.983);
   }
   to {
     opacity: 1;
@@ -994,7 +991,7 @@
        motion none of it runs and nothing is hidden. ─────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   .process-packet {
-    animation: process-packet 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    animation: process-packet 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
   /* The pulse is a pseudo-element scaling out (transform + opacity only,
      no repaint every frame) */
@@ -1003,7 +1000,7 @@
     position: absolute;
     inset: -1px;
     border: 1px solid var(--primary);
-    animation: brief-node 3s ease-out infinite;
+    animation: brief-node 3.5s ease-out infinite;
     animation-delay: inherit;
   }
 }
@@ -1030,7 +1027,7 @@
   }
   60%,
   100% {
-    transform: scale(2.4);
+    transform: scale(2.19);
     opacity: 0;
   }
 }
@@ -1058,7 +1055,7 @@
 .attack-cell:hover,
 .attack-cell:focus-visible {
   border-color: var(--primary);
-  transform: translateY(-2px) scale(1.04);
+  transform: translateY(-1.7px) scale(1.034);
   z-index: 1;
   position: relative;
 }
@@ -1079,11 +1076,11 @@
 @keyframes rule-row-in {
   from {
     opacity: 0;
-    transform: translateX(-12px);
+    transform: translateX(-10px);
   }
 }
 .radar-spin {
-  animation: radar-spin 4s linear infinite;
+  animation: radar-spin 4.7s linear infinite;
 }
 @keyframes radar-spin {
   to {
@@ -1099,16 +1096,16 @@
 
 /* ── Triage challenge ── */
 .siren-pulse {
-  animation: siren-pulse 1.9s ease-in-out infinite;
+  animation: siren-pulse 2.25s ease-in-out infinite;
 }
 @keyframes siren-pulse {
   50% {
-    opacity: 0.35;
-    transform: scale(0.9);
+    opacity: 0.45;
+    transform: scale(0.915);
   }
 }
 .caret-blink {
-  animation: caret-blink 1.35s steps(1) infinite;
+  animation: caret-blink 1.6s steps(1) infinite;
 }
 @keyframes caret-blink {
   50% {
@@ -1121,11 +1118,11 @@
 @keyframes answer-shake {
   20%,
   60% {
-    transform: translateX(-4px);
+    transform: translateX(-3.4px);
   }
   40%,
   80% {
-    transform: translateX(4px);
+    transform: translateX(3.4px);
   }
 }
 .answer-in {
@@ -1134,7 +1131,7 @@
 @keyframes answer-in {
   from {
     opacity: 0;
-    transform: translateY(-6px);
+    transform: translateY(-5px);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1156,7 +1153,7 @@
   }
 }
 .lab-beacon {
-  animation: siren-pulse 2s ease-in-out infinite;
+  animation: siren-pulse 2.35s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }

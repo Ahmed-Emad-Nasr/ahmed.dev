@@ -312,9 +312,9 @@ export default function CommandPalette() {
           aria-label="Command palette"
         >
           <motion.div
-            initial={{ opacity: 0, y: -12, scale: 0.98 }}
+            initial={{ opacity: 0, y: -10, scale: 0.983 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.98 }}
+            exit={{ opacity: 0, y: -7, scale: 0.983 }}
             transition={{ duration: 0.22 }}
             className="w-full max-w-xl overflow-hidden border border-foreground/10 bg-surface"
             onClick={(e) => e.stopPropagation()}
@@ -326,7 +326,7 @@ export default function CommandPalette() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={onKeyDown}
-                placeholder="Type a command, case, or certificate…"
+                placeholder="Search the site — a page, a case, a certificate…"
                 className="w-full bg-transparent py-4 text-sm text-foreground outline-none placeholder:text-foreground/60"
                 aria-label="Search commands"
               />
@@ -338,7 +338,7 @@ export default function CommandPalette() {
             <div className="max-h-[46vh] overflow-y-auto p-2" role="listbox">
               {filtered.length === 0 && (
                 <p className="px-3 py-6 text-center font-mono text-xs text-foreground/60">
-                  No commands match “{query}”.
+                  Nothing matches “{query}”. Try a shorter or simpler word.
                 </p>
               )}
               {filtered.map((cmd, i) => (

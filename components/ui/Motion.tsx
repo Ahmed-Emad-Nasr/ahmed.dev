@@ -18,20 +18,28 @@ import { useEffect, useRef, type ReactNode, type MouseEvent } from "react";
 import { m as motion, useMotionValue, useSpring } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/fx";
 
-export function CardEffects({ index }: { index?: number }) {
+/* tone="blue" → the top line and the big number light up in the blue
+   (tertiary) colour instead of red. Pair it with "spotlight spotlight-blue"
+   and hover:border-tertiary/40 on the card itself. */
+/* topLine → also draw the line across the top of the card on hover. Only
+   the roles cards use it; every other card keeps the number and the glow. */
+export function CardEffects({ index, tone = "red", topLine = false }: { index?: number; tone?: "red" | "blue"; topLine?: boolean }) {
+  const blue = tone === "blue";
   return (
     <>
       {index !== undefined && (
         <span
-          className="pointer-events-none absolute -right-2 -bottom-6 font-display text-[7rem] font-black leading-none text-foreground/[0.03] transition-all duration-700 group-hover:-translate-y-3 group-hover:text-primary/10 select-none"
+          className={`pointer-events-none absolute -right-2 -bottom-6 font-display text-[7rem] font-black leading-none text-foreground/[0.03] transition-all duration-700 group-hover:-translate-y-[10.2px] select-none ${blue ? "group-hover:text-tertiary/10" : "group-hover:text-primary/10"}`}
           aria-hidden="true"
           data-deco={String(index).padStart(2, "0")}
         />
       )}
-      <div
-        className="pointer-events-none absolute top-0 left-0 z-10 h-[2px] w-full origin-left scale-x-0 bg-primary transition-transform duration-700 group-hover:scale-x-100"
-        aria-hidden="true"
-      />
+      {topLine && (
+        <div
+          className={`pointer-events-none absolute top-0 left-0 z-10 h-[2px] w-full origin-left scale-x-0 transition-transform duration-700 group-hover:scale-x-100 ${blue ? "bg-tertiary" : "bg-primary"}`}
+          aria-hidden="true"
+        />
+      )}
     </>
   );
 }
@@ -66,7 +74,7 @@ export function SpotlightHost() {
 export function TiltCard({
   children,
   className,
-  max = 7,
+  max = 6,
 }: {
   children: ReactNode;
   className?: string;

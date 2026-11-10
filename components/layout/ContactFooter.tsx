@@ -139,7 +139,7 @@ export default function ContactFooter() {
                 Forge <br /> <span className="text-primary italic">Together.</span>
               </h2>
               <p className="mb-8 max-w-xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-                Have a security problem to solve or a team that needs practical security work? Let&apos;s start with the context and find the next useful step.
+                Hiring for a security role, need a security review, or want training for your team? Send me a message — I reply within a day or two. E-mail is the fastest way to reach me.
               </p>
 
               {/* Direct email: the one channel a recruiter usually wants,
@@ -223,11 +223,11 @@ export default function ContactFooter() {
             {/* Briefing header */}
             <div className="flex items-center gap-3 mb-2">
               <span className="font-mono text-[0.5625rem] text-primary-ink tracking-[0.4em] uppercase font-bold">
-                Mission Briefing // 依頼
+                Send a message // 依頼
               </span>
             </div>
             <h3 className="font-display text-3xl font-black mb-3 uppercase tracking-tight text-foreground">
-              Seal Intent
+              Write to me
             </h3>
             <p className="font-mono text-[0.6875rem] text-foreground/60 tracking-wider mb-8">
               {PORTFOLIO_DATA.profile.availability} — training and collaborations welcome too.
@@ -260,7 +260,7 @@ export default function ContactFooter() {
               <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
               <div className="relative">
                 <label htmlFor="name" className="sr-only">
-                  Name / Organization
+                  Your name or company
                 </label>
                 <input
                   id="name"
@@ -268,7 +268,7 @@ export default function ContactFooter() {
                   name="name"
                   required
                   className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light placeholder:text-foreground/60 font-mono"
-                  placeholder="Name / Organization"
+                  placeholder="Your name or company"
                 />
               </div>
               <div className="relative">
@@ -311,12 +311,12 @@ export default function ContactFooter() {
                   required
                   rows={3}
                   className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light resize-none placeholder:text-foreground/60 font-mono"
-                  placeholder="The role or the project: team, timeline, links"
+                  placeholder="What do you need? The role or the project, the timeline, any links"
                 />
               </div>
               <button
                 type="submit"
-                className="btn-sheen relative overflow-hidden mt-4 w-full py-5 bg-primary text-white font-mono font-black uppercase tracking-[0.3em] text-sm hover:bg-foreground hover:text-background active:scale-[0.98] transition-all duration-300"
+                className="btn-sheen relative overflow-hidden mt-4 w-full py-5 bg-primary text-white font-mono font-black uppercase tracking-[0.3em] text-sm hover:bg-foreground hover:text-background active:scale-[0.983] transition-all duration-300"
               >
                 <span className="relative">DISPATCH MESSAGE</span>
               </button>
@@ -327,14 +327,14 @@ export default function ContactFooter() {
               <AnimatePresence>
                 {draft && (
                   <motion.div
-                    initial={{ opacity: 0, y: -8 }}
+                    initial={{ opacity: 0, y: -7 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0 }}
                     role="status"
                     className="border-l-2 border-primary bg-foreground/[0.03] px-5 py-4"
                   >
                     <p className="font-mono text-[0.6875rem] leading-relaxed text-foreground/70">
-                      Your mail app should open with the message ready. Nothing opened?
+                      Your e-mail app should now be open with the message ready to send. Nothing opened? Use one of these instead:
                     </p>
                     <div className="mt-3 flex flex-wrap gap-3">
                       <a

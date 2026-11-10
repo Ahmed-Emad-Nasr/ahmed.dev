@@ -70,8 +70,12 @@ type FadeInProps = Omit<
 
 const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
+/* CALM = 0.85: every entrance travels (and scales) 15% less than the
+   numbers its caller passes. One dial for the whole site. */
+const CALM = 0.85;
 const travel = (v: number, k: number) =>
-  v ? Math.sign(v) * Math.min(Math.abs(v) * k * 0.9, 50) : 0;
+  v ? Math.sign(v) * Math.min(Math.abs(v) * k * 0.9, 50) * CALM : 0;
+const calmScale = (s: number) => 1 - (1 - s) * CALM;
 
 /* Entrances that start in the same frame, played top to bottom */
 let batch: { el: Element; play: (order: number) => void }[] = [];
@@ -110,7 +114,7 @@ export default function FadeIn({
       ref={ref}
       initial={{
         opacity: 0,
-        transform: `translate(${travel(x, 1.4)}px, ${travel(y, 1.8)}px) scale(${scale})`,
+        transform: `translate(${travel(x, 1.4)}px, ${travel(y, 1.8)}px) scale(${calmScale(scale)})`,
       }}
       animate={controls}
       viewport={{ once: true, margin: "0px 0px -15% 0px" }}

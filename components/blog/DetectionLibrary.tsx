@@ -14,7 +14,7 @@ import { useMemo, useState } from "react";
 import PageLink from "@/components/ui/PageLink";
 import { ArrowUpRight, Radar } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { KanjiWatermark, CounterBadge } from "@/components/ui/kit";
+import { KanjiWatermark, CounterBadge, PlainNotes } from "@/components/ui/kit";
 import { detectionRules, RULE_GROUP_LABEL } from "@/data/detection-rules";
 import FadeIn from "@/components/ui/FadeIn";
 
@@ -39,13 +39,24 @@ export default function DetectionLibrary() {
           <SectionHeader
             titleA="Detection"
             titleB="Library."
-            description="My custom Wazuh rule pack, rule by rule: what fires, how loud (Wazuh level 0–15) and which ATT&CK technique it watches. Filter by family; the full XML is in the report."
+            description="A detection rule is an alarm: it watches the activity on computers and the network, and rings when it sees something an attacker would do. These are the alarms I wrote myself for Wazuh, an open-source security monitoring system."
           />
           <div className="mb-16 md:mb-20 flex flex-wrap gap-3 shrink-0">
             <CounterBadge value={detectionRules.length} top="Custom" bottom="Rules" />
             <CounterBadge value={techniques} top="Techniques" bottom="Watched" tone="accent" />
           </div>
         </div>
+
+        <PlainNotes
+          title="How to read the list"
+          japanese="読み方"
+          items={[
+            { title: "Rule", text: "Each row is one alarm, with its number. The sentence next to it says what makes it ring." },
+            { title: "Level", text: "How serious the alarm is, from 0 to 15. Anything from 12 up needs a person to look at it straight away." },
+            { title: "ATT&CK", text: "The code of the attacker method the rule watches for, from the public MITRE ATT&CK catalogue. Click it to read about the method." },
+            { title: "$(…)", text: "A blank the system fills in when the alarm rings — the attacker’s address, the user name, the file." },
+          ]}
+        />
 
         <div className="flex flex-wrap gap-2 mb-6" role="group" aria-label="Filter rules by family">
           {[null, ...GROUPS].map((g) => {
@@ -81,7 +92,7 @@ export default function DetectionLibrary() {
           <div className="hidden md:grid grid-cols-[5.5rem_7rem_1fr_6.5rem] gap-4 px-5 py-2.5 border-b border-foreground/5 font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
             <span>Rule</span>
             <span>Level</span>
-            <span>Fires on</span>
+            <span>What makes it ring</span>
             <span>ATT&amp;CK</span>
           </div>
           <ul key={group ?? "all"} className="max-h-[34rem] overflow-y-auto divide-y divide-foreground/5">
@@ -116,13 +127,13 @@ export default function DetectionLibrary() {
 
         <FadeIn y={12} duration={0.5} className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <p className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
-            $(…) = Wazuh field placeholders, filled in when the alert fires
+            Technical readers: the complete rule file is in the report
           </p>
           <PageLink
             href="/blog/3omda-custom-detection-rules"
             className="group inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary-ink"
           >
-            The full rule pack (XML) <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            View the full rule file <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-[1.7px] group-hover:-translate-y-[1.7px]" />
           </PageLink>
         </FadeIn>
       </div>

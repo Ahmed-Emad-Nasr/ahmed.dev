@@ -19,6 +19,11 @@
  *   filterTab(active)                       → a filter button (red when active)
  *   cardSurface                             → the standard card background + border
  *   <Eyebrow>                               → red line + small uppercase label
+ *   <PlainNotes title items>                → a strip of short numbered notes that
+ *                                             explain a technical section in plain
+ *                                             words, before the technical part
+ *   <Chapter n title japanese>              → a numbered plain-language part of a
+ *                                             case page ("02 — What happened?")
  *   <CounterBadge>                          → number box with corner brackets
  *   <KanjiWatermark>                        → huge faded kanji behind a section
  *   <PageShell>                             → the frame of every page except home:
@@ -45,9 +50,9 @@ export const btnPrimary =
 export const btnOutline =
   "inline-flex items-center gap-2 px-4 py-2.5 border border-foreground/15 text-foreground/70 font-mono text-[0.625rem] uppercase tracking-[0.2em] hover:border-primary hover:text-foreground transition-colors";
 export const ctaPrimary =
-  "interactive btn-sheen group flex items-center gap-3 px-6 min-[360px]:px-8 md:px-10 py-4 md:py-5 bg-primary text-white font-mono font-black uppercase tracking-widest text-sm transition-all duration-300 hover:bg-[#d60030] hover:-translate-y-0.5 active:translate-y-0";
+  "interactive btn-sheen group flex items-center gap-3 px-6 min-[360px]:px-8 md:px-10 py-4 md:py-5 bg-primary text-white font-mono font-black uppercase tracking-widest text-sm transition-all duration-300 hover:bg-[#d60030] hover:-translate-y-[1.7px] active:translate-y-0";
 export const ctaSecondary =
-  "interactive group flex items-center gap-3 px-6 min-[360px]:px-8 md:px-10 py-4 md:py-5 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5 active:translate-y-0";
+  "interactive group flex items-center gap-3 px-6 min-[360px]:px-8 md:px-10 py-4 md:py-5 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0";
 
 /* Filter tabs — WorkShowcase */
 export const filterTab = (active: boolean) =>
@@ -75,6 +80,75 @@ export function Eyebrow({ children, japanese }: { children: ReactNode; japanese?
 }
 
 /* Counter box with corner brackets — used by section cards and the art gallery */
+/* A strip of short numbered notes: what a technical section is about, said
+   plainly, before the section itself. Same surface, borders and labels as
+   the site's other panels. */
+export function PlainNotes({
+  title,
+  japanese,
+  items,
+}: {
+  title: string;
+  japanese?: string;
+  items: readonly { title: string; text: string }[];
+}) {
+  return (
+    <div className="mb-10 border border-foreground/10 bg-surface/40">
+      <div className="flex items-center gap-3 px-5 py-3 border-b border-foreground/10">
+        <div className="w-2 h-2 bg-accent" aria-hidden="true" />
+        <span className="font-mono text-[0.5625rem] uppercase tracking-[0.3em] text-foreground/60">{title}</span>
+        {japanese && <span className="brush-jp text-sm text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />}
+      </div>
+      <ol className={`grid grid-cols-1 sm:grid-cols-2 gap-px bg-foreground/5 ${items.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"}`}>
+        {items.map((item, i) => (
+          <li key={item.title} className="bg-background px-5 py-5">
+            <span className="font-mono text-[0.625rem] font-bold text-primary-ink tabular-nums">{String(i + 1).padStart(2, "0")}</span>
+            <p className="mt-2 font-display text-sm font-black uppercase tracking-tight text-foreground">{item.title}</p>
+            <p className="mt-2 text-sm text-foreground/60 font-light leading-relaxed">{item.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/* One of the plain-language parts of a case page. The title is a question
+   or a plain phrase anyone can follow; the sentence under it says what the
+   reader will find there, before any tool or framework name appears. */
+export function Chapter({
+  n,
+  title,
+  japanese,
+  id,
+  children,
+}: {
+  n: number;
+  title: string;
+  japanese: string;
+  id: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="mb-8">
+      <div className="flex items-center gap-4 mb-4">
+        <span className="font-mono text-sm font-black text-primary-ink tabular-nums">
+          {String(n).padStart(2, "0")}
+        </span>
+        <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
+        <span className="brush-jp text-lg text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />
+        <span className="flex-1 h-px bg-gradient-to-r from-foreground/10 to-transparent" aria-hidden="true" />
+      </div>
+      <h2
+        id={id}
+        className="font-display text-2xl md:text-4xl font-black uppercase tracking-tighter leading-[0.95] text-foreground [text-wrap:balance]"
+      >
+        {title}
+      </h2>
+      <p className="mt-3 max-w-2xl text-base text-foreground/60 font-light leading-relaxed">{children}</p>
+    </div>
+  );
+}
+
 export function CounterBadge({
   value,
   top,

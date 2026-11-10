@@ -22,7 +22,7 @@
  */
 
 import SectionHeader from "@/components/ui/SectionHeader";
-import { KanjiWatermark } from "@/components/ui/kit";
+import { KanjiWatermark, PlainNotes } from "@/components/ui/kit";
 import FadeIn from "@/components/ui/FadeIn";
 
 type Node = { id: string; x: number; y: number; w: number; h: number; title: string; sub: string; tone: "primary" | "accent" | "tertiary" | "muted" };
@@ -49,15 +49,15 @@ const TONE: Record<Node["tone"], string> = {
 
 /* Links as paths, in the direction the data flows */
 const LINKS: { d: string; tone: Node["tone"]; label?: string; lx?: number; ly?: number; dur: number }[] = [
-  { d: "M230 77 H310", tone: "primary", label: "attack", lx: 270, ly: 68, dur: 2.2 },
-  { d: "M230 77 C270 77 270 227 310 227", tone: "primary", dur: 2.8 },
-  { d: "M125 264 V340", tone: "muted", label: "mirror", lx: 160, ly: 306, dur: 2 },
-  { d: "M520 77 C560 77 560 190 600 190", tone: "muted", label: "logs", lx: 585, ly: 118, dur: 2.4 },
-  { d: "M520 227 H600", tone: "muted", dur: 2 },
-  { d: "M230 377 C420 377 460 270 600 270", tone: "tertiary", label: "alerts", lx: 420, ly: 352, dur: 3.2 },
-  { d: "M810 190 C830 190 830 77 850 77", tone: "accent", dur: 2.2 },
-  { d: "M810 227 H850", tone: "accent", dur: 1.8 },
-  { d: "M810 270 C830 270 830 377 850 377", tone: "tertiary", dur: 2.4 },
+  { d: "M230 77 H310", tone: "primary", label: "attack", lx: 270, ly: 68, dur: 2.59 },
+  { d: "M230 77 C270 77 270 227 310 227", tone: "primary", dur: 3.29 },
+  { d: "M125 264 V340", tone: "muted", label: "mirror", lx: 160, ly: 306, dur: 2.35 },
+  { d: "M520 77 C560 77 560 190 600 190", tone: "muted", label: "logs", lx: 585, ly: 118, dur: 2.82 },
+  { d: "M520 227 H600", tone: "muted", dur: 2.35 },
+  { d: "M230 377 C420 377 460 270 600 270", tone: "tertiary", label: "alerts", lx: 420, ly: 352, dur: 3.76 },
+  { d: "M810 190 C830 190 830 77 850 77", tone: "accent", dur: 2.59 },
+  { d: "M810 227 H850", tone: "accent", dur: 2.12 },
+  { d: "M810 270 C830 270 830 377 850 377", tone: "tertiary", dur: 2.82 },
 ];
 
 export default function HomeLab() {
@@ -68,7 +68,18 @@ export default function HomeLab() {
         <SectionHeader
           titleA="The"
           titleB="Home Lab."
-          description="The SOC lab most of the projects run on: attacked from Kali with Atomic Red Team, watched by Sysmon, auditd, Suricata and Zeek, correlated in Wazuh, enriched by VirusTotal, answered by a YARA scan and a quarantine script, and handed to TheHive as a case."
+          description="A small private network I built at home to practise on safely. I attack my own machines the way a real attacker would, then check that my defences notice it, stop it and write it up. Most of the projects on this site were tested here."
+        />
+
+        <PlainNotes
+          title="How I test security"
+          japanese="試験"
+          items={[
+            { title: "Attack", text: "I launch a known attack against my own Windows and Linux machines (from Kali Linux, with Atomic Red Team)." },
+            { title: "Watch", text: "Sensors on the machines and the network record everything that happens (Sysmon, auditd, Suricata, Zeek)." },
+            { title: "Detect", text: "Wazuh reads those records and rings an alarm when one of my rules matches; VirusTotal checks suspicious files." },
+            { title: "Respond", text: "A script scans the machine and locks the file away (YARA), then a case is opened for the analyst (TheHive)." },
+          ]}
         />
 
         {/* Scrolls sideways on narrow screens — focusable so keyboard users can
@@ -132,10 +143,10 @@ export default function HomeLab() {
             Swipe for the full lab <span className="inline-block animate-pulse">→</span>
           </p>
           <figcaption className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
-            <span className="flex items-center gap-2"><span className="h-[2px] w-5 bg-primary" /> attack path</span>
-            <span className="flex items-center gap-2"><span className="h-[2px] w-5 bg-foreground/40" /> telemetry</span>
+            <span className="flex items-center gap-2"><span className="h-[2px] w-5 bg-primary" /> the attack</span>
+            <span className="flex items-center gap-2"><span className="h-[2px] w-5 bg-foreground/40" /> what the sensors record</span>
             <span className="flex items-center gap-2"><span className="h-[2px] w-5 bg-tertiary" /> alerts &amp; cases</span>
-            <span className="flex items-center gap-2"><span className="h-[2px] w-5 bg-accent" /> enrichment &amp; response</span>
+            <span className="flex items-center gap-2"><span className="h-[2px] w-5 bg-accent" /> checks &amp; automatic response</span>
           </figcaption>
         </FadeIn>
       </div>

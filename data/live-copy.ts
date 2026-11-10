@@ -26,11 +26,11 @@ type LiveCopy = {
 
 export const LIVE_COPY: LiveCopy = {
   heroDescription: CV_SUMMARY,
-  heroEvidence: `${investigationReportCount} IR/DFIR reports · ${coveredTechniqueCount()} ATT&CK techniques`,
+  heroEvidence: `${investigationReportCount} incident investigations · ${coveredTechniqueCount()} attack techniques covered`,
   stats: [
-    { target: investigationReportCount, suffix: "", label: "IR / DFIR reports", japanese: "記録", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
-    { target: ALL_GALLERY_CERTIFICATES.length, suffix: "", label: "Certificates & badges", japanese: "認定", href: `${normalizePublicHref("/gallery")}#all-certificates` },
+    { target: investigationReportCount, suffix: "", label: "Incident investigations", japanese: "記録", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
+    { target: ALL_GALLERY_CERTIFICATES.length, suffix: "", label: "Certificates earned", japanese: "認定", href: `${normalizePublicHref("/gallery")}#all-certificates` },
     { target: 300, suffix: "+", label: "Students taught", japanese: "指導", href: "#teaching" },
-    { target: 60, suffix: "K+", label: "Channel views", japanese: "動画", href: `${normalizePublicHref("/blog")}#videos` },
+    { target: 60, suffix: "K+", label: "YouTube views", japanese: "動画", href: `${normalizePublicHref("/blog")}#videos` },
   ],
 };

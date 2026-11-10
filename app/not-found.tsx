@@ -37,26 +37,26 @@ export default function NotFound() {
         <div className={statusInner}>
           <div className="flex items-center gap-4 mb-2">
             <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-            <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">Error // Not found</span>
+            <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">Page not found</span>
             <span className="jp-eyebrow text-[0.6875rem] text-foreground/30" lang="ja" aria-hidden="true" data-jp="迷子" />
           </div>
           <p className={statusCode} aria-hidden="true">404</p>
 
           <h1 className={statusTitle}>This page doesn&apos;t <span className="text-primary italic">exist.</span></h1>
           <p className={statusLede}>
-            The link may be outdated, or the address may have a typo. Everything
-            below still works.
+            Nothing is broken on your side. The link you followed is old, or
+            the address has a typo. Pick where to go next:
           </p>
 
           <nav className={statusActions} aria-label="Main destinations">
             <PageLink href="/" className={ctaPrimary}>
-              <Home size={16} /> ahmed.dev
+              <Home size={16} /> Go to the home page
             </PageLink>
             <PageLink href="/blog#cases" className={ctaSecondary}>
-              <FolderSearch size={14} className="text-primary-ink" /> Case library
+              <FolderSearch size={14} className="text-primary-ink" /> Browse the cases
             </PageLink>
             <PageLink href="/cv" className={ctaSecondary}>
-              <FileText size={14} className="text-primary-ink" /> CV
+              <FileText size={14} className="text-primary-ink" /> Read my CV
             </PageLink>
           </nav>
 
@@ -65,7 +65,7 @@ export default function NotFound() {
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
                 <h2 id="nf-suggest" className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">
-                  Or start with one of these
+                  Or read one of these first
                 </h2>
               </div>
               <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">

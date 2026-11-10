@@ -52,7 +52,7 @@ import {
    /#work …) plus the blog, which is its own page. */
 const navItems = [
   { name: "Home", href: "#home", icon: Home, katakana: "ホーム" },
-  { name: "Work", href: "#work", icon: Code2, katakana: "仕事" },
+  { name: "Projects", href: "#work", icon: Code2, katakana: "仕事" },
   { name: "Experience", href: "#experience", icon: Briefcase, katakana: "経験" },
   { name: "Blog", href: "/blog", icon: BookOpen, katakana: "記録" },
   { name: "Gallery", href: "/gallery", icon: Images, katakana: "証明" },
@@ -339,7 +339,7 @@ export default function SiteNav() {
               {navItems.map((item, idx) => (
                 <motion.div
                   key={item.name}
-                  initial={{ opacity: 0, x: -60 }}
+                  initial={{ opacity: 0, x: -51 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{
                     delay: 0.1 + idx * 0.06,

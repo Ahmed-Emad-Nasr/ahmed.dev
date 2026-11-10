@@ -5,7 +5,7 @@
  * is off screen, and resumes them just before it scrolls back in.
  * (Automatic — new infinite CSS animations are picked up without any change.)
  *
- * The pages run dozens of infinite animations at once (hero particles and
+ * The pages run dozens of infinite animations at once (hero orbit and
  * scan line, live pings, the lab diagram's packets, the radar, the siren,
  * blinking carets …), and almost all of them sit far from the screen. Each
  * one still costs style, composite or paint work every frame.

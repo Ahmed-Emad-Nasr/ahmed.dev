@@ -109,7 +109,7 @@ export default function TriageChallenge() {
         <SectionHeader
           titleA="Triage"
           titleB="This Alert."
-          description="A real alert from the case library. Three calls an analyst makes in the first minutes — make them, then see how the investigation went."
+          description="Try the job yourself. This is a real alarm from one of my cases. A security analyst has to make three decisions in the first minutes — make them, then see what the investigation found. No experience needed: every answer is explained."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] gap-8 items-start">
@@ -189,7 +189,7 @@ export default function TriageChallenge() {
                 </span>
                 <span className="flex flex-wrap gap-3">
                   <PageLink href="/blog/soc336-report" className="group inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] hover:bg-foreground hover:text-background transition-colors">
-                    The investigation <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    The investigation <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-[3.4px]" />
                   </PageLink>
                   <button
                     type="button"

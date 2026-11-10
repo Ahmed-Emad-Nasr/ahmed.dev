@@ -104,7 +104,7 @@ function CaseCard({
               decoding="async"
               fetchPriority="low"
               onError={() => setCoverFailed(true)}
-              className="object-cover object-top grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
+              className="object-cover object-top grayscale group-hover:grayscale-0 group-hover:scale-[1.0425] transition-all duration-1000"
             />
             <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover:bg-transparent transition-all duration-700" />
             <span className="absolute bottom-3 right-3 flex items-center gap-1.5 px-2.5 py-1 bg-background/80 backdrop-blur-md border border-foreground/15 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-foreground">
@@ -198,7 +198,7 @@ function CaseCard({
 
           <div className="flex flex-wrap gap-3 mt-auto pt-5 border-t border-foreground/5">
             <PageLink href={detailPath} className={btnPrimary}>
-              Open case <ArrowRight size={13} />
+              Read the case <ArrowRight size={13} />
             </PageLink>
             {href && (
               <>
