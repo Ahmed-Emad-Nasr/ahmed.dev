@@ -7,21 +7,22 @@
      • the 3 suggested cases → the first entries of data/start-here.ts,
      • the wording → the <h1> and <p> below. */
 
-import Link from "next/link";
 import PageLink from "@/components/ui/PageLink";
 import type { Metadata } from "next";
 import { startHere } from "@/data/start-here";
 import { caseEvidenceLibrary } from "@/data/cases";
 import { Home, FolderSearch, FileText } from "lucide-react";
 import {
+  PageShell, KanjiWatermark, ctaPrimary, ctaSecondary,
   statusActions, statusCode, statusInner, statusLede, statusPage, statusReport, statusTitle,
 } from "@/components/ui/kit";
-import { PageShell, KanjiWatermark, ctaPrimary, ctaSecondary } from "@/components/ui/kit";
 
 export const metadata: Metadata = {
   title: "Page not found",
   // noindex: there's no point indexing an error page
   robots: { index: false, follow: true },
+  /* No canonical: the layout's "/" would tell crawlers this 404 is the home page */
+  alternates: { canonical: null },
 };
 
 /* Suggest the first 3 "start here" cases that really exist in data/cases.ts */
@@ -48,15 +49,15 @@ export default function NotFound() {
           </p>
 
           <nav className={statusActions} aria-label="Main destinations">
-            <Link href="/" className={ctaPrimary}>
+            <PageLink href="/" className={ctaPrimary}>
               <Home size={16} /> ahmed.dev
-            </Link>
+            </PageLink>
             <PageLink href="/blog#cases" className={ctaSecondary}>
               <FolderSearch size={14} className="text-primary-ink" /> Case library
             </PageLink>
-            <Link href="/cv" className={ctaSecondary}>
+            <PageLink href="/cv" className={ctaSecondary}>
               <FileText size={14} className="text-primary-ink" /> CV
-            </Link>
+            </PageLink>
           </nav>
 
           {SUGGESTIONS.length > 0 && (
@@ -70,7 +71,7 @@ export default function NotFound() {
               <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {SUGGESTIONS.map((entry) => (
                   <li key={entry.id}>
-                    <Link
+                    <PageLink
                       href={`/blog/${entry.id}`}
                       className="group spotlight relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-500"
                     >
@@ -78,7 +79,7 @@ export default function NotFound() {
                         {entry.label}
                       </span>
                       <span className="text-sm text-foreground/60 font-light leading-relaxed">{entry.why}</span>
-                    </Link>
+                    </PageLink>
                   </li>
                 ))}
               </ul>

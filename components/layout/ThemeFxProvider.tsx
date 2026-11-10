@@ -22,6 +22,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   type ReactNode,
 } from "react";
@@ -191,8 +192,12 @@ export function ThemeFxProvider({ children }: { children: ReactNode }) {
     [setTheme]
   );
 
+  /* One stable value: every consumer (toggle, palette) re-renders only
+     when transitionTo itself changes */
+  const value = useMemo(() => ({ transitionTo }), [transitionTo]);
+
   return (
-    <ThemeFxContext.Provider value={{ transitionTo }}>
+    <ThemeFxContext.Provider value={value}>
       {children}
       <canvas
         ref={canvasRef}

@@ -24,8 +24,12 @@ server. A client component pulls everything it imports into the browser, so:
 
 - client components never import `data/cases.ts`, `data/case-details.ts` or
   `data/attack.ts` — the page computes what they need (`data/live-copy.ts`,
-  `lib/library-data.ts`) and passes it as props, or the section's own chunk
-  imports the precomputed result;
+  `lib/library-data.ts`) at build time and passes it as props
+  (`/blog` → `CaseLibrarySection data={libraryData}`,
+  `LazyAttackCoverage coverage={attackCoverage}`). Client files may only
+  `import type` from `lib/library-data.ts`: a value import would bundle every
+  case file, IOC and timeline into the browser. The one exception is the
+  hidden terminal, a chunk that loads only when someone opens it;
 - `data/portfolio-data.ts` is read by client sections, so it must stay free
   of those imports too.
 

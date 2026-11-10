@@ -2,25 +2,26 @@
 
    ═══ components/blog/StartHere.tsx (#start-here on /blog) ═══
    Which reports, and the "why read it" text → data/start-here.ts (each entry's
-   id must be a case id from data/cases.ts; unknown ids are skipped). */
+   id must be a case id from data/cases.ts; unknown ids are skipped — the
+   filtering happens at build time in lib/library-data.ts, so the case data
+   itself never ships with this component). */
 
 import PageLink from "@/components/ui/PageLink";
-import { startHere } from "@/data/start-here";
-import { caseEvidenceLibrary } from "@/data/cases";
+import type { LibraryData } from "@/lib/library-data";
 import { Eyebrow } from "@/components/ui/kit";
 
-const KNOWN_IDS = new Set(caseEvidenceLibrary.map((item) => item.id));
-const ENTRIES = startHere.filter((entry) => KNOWN_IDS.has(entry.id));
-
 export default function StartHere({
+  entries,
   note = "Three reports to start with — detection engineering, a full DFIR investigation and a malware teardown. The full library is below.",
   headingLevel: H = "h2",
 }: {
+  /** The "start here" reports (lib/library-data.ts → libraryData.startHere) */
+  entries: LibraryData["startHere"];
   note?: string;
   /** h3 when it sits inside another section */
   headingLevel?: "h2" | "h3";
-} = {}) {
-  if (ENTRIES.length === 0) return null;
+}) {
+  if (entries.length === 0) return null;
 
   return (
     <section id="start-here" className="relative mb-20" aria-labelledby="start-here-title">
@@ -30,7 +31,7 @@ export default function StartHere({
       </H>
       <p className="mb-10 max-w-2xl text-foreground/60 font-light leading-relaxed">{note}</p>
       <ol className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {ENTRIES.map((entry, idx) => (
+        {entries.map((entry, idx) => (
           <li key={entry.id}>
             <PageLink
               href={`/blog/${entry.id}`}

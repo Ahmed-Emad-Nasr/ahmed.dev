@@ -57,6 +57,7 @@ const ROLE_PROOF: Record<string, Pick<Experience, "proof" | "cases">> = {
   },
   Huawei: { proof: { label: "HCIA-Datacom certificate", href: normalizePublicHref(galleryImagePath(24)) } },
   "Google Developer Groups (GDG)": { proof: { label: "GDG bootcamp certificate", href: normalizePublicHref(galleryImagePath(36)) } },
+  "Benha University": { proof: { label: "Proof of graduation", href: normalizePublicHref(galleryImagePath(99)) } },
 };
 
 /* Per organisation (key = subTag in data/experience.ts): the one-line intro,

@@ -46,7 +46,9 @@ export function FooterBar({ className = "" }: { className?: string }) {
         <span className="text-primary-ink font-black text-base tracking-normal font-display">
           AE.
         </span>
-        <span>
+        {/* The HTML is built once; the year can roll over before the next
+            build, so the browser's year wins without a hydration warning */}
+        <span suppressHydrationWarning>
           © {currentYear} {PORTFOLIO_DATA.profile.name}
         </span>
       </div>

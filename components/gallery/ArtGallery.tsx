@@ -41,8 +41,10 @@ import {
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import { Eyebrow, filterTab } from "@/components/ui/kit";
 import dynamic from "next/dynamic";
+import { useSearchParams } from "next/navigation";
 import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
+import { scrollToHash } from "@/lib/perf/jump";
 
 const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
   ssr: false,
@@ -94,24 +96,21 @@ const CERT_INDICES = new Set(
 );
 
 export default function ArtGallery() {
-  const searchParams =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search)
-      : null;
-  /* ?cert=N in the URL → open image N in the lightbox on arrival */
-  const certParam = searchParams ? searchParams.get("cert") : null;
-
-  useEffect(() => {
-    if (certParam) {
-      const idx = Number(certParam) - 1;
-      if (!Number.isNaN(idx) && idx >= 0) {
-        setIndex(idx);
-        setOpen(true);
-      }
-    }
-  }, [certParam]);
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
+
+  /* ?cert=N in the URL → open image N in the lightbox — on arrival, and
+     again when the palette links to another scan while the gallery is open.
+     (Never prerendered: LazySection mounts the gallery in the browser.) */
+  const certParam = useSearchParams().get("cert");
+  useEffect(() => {
+    if (!certParam) return;
+    const idx = Number(certParam) - 1;
+    if (Number.isInteger(idx) && idx >= 0 && idx < PORTFOLIO_DATA.artGallery.length) {
+      setIndex(idx);
+      setOpen(true);
+    }
+  }, [certParam]);
   const [certFilter, setCertFilter] = useState<GalleryCertGroup | "all">("all");
   const [archiveFilter, setArchiveFilter] = useState<
     "all" | "certs" | "photos"
@@ -164,8 +163,8 @@ export default function ArtGallery() {
     } else {
       setCertFilter(action);
     }
-    const el = document.getElementById(targetId);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    /* The site's one jump: instant, under the fixed header (lib/perf/jump.ts) */
+    void scrollToHash(`#${targetId}`);
   };
 
   return (

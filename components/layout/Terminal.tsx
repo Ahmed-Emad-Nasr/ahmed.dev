@@ -116,7 +116,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
             "ls                — list all cases",
             "ls <keyword>      — filter the list",
             "open <n|id>       — open a case page",
-            "certs [keyword]   — list all 48 certificates",
+            `certs [keyword]   — list all ${ALL_GALLERY_CERTIFICATES.length} certificates`,
             "work              — list open-source projects",
             "cat cv            — open the CV",
             "skills            — most used tools",

@@ -32,6 +32,7 @@
 import dynamic from "next/dynamic";
 import LazySection, { preloadable } from "@/lib/perf/lazy";
 import SectionSkeleton from "@/components/ui/SectionSkeleton";
+import type { AttackCoverageData } from "@/lib/library-data";
 
 /* Pattern 1 — split into its own chunk; the page decides when it mounts */
 export const AreaIntro = dynamic(() => import("@/components/ui/AreaIntro"));
@@ -50,10 +51,11 @@ export const ProcessSection = dynamic(() => import("@/components/home/ProcessSec
 const AttackCoverage = preloadable(() => import("@/components/blog/AttackCoverage"));
 const DetectionLibrary = preloadable(() => import("@/components/blog/DetectionLibrary"));
 
-export function LazyAttackCoverage() {
+/* coverage = attackCoverage from lib/library-data.ts, computed by the page */
+export function LazyAttackCoverage({ coverage }: { coverage: AttackCoverageData }) {
   return (
     <LazySection id="attack" size="lazy-h-attack">
-      <AttackCoverage />
+      <AttackCoverage coverage={coverage} />
     </LazySection>
   );
 }

@@ -9,13 +9,12 @@
    app/layout.tsx crashes. */
 
 import { useEffect } from "react";
-import Link from "next/link";
 import PageLink from "@/components/ui/PageLink";
 import { RotateCcw } from "lucide-react";
 import {
+  PageShell, ctaPrimary, ctaSecondary,
   statusActions, statusCode, statusInner, statusLede, statusPage, statusReport, statusTitle,
 } from "@/components/ui/kit";
-import { PageShell, ctaPrimary, ctaSecondary } from "@/components/ui/kit";
 
 export default function Error({
   error,
@@ -58,7 +57,7 @@ export default function Error({
             <button type="button" className={ctaPrimary} onClick={reset}>
               <RotateCcw size={16} /> Try again
             </button>
-            <Link href="/" className={ctaSecondary}>ahmed.dev</Link>
+            <PageLink href="/" className={ctaSecondary}>ahmed.dev</PageLink>
             <PageLink href="/blog#cases" className={ctaSecondary}>Case library</PageLink>
           </nav>
 

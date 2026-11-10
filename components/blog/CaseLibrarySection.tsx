@@ -4,7 +4,8 @@
  * The case library on the blog page (#start-here, #cases, then #videos).
  * Filters are synced to the URL; cards are paged a few at a time, while
  * filtering always searches the whole library. The data is computed at
- * build time (lib/library-data.ts) and ships with this chunk.
+ * build time (lib/library-data.ts) by app/blog/page.tsx and arrives as the
+ * `data` prop — the raw case files never reach the browser.
  *
  * ═══ components/blog/CaseLibrarySection.tsx — the CASE LIBRARY on /blog ═══
  *
@@ -40,7 +41,7 @@ import { normalizePublicHref, type CaseKind } from "@/lib/shared";
 import type { GalleryState } from "@/lib/shared";
 import CaseFilters from "@/components/blog/CaseFilters";
 import StartHere from "@/components/blog/StartHere";
-import { categoryFacets, kindFacets, libraryCounts, mediaById, sortedCases, toolFacets } from "@/lib/library-data";
+import type { LibraryData } from "@/lib/library-data";
 import { scrollToHash } from "@/lib/perf/jump";
 import CaseCard from "@/components/blog/CaseCard";
 import CaseList from "@/components/blog/CaseList";
@@ -64,19 +65,22 @@ const loadScreenshots = () => {
 };
 
 /* Everything a case can be searched by, as one lowercase string */
-const searchIndex: Record<string, string> = Object.fromEntries(
-  sortedCases.map((item) => [
-    item.id,
-    [item.title, item.description, item.platform, item.type, item.category, item.difficulty, ...(item.tags ?? []), ...(item.tools ?? []), ...(item.skillsGained ?? [])]
-      .filter(Boolean)
-      .join(" ")
-      .toLowerCase(),
-  ]),
-);
+const buildSearchIndex = (cases: LibraryData["cases"]): Record<string, string> =>
+  Object.fromEntries(
+    cases.map((item) => [
+      item.id,
+      [item.title, item.description, item.platform, item.type, item.category, item.difficulty, ...(item.tags ?? []), ...(item.tools ?? []), ...(item.skillsGained ?? [])]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase(),
+    ]),
+  );
 
-const WSA_LAB_COUNT = sortedCases.filter((c) => c.platform === "PortSwigger").length;
+export default function CaseLibrarySection({ data }: { data: LibraryData }) {
+  const { cases: sortedCases, kindFacets, categoryFacets, toolFacets, counts: libraryCounts, mediaById } = data;
+  const searchIndex = useMemo(() => buildSearchIndex(sortedCases), [sortedCases]);
+  const WSA_LAB_COUNT = useMemo(() => sortedCases.filter((c) => c.platform === "PortSwigger").length, [sortedCases]);
 
-export default function CaseLibrarySection() {
   const [gallery, setGallery] = useState<GalleryState | null>(null);
 
   const [query, setQuery] = useState("");
@@ -95,7 +99,7 @@ export default function CaseLibrarySection() {
   /* "Newest" re-sorts by date; "Recommended" is the build-time order */
   const orderedPdfs = useMemo(
     () => (sort === "newest" ? [...sortedCases].sort((a, b) => (b.date ?? "").localeCompare(a.date ?? "")) : sortedCases),
-    [sort],
+    [sort, sortedCases],
   );
 
   const visiblePdfs = useMemo(() => {
@@ -113,7 +117,7 @@ export default function CaseLibrarySection() {
       }
       return true;
     });
-  }, [orderedPdfs, isFiltering, deferredQuery, activeCategory, activeTools, activeKind]);
+  }, [orderedPdfs, isFiltering, deferredQuery, activeCategory, activeTools, activeKind, searchIndex]);
 
   /* A new filter starts from the first page again */
   const toolsKey = activeTools.join(",");
@@ -147,12 +151,16 @@ export default function CaseLibrarySection() {
     readFromUrl();
     filtersHydrated.current = true;
     /* Arriving with a filter in the URL (a tag link on a case page): bring the library into view */
+    let arrival: number | undefined;
     if (window.location.search && !window.location.hash.startsWith("#case-")) {
-      window.setTimeout(() => scrollToHash("#cases"), 400);
+      arrival = window.setTimeout(() => scrollToHash("#cases"), 400);
     }
 
     window.addEventListener("popstate", readFromUrl);
-    return () => window.removeEventListener("popstate", readFromUrl);
+    return () => {
+      window.clearTimeout(arrival);
+      window.removeEventListener("popstate", readFromUrl);
+    };
   }, []);
 
   useEffect(() => {
@@ -229,7 +237,7 @@ export default function CaseLibrarySection() {
       cancelled = true;
       window.clearTimeout(hashTimer.current);
     };
-  }, []);
+  }, [sortedCases]);
 
   const slides = useMemo(
     () =>
@@ -257,7 +265,7 @@ export default function CaseLibrarySection() {
             </div>
           </div>
 
-          <StartHere />
+          <StartHere entries={data.startHere} />
 
           <div className="flex items-center gap-4 mb-10">
             <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
@@ -369,7 +377,7 @@ export default function CaseLibrarySection() {
 
       <div id="videos" className="px-6 md:px-20 pt-16 bg-background">
         <div className="max-w-7xl mx-auto">
-          <MediaSections />
+          <MediaSections counts={libraryCounts} />
         </div>
       </div>
 

@@ -224,13 +224,13 @@ export default function CommandPalette() {
       {
         id: "cv", group: "Actions", label: "Download CV (PDF)", icon: Download,
         run: () => {
-          window.open(PORTFOLIO_DATA.profile.hero.cvUrl, "_blank");
+          window.open(PORTFOLIO_DATA.profile.hero.cvUrl, "_blank", "noopener,noreferrer");
           setOpen(false);
         },
       },
-      { id: "gh", group: "Social", label: "Open GitHub", hint: c.github, icon: Github, run: () => { window.open(`https://github.com/${c.github}`, "_blank"); setOpen(false); } },
-      { id: "li", group: "Social", label: "Open LinkedIn", icon: Linkedin, run: () => { window.open(c.linkedin, "_blank"); setOpen(false); } },
-      { id: "wa", group: "Social", label: "Open WhatsApp", icon: MessageCircle, run: () => { window.open(`https://wa.me/${c.whatsapp}`, "_blank"); setOpen(false); } },
+      { id: "gh", group: "Social", label: "Open GitHub", hint: c.github, icon: Github, run: () => { window.open(`https://github.com/${c.github}`, "_blank", "noopener,noreferrer"); setOpen(false); } },
+      { id: "li", group: "Social", label: "Open LinkedIn", icon: Linkedin, run: () => { window.open(c.linkedin, "_blank", "noopener,noreferrer"); setOpen(false); } },
+      { id: "wa", group: "Social", label: "Open WhatsApp", icon: MessageCircle, run: () => { window.open(`https://wa.me/${c.whatsapp}`, "_blank", "noopener,noreferrer"); setOpen(false); } },
       {
         id: "terminal", group: "Extras", label: "Open the terminal", hint: "3omda", icon: SquareTerminal,
         run: () => { setOpen(false); window.dispatchEvent(new Event("sensei:open-terminal")); },
@@ -388,4 +388,4 @@ export default function CommandPalette() {
       )}
     </AnimatePresence>
   );
-}
+}

@@ -1,10 +1,13 @@
 /*
  * lib/library-data.ts
  *
- * The case library as the home page shows it, computed once at build time
- * (the ordering, the search index, the filter facets, the counts). Imported
- * only by the server page, which hands the results to the client section —
- * so none of this computation ships to the browser.
+ * The case library as the blog shows it, computed once at build time (the
+ * ordering, the filter facets, the counts, the ATT&CK coverage). SERVER ONLY:
+ * imported by app/blog/page.tsx and the JSON routes, which hand the finished
+ * values to the client sections as props (or as a static .json file). Client
+ * components may `import type` from here, never import values — a value
+ * import would pull data/cases.ts, data/case-details.ts and data/attack.ts
+ * (all of them, every IOC and timeline) into the browser bundle.
  *
  * Nothing to edit by hand here — it's all derived from data/cases.ts,
  * data/case-details.ts and data/attack.ts. Notable outputs:
@@ -21,6 +24,7 @@ import { caseDetails } from "@/data/case-details";
 import { SITE_BASE_URL, caseUrl } from "@/lib/site";
 import { ATTACK_TACTICS, buildCoverage, caseAttackMapping, coveredTechniqueCount } from "@/data/attack";
 import { PERSON_ID } from "@/lib/seo";
+import { startHere } from "@/data/start-here";
 
 type Facet = { value: string; count: number };
 
@@ -106,6 +110,23 @@ export const libraryCounts = {
   screenshots: Object.values(caseScreenshotsByEvidenceId).reduce((sum, shots) => sum + shots.length, 0),
 };
 
+/* "Start here" entries whose case really exists (unknown ids are skipped) */
+const KNOWN_IDS = new Set(caseEvidenceLibrary.map((item) => item.id));
+const startHereEntries = startHere.filter((entry) => KNOWN_IDS.has(entry.id));
+
+/** Everything the case library section renders — passed in as one prop */
+export const libraryData = {
+  cases: sortedCases,
+  kindFacets,
+  categoryFacets,
+  toolFacets,
+  counts: libraryCounts,
+  mediaById,
+  startHere: startHereEntries,
+};
+export type LibraryData = typeof libraryData;
+export type LibraryCounts = typeof libraryCounts;
+
 const absoluteAsset = (href: string) => `${SITE_BASE_URL}/${href.replace(/^\/+/, "")}`;
 
 /* The library as structured data: every case page, and its PDF where there is one */
@@ -164,3 +185,4 @@ export const attackCoverage = {
   techniqueCount: coveredTechniqueCount(),
   mappedCaseCount: Object.keys(caseAttackMapping).filter((id) => TITLE_BY_ID.has(id)).length,
 };
+export type AttackCoverageData = typeof attackCoverage;

@@ -1473,7 +1473,7 @@
   --lazy-h: 4300px;
 }
 .lazy-h-stats {
-  --lazy-h: 170px;
+  --lazy-h: 220px;
 }
 .lazy-h-work {
   --lazy-h: 6550px;
@@ -1507,7 +1507,7 @@
     --lazy-h: 2450px;
   }
   .lazy-h-stats {
-    --lazy-h: 150px;
+    --lazy-h: 230px;
   }
   .lazy-h-work {
     --lazy-h: 4250px;
@@ -1542,7 +1542,7 @@
     --lazy-h: 1420px;
   }
   .lazy-h-stats {
-    --lazy-h: 80px;
+    --lazy-h: 155px;
   }
   .lazy-h-work {
     --lazy-h: 3200px;

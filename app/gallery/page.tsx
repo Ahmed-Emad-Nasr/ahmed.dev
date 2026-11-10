@@ -24,6 +24,7 @@ import PageEffects from "@/lib/perf/PageEffects";
 import { absoluteUrl, OG_IMAGE } from "@/lib/site";
 import { jsonLd, PERSON_REF, SITE_URL } from "@/lib/seo";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { galleryImagePath } from "@/data/certifications";
 
 /* Used for the meta description and share cards */
 const DESCRIPTION = "Certificates, events, the classroom and moments from Ahmed Emad Nasr's information security journey.";
@@ -41,7 +42,14 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [OG_IMAGE],
   },
-  twitter: { card: "summary_large_image", title: "Gallery — Ahmed Emad Nasr", description: DESCRIPTION, images: [OG_IMAGE.url] },
+  twitter: {
+    card: "summary_large_image",
+    site: "@0x3omda",
+    creator: "@0x3omda",
+    title: "Gallery — Ahmed Emad Nasr",
+    description: DESCRIPTION,
+    images: [OG_IMAGE.url],
+  },
 };
 
 /* JSON-LD (invisible): every gallery image, generated from data/portfolio-data.ts */
@@ -57,9 +65,10 @@ function structuredData() {
     about: PERSON_REF,
     author: PERSON_REF,
     isPartOf: { "@id": `${SITE_URL}#website` },
-    image: PORTFOLIO_DATA.artGallery.map((item) => ({
+    image: PORTFOLIO_DATA.artGallery.map((item, i) => ({
       "@type": "ImageObject",
-      contentUrl: absoluteUrl(item.src.replace(/^\/ahmed\.dev/, "")),
+      /* the raw public/ path: item.src already carries the deploy prefix */
+      contentUrl: absoluteUrl(galleryImagePath(i + 1)),
       name: item.title,
       description: item.description,
       caption: item.title,

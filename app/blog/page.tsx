@@ -47,7 +47,7 @@ import {
   ProcessSection,
 } from "@/components/blog/dynamic";
 import PageEffects from "@/lib/perf/PageEffects";
-import { attackCoverage, libraryCounts, libraryStructuredData } from "@/lib/library-data";
+import { attackCoverage, libraryCounts, libraryData, libraryStructuredData } from "@/lib/library-data";
 import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
 import { CHANNEL_ID, PERSON_REF, SITE_URL, jsonLd, youtubeEmbed, youtubeThumb, youtubeWatch } from "@/lib/seo";
 import { absoluteUrl, OG_IMAGE } from "@/lib/site";
@@ -71,7 +71,15 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [OG_IMAGE],
   },
-  twitter: { card: "summary_large_image", title: "Blog — Ahmed Emad Nasr", description: DESCRIPTION, images: [OG_IMAGE.url] },
+  /* A page-level twitter object replaces the layout's, so site/creator are repeated */
+  twitter: {
+    card: "summary_large_image",
+    site: "@0x3omda",
+    creator: "@0x3omda",
+    title: "Blog — Ahmed Emad Nasr",
+    description: DESCRIPTION,
+    images: [OG_IMAGE.url],
+  },
 };
 
 /* JSON-LD for search engines (invisible): the blog, the case list and every
@@ -163,7 +171,10 @@ export default function BlogPage() {
 
       {/* ─── Start here, the case library (filters, cards) and the videos ─── */}
       <LazySection id="start-here" size="lazy-h-cases">
-        <CaseLibrarySection />
+        {/* The library's data is computed here, at build time, and passed in:
+            the raw case files (data/cases.ts, case-details.ts, attack.ts)
+            stay on the server */}
+        <CaseLibrarySection data={libraryData} />
       </LazySection>
 
       <SlashDivider label="01 // Detection" japanese="検知" origin="right" />
@@ -172,7 +183,7 @@ export default function BlogPage() {
       {/* ─── The library on MITRE ATT&CK, the rule pack, one real alert ───
           These "Lazy*" components already wrap themselves in a LazySection
           (see components/blog/dynamic.tsx), so no wrapper is needed here. */}
-      <LazyAttackCoverage />
+      <LazyAttackCoverage coverage={attackCoverage} />
       <LazyDetectionLibrary />
       <LazyTriage />
 

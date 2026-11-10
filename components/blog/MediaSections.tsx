@@ -20,7 +20,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import { Youtube } from "@/components/ui/BrandIcons";
 import { formatDate, normalizePublicHref, YOUTUBE_CHANNEL_URL, type ChannelVideo } from "@/lib/shared";
 import { blogFeaturedYoutubeVideo, blogYoutubePlaylists as playlists, blogYoutubeVideos } from "@/data/youtube";
-import { libraryCounts } from "@/lib/library-data";
+import type { LibraryCounts } from "@/lib/library-data";
 import { CounterBadge, KanjiWatermark, btnOutline } from "@/components/ui/kit";
 import FadeIn from "@/components/ui/FadeIn";
 
@@ -35,10 +35,11 @@ const videos: ChannelVideo[] = [
     .map((v) => ({ ...v, sourceUrl: `https://youtu.be/${v.videoId}` })),
 ];
 
-const stats = [
-  { value: libraryCounts.total, label: "Total cases", japanese: "事件" },
-  { value: libraryCounts.withScreenshots, label: "With screenshots", japanese: "証拠" },
-  { value: libraryCounts.screenshots, label: "Screenshot assets", japanese: "画像" },
+/* The library's numbers strip (counts computed at build time, passed in) */
+const statsOf = (counts: LibraryCounts) => [
+  { value: counts.total, label: "Total cases", japanese: "事件" },
+  { value: counts.withScreenshots, label: "With screenshots", japanese: "証拠" },
+  { value: counts.screenshots, label: "Screenshot assets", japanese: "画像" },
 ];
 
 const Embed = memo(function Embed({
@@ -85,7 +86,8 @@ const Embed = memo(function Embed({
   );
 });
 
-export default function MediaSections() {
+export default function MediaSections({ counts }: { counts: LibraryCounts }) {
+  const stats = statsOf(counts);
   const [visible, setVisible] = useState(VIDEO_PAGE);
   /* Which embeds were clicked (the iframe replaces the thumbnail) */
   const [activeEmbeds, setActiveEmbeds] = useState<Record<string, boolean>>({});

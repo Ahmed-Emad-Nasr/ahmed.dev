@@ -21,15 +21,33 @@ const DURATION_KEY = "sensei-fx-duration";
 const DEFAULT_FX_DURATION = 800;
 export const FX_DURATIONS = [400, 800, 1250] as const;
 
+/* The last choice made this visit — used when storage is blocked */
+let chosenThisVisit: string | null = null;
+
 export function getFxDuration(): number {
   if (typeof window === "undefined") return DEFAULT_FX_DURATION;
-  const raw = Number(window.localStorage.getItem(DURATION_KEY));
+  let stored: string | null = chosenThisVisit;
+  try {
+    stored = window.localStorage.getItem(DURATION_KEY) ?? chosenThisVisit;
+  } catch {
+    /* storage blocked (private mode, strict cookie settings) */
+  }
+  /* Nothing chosen yet → the default. (Number(null) is 0, which the clamp
+     below turned into 300ms: every first-time visitor got the fastest
+     wipe, and the palette marked no speed as current.) */
+  if (stored === null || stored === "") return DEFAULT_FX_DURATION;
+  const raw = Number(stored);
   if (!Number.isFinite(raw)) return DEFAULT_FX_DURATION;
   return Math.min(2000, Math.max(300, raw));
 }
 
 export function setFxDuration(ms: number): void {
-  window.localStorage.setItem(DURATION_KEY, String(ms));
+  chosenThisVisit = String(ms);
+  try {
+    window.localStorage.setItem(DURATION_KEY, String(ms));
+  } catch {
+    /* not remembered across visits; chosenThisVisit still applies it */
+  }
   window.dispatchEvent(new CustomEvent("sensei-fx-duration", { detail: ms }));
 }
 

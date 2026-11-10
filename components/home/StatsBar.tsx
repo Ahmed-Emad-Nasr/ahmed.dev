@@ -11,10 +11,13 @@ import FadeIn from "@/components/ui/FadeIn";
    labels, Japanese words and links are LIVE_COPY.stats in data/live-copy.ts —
    edit them there. 4 tiles = 2 columns on phones, 4 on desktop
    (grid-cols-2 lg:grid-cols-4 below). */
+/* pt-14 / md:pt-20: the strip used to sit flush against the roles cards
+   (and tucked 8px under them); now it has the same breathing room as the
+   other sections. Keep .lazy-h-stats in globals.css in step with it. */
 export default function StatsBar({ stats }: { stats: Stat[] }) {
   return (
-    <section aria-label="Highlights" className="relative px-6 md:px-20 bg-background">
-      <div className="max-w-7xl mx-auto -mt-2 grid grid-cols-2 lg:grid-cols-4 border border-foreground/10 bg-surface/50 backdrop-blur-md divide-x divide-foreground/5 divide-y lg:divide-y-0">
+    <section aria-label="Highlights" className="relative px-6 md:px-20 pt-14 md:pt-20 bg-background">
+      <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 border border-foreground/10 bg-surface/50 backdrop-blur-md divide-x divide-foreground/5 divide-y lg:divide-y-0">
         {stats.map((s, i) => (
           <FadeIn as="a" y={16} duration={0.55} delay={i * 0.07}
             key={s.label}

@@ -24,7 +24,6 @@
  */
 
 import Image from "next/image";
-import Link from "next/link";
 import PageLink from "@/components/ui/PageLink";
 import dynamic from "next/dynamic";
 import { useCallback, useMemo, useState, type ReactNode } from "react";
@@ -244,12 +243,12 @@ export default function CaseArticle({
               <span className="text-foreground/20" aria-hidden="true">
                 /
               </span>
-              <Link
+              <PageLink
                 href={collection.href}
                 className="text-tertiary hover:text-foreground transition-colors"
               >
                 {collection.title}
-              </Link>
+              </PageLink>
             </>
           )}
         </nav>
@@ -411,13 +410,13 @@ export default function CaseArticle({
             <BlockTitle japanese="標識">Tags</BlockTitle>
             <div className="flex flex-wrap gap-2">
               {item.tags.map((tag) => (
-                <Link
+                <PageLink
                   key={tag}
                   href={`/blog?q=${encodeURIComponent(tag)}#cases`}
                   className="px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-foreground/60 bg-foreground/[0.04] border border-foreground/10 hover:border-primary hover:text-primary-ink transition-colors"
                 >
                   #{tag}
-                </Link>
+                </PageLink>
               ))}
             </div>
           </div>
@@ -523,7 +522,7 @@ export default function CaseArticle({
             <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {related.map((entry) => (
                 <li key={entry.id}>
-                  <Link
+                  <PageLink
                     href={`/blog/${entry.id}`}
                     className="group spotlight spotlight-blue relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-500"
                   >
@@ -539,7 +538,7 @@ export default function CaseArticle({
                       {entry.sharedTechniques > 0 &&
                         ` • ${entry.sharedTechniques} shared technique(s)`}
                     </span>
-                  </Link>
+                  </PageLink>
                 </li>
               ))}
             </ul>
@@ -552,7 +551,7 @@ export default function CaseArticle({
           aria-label="Other cases"
         >
           {previous ? (
-            <Link
+            <PageLink
               href={`/blog/${previous.id}`}
               className="group spotlight relative flex flex-col gap-3 bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-500"
             >
@@ -566,12 +565,12 @@ export default function CaseArticle({
               <span className="font-display text-base font-black uppercase tracking-tight text-foreground/80 group-hover:text-foreground">
                 {previous.title}
               </span>
-            </Link>
+            </PageLink>
           ) : (
             <span />
           )}
           {next && (
-            <Link
+            <PageLink
               href={`/blog/${next.id}`}
               className="group spotlight relative flex flex-col items-end gap-3 text-right bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-500"
             >
@@ -585,7 +584,7 @@ export default function CaseArticle({
               <span className="font-display text-base font-black uppercase tracking-tight text-foreground/80 group-hover:text-foreground">
                 {next.title}
               </span>
-            </Link>
+            </PageLink>
           )}
         </nav>
 

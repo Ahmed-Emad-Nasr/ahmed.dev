@@ -22,7 +22,6 @@
  */
 
 import type { Metadata } from "next";
-import Link from "next/link";
 import PageLink from "@/components/ui/PageLink";
 import type { ReactNode } from "react";
 import { knowledgeEducationItems } from "@/data/experience";
@@ -255,10 +254,10 @@ export default function CvPage() {
                 RESUME.pdf
                 <span className="brush-jp text-base normal-case tracking-normal opacity-70" lang="ja" aria-hidden="true" data-jp="履歴書" />
               </a>
-              <Link className={ctaSecondary} href="/">
+              <PageLink className={ctaSecondary} href="/">
                 <ArrowLeft size={14} className="text-primary-ink transition-transform duration-300 group-hover:-translate-x-0.5" />
                 ahmed.dev
-              </Link>
+              </PageLink>
             </div>
           </header>
 
@@ -361,7 +360,7 @@ export default function CvPage() {
 
           <p className="mt-16 pt-8 border-t border-foreground/5 font-mono text-[0.625rem] uppercase tracking-[0.25em] leading-relaxed text-foreground/60 print:hidden">
             Generated from the same data as the{" "}
-            <Link className="text-primary-ink underline underline-offset-4" href="/">portfolio</Link> and the{" "}
+            <PageLink className="text-primary-ink underline underline-offset-4" href="/">portfolio</PageLink> and the{" "}
             <PageLink className="text-primary-ink underline underline-offset-4" href="/blog#cases">case library</PageLink> — print it (Ctrl/Cmd + P) for a clean PDF.
           </p>
         </div>

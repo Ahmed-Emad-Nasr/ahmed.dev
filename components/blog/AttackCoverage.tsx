@@ -18,7 +18,7 @@ import PageLink from "@/components/ui/PageLink";
 import type { CSSProperties } from "react";
 import FadeIn from "@/components/ui/FadeIn";
 import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
-import { attackCoverage } from "@/lib/library-data";
+import type { AttackCoverageData } from "@/lib/library-data";
 
 /* The whole matrix in one screen: a column per tactic, a cell per covered
    technique, sweeping in left to right in kill-chain order the first time it
@@ -164,11 +164,11 @@ function TechniqueTile({ technique, tactic, max }: { technique: CoverageTechniqu
   );
 }
 
-/* The coverage is computed at build time (lib/library-data.ts) and comes
-   with this component's own chunk — not passed in as props. */
-const { tactics, techniqueCount, mappedCaseCount }: Props = attackCoverage;
-
-export default function AttackCoverage() {
+/* The coverage is computed at build time (lib/library-data.ts) by
+   app/blog/page.tsx and passed in — the case and ATT&CK data files never
+   ship with this component's chunk. */
+export default function AttackCoverage({ coverage }: { coverage: AttackCoverageData }) {
+  const { tactics, techniqueCount, mappedCaseCount }: Props = coverage;
   const covered = tactics.filter((t) => t.techniques.length > 0);
   const max = Math.max(1, ...covered.flatMap((t) => t.techniques.map((x) => x.cases.length)));
   const maxPerTactic = Math.max(1, ...tactics.map((t) => t.techniques.length));

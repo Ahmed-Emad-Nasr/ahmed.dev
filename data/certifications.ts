@@ -57,7 +57,7 @@ export const certifications: readonly Certification[] = [
   { id: "hcia-cloud", name: "HCIA-Cloud Computing V5.0", shortName: "HCIA-Cloud", issuer: "Huawei", year: 2024, cv: false, galleryIndex: 25 },
 ];
 
-export const GALLERY_IMAGE_COUNT = 98;
+export const GALLERY_IMAGE_COUNT = 99;
 
 export type GalleryCertGroup = "core" | "labs" | "exams" | "badges";
 
@@ -72,10 +72,19 @@ type GalleryCertificateItem = {
 };
 
 /*
- * All 48 documented certificates, diplomas, bootcamps, exam score reports and
- * verified digital badges in the gallery archive (images 1–21 and 23–49).
+ * Every documented degree, certificate, diploma, bootcamp, exam score report
+ * and verified digital badge in the gallery archive (images 1–21, 23–49 and
+ * 99). Array order = display order on /gallery, so the degree comes first.
  */
 export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
+  {
+    galleryIndex: 99,
+    title: "B.Sc. Computers & Artificial Intelligence — Proof of Graduation",
+    issuer: "Benha University",
+    kind: "University Degree",
+    group: "core",
+    summary: "Official proof of graduation from the Faculty of Computers & Artificial Intelligence, majoring in Information Security & Digital Forensics, with the grade Excellent. Approved by the faculty council on 22 June 2026 and by the university on 30 July 2026.",
+  },
   {
     galleryIndex: 1,
     title: "Banque Misr — Rowad Program, Certificate of Completion",
