@@ -1,5 +1,25 @@
 "use client";
 
+/*
+ * ═══ components/layout/CommandPalette.tsx — the Ctrl/⌘+K COMMAND PALETTE ═══
+ *
+ * A search box + list of commands: jump to sections, open pages, switch
+ * theme, copy e-mail, download CV, social links, the terminal, plus every
+ * case report and certificate once you start typing. Arrow keys move,
+ * Enter runs, Esc closes. Loaded only on first use (PaletteMount.tsx).
+ *
+ * HOW TO ADD A COMMAND: add an object to the `commands` array (inside the
+ * useMemo) — copy a line like the "Contact" one:
+ *   { id: "unique-id", group: "Go to", label: "Text shown", icon: SomeIcon,
+ *     run: () => go("#section-id") }
+ *   • group → the heading it's listed under ("Go to", "Pages", "Actions"…)
+ *   • go("#id")    → jump to a section (works from any page)
+ *   • visit("/x")  → open another page
+ *   • hint         → optional grey text on the right
+ * Cases come from /palette-index.json (built from data/cases.ts) and
+ * certificates from data/certifications.ts — no need to add those by hand.
+ */
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, m as motion } from "framer-motion";
 import { useTheme } from "next-themes";
@@ -39,6 +59,7 @@ import { useFocusTrap } from "@/lib/use-focus-trap";
 import { useThemeFx } from "@/components/layout/ThemeFxProvider";
 import { FX_DURATIONS, getFxDuration, setFxDuration } from "@/lib/fx";
 
+/* One row in the palette */
 interface Command {
   id: string;
   group: string;
@@ -142,6 +163,7 @@ export default function CommandPalette() {
     [router]
   );
 
+  /* ═══ The fixed commands — add / edit / remove entries here ═══ */
   const commands: Command[] = useMemo(() => {
     const c = PORTFOLIO_DATA.profile.contact;
     const isDark = resolvedTheme === "dark";
@@ -247,6 +269,7 @@ export default function CommandPalette() {
     [visit]
   );
 
+  /* What the search box matches → the visible list */
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return commands;

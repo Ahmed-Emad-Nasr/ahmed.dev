@@ -8,6 +8,20 @@
  *   hero in <LazySection> (lib/perf/lazy.tsx): not in the HTML, mounted in
  *   idle time or when the reader gets near, sized by .lazy-h-* in
  *   globals.css — so a section's code downloads only when it mounts.
+ *
+ * `dynamic(() => import(path), { loading })`:
+ *   • import(path)  → that component becomes a separate JS file (chunk).
+ *   • loading       → the grey skeleton shown while that file downloads
+ *                     (components/ui/SectionSkeleton.tsx; `lines` = how many
+ *                     grey bars, `tall` = taller placeholder).
+ *   • ssr: false    → never rendered into the HTML, browser only (overlays
+ *                     that depend on window size / localStorage).
+ *
+ * HOW TO ADD a home section: add one line here, e.g.
+ *   export const MySection = dynamic(() => import("@/components/home/MySection"),
+ *     { loading: () => <SectionSkeleton lines={3} /> });
+ * then import { MySection } from "@/components/home/dynamic" in app/page.tsx
+ * and wrap it in <LazySection> (recipe in app/page.tsx's header).
  */
 
 import dynamic from "next/dynamic";

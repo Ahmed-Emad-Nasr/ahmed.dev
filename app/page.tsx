@@ -1,12 +1,45 @@
 /*
- * The home page: the pitch (who, roles, proof, experience),
- * contact, with a door to /blog. Section order follows the Sensei-Dev portfolio
+ * ═══ app/page.tsx — the HOME PAGE  ( URL: / ) ═══
+ *
+ * The pitch (who, roles, proof, experience), contact, with a door to /blog.
+ * Section order follows the Sensei-Dev portfolio
  * (github.com/MostafaSensei106/Sensei-Dev, GPL-3.0).
  *
- * Loading: the hero is its own chunk; every section after it is lazy —
- * not in the HTML, its code fetched and the section mounted in idle time or
- * when the reader nears it (LazySection, lib/perf/lazy.tsx). Off-screen
- * loops pause (lib/perf/).
+ * This file only ARRANGES the page. The content of each section lives in its
+ * component (components/home/*) and its text/data in data/*:
+ *
+ *   Section on screen      Component                        Content / data
+ *   ─────────────────────  ───────────────────────────────  ──────────────────────────
+ *   Hero (top)             components/home/HeroSection      data/portfolio-data.ts, data/live-copy.ts
+ *   Roles cards  #roles    components/home/RolesCards       inside the component (ROLES)
+ *   Numbers strip          components/home/StatsBar         data/live-copy.ts (stats)
+ *   Divider + ticker       components/ui/SlashDivider, TickerStrip
+ *   Projects     #work     components/home/WorkShowcase     data/projects.ts (+ GitHub API)
+ *   Experience   #experience components/home/ExperienceTimeline  data/experience.ts
+ *   Teaching     #teaching components/home/TeachingSection  data/teaching.ts
+ *   Platforms    #platforms components/home/PlatformsSection data/platforms.ts (+ TryHackMe API)
+ *   Contact      #contact  components/layout/ContactFooter
+ *
+ * LOADING: the hero is its own chunk and is in the HTML. Every section after
+ * it is wrapped in <LazySection>: NOT in the HTML; its code is fetched and the
+ * section mounted in idle time or when the reader scrolls near it
+ * (lib/perf/lazy.tsx). Off-screen animation loops pause (lib/perf/).
+ *
+ * HOW TO EDIT
+ *   • Reorder sections → move the blocks inside <main> below.
+ *   • Add a section:
+ *       1. create components/home/MySection.tsx (give its <section> an id),
+ *       2. export it from components/home/dynamic.tsx with next/dynamic,
+ *       3. add it here:  <LazySection id="my-id" size="lazy-h-my">
+ *                          <MySection />
+ *                        </LazySection>
+ *       4. add `.lazy-h-my { --lazy-h: <height>px; }` in app/globals.css
+ *          (its rough height on phone / 48rem / 64rem — keeps scrolling and
+ *          #anchor links accurate before it loads),
+ *       5. optional: a navbar link → NAV_ITEMS in components/layout/SiteNav.tsx,
+ *          and a command palette entry → lib/library-data.ts.
+ *   • Remove a section → delete its block here (and its navbar link).
+ *   • Page title / description for this page → `metadata` below.
  */
 
 import type { Metadata } from "next";
@@ -38,6 +71,9 @@ import { homeForwardScript } from "@/lib/routes";
 import SlashDivider from "@/components/ui/SlashDivider";
 import TickerStrip from "@/components/ui/TickerStrip";
 
+/* <head> tags for the home page only (merged over app/layout.tsx's defaults).
+   This title is used as-is: the layout's "%s | Ahmed Emad Nasr" template only
+   applies to pages in sub-folders (/blog, /gallery…), not to the root page. */
 export const metadata: Metadata = {
   title: "Ahmed Emad Nasr | Information Security Officer | GRC, SOC, DFIR & IAM",
   /* ≤160 characters: search results cut anything longer mid-sentence */
@@ -85,6 +121,9 @@ export const metadata: Metadata = {
   },
 };
 
+/* JSON-LD for search engines (invisible): this page is a ProfilePage about the
+   person, with the experience list and the services offered. The experience
+   list is generated from data/experience.ts — no need to edit it here. */
 function structuredData() {
   return jsonLd({
     "@context": "https://schema.org",
@@ -154,22 +193,35 @@ function structuredData() {
 /* Old links to the blog's sections on this page (/#cases …) open /blog */
 const FORWARD_SCRIPT = homeForwardScript(normalizePublicHref("/").replace(/\/$/, ""));
 
+/* `async` because it runs at BUILD time (static export): it fetches the
+   TryHackMe stats and the GitHub repos once, while `npm run build` runs, and
+   bakes the result into the page. Both fall back to saved data if offline. */
 export default async function Home() {
   const [thm, workItems] = await Promise.all([getTryHackMeStats(), getSyncedWorkItems()]);
 
   return (
     <main id="main-content" className="relative w-full bg-background text-foreground overflow-x-clip">
+      {/* The subtle background texture behind the whole page (globals.css .site-texture) */}
       <div className="site-texture fixed inset-0 pointer-events-none z-0" aria-hidden="true" />
       <script dangerouslySetInnerHTML={{ __html: FORWARD_SCRIPT }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData() }} />
+      {/* Intro boot screen (covers the page for ~1s, then slides away) */}
       <AppLoader />
+      {/* No UI: handles #anchor arrivals, ?filter links, pre-rendering (lib/perf/PageEffects.tsx) */}
       <PageEffects />
+      {/* Top navigation bar */}
       <SiteNav />
+      {/* Phone-only bottom bar (CV / cases / contact buttons) */}
       <MobileActionBar />
+      {/* One-time "press Ctrl+K" hint toast (keyboard/mouse devices only) */}
       <PaletteHint />
 
       {/* ═══ 01 · The pitch: who → roles → proof → experience ═══ */}
+      {/* Hero: name, title, CTA buttons, mascot. Text comes from data/live-copy.ts */}
       <HeroSection description={LIVE_COPY.heroDescription} evidenceLabel={LIVE_COPY.heroEvidence} />
+      {/* LazySection props:
+            id   → the #anchor (kept on the placeholder, so /#roles works before it loads)
+            size → the placeholder's height class from app/globals.css (.lazy-h-*) */}
       <LazySection id="roles" size="lazy-h-roles">
         <RolesCards />
       </LazySection>
@@ -177,12 +229,15 @@ export default async function Home() {
         <StatsBar stats={LIVE_COPY.stats} />
       </LazySection>
 
+      {/* Decorative divider with a label + the scrolling keyword strip */}
       <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
       <TickerStrip />
 
+      {/* Projects grid. workItems = data/projects.ts merged with GitHub repo info */}
       <LazySection id="work" size="lazy-h-work">
         <WorkShowcase items={workItems} />
       </LazySection>
+      {/* The id is on this wrapper because ExperienceTimeline's own <section> has none */}
       <div id="experience">
         <LazySection size="lazy-h-experience">
           <ExperienceTimeline />
@@ -193,10 +248,12 @@ export default async function Home() {
         <TeachingSection />
       </LazySection>
 
+      {/* Training platforms: TryHackMe as the big card (live stats), others from data/platforms.ts */}
       <LazySection id="platforms" size="lazy-h-platforms">
         <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
       </LazySection>
 
+      {/* Contact section + form + footer bar (only on the home page; other pages end with FooterBar) */}
       <div id="contact" className="mt-20">
         <LazySection size="lazy-h-contact">
           <ContactFooter />

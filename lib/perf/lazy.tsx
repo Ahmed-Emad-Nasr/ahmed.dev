@@ -1,12 +1,22 @@
 "use client";
 
 /*
+ * ═══ WHAT YOU NEED TO KNOW (plain version) ═══
+ * <LazySection id="x" size="lazy-h-x"> <MySection /> </LazySection>
+ *   → MySection is NOT in the page's HTML. An empty box of the right height
+ *     (.lazy-h-x in app/globals.css) stands in for it. It mounts in idle
+ *     time or when the reader scrolls within ~3 screens of it, and its code
+ *     downloads then (or earlier, in idle time, if it was wrapped with
+ *     preloadable()). #x links still work (they
+ *     mount it first, then jump). Every section below the hero on home, and
+ *     every section on /blog and /gallery, is wrapped like this.
+ * You normally never edit this file — the technical detail follows.
+ *
  * lib/perf/lazy.tsx — sections whose code AND data load only when needed,
  * and that never cost a dropped frame when they arrive.
  *
- * The heavy client-only sections (the contributions graph on the blog page
- * and the triage challenge on the blog) are not in the server HTML. The
- * gallery has its own route and is therefore isolated from the home page.
+ * Every section after the hero (home), and every section of /blog and
+ * /gallery, is wrapped in a LazySection and is not in the server HTML.
  *
  *   1. Placeholder. An empty box that keeps the section's id (so #cases has
  *      a target) and its expected height per screen size (globals.css,
@@ -121,6 +131,8 @@ class LazyBoundary extends Component<{ children: ReactNode }, { failed: boolean 
 /* Mount this far ahead of the screen, in both directions */
 const MOUNT_MARGIN = "300% 0px 300% 0px";
 
+/* Props: id = the #anchor kept on the placeholder; size = a .lazy-h-* class
+   from app/globals.css (the expected height); children = the section. */
 export default function LazySection({
   id,
   size,

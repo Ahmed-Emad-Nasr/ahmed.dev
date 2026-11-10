@@ -1,6 +1,12 @@
 /*
  * The skill groups (from the CV). `evidence` links a group to the cases that
  * demonstrate it — ids from data/cases.ts.
+ *
+ * ═══ data/skills.ts ═══
+ * skillGroups → used for the JSON-LD (knowsAbout / skills) in app/layout.tsx.
+ * languages   → spoken languages: /cv, the hero's "Languages" row and the
+ *               contact section (via PORTFOLIO_DATA.languages).
+ * Add a skill → add it to `items` of the right group.
  */
 
 type SkillGroup = {

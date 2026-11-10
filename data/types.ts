@@ -1,3 +1,18 @@
+/*
+ * ═══ data/types.ts — the SHAPES of the site's data ═══
+ * TypeScript types only (no content). They make the editor warn you when a
+ * data entry is missing a field or has a typo. If you add a new field to
+ * entries in data/portfolio-data.ts, add it to the matching type here too.
+ *   ContactInfo / HeroInfo / Profile → PORTFOLIO_DATA.profile
+ *   Experience                       → one card of the Experience section
+ *   WorkType / WorkItem              → one project card (#work)
+ *   ProcessStep / ArtGalleryItem / Contribution → process cards, gallery
+ *                                      images, contribution cards
+ *   Stat                             → one StatsBar tile
+ *   Language                         → one spoken language
+ *   PortfolioData                    → the whole PORTFOLIO_DATA object
+ */
+
 interface ContactInfo {
   email: string;
   phone: string;

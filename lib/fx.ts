@@ -4,6 +4,14 @@
  * Motion settings: the shared easing curve, the theme-transition duration
  * (adjustable from the command palette, persisted), reduced motion and a
  * cheap device tier.
+ *
+ * ═══ lib/fx.ts ═══
+ *   FX_DURATIONS / DEFAULT_FX_DURATION → theme-switch animation lengths (ms);
+ *     the palette lists one "Transition speed …ms" command per value.
+ *   prefersReducedMotion() → true if the visitor's OS asks for less motion;
+ *     check it before starting any JS animation.
+ *   THEME_CANVAS_BG → background colours the theme wipe paints; keep equal
+ *     to --background in app/globals.css.
  */
 
 /** The one easing curve every entrance uses */

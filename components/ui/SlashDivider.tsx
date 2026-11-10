@@ -4,6 +4,10 @@ import { m as motion, useReducedMotion, useScroll, useTransform } from "framer-m
 import { useRef } from "react";
 import { MOTION_EASE } from "@/lib/motion";
 
+/* ═══ components/ui/SlashDivider.tsx — the red "slash" line between chapters ═══
+   Usage:  <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
+   The red line draws itself as you scroll past (scrollYProgress → scaleX);
+   origin = which side it grows from. Purely decorative (aria-hidden). */
 export default function SlashDivider({
   label,
   japanese,

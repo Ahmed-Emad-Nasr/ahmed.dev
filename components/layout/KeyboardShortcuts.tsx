@@ -9,6 +9,20 @@
  *   3omda    the hidden terminal
  *
  * Both overlays are lazy — none of their code loads until first use.
+ *
+ * ═══ components/layout/KeyboardShortcuts.tsx — site-wide KEYBOARD SHORTCUTS ═══
+ *
+ * HOW TO ADD A "g + key" JUMP:
+ *   1. add  key: "section-id"  to GO_TO_SECTION below
+ *      (the id must exist on some page; lib/routes.ts → pageOf() must know
+ *      which page it's on — it already knows the home, blog and gallery ids),
+ *   2. add a line to GROUPS in components/layout/ShortcutsHelp.tsx so it
+ *      shows up in the "?" help sheet.
+ * Change the secret word → SECRET below.
+ * Other components can open the overlays with
+ *   window.dispatchEvent(new Event("sensei:open-terminal"))   or
+ *   window.dispatchEvent(new Event("sensei:open-shortcuts")).
+ * Shortcuts are ignored while typing in an input/textarea (isTypingTarget).
  */
 
 import dynamic from "next/dynamic";
@@ -23,6 +37,7 @@ const Terminal = dynamic(() => import("@/components/layout/Terminal"), { ssr: fa
 
 type Overlay = "shortcuts" | "terminal" | null;
 
+/* "g" then this key → jump to this section id (on whatever page it lives) */
 const GO_TO_SECTION: Record<string, string> = {
   h: "home",
   w: "work",
@@ -33,6 +48,7 @@ const GO_TO_SECTION: Record<string, string> = {
   a: "attack",
 };
 
+/* Typing these letters anywhere (not in a text box) opens the terminal */
 const SECRET = "3omda";
 
 export default function KeyboardShortcuts() {

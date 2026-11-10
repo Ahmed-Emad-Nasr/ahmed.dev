@@ -2,6 +2,11 @@
  * "Start here": three reports for a reviewer with five minutes — detection
  * engineering, a full DFIR investigation and malware analysis.
  * Ids from data/cases.ts.
+ *
+ * ═══ data/start-here.ts ═══
+ * Shown at the top of the case library (components/blog/StartHere.tsx) and
+ * as suggestions on the 404 page. Order = display order. An id that isn't in
+ * data/cases.ts is silently skipped.
  */
 
 type StartHereEntry = {

@@ -1,6 +1,15 @@
 /*
  * What only the /cv page needs: the PDF's condensed projects and skills.
  * Experience and certifications are read from their own files.
+ *
+ * ═══ data/cv.ts → app/cv/page.tsx ═══
+ *   CV_CONTACT          → name, headline, e-mail, phone, links at the top
+ *   CV_SUMMARY          → the summary paragraph (also the hero's description)
+ *   CV_PROJECTS         → the Projects section
+ *   CV_SKILLS           → the Skills section (label + items)
+ *   RELEVANT_COURSEWORK → the Coursework line
+ * Numbers inside the text (reports, techniques…) are computed from the case
+ * data, so they stay current by themselves.
  */
 
 import { investigationReportCount, publishedCaseCount } from "@/data/cases";

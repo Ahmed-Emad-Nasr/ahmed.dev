@@ -6,6 +6,42 @@
  * with its tokens, effects and motion unchanged (utility classes no component
  * here uses were left out). Content is Ahmed Emad Nasr's.
  * Fonts: app/fonts.ts — the Sensei-Dev set through next/font (variables on <html>).
+ *
+ * ═══ app/globals.css — ALL site-wide styles (Tailwind v4 + custom CSS) ═══
+ *
+ * Most styling is done with Tailwind classes directly in the components
+ * (className="text-primary px-6 …"). This file holds what Tailwind can't do
+ * inline: the colour tokens, animations (@keyframes), and a few named
+ * classes used across components.
+ *
+ * MAP OF THIS FILE (search for the heading text to jump):
+ *   @theme                         → turns the CSS variables into Tailwind classes
+ *                                     (e.g. --color-primary → bg-primary, text-primary)
+ *   @layer base  :root / .dark     → THE COLOURS, light theme then dark theme
+ *   @layer base  html/body/…       → page defaults: scroll, cursor, focus ring,
+ *                                     skip link, scrollbar, text selection
+ *   ─── Neo-Samurai Components ─── → vertical text, brush font, button sheen,
+ *                                     .jp-eyebrow (Japanese labels), .site-texture,
+ *                                     .spotlight cards, ticker strip, chapter slash
+ *   Contribution cells / theme morph / loader → animations for those parts
+ *   @media print                   → how /cv looks when printed
+ *   @utility title-fit             → big headings that shrink to fit
+ *   .attack-*                      → the ATT&CK coverage section on /blog
+ *   Security motion … Triage … Home lab → animations for the blog sections
+ *   Typography / forms / hover captions → small global fixes
+ *   forced-colors / Large text / Reduced motion → accessibility modes
+ *   ─── Loading the pages ───      → .lazy-* placeholder heights (lib/perf/lazy.tsx)
+ *
+ * COMMON EDITS
+ *   • Change a colour      → edit it in BOTH :root (light) and .dark (dark).
+ *                            Every class like text-primary / bg-surface follows.
+ *   • Add a new colour     → add --mycolor in :root and .dark, then
+ *                            `--color-mycolor: var(--mycolor);` in @theme →
+ *                            you can now write text-mycolor / bg-mycolor.
+ *   • Change corner radius → --radius-* in :root.
+ *   • New animation        → add an @keyframes here + a class that uses it, and
+ *                            turn it off inside a prefers-reduced-motion block.
+ *   • A section's lazy placeholder height → the .lazy-h-* blocks at the end.
  */
 /* Tailwind looks for class names in the site's code only — app/ (routes),
    components/, lib/ and data/. Left to itself it scans the whole repository,
@@ -17,6 +53,8 @@
 @source "../lib";
 @source "../data";
 
+/* `dark:` classes (dark:bg-black …) apply when <html> has class="dark"
+   (next-themes sets it — components/layout/ThemeProvider.tsx) */
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
@@ -1413,7 +1451,14 @@
 
 /* Lazy sections (lazy.tsx): the placeholder and the box the section
    mounts into share one expected height, so the swap moves nothing; once
-   the section has rendered, its real height takes over. */
+   the section has rendered, its real height takes over.
+
+   HOW TO SIZE A NEW LAZY SECTION: add `.lazy-h-<name> { --lazy-h: Npx; }`
+   (phone height) below, then the same class inside the
+   `@media (min-width: 48rem)` (tablet) and `@media (min-width: 64rem)`
+   (desktop) blocks. Use the section's real height: open the site, right-click
+   the section → Inspect, read its height. Approximate is fine — it only
+   affects the scrollbar and #anchor jumps before the section loads. */
 .lazy-pending {
   min-height: var(--lazy-h, 100svh);
 }

@@ -1,5 +1,12 @@
 /* Brand icons (lucide-react v1 has none), with lucide-like props, drawn
-   from the FontAwesome paths in icon-data.ts (npm run icons) */
+   from the FontAwesome paths in icon-data.ts (npm run icons)
+
+   ═══ components/ui/BrandIcons.tsx ═══
+   Use like a lucide icon:  <Github size={16} className="…" />
+   To add a brand (e.g. faDiscord): add its name to scripts/generate-icons.cjs,
+   run `npm run icons` (rewrites icon-data.ts), then add
+     export const Discord = make("faDiscord", "Discord");
+   For simple shapes you can also paste an SVG path, like XLogo below. */
 
 import type { SVGProps } from "react";
 import { ICONS, type IconName } from "@/components/ui/icon-data";

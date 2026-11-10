@@ -3,11 +3,19 @@
 /*
  * PaletteHint — on a first visit with a keyboard, a one-time toast pointing
  * at ⌘K, the shortcuts and the terminal (remembered per browser).
+ *
+ * ═══ components/home/PaletteHint.tsx — the one-time "press Ctrl+K" toast ═══
+ * Shows after BOTH: 5 seconds on the page and scrolling past the hero.
+ * Closes after 9 seconds, on any key press, or with the × button.
+ * It's remembered in localStorage under KEY, so it never shows twice in the
+ * same browser. To see it again while testing: DevTools → Application →
+ * Local Storage → delete "palette-hint-seen".
  */
 
 import { useEffect, useState } from "react";
 import { Command, X } from "lucide-react";
 
+/* localStorage key that marks "already shown" */
 const KEY = "palette-hint-seen";
 
 export default function PaletteHint() {

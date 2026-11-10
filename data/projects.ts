@@ -1,4 +1,13 @@
-/* Projects: the highlights, the pinned repos and a static copy of them for builds without network */
+/* Projects: the highlights, the pinned repos and a static copy of them for builds without network
+
+   ═══ data/projects.ts — GitHub-side project data ═══
+   (The project CARDS themselves are the `work` array in data/portfolio-data.ts.)
+     GITHUB_USERNAME        → whose repos lib/api/github-repos.ts reads at build time
+     projectBullets         → repo name → bullet points (cards for repos that are
+                              NOT in `work`, and the /cv projects)
+     staticProjectFallback  → a saved copy of the GitHub API answer, used when
+                              the build has no internet. Refresh it occasionally
+                              (copy from https://api.github.com/users/<name>/repos). */
 
 export const GITHUB_USERNAME = "Ahmed-Emad-Nasr";
 

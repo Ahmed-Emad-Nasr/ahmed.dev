@@ -2,6 +2,22 @@
  * The case library mapped onto MITRE ATT&CK. Every technique is something
  * the case's report actually shows (alert, command line, registry key …),
  * not a guess from its title.
+ *
+ * ═══ data/attack.ts — powers the ATT&CK section on /blog and the techniques on case pages ═══
+ *
+ * HOW TO MAP A CASE TO ATT&CK (the usual edit):
+ *   add a line to caseAttackMapping below:
+ *     "<case-id from data/cases.ts>": ["T1566.001", "T1059.001"],
+ *   Sub-techniques (T1566.001) are fine — the matrix groups them under the
+ *   parent (T1566).
+ *
+ * If the build fails with "technique Txxxx is not in TECHNIQUES":
+ *   add the PARENT technique to the TECHNIQUES list:
+ *     { id: "T1027", name: "Obfuscated Files or Information", tactic: "stealth" },
+ *   (tactic = one of the ids in ATTACK_TACTICS). Sub-technique display names
+ *   go in the small id → name list just above caseAttackMapping.
+ *
+ * Everything else (counts, heat colours, related cases) is computed from this.
  */
 
 /**

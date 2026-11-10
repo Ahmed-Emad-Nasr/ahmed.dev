@@ -1,12 +1,23 @@
 "use client";
 
+/*
+ * ═══ components/home/RoleTicker.tsx — the "> SOC Analyst_" typing line in the hero ═══
+ *
+ * Types a role, holds it, erases it letter by letter, types the next one.
+ * The list of roles is PORTFOLIO_DATA.profile.roles in data/portfolio-data.ts.
+ * Screen readers get the whole list at once (the sr-only span); visitors who
+ * prefer reduced motion see all roles joined with " · " instead of typing.
+ * It pauses while off-screen or when the browser tab is hidden.
+ */
+
 import { useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "@/lib/fx";
 
-const TYPE = 70;
-const ERASE = 35;
-const HOLD = 1800;
-const GAP = 350;
+/* Timing in milliseconds — change these to speed up / slow down the typing */
+const TYPE = 70; // per letter typed
+const ERASE = 35; // per letter erased
+const HOLD = 1800; // how long a full role stays on screen
+const GAP = 350; // pause between erasing one role and typing the next
 
 export function RoleTicker({ roles, className = "" }: { roles: string[]; className?: string }) {
   const [text, setText] = useState(roles[0] ?? "");
@@ -27,6 +38,7 @@ export function RoleTicker({ roles, className = "" }: { roles: string[]; classNa
     });
     if (ref.current) observer.observe(ref.current);
 
+    /* A tiny state machine: hold → erase → type → hold … (one tick per letter) */
     let role = 0;
     let shown = roles[0].length;
     let phase: "hold" | "erase" | "type" = "hold";
@@ -81,6 +93,7 @@ export function RoleTicker({ roles, className = "" }: { roles: string[]; classNa
         <span
           aria-hidden="true"
           className="inline-flex h-[1.6em] max-w-full items-center overflow-hidden whitespace-nowrap text-left"
+          /* Fixed width = the longest role, so the line never changes size while typing */
           style={{ width: `calc(${longest + 3} * (1ch + 0.18em))` }}
         >
           <span className="text-primary">&gt;&nbsp;</span>

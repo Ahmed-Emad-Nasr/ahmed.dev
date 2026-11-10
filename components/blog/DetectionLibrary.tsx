@@ -3,6 +3,11 @@
 /*
  * DetectionLibrary — the custom Wazuh rule pack as a filterable rule
  * console: severity bar per rule (level 0–15), group filters, ATT&CK links.
+ *
+ * ═══ components/blog/DetectionLibrary.tsx (#detections on /blog) ═══
+ * The rules (id, level, group, tag, text, mitre id) → detectionRules in
+ * data/detection-rules.ts; the filter button names → RULE_GROUP_LABEL there.
+ * A group button only appears if at least one rule uses that group.
  */
 
 import { useMemo, useState } from "react";

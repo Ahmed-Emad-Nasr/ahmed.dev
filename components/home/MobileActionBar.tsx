@@ -4,6 +4,12 @@
  * MobileActionBar — on phones, once the hero has scrolled away, a slim bar
  * with CV / contact actions; hidden over the contact section and on wider
  * screens.
+ *
+ * ═══ components/home/MobileActionBar.tsx — the phone-only bottom bar ═══
+ * Three buttons: CV (PDF), Cases (/blog), Contact (#contact). Edit their
+ * labels/links in the JSX below. "Phone" = narrower than 768px (the
+ * matchMedia query). It slides in after the hero (#home) leaves the screen
+ * and hides when the contact section is visible.
  */
 
 import { useEffect, useState } from "react";

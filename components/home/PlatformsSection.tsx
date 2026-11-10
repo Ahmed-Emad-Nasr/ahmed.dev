@@ -2,6 +2,26 @@
  * PlatformsSection — "Proving Grounds": public training profiles a recruiter
  * can check. Numbers are fetched at build time (TryHackMe) or documented
  * results — nothing estimated. Server Component.
+ *
+ * ═══ components/home/PlatformsSection.tsx — the PLATFORMS section (#platforms) ═══
+ *
+ * One big "featured" card (TryHackMe, with live rank / rooms / badges) and a
+ * grid of smaller cards for the other platforms (Hack The Box,
+ * CyberDefenders, CyberTalents…).
+ *
+ * HOW TO EDIT
+ *   • Add / change a platform card → STATIC_PLATFORMS in data/platforms.ts
+ *     (id, name, mark like "HTB", japanese, handle, url, focus, stats).
+ *   • TryHackMe numbers → fetched at build time by lib/api/tryhackme.ts;
+ *     the fallback values (used offline) are THM_SNAPSHOT in data/platforms.ts,
+ *     and the card's text is tryHackMePlatform() in the same file.
+ *   • The heading text → the <h2 id="platforms-title"> below.
+ *
+ * Small building blocks in this file:
+ *   Mark         → the square badge with the platform's initials
+ *   ProfileLink  → the yellow "→ View profile" line at the bottom of a card
+ *   FeaturedCard → the big TryHackMe card
+ *   PlatformCard → one small card
  */
 
 import { ArrowUpRight } from "lucide-react";

@@ -7,6 +7,11 @@
  * characters the browser uses this face, so the Google slices are not
  * fetched — whatever order the stylesheets end up in. Same glyphs, one
  * small file. Characters outside this list fall through to next/font.
+ *
+ * ═══ When you add NEW Japanese characters anywhere on the site ═══
+ * Re-run scripts/subset-yuji-site.py (the steps are at the top of that file)
+ * so they're added to this font file; until then those characters simply
+ * come from Google's Yuji Syuku (still works, just one more download).
  */
 @font-face {
   font-family: "Yuji Syuku Site";

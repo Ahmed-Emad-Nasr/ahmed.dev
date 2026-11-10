@@ -1,5 +1,33 @@
 "use client";
 
+/*
+ * ═══ components/layout/SiteNav.tsx — the TOP NAVIGATION BAR ═══
+ *
+ * On every page (home renders it in app/page.tsx; the other pages through
+ * PageShell in components/ui/kit.tsx). Contains: the "AE" logo, the links,
+ * the theme toggle, the ⌘ command-palette button, and on phones/tablets a
+ * menu button that opens a full-screen menu.
+ *
+ * Behaviour:
+ *   • Drops in from the top on the first page load (only once per visit).
+ *   • Gets narrower (95% → 85% width) once you scroll more than 100px.
+ *   • Highlights the section you're reading (IntersectionObserver), or
+ *     "Blog" / "Gallery" when you're on those pages.
+ *   • "#work"-style links jump within the home page; from other pages they
+ *     go to /#work (handled by PageEffects + lib/perf/jump.ts on arrival).
+ *
+ * HOW TO EDIT
+ *   • Add / rename / reorder a link → navItems below.
+ *       href "#id"    → a section on the home page (the id must exist there)
+ *       href "/page"  → another page
+ *       icon          → any lucide-react icon (import it at the top)
+ *       katakana      → the small Japanese word (phone menu)
+ *   • Highlight timing → rootMargin "-40% 0px -55% 0px" (= a section counts as
+ *     "current" when it crosses the line ~40% from the top of the screen).
+ *   • Shrink point → `latest > 100` and `window.scrollY > 100`.
+ *   • Bar look → the className of <motion.nav> (w-[85%] / w-[95%], blur, border).
+ */
+
 import { m as motion, AnimatePresence, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { lockScroll } from "@/lib/scroll";
@@ -31,7 +59,9 @@ const navItems = [
   { name: "Contact", href: "#contact", icon: Mail, katakana: "連絡" },
 ];
 
-/* Where each item's part of the home page ends. */
+/* Where each item's part of the home page ends.
+   Sections that are NOT in the nav but should keep a nav item lit:
+   while #teaching is on screen, "Experience" stays highlighted. */
 const AREA_OF: Record<string, string> = {
   teaching: "#experience",
   platforms: "#platforms",
@@ -43,6 +73,8 @@ const AREA_OF: Record<string, string> = {
    every case page. */
 let navEntered = false;
 
+/* One link: a plain <a href="#x"> on the home page, otherwise a Next link
+   to another page (or to /#x from another page). */
 function NavLink({
   href,
   onHome,
@@ -79,10 +111,11 @@ export default function SiteNav() {
   const pathname = usePathname() || "/";
   const onHome = pathname === "/";
   const [mounted, setMounted] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [active, setActive] = useState("#home");
-  const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); // phone menu open?
+  const [active, setActive] = useState("#home"); // which link is highlighted
+  const [scrolled, setScrolled] = useState(false); // past 100px → narrower bar
 
+  /* Runs on every scroll; only updates state when crossing the 100px line */
   useMotionValueEvent(scrollY, "change", (latest) => {
     const next = latest > 100;
     setScrolled((current) => (current === next ? current : next));
@@ -96,6 +129,7 @@ export default function SiteNav() {
     setScrolled(window.scrollY > 100);
   }, []);
 
+  /* Which link to highlight */
   useEffect(() => {
     if (!onHome) {
       /* Blog and gallery pages each light their own top-level destination. */

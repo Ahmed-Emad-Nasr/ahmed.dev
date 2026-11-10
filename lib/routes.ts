@@ -11,6 +11,11 @@
  * Old links to the blog's sections on the home page (/#cases,
  * /?q=wazuh#cases, /#case-…, /#attack …) are forwarded by
  * homeForwardScript() before the home page paints.
+ *
+ * ═══ When you add a section with an id to /blog or /gallery ═══
+ * Add its id to BLOG_IDS or GALLERY_IDS below. Then links to it from anywhere
+ * (navbar, palette, g-shortcuts) open the right page first. Ids not listed
+ * are assumed to be on the home page.
  */
 
 type SitePage = "/" | "/blog" | "/gallery";

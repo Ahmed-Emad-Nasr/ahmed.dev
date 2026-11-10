@@ -2,6 +2,23 @@
  * Certifications (from the CV): the list on the home page and the CV page,
  * and EducationalOccupationalCredential JSON-LD. `galleryIndex` links a
  * certification to its scan in the proof gallery.
+ *
+ * ═══ data/certifications.ts — TWO lists, both about certificates ═══
+ *
+ *  1. `certifications` → the formal CV list (/cv page + JSON-LD).
+ *     Add one: { id, name, shortName?, issuer, year, verifyUrl?, galleryIndex?,
+ *     cv?: false, credential?: "exam" | "course" }.
+ *
+ *  2. The GALLERY (/gallery):
+ *     • GALLERY_IMAGE_COUNT → how many numbered images exist in
+ *       public/Assets/art-gallery/Images/image_display_thumb/ (1.webp … N.webp).
+ *       Add an image → save it as N+1.webp and raise this number.
+ *     • ALL_GALLERY_CERTIFICATES → which of those images are certificates, with
+ *       title, issuer, kind, group ("core" | "labs" | "exams" | "badges" =
+ *       the filter buttons) and summary. galleryIndex = the image number.
+ *     Images not listed there show as photos ("Record 07").
+ *     The certificate count on the home page and gallery is the length of
+ *     ALL_GALLERY_CERTIFICATES.
  */
 
 type Certification = {

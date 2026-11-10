@@ -1,5 +1,31 @@
 "use client";
 
+/*
+ * ═══ components/layout/ContactFooter.tsx — the CONTACT section + FOOTER ═══
+ *
+ * Two exports:
+ *   ContactFooter (default) → the CONTACT section at the bottom of the HOME
+ *                             page (#contact): big heading, e-mail with copy
+ *                             button, social icons, the contact form — and it
+ *                             ends with FooterBar.
+ *   FooterBar               → the thin last line (© year, Blog • Gallery • CV,
+ *                             design credit). Every OTHER page ends with just
+ *                             this, through PageShell in components/ui/kit.tsx.
+ *
+ * HOW THE FORM SENDS (no server — GitHub Pages is static):
+ *   • If NEXT_PUBLIC_WEB3FORMS_KEY is set (see .env.example / the GitHub
+ *     Actions workflow), the message is posted to web3forms.com, which
+ *     e-mails it to you.
+ *   • Without the key, it opens the visitor's own mail app / Gmail with the
+ *     message filled in.
+ *
+ * HOW TO EDIT
+ *   • E-mail, GitHub, LinkedIn, WhatsApp, YouTube… → PORTFOLIO_DATA.profile.contact
+ *     in data/portfolio-data.ts.
+ *   • Add / remove a social icon → the socialLinks array in ContactFooter.
+ *   • Footer links → the <nav> inside FooterBar.
+ */
+
 import { useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import PageLink from "@/components/ui/PageLink";
@@ -74,6 +100,7 @@ export default function ContactFooter() {
   const [draft, setDraft] = useState<Draft | null>(null);
   const [sendState, setSendState] = useState<SendState>("idle");
 
+  /* The social icon buttons — add one by copying an entry */
   const socialLinks = [
     { name: "GitHub", icon: Github, href: `https://github.com/${PORTFOLIO_DATA.profile.contact.github}`, color: "text-primary-ink" },
     { name: "LinkedIn", icon: Linkedin, href: `${PORTFOLIO_DATA.profile.contact.linkedin}`, color: "text-[#0077b5]" },

@@ -1,6 +1,13 @@
 "use client";
 
-/* CaseFilters — search, kind/category tabs, tool chips, sort and view for the case library */
+/* CaseFilters — search, kind/category tabs, tool chips, sort and view for the case library
+
+   ═══ components/blog/CaseFilters.tsx ═══
+   Only the controls — it holds no state. CaseLibrarySection owns the current
+   filters and passes them in with an onXxxChange callback for each. The
+   lists of categories / tools / kinds (with counts) are computed from
+   data/cases.ts in lib/library-data.ts. React.memo at the bottom = it only
+   re-renders when its props change. */
 
 import React from "react";
 import { LayoutGrid, List, Search, X } from "lucide-react";

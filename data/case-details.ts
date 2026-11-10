@@ -3,6 +3,24 @@
  * indicators, response and detections — copied from each case's PDF.
  * A case without an entry still renders (summary and evidence only).
  * SERVER-ONLY: read by app/blog/[slug]/page.tsx.
+ *
+ * ═══ data/case-details.ts — the long-form part of each case page ═══
+ * Drawn by components/blog/CaseFile.tsx. Every field is optional: fill in
+ * only what the report has, and only those blocks appear.
+ *
+ * HOW TO ADD DETAILS FOR A CASE: add an entry to caseDetails, keyed by the
+ * case id from data/cases.ts:
+ *   "my-case-id": {
+ *     verdict: "True positive — …",
+ *     severity: "High",
+ *     facts: [{ label: "Host", value: "WS-01" }],
+ *     chain: [{ step: "Phishing mail opened", technique: "T1566.001" }],
+ *     timeline: [{ time: "10:42", event: "Macro ran" }],
+ *     iocs: [{ type: "ip", value: "1.2.3.4", note: "C2" }],   // shown defanged
+ *     response: ["Isolated the host", "Blocked the domain"],
+ *     detection: [{ title: "YARA rule", lang: "yara", code: "rule x { … }" }],
+ *   },
+ * The allowed fields are the CaseDetail type right below.
  */
 
 export type IocType = "ip" | "domain" | "url" | "email" | "hash" | "file" | "registry" | "account" | "other";
@@ -31,6 +49,7 @@ export type CaseDetail = {
   lessons?: string;
 };
 
+/* Re-used text, so many entries can share it */
 const LD = "LetsDefend SOC simulator";
 
 export const caseDetails: Record<string, CaseDetail> = {

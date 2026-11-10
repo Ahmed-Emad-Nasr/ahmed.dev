@@ -1,5 +1,10 @@
 /* Absolute URLs for the sitemap, feed, canonical and OG tags. No trailing
-   slash: next.config.mjs has no trailingSlash, so /blog is the real URL. */
+   slash: next.config.mjs has no trailingSlash, so /blog is the real URL.
+
+   ═══ lib/site.ts ═══
+   SITE_BASE_URL → the live address of the site. Change it if you move to a
+   custom domain or rename the repo. OG_IMAGE → the default share picture
+   (public/og-image.png, 1200×630) used when a page has none of its own. */
 
 export const SITE_BASE_URL = "https://ahmed-emad-nasr.github.io/ahmed.dev";
 

@@ -7,6 +7,13 @@ const BASE_PATH =
   process.env.NEXT_PUBLIC_BASE_PATH ??
   (process.env.NODE_ENV === "production" ? "/ahmed.dev" : "");
 
+/* ═══ next.config.mjs — Next.js settings ═══
+   output: "export"  → `npm run build` writes a plain static website to out/
+                       (HTML/CSS/JS files) — that folder is what GitHub Pages
+                       serves. No server, so no API routes or server actions.
+   reactStrictMode   → dev-only extra checks (effects run twice in dev).
+   optimizePackageImports → only the icons / motion pieces actually used
+                       are bundled. */
 const nextConfig = {
   reactStrictMode: true,
   output: "export",

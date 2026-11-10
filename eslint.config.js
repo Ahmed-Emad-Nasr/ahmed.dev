@@ -1,3 +1,6 @@
+/* ═══ eslint.config.js — the linter (`npm run lint`) ═══
+   Next's recommended rules (core-web-vitals) plus a few of our own below.
+   "error" fails `npm run verify`; "warn" only prints. */
 import { defineConfig } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 

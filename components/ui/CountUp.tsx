@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/fx";
 
+/* ═══ components/ui/CountUp.tsx ═══
+   Usage: <CountUp target={300} suffix="+" />  → counts 0 → 300+ once, when
+   scrolled into view (1.25 s; instant with reduced motion). Used by StatsBar. */
+
 /** Animated counter: eases 0 -> target when scrolled into view. */
 function useCountUp(
   target: number,

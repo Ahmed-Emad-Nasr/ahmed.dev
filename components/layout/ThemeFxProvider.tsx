@@ -1,5 +1,22 @@
 "use client";
 
+/*
+ * ═══ components/layout/ThemeFxProvider.tsx — the THEME-SWITCH ANIMATION ═══
+ *
+ * When the theme toggles, a <canvas> over the page draws an expanding disc
+ * (the new background colour) with ripple rings and droplets from the click
+ * point; halfway through, the real theme flips (next-themes) and the colours
+ * ease over (CSS .fx-morph in app/globals.css).
+ *
+ * Any component can trigger it:
+ *   const { transitionTo } = useThemeFx();
+ *   transitionTo("light", { x: e.clientX, y: e.clientY });
+ *
+ * Tweak: the ring / droplet colours → RING and DROP below; the speed per
+ * device → getFxDuration() in lib/fx.ts; the canvas background colours →
+ * THEME_CANVAS_BG in lib/fx.ts (keep them equal to --background in globals.css).
+ */
+
 import {
   createContext,
   useCallback,
@@ -25,6 +42,7 @@ interface ThemeFx {
   transitionTo: (theme: "light" | "dark", origin?: Origin) => void;
 }
 
+/* React context: lets any component call transitionTo() without passing props */
 const ThemeFxContext = createContext<ThemeFx>({ transitionTo: () => { } });
 
 export const useThemeFx = () => useContext(ThemeFxContext);

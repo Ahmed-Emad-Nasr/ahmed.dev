@@ -3,6 +3,15 @@
  * then one row per tactic with its techniques as heat-tinted tiles. Each
  * tile opens its evidence in a native popover, so the section ships no
  * JavaScript of its own (Server Component; styles in globals.css, .attack-*).
+ *
+ * ═══ components/blog/AttackCoverage.tsx — the MITRE ATT&CK section (#attack on /blog) ═══
+ * Nothing to type in here: the numbers are computed from which ATT&CK
+ * techniques each case uses — caseAttackMapping in data/attack.ts
+ * (case id → ["T1059.001", …]). Map a new case there and its techniques
+ * light up here, in the matrix and in the counts.
+ *   MatrixView    → the compact grid (desktop only), one column per tactic
+ *   TechniqueTile → one technique tile in the rows below; colour strength =
+ *                   how many reports cover it (`max` = the highest count)
  */
 
 import PageLink from "@/components/ui/PageLink";

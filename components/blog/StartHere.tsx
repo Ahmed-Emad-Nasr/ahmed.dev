@@ -1,4 +1,8 @@
-/* StartHere — three reports to read first */
+/* StartHere — three reports to read first
+
+   ═══ components/blog/StartHere.tsx (#start-here on /blog) ═══
+   Which reports, and the "why read it" text → data/start-here.ts (each entry's
+   id must be a case id from data/cases.ts; unknown ids are skipped). */
 
 import PageLink from "@/components/ui/PageLink";
 import { startHere } from "@/data/start-here";

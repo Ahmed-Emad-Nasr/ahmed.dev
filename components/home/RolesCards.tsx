@@ -1,3 +1,28 @@
+/*
+ * ═══ components/home/RolesCards.tsx — the "roles I fit" cards (#roles) ═══
+ *
+ * A grid of cards right under the hero. Each card = one job role: icon,
+ * area, title, pitch, focus chips, deliverable, numbered "Proof" links,
+ * credentials and a CV download button.
+ *
+ * HOW TO EDIT
+ *   • Change a card's text → its entry in the ROLES array below.
+ *   • Add a card → copy a whole { id: …, … } entry in ROLES and change it.
+ *     `icon` = any icon from lucide-react (import it at the top).
+ *   • Remove a card → delete its entry.
+ *   • Proof links (3 kinds, pick one per link):
+ *       { label, href: "#work" }                → jumps on the home page
+ *       { label, href: "/blog/<case-id>" }      → another page
+ *       { label, params: { kind: "investigation" } } → opens /blog with the
+ *                                                 case filters pre-set
+ *   • Grid columns → "grid-cols-1 md:grid-cols-2 xl:grid-cols-4" in the JSX.
+ *
+ * Counts like "N LetsDefend alerts investigated" are computed from
+ * data/cases.ts (below), so they update by themselves when you add cases.
+ * This is a server component: the case data is read at build time and never
+ * sent to the browser.
+ */
+
 import PageLink from "@/components/ui/PageLink";
 import {
   ArrowUpRight,
@@ -14,7 +39,9 @@ import { caseEvidenceLibrary } from "@/data/cases";
 import { CV_PDF_HREF, caseKindOf, normalizePublicHref } from "@/lib/shared";
 import FadeIn from "@/components/ui/FadeIn";
 
+/* Case id → case title, so proof links show the real title from data/cases.ts */
 const TITLE = new Map(caseEvidenceLibrary.map((c) => [c.id, c.title]));
+/* Live counts used in proof labels */
 const letsDefend = caseEvidenceLibrary.filter(
   (c) => c.platform === "LetsDefend",
 ).length;
@@ -25,6 +52,7 @@ const malware = caseEvidenceLibrary.filter(
   (c) => caseKindOf(c) === "investigation" && c.category === "Malware Analysis",
 ).length;
 
+/* The shape of one card — every entry in ROLES must have these fields */
 type Proof = { label: string; href?: string; params?: Record<string, string> };
 type Role = {
   id: string;
@@ -38,6 +66,7 @@ type Role = {
   credential: string;
 };
 
+/* ═══ THE CARDS — edit / add / remove entries here (shown in this order) ═══ */
 const ROLES: Role[] = [
   {
     id: "information-security-officer",
@@ -200,6 +229,7 @@ export function RolesCards() {
       aria-label="Services and roles I fit"
       className="relative mt-20 md:mt-28 w-full overflow-hidden"
     >
+      {/* Intro sentence above the cards */}
       <p className="mx-auto mb-10 max-w-3xl text-center text-lg text-on-surface-variant font-light leading-relaxed">
         These are the roles I fit and can work in, combining governance,
         security operations, incident response, data security and hands-on
@@ -209,6 +239,8 @@ export function RolesCards() {
         {ROLES.map((r, idx) => {
           const Icon = r.icon;
           return (
+            /* FadeIn = slide-up entrance when scrolled into view (each card 0.1s later).
+               TiltCard = 3D tilt on hover. CardEffects = the red top line / glow. */
             <FadeIn y={36} duration={0.7} delay={idx * 0.1} key={r.id}>
               <TiltCard className="group spotlight relative h-full flex flex-col bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500 overflow-hidden">
                 <CardEffects index={idx + 1} />
@@ -265,6 +297,7 @@ export function RolesCards() {
                         />
                       </>
                     );
+                    /* Pick the right link type: filter link / same-page anchor / other page */
                     return (
                       <li key={p.label}>
                         {p.params ? (

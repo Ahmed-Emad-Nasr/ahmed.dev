@@ -2,6 +2,28 @@
  * Everything the home page renders, in the shape data/types.ts describes.
  * Read by client components, so it must not import cases.ts or attack.ts
  * (numbers from the case library live in live-copy.ts, server-only).
+ *
+ * ═══ data/portfolio-data.ts — PORTFOLIO_DATA: most of the home page's content ═══
+ *
+ *   Part of PORTFOLIO_DATA      What it fills
+ *   ──────────────────────────  ──────────────────────────────────────────────
+ *   profile.name / title …      hero name, title, badge, availability
+ *   profile.roles               the typing role line in the hero
+ *   profile.focus               the hero's "Focus" row
+ *   profile.contact             e-mail, phone, socials — used site-wide
+ *   profile.hero.tagline/specs  hero tagline + the spec strip
+ *   experience                  the Experience cards (built from data/experience.ts
+ *                               + ROLE_INTRO + ROLE_PROOF below)
+ *   work                        the project cards (#work) — the `work` array below
+ *   process                     the "Risk to Response." step cards
+ *   languages                   from data/skills.ts
+ *   contributions               the open-source contribution cards
+ *   artGallery                  the numbered gallery images (data/certifications.ts)
+ *
+ * HOW TO ADD A PROJECT: copy an entry of `work` below — fields are the
+ * WorkItem type in data/types.ts (id, title, type: "lab" | "tool" |
+ * "research" | "platform", tagline, problem, role, stack, platform, status,
+ * year, metrics, links { github, live, demo, caseStudy }).
  */
 
 import type { Experience, PortfolioData, WorkItem } from "@/data/types";
@@ -11,6 +33,7 @@ import { GITHUB_USERNAME, staticProjectFallback } from "@/data/projects";
 import { GALLERY_IMAGE_COUNT, galleryImagePath, galleryMetadata } from "@/data/certifications";
 import { CV_PDF_HREF, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
 
+/* "2026-02-01" → "Feb 2026" */
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const monthYear = (iso: string) => {
   const [y, m] = iso.split("-").map(Number);
@@ -36,6 +59,8 @@ const ROLE_PROOF: Record<string, Pick<Experience, "proof" | "cases">> = {
   "Google Developer Groups (GDG)": { proof: { label: "GDG bootcamp certificate", href: normalizePublicHref(galleryImagePath(36)) } },
 };
 
+/* Per organisation (key = subTag in data/experience.ts): the one-line intro,
+   the Japanese role title and the city shown on its Experience card */
 const ROLE_INTRO: Record<string, { intro: string; japanese: string; location: string }> = {
   "AMIT Learning": {
     intro: "Teaching the 160-hour security track end to end — networking and Linux first, then SOC, pentest, IAM and GRC labs.",
@@ -117,6 +142,7 @@ const experience: Experience[] = [...knowledgeEducationItems]
 const repoByName = (name: string) => staticProjectFallback.find((r) => r.name === name);
 const urlOf = (name: string) => repoByName(name)?.html_url ?? `https://github.com/${GITHUB_USERNAME}`;
 
+/* ═══ The project cards (#work), in display order ═══ */
 const work: WorkItem[] = [
   {
     id: "verifai-360",
@@ -236,6 +262,7 @@ const work: WorkItem[] = [
   },
 ];
 
+/* ═══ Everything put together — components import this one object ═══ */
 export const PORTFOLIO_DATA: PortfolioData = {
   profile: {
     name: "Ahmed Emad Nasr",

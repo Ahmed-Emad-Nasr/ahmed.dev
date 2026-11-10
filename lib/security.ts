@@ -10,6 +10,16 @@
  * 'unsafe-inline' for scripts is required by Next.js static export (its
  * hydration data and the theme bootstrap are inline scripts with
  * no build-stable hash); everything else is locked down.
+ *
+ * ═══ IMPORTANT WHEN YOU ADD SOMETHING EXTERNAL ═══
+ * The browser BLOCKS anything from a domain not listed below (in production).
+ * If you add an image from another site, an embed (Vimeo, Google Maps…),
+ * or fetch() from a new API and it silently doesn't show up, add its origin
+ * to the right line:
+ *   images  → img-src        fetch/API calls → connect-src
+ *   iframes → frame-src      fonts           → font-src
+ * The browser console (F12) shows a "Content Security Policy" error naming
+ * what was blocked. Not active in `npm run dev`.
  */
 export const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",

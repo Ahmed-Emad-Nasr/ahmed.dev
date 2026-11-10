@@ -4,6 +4,22 @@ import { useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/fx";
 
+/*
+ * ═══ components/layout/AppLoader.tsx — the INTRO BOOT SCREEN ═══
+ *
+ * The black screen with the monogram, a progress bar and changing kanji
+ * that covers the page for a moment, then slides up. Used on the home page
+ * (app/page.tsx) and on /blog and /gallery (PageShell showLoader).
+ *
+ * TIMING (milliseconds):
+ *   DURATION 650 → how long the progress bar takes to fill (300 with reduced motion)
+ *   + 100        → small pause at 100% before it leaves
+ *   1500         → safety timeout: it always disappears by then
+ *   The slide-up exit animation is the `exit` prop on the motion.div below.
+ * Click anywhere on it to skip.
+ */
+
+/* The kanji shown one after another while it loads (left → right = 0% → 100%) */
 const BOOT_WORDS = ["起動中", "武士道", "鍛錬", "技術調整", "出陣"];
 
 /**
@@ -25,6 +41,7 @@ export default function AppLoader() {
     const start = performance.now();
     const DURATION = reduced ? 300 : 650;
 
+    /* Every animation frame: progress = eased 0→100 over DURATION */
     const tick = (now: number) => {
       const t = Math.min(1, Math.max(0, (now - start) / DURATION));
       setProgress(Math.round((1 - Math.pow(1 - t, 3)) * 100));
@@ -46,6 +63,7 @@ export default function AppLoader() {
     };
   }, [reduced]);
 
+  /* Which kanji to show for the current progress */
   const word =
     BOOT_WORDS[
       Math.max(

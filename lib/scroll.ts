@@ -1,6 +1,13 @@
 /*
  * lib/scroll.ts — every programmatic scroll goes through here, so it works
  * the same across every caller. Jumps are instant by design.
+ *
+ *   scrollToElement(el) → jump so `el` sits just below the fixed navbar
+ *   scrollToTop()       → back to the top
+ *   lockScroll(true)    → freeze the page behind an open menu/dialog
+ *   isTypingTarget(e.target) → true inside inputs (shortcuts ignore those)
+ * To jump to an id that may be on another page or not loaded yet, use
+ * scrollToHash() from lib/perf/jump.ts instead.
  */
 
 /** Height of the fixed header plus a little air (read from the DOM: it changes with breakpoints) */

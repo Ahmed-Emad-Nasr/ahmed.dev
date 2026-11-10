@@ -4,6 +4,15 @@
  * TriageChallenge — "you are on shift": one real alert from the library
  * (SOC336), three decisions, then the answer key and the full report.
  * Every fact on the alert card comes from the report.
+ *
+ * ═══ components/blog/TriageChallenge.tsx (#triage on /blog) ═══
+ * A small quiz. Everything is in this file:
+ *   ALERT     → the rows of the fake SIEM alert card ([label, value] pairs)
+ *   QUESTIONS → each question: q = the question, options = answers; mark the
+ *               right one with `correct: true`; `why` = the explanation shown
+ *               after answering.
+ * To use a different alert, replace ALERT + QUESTIONS and point the
+ * "read the full report" link at that case.
  */
 
 import { useEffect, useRef, useState } from "react";

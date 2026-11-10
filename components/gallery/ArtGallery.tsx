@@ -1,5 +1,36 @@
 "use client";
 
+/*
+ * ═══ components/gallery/ArtGallery.tsx — the whole /gallery page body ═══
+ *
+ * Top to bottom:
+ *   #art                 → title "Proof gallery" + counters
+ *   #gallery-start-here  → 3 "start here" cards (START_HERE_CARDS) that filter
+ *                          and scroll to the part below
+ *   #all-certificates    → certificate cards with filter buttons (CERT_FILTERS)
+ *   #visual-archive      → every image (certificates + photos), 12 at a time,
+ *                          with "show more"; clicking opens the Lightbox
+ *
+ * WHERE THE CONTENT COMES FROM
+ *   • The images are NUMBERED files:
+ *       public/Assets/art-gallery/Images/image_display_thumb/1.webp … 98.webp
+ *     GALLERY_IMAGE_COUNT in data/certifications.ts says how many there are.
+ *     PORTFOLIO_DATA.artGallery (data/portfolio-data.ts) turns 1…N into the list.
+ *   • An image that is a certificate gets its title/description from
+ *     ALL_GALLERY_CERTIFICATES in data/certifications.ts (matched by
+ *     galleryIndex = the file number). Other images are "photos".
+ *
+ * HOW TO EDIT
+ *   • Add a photo → save it as the next number (99.webp) in that folder and
+ *     raise GALLERY_IMAGE_COUNT to 99.
+ *   • Add a certificate → same, then add an entry to ALL_GALLERY_CERTIFICATES
+ *     with galleryIndex: 99 (title, issuer, kind, group, summary).
+ *   • Rename / add a filter group → CERT_FILTERS (and GalleryCertGroup in
+ *     data/certifications.ts).
+ *   • How many images load at first / per "show more" → FIRST and PAGE.
+ *   • Link straight to a scan: /gallery?cert=14 opens image 14 in the lightbox.
+ */
+
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
@@ -17,6 +48,7 @@ const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
   ssr: false,
 });
 
+/* Images shown at first, and added by each "show more" click */
 const FIRST = 12;
 const PAGE = 12;
 
@@ -47,6 +79,7 @@ const START_HERE_CARDS = [
   },
 ] as const;
 
+/* The certificate filter buttons (id must be a GalleryCertGroup or "all") */
 const CERT_FILTERS: { id: GalleryCertGroup | "all"; label: string }[] = [
   { id: "all", label: "All Certificates" },
   { id: "core", label: "Core & Tracks" },
@@ -55,6 +88,7 @@ const CERT_FILTERS: { id: GalleryCertGroup | "all"; label: string }[] = [
   { id: "badges", label: "Verified Badges" },
 ];
 
+/* Which gallery images are certificates (vs photos) — used by the archive filter */
 const CERT_INDICES = new Set(
   ALL_GALLERY_CERTIFICATES.map((c) => c.galleryIndex),
 );
@@ -64,6 +98,7 @@ export default function ArtGallery() {
     typeof window !== "undefined"
       ? new URLSearchParams(window.location.search)
       : null;
+  /* ?cert=N in the URL → open image N in the lightbox on arrival */
   const certParam = searchParams ? searchParams.get("cert") : null;
 
   useEffect(() => {

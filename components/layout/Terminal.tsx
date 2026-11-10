@@ -4,6 +4,20 @@
  * The hidden terminal (type "3omda" anywhere, or from the palette): another
  * way to browse — ls lists the cases, open opens one, cat cv gets the CV.
  * Loaded on first use.
+ *
+ * ═══ components/layout/Terminal.tsx — the hidden TERMINAL ═══
+ *
+ * HOW TO ADD A COMMAND:
+ *   1. add a `case "mycommand": { … break; }` inside the switch in run()
+ *      (search for `case "whoami"` and copy its shape),
+ *   2. inside it, print output with
+ *        print("one line")                      → normal grey text
+ *        print("oops", "err")                   → red error line
+ *        printAll(["line 1", "line 2"])         → several lines
+ *      `arg` = everything typed after the command ("open xyz" → "xyz"),
+ *   3. add a line for it in the `help` case so people can find it.
+ * The welcome text is BANNER; the hidden CTF flag is FLAG.
+ * Data shown (cases, certs, platforms…) comes straight from the data/ files.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
@@ -59,6 +73,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
 
   const cases = useMemo(() => caseEvidenceLibrary, []);
 
+  /* Add one output line (kinds: "out" normal, "err" red, "dim" faint, "in" = the typed command) */
   const print = useCallback((text: string, kind: Line["kind"] = "out") => {
     setLines((prev) => {
       const next = [...prev, { id: lineId.current++, text, kind }];
@@ -79,6 +94,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
     [],
   );
 
+  /* Runs one typed command line */
   const run = useCallback(
     (raw: string) => {
       const input = raw.trim();
@@ -91,6 +107,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
       const [command, ...args] = input.split(/\s+/);
       const arg = args.join(" ");
 
+      /* ═══ The commands — one `case` each ═══ */
       switch (command.toLowerCase()) {
         case "help":
           printAll([

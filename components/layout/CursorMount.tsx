@@ -5,6 +5,11 @@
  * a precise pointer (mouse / trackpad) and no reduced-motion preference.
  * Phones and tablets never download it; on a desktop it arrives after the
  * page is idle, so it never competes with the first paint.
+ *
+ * ═══ components/layout/CursorMount.tsx ═══
+ * The cursor itself (look, katana, trail, labels) is
+ * components/layout/CursorOverlay.tsx. Hiding the normal Windows pointer is
+ * done in app/globals.css (the `@media (pointer: fine)` block in @layer base).
  */
 
 import { useEffect, useState } from "react";

@@ -2,6 +2,13 @@
  * Home-page copy that quotes numbers computed from the case library.
  * SERVER-ONLY: it pulls in the case data; page.tsx passes the finished
  * strings to the client sections as props.
+ *
+ * ═══ data/live-copy.ts ═══
+ *   heroDescription → the hero's summary paragraph (= CV_SUMMARY in data/cv.ts)
+ *   heroEvidence    → the "Evidence" row in the hero's field record
+ *   stats           → the 4 tiles of StatsBar under the roles cards:
+ *                     target = number, suffix = "+" / "K+", label, japanese,
+ *                     href = where the tile links
  */
 
 import type { Stat } from "@/data/types";

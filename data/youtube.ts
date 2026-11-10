@@ -1,4 +1,15 @@
-/* The YouTube videos and playlists shown on the blog */
+/* The YouTube videos and playlists shown on the blog
+
+   ═══ data/youtube.ts → components/blog/MediaSections.tsx (#videos) ═══
+   HOW TO ADD A VIDEO: copy an entry of blogYoutubeVideos:
+     videoId     → the part after "watch?v=" (or after youtu.be/)
+     title, description, tags
+     publishedAt → "YYYY-MM-DD" (videos are listed newest first)
+     caseId      → optional: a case id from data/cases.ts — the video then
+                   also appears on that case's page
+   blogFeaturedYoutubeVideo → the big one shown first.
+   blogYoutubePlaylists     → playlists (playlistId from the URL's list=…).
+   Thumbnails are loaded from YouTube automatically. */
 
 import type {
   BlogYoutubeVideo,

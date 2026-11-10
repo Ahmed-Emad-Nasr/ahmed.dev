@@ -1,5 +1,13 @@
 "use client";
 
+/*
+ * ═══ lib/api/contributions.ts — the GitHub contribution calendar ═══
+ * Unlike the other lib/api files this runs IN THE VISITOR'S BROWSER (a hook):
+ * it fetches github-contributions-api.jogruber.de (allowed in lib/security.ts)
+ * once the section is near the screen. status: loading → ready | empty | error.
+ * Used by components/home/ContributionsGrid.tsx.
+ */
+
 import { useEffect, useState } from "react";
 
 interface ContributionDay {

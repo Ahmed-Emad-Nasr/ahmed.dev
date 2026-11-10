@@ -4,6 +4,9 @@ import { m as motion } from "framer-motion";
 import { EASE } from "@/lib/fx";
 
 /**
+ * ═══ components/ui/RevealText.tsx ═══
+ * Usage: <RevealText text="Ahmed" delay={0.2} />  (the hero name)
+ *
  * Word-by-word masked reveal for headings (Sensei-Dev's).
  * Non-latin strings stay whole (no per-char splitting for JP text).
  * Reduced motion: MotionConfig reducedMotion="user" (MotionProvider) drops

@@ -1,5 +1,17 @@
 "use client";
 
+/*
+ * ═══ components/home/HeroMascot.tsx — the little mascot next to the portrait ═══
+ *
+ * Three hand-drawn SVG characters (owl, fox, shield). A random one shows on
+ * each visit; clicking it switches to the next one with a bounce, and it
+ * floats gently up and down.
+ *
+ * HOW TO ADD A MASCOT: draw an SVG (viewBox 0 0 100 100) as a const like OWL
+ * below, then add { id, name, role, art } to the MASCOTS array.
+ * Speed of the float → `duration: 5.5` in the motion.div at the bottom.
+ */
+
 import { useEffect, useState, type ReactNode } from "react";
 import { m as motion, useAnimationControls } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/fx";
@@ -102,6 +114,7 @@ const SHIELD = (
   </svg>
 );
 
+/* The mascots in click order. name + role appear in the hover label. */
 const MASCOTS: Mascot[] = [
   { id: "owl", name: "Fukurou", role: "Night shift", art: OWL },
   { id: "fox", name: "Kitsune", role: "Threat hunt", art: FOX },
@@ -127,6 +140,7 @@ export function HeroMascot({ className }: { className?: string }) {
   const bounce = useAnimationControls();
   const mascot = MASCOTS[index % MASCOTS.length] ?? MASCOTS[0]!;
 
+  /* Click → next mascot + a quick jump (skipped with reduced motion) */
   const play = () => {
     setIndex((i) => (i + 1) % MASCOTS.length);
     if (!reduced) {

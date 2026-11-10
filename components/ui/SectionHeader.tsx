@@ -1,3 +1,13 @@
+/*
+ * ═══ components/ui/SectionHeader.tsx — the big two-line section title ═══
+ * Usage:  <SectionHeader titleA="Built &" titleB="Tested." description="…" />
+ *   titleA      → first line (white/black)
+ *   titleB      → second line (red, italic)
+ *   description → optional grey paragraph under it
+ *   as="h1"     → when it's the page's main title (default h2)
+ * Slides in from the left when it scrolls into view.
+ */
+
 import FadeIn from "@/components/ui/FadeIn";
 
 interface SectionHeaderProps {

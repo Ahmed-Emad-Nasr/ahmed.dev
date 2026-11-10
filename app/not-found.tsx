@@ -1,4 +1,11 @@
-/* The 404 page (GitHub Pages serves it for any unknown path): ways to continue, no dead end */
+/* The 404 page (GitHub Pages serves it for any unknown path): ways to continue, no dead end
+
+   ═══ app/not-found.tsx — the 404 PAGE ═══
+   Built into out/404.html; GitHub Pages shows it for any URL that doesn't
+   exist. HOW TO EDIT:
+     • the buttons → the <nav> below (ahmed.dev / Case library / CV),
+     • the 3 suggested cases → the first entries of data/start-here.ts,
+     • the wording → the <h1> and <p> below. */
 
 import Link from "next/link";
 import PageLink from "@/components/ui/PageLink";
@@ -17,6 +24,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: true },
 };
 
+/* Suggest the first 3 "start here" cases that really exist in data/cases.ts */
 const KNOWN = new Set(caseEvidenceLibrary.map((item) => item.id));
 const SUGGESTIONS = startHere.filter((entry) => KNOWN.has(entry.id)).slice(0, 3);
 

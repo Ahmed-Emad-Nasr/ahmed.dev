@@ -1,4 +1,9 @@
-/* The Teaching section. Its numbers are also stated in experience.ts — keep them in step. */
+/* The Teaching section. Its numbers are also stated in experience.ts — keep them in step.
+
+   ═══ data/teaching.ts → components/home/TeachingSection.tsx (#teaching) ═══
+   TEACHING_STATS → the big numbers;  DIPLOMA → the curriculum card
+   (modules: n = number shown, title, detail);  TEACHING_ROLES → the
+   "where it was taught" cards. Add an item to any array and it appears. */
 
 import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 

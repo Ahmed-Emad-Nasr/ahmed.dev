@@ -3,6 +3,10 @@ import { CountUp } from "@/components/ui/CountUp";
 import type { ContributionStats } from "@/lib/api/contributions";
 import FadeIn from "@/components/ui/FadeIn";
 
+/* ═══ components/home/ContributionGraph.tsx — the year of GitHub squares ═══
+   Draws what lib/api/contributions.ts fetched. Each day is a small square;
+   its colour depends on the day's level (0 = none … 4 = most), picked from
+   LEVEL_BG below — change those classes to recolour the graph. */
 const LEVEL_BG = [
   "bg-foreground/[0.06]",
   "bg-accent/25",

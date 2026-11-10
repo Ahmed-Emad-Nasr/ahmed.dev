@@ -2,6 +2,15 @@
  * The custom Wazuh rule pack (case "3omda-custom-detection-rules"): id,
  * level, group, description and ATT&CK id for the Detection Library.
  * $(…) in a description is a Wazuh field placeholder.
+ *
+ * ═══ data/detection-rules.ts — shown by components/blog/DetectionLibrary.tsx ═══
+ * HOW TO ADD A RULE: copy one entry of detectionRules:
+ *   { id: 100250, level: 12, group: "malware", tag: "MALWARE",
+ *     text: "What the rule detects", mitre: "T1059.001" }
+ *   • level  → Wazuh level 0–15 (colour: 14+ red, 12+ yellow, 10+ blue)
+ *   • group  → one of the keys of RULE_GROUP_LABEL (add a new key + label
+ *              there to create a new filter button)
+ *   • mitre  → ATT&CK id ("" if none) — links to attack.mitre.org
  */
 
 type DetectionRule = {

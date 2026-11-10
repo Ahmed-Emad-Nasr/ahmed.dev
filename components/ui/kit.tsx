@@ -5,6 +5,25 @@
  * does not have (case library, case pages, CV). Every class here
  * is copied from a component of the original — the source is noted on each —
  * so these pages read as part of the same site.
+ *
+ * ═══ The shared UI KIT — reusable class strings + small components ═══
+ *
+ * Instead of repeating long Tailwind strings, components import them:
+ *   import { chipTertiary, btnPrimary } from "@/components/ui/kit";
+ *   <span className={chipTertiary}>Wazuh</span>
+ * Change a string here and every place that uses it changes.
+ *
+ *   chipTertiary / chipAccent / chipNeutral → small tag chips (blue / yellow / grey)
+ *   btnPrimary / btnOutline                 → small buttons (red / outlined)
+ *   ctaPrimary / ctaSecondary               → big call-to-action buttons
+ *   filterTab(active)                       → a filter button (red when active)
+ *   cardSurface                             → the standard card background + border
+ *   <Eyebrow>                               → red line + small uppercase label
+ *   <CounterBadge>                          → number box with corner brackets
+ *   <KanjiWatermark>                        → huge faded kanji behind a section
+ *   <PageShell>                             → the frame of every page except home:
+ *                                             navbar + optional loader + <main> + footer bar
+ *   status*                                 → the 404 / error page layout
  */
 
 import type { ReactNode } from "react";
@@ -102,7 +121,9 @@ export function KanjiWatermark({ chars, side = "right" }: { chars: string; side?
 }
 
 /* Page frame for every route except the home page: the floating nav, the
-   page itself, and the footer bar. */
+   page itself, and the footer bar.
+   Usage:  <PageShell showLoader> …page content… </PageShell>
+   showLoader → also play the intro boot screen (AppLoader) on this page. */
 export function PageShell({ children, className = "", showLoader = false }: { children: ReactNode; className?: string; showLoader?: boolean }) {
   return (
     <>

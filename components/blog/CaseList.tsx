@@ -1,6 +1,11 @@
 "use client";
 
-/* CaseList — the library as a dense table, one row per case */
+/* CaseList — the library as a dense table, one row per case
+
+   ═══ components/blog/CaseList.tsx (the "list" view of the case library) ═══
+   Columns are set by grid-cols-[1fr_7rem_10rem_9rem_6.5rem_1.5rem] — the
+   header row and each data row must use the same template. KIND_TONE and
+   SEVERITY_DOT pick the colours per case kind / severity. */
 
 import PageLink from "@/components/ui/PageLink";
 import { ArrowUpRight } from "lucide-react";

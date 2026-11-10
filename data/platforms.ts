@@ -2,6 +2,14 @@
  * The training platforms ("Proving Grounds"). TryHackMe stats are fetched at
  * build time (lib/api/tryhackme.ts) with THM_SNAPSHOT as the fallback; the
  * other platforms show their profile only — no unverifiable numbers.
+ *
+ * ═══ data/platforms.ts → components/home/PlatformsSection.tsx (#platforms) ═══
+ *   THM_SNAPSHOT       → TryHackMe numbers used when the live fetch fails —
+ *                        refresh them now and then (and asOf)
+ *   tryHackMePlatform  → the text of the big TryHackMe card
+ *   STATIC_PLATFORMS   → the other cards. Add one by copying an entry:
+ *                        id, name, mark (2–3 letters), japanese, handle, url,
+ *                        focus (one sentence), stats [{ value, label }]
  */
 
 import { caseEvidenceLibrary } from "@/data/cases";

@@ -1,3 +1,11 @@
+/*
+ * ═══ components/home/ProcessSection.tsx — "Risk to Response." (#process, on /blog) ═══
+ *
+ * A row of step cards (the NIST CSF loop). The steps are
+ * PORTFOLIO_DATA.process in data/portfolio-data.ts — edit, add or remove
+ * steps there. The heading text is the <SectionHeader> props below.
+ */
+
 import SectionHeader from "@/components/ui/SectionHeader";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import FadeIn from "@/components/ui/FadeIn";

@@ -2,6 +2,12 @@
  * What search engines read about the person: the stable JSON-LD @ids every
  * page points at, the profiles that prove the identity (sameAs) and the
  * keyword sets.
+ *
+ * ═══ lib/seo.ts ═══
+ *   SAME_AS    → add a new public profile (e.g. a new platform) here.
+ *   KEYWORDS   → <meta keywords> groups; pages pick the groups they need.
+ *   OCCUPATION → the job description used in the person JSON-LD.
+ *   youtubeThumb / youtubeWatch / youtubeEmbed → YouTube URL builders.
  */
 
 import { SITE_BASE_URL } from "@/lib/site";

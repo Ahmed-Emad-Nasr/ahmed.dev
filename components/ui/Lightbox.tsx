@@ -1,7 +1,12 @@
 "use client";
 
 /* The screenshot / certificate lightbox. Always imported with next/dynamic,
-   so the library and its CSS load only when something is opened. */
+   so the library and its CSS load only when something is opened.
+
+   ═══ components/ui/Lightbox.tsx — full-screen image viewer ═══
+   Wraps the "yet-another-react-lightbox" library. slides = [{ src, title,
+   description? }], index = which one opens first. Plugins: Zoom, Fullscreen,
+   Thumbnails (remove one from `plugins` to drop that feature). */
 
 import YarlLightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";

@@ -1,6 +1,13 @@
 "use client";
 
-/* CaseCard — one case in the library (card view) */
+/* CaseCard — one case in the library (card view)
+
+   ═══ components/blog/CaseCard.tsx ═══
+   Shows one entry of data/cases.ts: kind, platform, severity, title, a short
+   blurb (lib/case-summary.ts → caseCardBlurb), tags/tools chips and buttons
+   (read the case page, open the PDF, view screenshots, copy link).
+   Every field comes from the case's entry in data/cases.ts — to change what
+   a card says, edit that entry. memo() = re-renders only when its props change. */
 
 import { memo, useCallback, useState } from "react";
 import Image from "next/image";

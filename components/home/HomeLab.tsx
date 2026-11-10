@@ -2,6 +2,23 @@
  * HomeLab — the SOC lab as an architecture diagram (what attacks it, what it
  * collects, where logs go, what happens when a rule fires). Pure SVG + CSS:
  * dashes and packets travel in the direction the data flows.
+ *
+ * ═══ components/home/HomeLab.tsx — the HOME LAB diagram (#lab, on /blog) ═══
+ *
+ * The diagram is one SVG, 1040 × 440 units (viewBox). It is drawn from two
+ * arrays below:
+ *   NODES → the boxes. x / y = top-left corner, w / h = size (in SVG units),
+ *           title = bold line, sub = small line, tone = colour.
+ *   LINKS → the connecting lines. `d` is an SVG path:
+ *             "M230 77 H310"  = start at (230,77), straight line to x=310
+ *             "M230 77 C… "   = a curve (C x1 y1 x2 y2 x y)
+ *           label/lx/ly = optional text on the line and where it sits,
+ *           dur = seconds a "packet" takes to travel the line.
+ *
+ * HOW TO ADD A TOOL TO THE LAB: add a NODE with a free x/y spot, then a LINK
+ * whose path goes from the edge of one box to the edge of another. Widen the
+ * viewBox (and min-w-[760px]) if you run out of room.
+ * The animations (.lab-flow, .lab-beacon) are in app/globals.css.
  */
 
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -22,6 +39,7 @@ const NODES: Node[] = [
   { id: "hive", x: 850, y: 340, w: 180, h: 74, title: "TheHive", sub: "Case management", tone: "tertiary" },
 ];
 
+/* tone name → actual colour (the theme's CSS variables, so it follows light/dark) */
 const TONE: Record<Node["tone"], string> = {
   primary: "var(--primary)",
   accent: "var(--accent)",

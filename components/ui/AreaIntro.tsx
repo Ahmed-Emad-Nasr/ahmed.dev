@@ -3,6 +3,10 @@
  * page, the blog page's own header): a section header and a row of jump
  * links to the sections in the group. Server-rendered; the links are plain #anchors
  * (lib/perf/PageEffects.tsx mounts lazy targets before jumping).
+ *
+ * ═══ components/ui/AreaIntro.tsx — page/area heading + row of jump links ═══
+ * Used at the top of /blog. Props: titleA / titleB / description (passed to
+ * SectionHeader), and links = [{ href: "#section-id", label: "Text", n?: count }].
  */
 
 import SectionHeader from "@/components/ui/SectionHeader";

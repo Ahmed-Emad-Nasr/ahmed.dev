@@ -1,4 +1,22 @@
-/* The experience / education timeline (sorted by date in data/portfolio-data.ts) */
+/* The experience / education timeline (sorted by date in data/portfolio-data.ts)
+
+   ═══ data/experience.ts — every job, volunteer role and course ═══
+   Feeds: the home page Experience section, the /cv page, and the JSON-LD.
+
+   HOW TO ADD AN ENTRY: copy a { … } block below (order here doesn't matter —
+   it's sorted by date):
+     tag             → the role / course title
+     kind            → "work" | "volunteer" | "education"  (keep `as const`)
+     subTag          → organisation name. MUST match the key in ROLE_INTRO /
+                       ROLE_PROOF in data/portfolio-data.ts if you want its
+                       intro line, Japanese title, city and proof buttons.
+     subTagHyperlink → the organisation's website
+     desc            → bullet points separated by " • " (split into a list)
+     startDate       → "YYYY-MM-DD";  endDate → leave out for "Present"
+     skills          → chips;  certificateUrl → optional link
+     cv: false       → keep it on the website but leave it off /cv
+   Note: the home Experience section shows education only for Benha
+   University (filter in data/portfolio-data.ts). */
 
 export const knowledgeEducationItems = [
   {

@@ -1,6 +1,13 @@
 /*
  * CaseSummary — a case description drawn as an incident briefing
  * (objective → actions → outcome → artifacts), parsed by lib/case-summary.ts.
+ *
+ * ═══ components/blog/CaseSummary.tsx ═══
+ * Input: the plain `description` text of a case (data/cases.ts). It is split
+ * into steps automatically — you don't format it by hand. Inside the text,
+ * IPs, CVE ids, ATT&CK ids (T1059…), ports (443/tcp) and percentages are
+ * highlighted by the TOKEN pattern below, and text in 'single quotes'
+ * becomes a code chip (see CODE_SPAN in lib/case-summary.ts).
  */
 
 import { useMemo, type ReactNode } from "react";

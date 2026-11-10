@@ -1,5 +1,33 @@
 /*
- * Root layout: providers, site-wide metadata and the Person / WebSite JSON-LD.
+ * ═══ app/layout.tsx — the ROOT LAYOUT (wraps every page of the site) ═══
+ *
+ * Next.js renders this once around every page: home (app/page.tsx), /blog,
+ * /blog/<case>, /gallery, /cv and the 404 page. Whatever is here appears on
+ * ALL pages; whatever belongs to one page lives in that page's file.
+ *
+ * What it does, top to bottom:
+ *   1. viewport     → mobile scaling + the browser bar colour (themeColor).
+ *   2. metadata     → <title>, description, social-share cards (Open Graph /
+ *                     Twitter), favicon, manifest, robots and Google
+ *                     verification. Pages override title/description with
+ *                     their own `export const metadata`.
+ *   3. structured data (JSON-LD) → a machine-readable "who is this person"
+ *                     block that search engines read. Invisible on the page.
+ *   4. RootLayout   → the <html>/<body> shell, early inline scripts, and the
+ *                     site-wide providers and overlays (theme, cursor,
+ *                     command palette, keyboard shortcuts).
+ *
+ * HOW TO EDIT
+ *   • Site title / description / share text → the `metadata` object below.
+ *   • Name, job titles, phone, e-mail in the JSON-LD → STRUCTURED_DATA_JSON.
+ *   • Social profiles (LinkedIn, GitHub…) → SAME_AS in lib/seo.ts.
+ *   • Fonts → app/fonts.ts.  Colours / global styles → app/globals.css.
+ *   • Hide the site from Google → set robots.index/follow to false below
+ *     (and googleBot.index/follow).
+ *   • Add something to EVERY page (a banner, an overlay…) → put it inside
+ *     <ThemeFxProvider> next to {children}. Prefer a lazy "Mount" component
+ *     (like PaletteMount / CursorMount) so it doesn't slow the first paint.
+ *
  * The visual system (theme transition, katana cursor, boot screen,
  * command palette) is the Sensei-Dev design
  * (github.com/MostafaSensei106/Sensei-Dev, GPL-3.0).
@@ -34,6 +62,8 @@ import {
 } from "@/lib/seo";
 
 // ─── Viewport ─────────────────────────────────────────────────────────────────
+/* <meta name="viewport"> + <meta name="theme-color">. themeColor is the colour
+   of the phone's browser bar; keep it equal to the dark background. */
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -43,6 +73,10 @@ export const viewport: Viewport = {
 };
 
 // ─── Metadata ─────────────────────────────────────────────────────────────────
+/* Default <head> tags for every page. Next merges each page's own `metadata`
+   on top of this. `title.template` turns a page title "Blog" into
+   "Blog | Ahmed Emad Nasr". metadataBase (SITE_URL, lib/seo.ts) turns
+   relative URLs such as canonical "/" into full https:// URLs. */
 
 export const metadata: Metadata = {
   referrer: "strict-origin-when-cross-origin",
@@ -120,6 +154,11 @@ export const metadata: Metadata = {
 };
 
 // ─── Structured data ──────────────────────────────────────────────────────────
+/* JSON-LD (schema.org) describing the person, the YouTube channel and the
+   website. It goes into a <script type="application/ld+json"> tag — no visual
+   effect. Workplaces/schools are pulled automatically from the experience
+   timeline (data/experience.ts), certificates from data/certifications.ts and
+   skills from data/skills.ts, so editing those files updates this too. */
 
 /* Organisations from the timeline, as schema.org nodes. Current = no endDate. */
 type Org = { name: string; url?: string; education: boolean };
@@ -217,6 +256,16 @@ const STRUCTURED_DATA_JSON = jsonLd({
 const HOME_DATA_FIX = homeDataFixScript(normalizePublicHref("/").replace(/\/$/, ""));
 
 // ─── Layout ───────────────────────────────────────────────────────────────────
+/* Order matters:
+   • <head> scripts run before the page is painted (no flash/jump).
+   • MotionProvider  → loads framer-motion's animation engine once (lazily).
+   • ThemeProvider   → dark/light theme (next-themes, stored in localStorage).
+   • ThemeFxProvider → the animated circle wipe when switching theme.
+   • PaletteMount / KeyboardShortcuts / CursorMount / DeferredGlobalEffects →
+     site-wide overlays; each loads its code only when needed.
+   • {children}      → the current page.
+   suppressHydrationWarning on <html>: the theme class is set by a script
+   before React starts, so React must not complain that it differs. */
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -246,6 +295,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <MotionProvider>
         <ThemeProvider>
           <ThemeFxProvider>
+            {/* Keyboard users: first Tab shows this link, jumps past the navbar */}
             <a href="#main-content" className="skip-link">Skip to content</a>
             <script
               type="application/ld+json"
@@ -256,6 +306,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <DeferredGlobalEffects />
             <CursorMount />
             {children}
+            {/* Registers public/sw.js (offline cache) in production */}
             <ServiceWorkerRegister />
           </ThemeFxProvider>
         </ThemeProvider>

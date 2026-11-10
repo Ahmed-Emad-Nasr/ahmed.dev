@@ -7,6 +7,17 @@
  *  · Elements entering in the same frame start top to bottom, 110 ms apart.
  *  · opacity + transform (not framer's x/y) so the browser runs them off the
  *    main thread (WAAPI) and a cascade never stutters the scroll.
+ *
+ * ═══ components/ui/FadeIn.tsx — the entrance animation used everywhere ═══
+ * Wrap anything:
+ *   <FadeIn y={24} duration={0.65} delay={0.1}> … </FadeIn>
+ *   <FadeIn as="li" x={-32} y={0}> … </FadeIn>      (slides in from the left)
+ * Props:
+ *   as        → the HTML tag to render (default div)
+ *   x / y     → where it starts, in px (negative x = from the left)
+ *   duration  → seconds;  delay → extra seconds before it starts
+ *   + any normal HTML props (className, href, aria-*…)
+ * Global feel (ease curve, stagger gap) → lib/motion.ts.
  */
 
 import { m, useAnimationControls } from "framer-motion";

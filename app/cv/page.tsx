@@ -2,6 +2,23 @@
  * /cv — the CV as an HTML page (ATS and search engines read it better than
  * the PDF), built from the same data as the site. print: variants make
  * Ctrl+P produce a plain one-column CV.
+ *
+ * ═══ app/cv/page.tsx — the CV PAGE  ( URL: /cv ) ═══
+ *
+ *   Part of the page         Where its content comes from
+ *   ───────────────────────  ─────────────────────────────────────────────
+ *   Header (name, contact)   CV_CONTACT, CV_SUMMARY in data/cv.ts
+ *   Experience / Volunteer   data/experience.ts (kind: "work" / "volunteer")
+ *   Education & Training     data/experience.ts (kind: "education")
+ *   Projects                 CV_PROJECTS in data/cv.ts
+ *   Certifications           data/certifications.ts
+ *   Skills                   CV_SKILLS in data/cv.ts + languages in data/skills.ts
+ *   Coursework               RELEVANT_COURSEWORK in data/cv.ts
+ *   "Download PDF" button    CV_PDF_HREF in lib/shared.ts → public/Assets/cv/…pdf
+ *
+ * HOW TO EDIT: change the data files above, not this page. To keep a timeline
+ * entry on the website but OFF the CV, give it `cv: false` in data/experience.ts.
+ * Classes starting with `print:` only apply when printing (Ctrl+P).
  */
 
 import type { Metadata } from "next";
@@ -41,6 +58,7 @@ const bulletItem =
   "relative pl-5 text-sm text-on-surface-variant font-light leading-relaxed before:absolute before:left-0 before:top-[0.6em] before:h-1.5 before:w-1.5 before:bg-primary/70 " +
   "print:text-[9pt] print:leading-[1.35] print:text-black print:before:bg-black";
 
+/* The red line + small uppercase heading + Japanese word above each CV section */
 function SectionTitle({ children, japanese }: { children: ReactNode; japanese: string }) {
   return (
     <div className="flex items-center gap-4 mb-6 print:mb-[4pt] print:border-b print:border-black print:pb-[2pt]">
@@ -153,6 +171,7 @@ type TimelineItem = (typeof knowledgeEducationItems)[number];
 const onCv = (item: object) => !("cv" in item && (item as { cv?: boolean }).cv === false);
 const newestFirst = (a: TimelineItem, b: TimelineItem) => b.startDate.localeCompare(a.startDate);
 
+/* One job / course: title + dates on top, organisation, then the bullet points */
 function Entry({ item, linkOrg = true }: { item: TimelineItem; linkOrg?: boolean }) {
   return (
     <div className={entryWrap}>
@@ -190,6 +209,8 @@ function EntrySection({ title, japanese, items }: { title: string; japanese: str
   );
 }
 
+/* The page. Sections appear in the order written in the JSX below — move a
+   "── X ──" comment block to reorder the CV. */
 export default function CvPage() {
   const cvItems = knowledgeEducationItems.filter(onCv);
   /* Newest start date first — the order the PDF uses */

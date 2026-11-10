@@ -3,6 +3,24 @@
 /*
  * CaseArticle — one case page: header panel, briefing, case file,
  * screenshots (with lightbox), related cases and prev/next.
+ *
+ * ═══ components/blog/CaseArticle.tsx — what a /blog/<case-id> page LOOKS like ═══
+ *
+ * app/blog/[slug]/page.tsx gathers the data and passes it in as props; this
+ * file only draws it. Order on the page (each part has a JSX comment with its name):
+ *   Breadcrumb → Header (title, date, read time, chips) → Summary panel
+ *   (verdict, briefing via CaseSummary, ATT&CK techniques, tools, PDF / copy
+ *   link buttons) → Details (CaseFile: facts, chain, timeline, IOCs,
+ *   detection, report; screenshots grid + lightbox; related videos; related
+ *   cases) → Previous / next.
+ *
+ * Content lives in data files, not here:
+ *   title / description / tags / tools / PDF  → data/cases.ts
+ *   facts / chain / timeline / IOCs …         → data/case-details.ts
+ *   ATT&CK techniques                         → data/attack.ts
+ *
+ * To pass something NEW into the page: add it to the props type below AND
+ * to the <CaseArticle …> call in app/blog/[slug]/page.tsx.
  */
 
 import Image from "next/image";
@@ -43,6 +61,7 @@ const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
   ssr: false,
 });
 
+/* The fields of a data/cases.ts entry this page uses */
 type CaseItem = {
   id: string;
   title: string;
@@ -182,6 +201,7 @@ export default function CaseArticle({
     void copy(`${window.location.origin}${window.location.pathname}`);
   }, [copy]);
 
+  /* Screenshots → lightbox slides */
   const slides = useMemo(
     () =>
       screenshots.map((shot, i) => ({

@@ -1,6 +1,29 @@
 /*
- * /blog/<case-id> — one static page per case, with its own title, share card
- * and TechArticle JSON-LD.
+ * ═══ app/blog/[slug]/page.tsx — ONE CASE REPORT PAGE  ( URL: /blog/<case-id> ) ═══
+ *
+ * The folder name [slug] means "a variable part of the URL". At build time
+ * generateStaticParams() returns every case id from data/cases.ts, and Next
+ * writes one HTML file per case (out/blog/<id>.html). You never create these
+ * pages by hand: add a case to data/cases.ts and its page exists.
+ *
+ * What this file does:
+ *   • generateMetadata → the page's <title>, description and share card.
+ *   • CasePage         → collects everything about the case (screenshots,
+ *                        videos, prev/next, ATT&CK techniques, related cases,
+ *                        long-form text) and hands it to <CaseArticle>,
+ *                        which draws the page (components/blog/CaseArticle.tsx).
+ *   • TechArticle JSON-LD for search engines.
+ *
+ * HOW TO EDIT
+ *   • The case's text, tags, tools, PDF  → data/cases.ts
+ *   • The long write-up (goal, what happened, what I did, prevention…)
+ *                                         → data/case-details.ts (keyed by case id)
+ *   • Screenshots                         → data/cases.ts (screenshot lists)
+ *   • ATT&CK techniques for a case        → data/attack.ts (caseAttackMapping)
+ *   • A video under a case                → data/youtube.ts (set caseId on the video)
+ *   • The share image                     → `npm run og:cases` makes
+ *                                           public/og/cases/<id>.jpg
+ *   • Page layout / look                  → components/blog/CaseArticle.tsx
  */
 
 import type { Metadata } from "next";
@@ -17,6 +40,7 @@ import { caseKindOf, CASE_KINDS } from "@/lib/shared";
 import { jsonLd, PERSON_ID, PERSON_NAME, SITE_URL } from "@/lib/seo";
 import { blogYoutubeVideos } from "@/data/youtube";
 
+/* slug = the <case-id> part of the URL → the matching entry in data/cases.ts */
 const findCase = (slug: string) => caseEvidenceLibrary.find((item) => item.id === slug);
 
 /* Any other slug is a 404 */
@@ -52,10 +76,12 @@ const relatedTo = (item: (typeof caseEvidenceLibrary)[number], limit = 3) => {
 
 const AUTHOR = { "@type": "Person", "@id": PERSON_ID, name: PERSON_NAME, url: SITE_URL } as const;
 
+/* Build time: the list of every case page to generate (one per case id) */
 export function generateStaticParams() {
   return caseEvidenceLibrary.map((item) => ({ slug: item.id }));
 }
 
+/* Build time, per case: <title>, description, keywords and share-card tags */
 export async function generateMetadata({
   params,
 }: {
@@ -107,6 +133,7 @@ export async function generateMetadata({
   };
 }
 
+/* The page itself. Runs at build time; the result is static HTML. */
 export default async function CasePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const item = findCase(slug);
@@ -114,6 +141,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
   if (!item) notFound();
 
   const screenshots = [...(caseScreenshotsByEvidenceId[item.id] ?? [])];
+  /* Videos from data/youtube.ts whose caseId is this case */
   const relatedVideos = blogYoutubeVideos
     .filter((video) => video.caseId === item.id)
     .map((video) => ({
@@ -128,6 +156,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
   const previous = index > 0 ? caseEvidenceLibrary[index - 1] : null;
   const next = index < caseEvidenceLibrary.length - 1 ? caseEvidenceLibrary[index + 1] : null;
 
+  /* JSON-LD for search engines (invisible): article + breadcrumb trail */
   const structuredData = jsonLd({
     "@context": "https://schema.org",
     "@graph": [
@@ -188,7 +217,11 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
+      {/* PageShell = navbar + <main> + footer bar (no intro loader here) */}
       <PageShell>
+        {/* Everything visible on the case page is drawn by CaseArticle.
+            The props below are all it gets — add a prop here + in
+            CaseArticle's Props type to pass something new. */}
         <CaseArticle
         item={item}
         screenshots={screenshots}
@@ -199,6 +232,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         relatedVideos={relatedVideos}
         detail={caseDetails[item.id]}
         kindLabel={CASE_KINDS.find((k) => k.id === caseKindOf(item))?.short ?? "Case"}
+        /* Cases that belong to a series get a "part of …" link back to the filtered library */
         collection={item.platform === "PortSwigger" ? { href: "/blog?q=PortSwigger#cases", title: "Web Security Academy Track" } : undefined}
         />
       </PageShell>

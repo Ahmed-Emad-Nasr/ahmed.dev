@@ -10,7 +10,16 @@ import { ExternalLink } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 
 /* Open-source contributions to other projects, plus the GitHub contribution
-   graph (fetched only once the section is near the viewport) */
+   graph (fetched only once the section is near the viewport)
+
+   ═══ components/home/ContributionsGrid.tsx — the CONTRIBUTIONS section (on /blog) ═══
+   • The contribution cards (rule merged upstream, …) → PORTFOLIO_DATA.contributions
+     in data/portfolio-data.ts.
+   • The green-squares year graph → components/home/ContributionGraph.tsx; its
+     data is fetched live in the visitor's browser by lib/api/contributions.ts
+     (GitHub username = PORTFOLIO_DATA.profile.contact.github).
+   `near` becomes true ~600px before the section scrolls into view; only
+   then does the fetch start. */
 export default function ContributionsGrid() {
   const sectionRef = useRef<HTMLElement>(null);
   const near = useInView(sectionRef, { once: true, margin: "600px 0px" });

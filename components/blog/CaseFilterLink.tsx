@@ -4,6 +4,11 @@
  * CaseFilterLink — a link that opens the case library already filtered
  * (/blog?q=wazuh#cases). On the blog page itself it updates the URL and
  * fires popstate (the library listens) instead of navigating.
+ *
+ * ═══ components/blog/CaseFilterLink.tsx ═══
+ * Usage: <CaseFilterLink params={{ q: "Wazuh" }}>Wazuh cases</CaseFilterLink>
+ * Param names are the URL filters listed in CaseLibrarySection.tsx
+ * (q, kind, cat, tools, sort, view).
  */
 
 import type { ReactNode } from "react";

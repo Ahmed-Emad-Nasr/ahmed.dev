@@ -2,7 +2,7 @@
 
 /*
  * PageEffects — mounted once on each long page (home, blog, gallery). Renders
- * nothing; it does two jobs:
+ * nothing; it does two jobs (just include <PageEffects /> on a new long page):
  *
  *   1. Jumps. Takes over in-page #links, filtered-library links and
  *      arrivals with a hash, so every jump goes through lib/perf/jump.ts

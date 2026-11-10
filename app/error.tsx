@@ -1,6 +1,12 @@
 "use client";
 
-/* Route-level error boundary: a message and a retry instead of a blank page */
+/* Route-level error boundary: a message and a retry instead of a blank page
+
+   ═══ app/error.tsx — shown when a page CRASHES while running in the browser ═══
+   Next.js shows this automatically if any component throws an error. The
+   navbar and footer still work (PageShell). To change the wording, edit the
+   <h1> and the <p> below. app/global-error.tsx is the fallback for when even
+   app/layout.tsx crashes. */
 
 import { useEffect } from "react";
 import Link from "next/link";

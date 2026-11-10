@@ -1,5 +1,7 @@
 /* TryHackMe's public profile, read once at build time; without network (or
-   an unexpected answer) the snapshot in data/platforms.ts is used. */
+   an unexpected answer) the snapshot in data/platforms.ts is used.
+   Runs during `npm run build` only — visitors never call TryHackMe.
+   Username → TRYHACKME_USERNAME in data/platforms.ts. */
 
 import { THM_SNAPSHOT, TRYHACKME_USERNAME, type TryHackMeStats } from "@/data/platforms";
 

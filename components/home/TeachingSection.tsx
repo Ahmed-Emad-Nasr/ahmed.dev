@@ -1,6 +1,18 @@
 /*
  * TeachingSection — the diploma curriculum module by module, and where it
  * was taught with the results. Server Component.
+ *
+ * ═══ components/home/TeachingSection.tsx — the TEACHING section (#teaching) ═══
+ *
+ *   Part on screen                      Edit in data/teaching.ts
+ *   ──────────────────────────────────  ──────────────────────────────
+ *   "Pass it Forward." + hours badge    DIPLOMA.hours
+ *   Headline numbers (students, …)      TEACHING_STATS
+ *   Curriculum card + numbered modules  DIPLOMA.title / summary / modules / format
+ *   "Where it was taught" cards         TEACHING_ROLES
+ *
+ * Add a module / stat / teaching place → add an entry to the matching array
+ * in data/teaching.ts; it appears here automatically.
  */
 
 import { ArrowUpRight } from "lucide-react";

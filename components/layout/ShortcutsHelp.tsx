@@ -1,6 +1,11 @@
 "use client";
 
-/* The keyboard shortcuts sheet ("?"), loaded on first use */
+/* The keyboard shortcuts sheet ("?"), loaded on first use
+
+   ═══ components/layout/ShortcutsHelp.tsx ═══
+   This is only the help text — the shortcuts themselves are handled in
+   components/layout/KeyboardShortcuts.tsx. When you add a shortcut there,
+   add a line to GROUPS here: keys = the key caps shown, label = what it does. */
 
 import { useEffect, useRef } from "react";
 import { useFocusTrap } from "@/lib/use-focus-trap";

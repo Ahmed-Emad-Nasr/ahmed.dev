@@ -2,10 +2,46 @@
  * The case library: every report, write-up and lab, with its screenshots.
  * A case's id is its URL (/blog/<id>); other data files reference cases by
  * id.
+ *
+ * ═══ data/cases.ts — THE CASE LIBRARY (the most important data file) ═══
+ *
+ * HOW TO ADD A CASE
+ *   1. Put the files in public/Assets/Cases/<Folder>/ (PDF, screenshots as
+ *      "Screenshot (N).webp", optional cover image).
+ *   2. Add an entry at the TOP of caseEvidenceLibrary (newest first), copying
+ *      an existing one:
+ *        id           → its URL: /blog/<id>. lowercase-with-hyphens, unique
+ *                       (the checks at the bottom of this file stop the build
+ *                       if it isn't).
+ *        title, description → description is plain sentences; the case page
+ *                       turns it into a briefing (lib/case-summary.ts).
+ *                       'single quotes' → shown as a code chip.
+ *        platform     → "LetsDefend", "TryHackMe", "PortSwigger", …
+ *        type         → decides the KIND filter (lib/shared.ts → caseKindOf):
+ *                       "PDF Report" / "DOCX & PDF Report" / "Report" → Investigation
+ *                       "Project Report" / "Detection Rules" / … → Project
+ *                       anything else → Lab (or Note for a few ids)
+ *        category     → the category tab ("Digital Forensics", "Malware Analysis"…)
+ *        difficulty   → "Easy" / "Medium" / "Hard"
+ *        href         → the PDF path under public/ (omit if there's no PDF)
+ *        tags, tools, skillsGained → chips + filter options
+ *        readTime     → minutes;  date → "YYYY-MM-DD"
+ *        image        → card/cover image path (optional)
+ *   3. Screenshots → add  "<id>": buildScreenshotRange("<Folder>", firstN, lastN)
+ *      to caseScreenshotsByEvidenceId below.
+ *   4. Optional extras, all keyed by the same id:
+ *        data/case-details.ts → verdict, facts, attack chain, timeline, IOCs…
+ *        data/attack.ts       → its ATT&CK techniques (caseAttackMapping)
+ *        data/youtube.ts      → a video about it (caseId)
+ *        data/start-here.ts   → feature it in "Start here"
+ *   5. `npm run og:cases` makes its share image; `npm run check:data` checks
+ *      everything links up.
  */
 
 import { isReportType, type CaseEvidence } from "@/lib/shared";
 
+/* "Folder", 10, 14 → the 5 paths Assets/Cases/Folder/Screenshot (10..14).webp
+   (excluded = numbers to skip) */
 const buildScreenshotRange = (
   folder: string,
   start: number,
@@ -16,6 +52,8 @@ const buildScreenshotRange = (
     .filter((n) => !excluded.includes(n))
     .map((n) => `Assets/Cases/${folder}/Screenshot (${n}).webp`);
 
+/* case id → its screenshot paths (under public/). Shown in the case page's
+   evidence grid and the library's lightbox. */
 export const caseScreenshotsByEvidenceId: Record<string, string[]> = {
   "ir-timeline-analysis": Array.from({ length: 32 }, (_, i) => `Assets/Cases/IR Timeline/Screenshot (${555 + i}).webp`),
   "threat-intelligence-for-soc": Array.from({ length: 20 }, (_, i) => `Assets/Cases/Threat Inteligence For SOC/Screenshot (${531 + i}).webp`),
@@ -182,6 +220,7 @@ export const caseScreenshotsByEvidenceId: Record<string, string[]> = {
   ],
 };
 
+/* ═══ Every case, newest first. Fields = the CaseEvidence type in lib/shared.ts ═══ */
 export const caseEvidenceLibrary: CaseEvidence[] = [
   {
     id: "ecir-registry-forensics",

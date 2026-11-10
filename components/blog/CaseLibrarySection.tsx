@@ -5,6 +5,28 @@
  * Filters are synced to the URL; cards are paged a few at a time, while
  * filtering always searches the whole library. The data is computed at
  * build time (lib/library-data.ts) and ships with this chunk.
+ *
+ * ═══ components/blog/CaseLibrarySection.tsx — the CASE LIBRARY on /blog ═══
+ *
+ * Pieces it puts together:
+ *   StartHere      → 3 recommended reports (#start-here, data/start-here.ts)
+ *   CaseFilters    → search box, kind / category tabs, tool chips, sort, view
+ *   CaseCard       → one case as a card    (view = cards)
+ *   CaseList       → all cases as a table  (view = list)
+ *   MediaSections  → the numbers strip + the YouTube videos (#videos)
+ *   Lightbox       → screenshot viewer, opened from a card
+ *
+ * FILTERS LIVE IN THE URL, so a filtered view can be shared/linked:
+ *   ?q=wazuh            search text           ?kind=investigation  case kind
+ *   ?cat=Malware…       category              ?tools=Wazuh,Splunk  tool chips
+ *   ?sort=newest        sort order            ?view=list           table view
+ *   e.g. /blog?kind=investigation#cases
+ * (CaseFilterLink builds these links from anywhere on the site.)
+ *
+ * HOW TO EDIT
+ *   • Cards per "load more" → PAGE below.
+ *   • Add a case → data/cases.ts (it appears here, in filters and counts).
+ *   • Card look → CaseCard.tsx; filter bar → CaseFilters.tsx.
  */
 
 import dynamic from "next/dynamic";
@@ -27,6 +49,7 @@ import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
 const MediaSections = dynamic(() => import("@/components/blog/MediaSections"));
 const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), { ssr: false });
 
+/* Cards shown at first and added per "show more" */
 const PAGE = 6;
 /* The full screenshot lists, fetched once on the first gallery open */
 let screenshotsRequest: Promise<Record<string, string[]>> | null = null;

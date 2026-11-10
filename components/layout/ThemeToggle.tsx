@@ -1,5 +1,12 @@
 "use client";
 
+/*
+ * ═══ components/layout/ThemeToggle.tsx — the sun/moon button in the navbar ═══
+ * On click it asks ThemeFxProvider to switch theme with the animated wipe
+ * starting from the click point (x, y). Before React has loaded it shows an
+ * empty square of the same size (the real theme isn't known yet).
+ */
+
 import { useEffect, useState, type MouseEvent } from "react";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";

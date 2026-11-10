@@ -1,8 +1,34 @@
 /*
- * /blog — the case library (with "start here" and the videos), ATT&CK
- * coverage, detection rules and the triage challenge. Server-rendered for
- * search; each section is its own chunk (components/blog/dynamic.tsx).
- * Old home-page links (/#cases …) are forwarded here (lib/routes.ts).
+ * ═══ app/blog/page.tsx — the BLOG PAGE  ( URL: /blog ) ═══
+ *
+ * The case library (with "start here" and the videos), ATT&CK coverage,
+ * detection rules, the triage challenge, the home lab, the process and the
+ * GitHub contributions. Each section is its own chunk
+ * (components/blog/dynamic.tsx) and mounts lazily. Old home-page links
+ * (/#cases …) are forwarded here (lib/routes.ts).
+ *
+ *   Section on screen         Component                              Content / data
+ *   ────────────────────────  ─────────────────────────────────────  ─────────────────────────
+ *   Intro + jump links        components/ui/AreaIntro                the `links` array below
+ *   Start here / Cases /      components/blog/CaseLibrarySection     data/cases.ts, data/case-details.ts,
+ *   Videos                                                           data/start-here.ts, data/youtube.ts
+ *   ATT&CK coverage #attack   components/blog/AttackCoverage         data/attack.ts (computed from cases)
+ *   Detection rules           components/blog/DetectionLibrary       data/detection-rules.ts
+ *   Triage challenge          components/blog/TriageChallenge        inside the component
+ *   Home lab  #lab            components/home/HomeLab                inside the component
+ *   Process   #process        components/home/ProcessSection         inside the component
+ *   Contributions             components/home/ContributionsGrid      GitHub contributions API (live)
+ *
+ * A single case page (/blog/<id>) is app/blog/[slug]/page.tsx.
+ *
+ * HOW TO EDIT
+ *   • Add a case report → data/cases.ts (+ its long text in data/case-details.ts).
+ *     It shows up in the library, filters, ATT&CK counts and gets its own page.
+ *   • Add a video → data/youtube.ts.
+ *   • Change the jump links under the title → the `links` prop of <AreaIntro>.
+ *   • Add a section → same recipe as the home page (see app/page.tsx header):
+ *     component → export in components/blog/dynamic.tsx → <LazySection> here →
+ *     .lazy-h-* height in app/globals.css.
  */
 
 import type { Metadata } from "next";
@@ -26,6 +52,7 @@ import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
 import { CHANNEL_ID, PERSON_REF, SITE_URL, jsonLd, youtubeEmbed, youtubeThumb, youtubeWatch } from "@/lib/seo";
 import { absoluteUrl, OG_IMAGE } from "@/lib/site";
 
+/* Used for the meta description, the share cards and the text under the title */
 const DESCRIPTION =
   "Incident reports, DFIR investigations, malware analysis, detection rules mapped to MITRE ATT&CK, and cybersecurity videos by Ahmed Emad Nasr.";
 
@@ -47,6 +74,9 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: "Blog — Ahmed Emad Nasr", description: DESCRIPTION, images: [OG_IMAGE.url] },
 };
 
+/* JSON-LD for search engines (invisible): the blog, the case list and every
+   video/playlist. Generated from the data files — nothing to edit here when
+   you add cases or videos. */
 function structuredData() {
   const blogUrl = absoluteUrl("/blog");
   return jsonLd({
@@ -107,6 +137,8 @@ function structuredData() {
 
 export default function BlogPage() {
   return (
+    /* PageShell (components/ui/kit.tsx) = navbar + <main> + footer bar.
+       showLoader → also play the intro boot screen on this page. */
     <PageShell showLoader>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData() }} />
       <PageEffects />
@@ -117,6 +149,8 @@ export default function BlogPage() {
         titleA="The"
         titleB="Blog."
         description={DESCRIPTION}
+        /* The pill links under the title: href = a section id on this page,
+           n = optional count badge */
         links={[
           { href: "#start-here", label: "Start here" },
           { href: "#cases", label: "Case library", n: libraryCounts.total },
@@ -135,7 +169,9 @@ export default function BlogPage() {
       <SlashDivider label="01 // Detection" japanese="検知" origin="right" />
       <TickerStrip items={["戦術", "技術", "網羅", "証拠", "READ THE RECORD"]} />
 
-      {/* ─── The library on MITRE ATT&CK, the rule pack, one real alert ─── */}
+      {/* ─── The library on MITRE ATT&CK, the rule pack, one real alert ───
+          These "Lazy*" components already wrap themselves in a LazySection
+          (see components/blog/dynamic.tsx), so no wrapper is needed here. */}
       <LazyAttackCoverage />
       <LazyDetectionLibrary />
       <LazyTriage />

@@ -1,3 +1,21 @@
+/*
+ * ═══ app/gallery/page.tsx — the GALLERY PAGE  ( URL: /gallery ) ═══
+ *
+ * Certificates, badges, events and classroom photos. The whole page body is
+ * one component, components/gallery/ArtGallery.tsx, loaded lazily (its own
+ * chunk, mounted right after the page starts — see LazySection).
+ *
+ * HOW TO EDIT
+ *   • Add a photo / certificate    → numbered image file + GALLERY_IMAGE_COUNT
+ *                                    (and ALL_GALLERY_CERTIFICATES for a certificate)
+ *                                    in data/certifications.ts — full steps in
+ *                                    the header of components/gallery/ArtGallery.tsx
+ *   • Layout, filters, lightbox    → components/gallery/ArtGallery.tsx
+ *   • Page title / description     → `metadata` below
+ *   • If the gallery grows a lot, update .lazy-h-gallery in app/globals.css
+ *     (its rough height) so #anchor links stay accurate before it loads.
+ */
+
 import type { Metadata } from "next";
 import { PageShell } from "@/components/ui/kit";
 import { ArtGallery } from "@/components/gallery/dynamic";
@@ -7,6 +25,7 @@ import { absoluteUrl, OG_IMAGE } from "@/lib/site";
 import { jsonLd, PERSON_REF, SITE_URL } from "@/lib/seo";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 
+/* Used for the meta description and share cards */
 const DESCRIPTION = "Certificates, events, the classroom and moments from Ahmed Emad Nasr's information security journey.";
 
 export const metadata: Metadata = {
@@ -25,6 +44,7 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: "Gallery — Ahmed Emad Nasr", description: DESCRIPTION, images: [OG_IMAGE.url] },
 };
 
+/* JSON-LD (invisible): every gallery image, generated from data/portfolio-data.ts */
 function structuredData() {
   const galleryUrl = absoluteUrl("/gallery");
   return jsonLd({
@@ -51,8 +71,10 @@ function structuredData() {
 
 export default function GalleryPage() {
   return (
+    /* PageShell = navbar + <main> + footer bar; showLoader = intro boot screen */
     <PageShell showLoader>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData() }} />
+      {/* Makes /gallery#all-certificates etc. land on the right spot once the gallery loads */}
       <PageEffects />
       <LazySection id="art" size="lazy-h-gallery">
         <ArtGallery />

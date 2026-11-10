@@ -7,6 +7,14 @@ import { m as motion, useMotionValue, useSpring } from "framer-motion";
  * Katana cursor  your blade for browsing the dojo.
  * States: gold blade (default) → red lock-on (interactive) → slash flash (click).
  * Desktop fine-pointers only; touch keeps the native cursor.
+ *
+ * ═══ components/layout/CursorOverlay.tsx — the custom KATANA CURSOR ═══
+ * Loaded by CursorMount.tsx. It follows the mouse with a spring (springConfig
+ * below: lower stiffness = lazier, more trailing cursor). It turns red and
+ * shows a label over links, buttons and anything with class="interactive"
+ * (handleElementHover). A click draws a short slash flash.
+ * While it's active, <body> gets the class "custom-cursor-on", which
+ * app/globals.css uses to hide the normal system pointer.
  */
 export default function CursorOverlay() {
   const [isHovering, setIsHovering] = useState(false);
@@ -17,6 +25,7 @@ export default function CursorOverlay() {
   const pendingPosition = useRef({ x: -100, y: -100 });
   const moveFrame = useRef<number | null>(null);
 
+  /* How the cursor trails the real mouse position */
   const springConfig = { damping: 28, stiffness: 340, mass: 0.5 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);

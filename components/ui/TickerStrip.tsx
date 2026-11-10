@@ -2,6 +2,12 @@
 
 import type { CSSProperties } from "react";
 
+/* ═══ components/ui/TickerStrip.tsx — the endlessly scrolling word strip ═══
+   Usage:  <TickerStrip />                         → the default words below
+           <TickerStrip items={["A", "B"]} reverse /> → your words, scrolling the other way
+   Japanese words are drawn with the brush font, Latin ones in mono caps.
+   The list is rendered twice (`loop`) so the scroll can wrap seamlessly.
+   Speed: the `.ticker-track` animation duration in app/globals.css. */
 const DEFAULT_ITEMS = ["統治", "防御", "検知", "対応", "報告", "EVIDENCE OVER CLAIMS"];
 
 export default function TickerStrip({

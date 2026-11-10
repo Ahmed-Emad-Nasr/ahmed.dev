@@ -8,6 +8,12 @@
  *    is not a fork, is not the profile/portfolio repo, and has a description.
  * 3. Falls back cleanly to staticProjectFallback when building offline or
  *    when the unauthenticated GitHub API rate limit is reached.
+ *
+ * Runs at build time only (`npm run build`), never in the visitor's browser.
+ * • Hide a repo from the auto-added projects → add its name to ignoredNames
+ *   below (or remove its GitHub description, or archive it).
+ * • An auto-added repo's card type (lab / tool / research / platform) is
+ *   guessed from its name, description and topics in inferWorkType().
  */
 
 import { GITHUB_USERNAME, projectBullets, staticProjectFallback } from "@/data/projects";
@@ -119,6 +125,7 @@ export async function getSyncedWorkItems(): Promise<WorkItem[]> {
   }
 
   /* 2. Discover any new public repositories not yet in PORTFOLIO_DATA.work */
+  /* Repos never auto-added as project cards (lowercase names) */
   const ignoredNames = new Set([
     GITHUB_USERNAME.toLowerCase(),
     "portfolio",

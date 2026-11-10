@@ -1,5 +1,26 @@
 "use client";
 
+/*
+ * ═══ components/home/WorkShowcase.tsx — the PROJECTS section (#work) ═══
+ *
+ * Title "Built & Tested.", a row of filter buttons (All / Labs / Research /
+ * Tools / Platforms) and one card per project: type, year, status, title,
+ * tagline, problem, role, tech chips, metrics and link buttons
+ * (GitHub / Live / Demo / Case study).
+ *
+ * HOW TO EDIT
+ *   • Add / change a project → the `work` array in data/portfolio-data.ts
+ *     (fields = the WorkItem type in data/types.ts). At build time
+ *     lib/api/github-repos.ts adds live GitHub star counts to those cards and
+ *     appends any NEW public repo that has a description (bullets for those
+ *     come from projectBullets in data/projects.ts). app/page.tsx passes the
+ *     merged list in as `items`.
+ *   • The heading text → the <SectionHeader> props below.
+ *   • A new filter type → add it to WorkType in data/types.ts, then to
+ *     FILTERS (button) and TYPE_ICON (icon) below.
+ *   • A card only shows the link buttons that exist in that project's `links`.
+ */
+
 import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
@@ -19,6 +40,7 @@ import { Github } from "@/components/ui/BrandIcons";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import FadeIn from "@/components/ui/FadeIn";
 
+/* The filter buttons, in order. id must be a WorkType (or "all"). */
 const FILTERS: { id: WorkType | "all"; label: string; japanese: string }[] = [
   { id: "all", label: "All", japanese: "全部" },
   { id: "lab", label: "Labs", japanese: "実験" },
@@ -27,6 +49,7 @@ const FILTERS: { id: WorkType | "all"; label: string; japanese: string }[] = [
   { id: "platform", label: "Platforms", japanese: "基盤" },
 ];
 
+/* The small icon shown on a card for each project type */
 const TYPE_ICON = {
   lab: FlaskConical,
   research: Microscope,
@@ -39,6 +62,7 @@ export default function WorkShowcase({
 }: {
   items?: WorkItem[];
 }) {
+  /* Which filter button is active, and the projects that match it */
   const [filter, setFilter] = useState<WorkType | "all">("all");
   const items = workList.filter((w) => filter === "all" || w.type === filter);
 

@@ -4,6 +4,11 @@
  * MediaSections — the library's numbers and the YouTube hub (#videos).
  * Videos show a thumbnail first; the youtube-nocookie iframe mounts only
  * after a click (see the privacy page).
+ *
+ * ═══ components/blog/MediaSections.tsx (#videos on /blog) ═══
+ * Videos and playlists → data/youtube.ts (blogFeaturedYoutubeVideo first,
+ * then blogYoutubeVideos newest first). VIDEO_PAGE = videos per "show more".
+ * Thumbnails come from YouTube (lib/seo.ts → youtubeThumb).
  */
 
 import { memo, useCallback, useState } from "react";
@@ -19,6 +24,7 @@ import { libraryCounts } from "@/lib/library-data";
 import { CounterBadge, KanjiWatermark, btnOutline } from "@/components/ui/kit";
 import FadeIn from "@/components/ui/FadeIn";
 
+/* Videos shown at first and added per "show more" */
 const VIDEO_PAGE = 6;
 
 /* The featured video first, then the rest newest first */

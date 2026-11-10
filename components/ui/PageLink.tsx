@@ -4,6 +4,12 @@
  * PageLink — next/link prefetched on intent (hover, focus, touch) instead of
  * on sight: the blog has 100+ case links, and prefetching each as it scrolls
  * into view meant dozens of downloads parsed mid-scroll.
+ *
+ * ═══ components/ui/PageLink.tsx ═══
+ * Use it exactly like next/link for links to OTHER PAGES of the site:
+ *   <PageLink href="/blog">Blog</PageLink>
+ * (the basePath /ahmed.dev is added automatically). For #anchors on the
+ * same page use a plain <a href="#id">; for external sites a plain <a>.
  */
 
 import Link from "next/link";

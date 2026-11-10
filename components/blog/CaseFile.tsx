@@ -5,6 +5,16 @@
  * verdict, facts, attack chain, timeline, indicators, response, detection
  * and the report. The chain and timeline draw themselves as they scroll in
  * (CSS transitions switched on once, skipped with reduced motion).
+ *
+ * ═══ components/blog/CaseFile.tsx — the structured part of a CASE PAGE ═══
+ * Draws data/case-details.ts → caseDetails["<case-id>"]. Each block appears
+ * only if that field exists for the case:
+ *   verdict + severity → VerdictBar       facts     → Facts
+ *   chain (attack chain) → Chain          timeline  → Timeline
+ *   iocs (indicators, copyable) → Iocs    detection → Detection (rules / queries)
+ *   the PDF report → ReportViewer (embedded viewer + download)
+ * The field names and allowed values are the CaseDetail type at the top of
+ * data/case-details.ts. Add a field there + a block here to show something new.
  */
 
 import { useCallback, useRef, useState, type ReactNode } from "react";

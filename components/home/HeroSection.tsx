@@ -1,5 +1,32 @@
 "use client";
 
+/*
+ * ═══ components/home/HeroSection.tsx — the TOP of the home page ═══
+ *
+ * Everything you see first: badge, big name, rotating role line, portrait
+ * with the red sun / orbit text / hanko seal / mascot, the spec strip,
+ * tagline + summary, the CV / Work buttons, social icons, and the
+ * "field record" panel on the right.
+ *
+ * WHERE THE TEXT COMES FROM (edit there, not here):
+ *   name, japaneseTitle, roles (ticker), hero.specs, hero.tagline,
+ *   hero.cvUrl, availability, title, focus, contact.*   → data/portfolio-data.ts
+ *   the summary paragraph + "Evidence" row               → data/live-copy.ts
+ *                                                          (passed in as props)
+ *   the portrait image   → public/Assets/art-gallery/Images/logo/3omda-*.webp
+ *                          (regenerate the sizes with `npm run hero:sizes`)
+ *
+ * ANIMATIONS
+ *   • Entrance (fade/slide-in on load) → the GSAP block in useEffect below.
+ *     Each gsap.from(selector, {...}) animates FROM those values TO the normal
+ *     layout: change duration / delay / stagger to retime it.
+ *   • The watermark drifting while you scroll → bgY (framer-motion useScroll).
+ *   • Everything is skipped when the visitor asked for reduced motion.
+ *
+ * Classes like "hero-content", "hero-image", "spec-item" are hooks for the
+ * GSAP selectors — keep them if you restyle an element.
+ */
+
 import { preload } from "react-dom";
 import { useEffect, useRef } from "react";
 import { m as motion, useScroll, useTransform } from "framer-motion";
@@ -12,6 +39,8 @@ import { MessageCircle, Download, ArrowDown } from "lucide-react";
 import { prefersReducedMotion } from "@/lib/fx";
 import { Github, Linkedin, Youtube } from "@/components/ui/BrandIcons";
 
+/* One line of the "field record" panel (label on the left, value on the
+   right). hot = yellow/bold value. */
 function FieldRow({
   label,
   value,
@@ -79,6 +108,8 @@ export default function HeroSection({
     imageSizes: HERO_PHOTO.sizes,
     fetchPriority: "high",
   });
+  /* Scroll parallax: scrollYProgress goes 0→1 while the hero scrolls out;
+     bgY maps that to 0→140px of downward drift for the background kanji. */
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -161,6 +192,8 @@ export default function HeroSection({
     };
   }, []);
 
+  /* The round social icons under the buttons. Add one: copy an entry
+     (icon from components/ui/BrandIcons.tsx or lucide-react). */
   const socials = [
     {
       name: "GitHub",

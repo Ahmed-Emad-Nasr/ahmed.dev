@@ -3,6 +3,7 @@
 /*
  * OffscreenAnimations — pauses the looping animations of every block that
  * is off screen, and resumes them just before it scrolls back in.
+ * (Automatic — new infinite CSS animations are picked up without any change.)
  *
  * The pages run dozens of infinite animations at once (hero particles and
  * scan line, live pings, the lab diagram's packets, the radar, the siren,

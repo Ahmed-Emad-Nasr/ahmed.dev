@@ -1,6 +1,16 @@
 /*
  * lib/shared.ts — the case/video types and the small helpers used across
  * the site (asset paths, dates, case kinds, defanging).
+ *
+ * Most used helpers:
+ *   normalizePublicHref("Assets/x.pdf") → "/ahmed.dev/Assets/x.pdf" in production.
+ *     ALWAYS wrap paths to files in public/ with it (images, PDFs) when you
+ *     write a plain <a>/<img> — otherwise they break on GitHub Pages, where
+ *     the site lives under /ahmed.dev. (next/link and PageLink add it for you.)
+ *   CV_PDF_HREF → the CV file. Replace the PDF in public/Assets/cv/ with the
+ *     same name, or change this path.
+ *   CASE_KINDS / caseKindOf → how a case's `type` becomes its kind filter.
+ *   defang() → shows IOCs safely (1.2.3[.]4, hxxp://…).
  */
 
 export type PdfResource = {
@@ -98,7 +108,9 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 /** The CV PDF, in public/ */
 export const CV_PDF_HREF = "Assets/cv/AhmedEmadNasr_CV.pdf";
 
-/** A public/ asset path with the deploy prefix (/ahmed.dev in production) */
+/** A public/ asset path with the deploy prefix (/ahmed.dev in production).
+    If the repo is renamed, set NEXT_PUBLIC_BASE_PATH (see .env.example) and
+    basePath in next.config.mjs to the new name. */
 export const normalizePublicHref = (href: string): string => {
   if (/^https?:\/\//i.test(href)) return href;
   const basePath =

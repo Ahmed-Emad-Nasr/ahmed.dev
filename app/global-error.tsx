@@ -1,7 +1,12 @@
 "use client";
 
 /* Errors in the root layout itself: replaces the whole document, with inline
-   styles in case no stylesheet loaded. */
+   styles in case no stylesheet loaded.
+
+   ═══ app/global-error.tsx — the LAST-RESORT error screen ═══
+   Rarely seen: only when app/layout.tsx itself fails. It must contain its own
+   <html>/<body> and cannot use Tailwind classes or site components (they may
+   be what broke) — that's why every style is written inline here. */
 
 export default function GlobalError({
   error,

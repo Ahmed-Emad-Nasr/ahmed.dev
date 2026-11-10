@@ -7,7 +7,9 @@ import { normalizePublicHref } from "@/lib/shared";
 //    on route /manifest.webmanifest with output: export"
 export const dynamic = "force-static";
 
-/* /manifest.webmanifest (installable app; Next adds the basePath to the paths) */
+/* /manifest.webmanifest (installable app; Next adds the basePath to the paths)
+   This is what phones use for "Add to Home screen": app name, icon, colours.
+   Edit name/short_name/description/colours here; icons live in public/icons/. */
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Ahmed Emad Nasr — Information Security Officer",

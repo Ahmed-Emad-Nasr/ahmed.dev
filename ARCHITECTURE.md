@@ -31,28 +31,26 @@ server. A client component pulls everything it imports into the browser, so:
 
 ## How a page loads
 
-1. **In the HTML:** the hero and every text section (search engines and
-   no-JS readers see them).
-2. **Split per section:** sections with client behavior, heavy visual
-   dependencies, or below-the-fold content are `next/dynamic` imports in
-   `components/home/dynamic.tsx` and `components/blog/dynamic.tsx`.
-   The dynamic imports keep server-rendered HTML while separating the client
-   code into route chunks.
-   Global visual effects that are not needed for first paint are deferred by
-   `components/layout/DeferredGlobalEffects.tsx` until the browser is idle.
+1. **In the HTML:** the navbar, the intro loader, the hero (home), the blog's
+   intro, the case pages' content, and each page's metadata / JSON-LD.
+2. **Split per section:** every section is its own JavaScript chunk —
+   `next/dynamic` imports in `components/home/dynamic.tsx`,
+   `components/blog/dynamic.tsx` and `components/gallery/dynamic.tsx`.
    (`next/dynamic` only code-splits when called from a Client Component,
-   which is why those files exist.)
-3. **Lazy:** the contributions graph (blog), ATT&CK coverage, detection library
-   and triage quiz (blog) are mounted by `LazySection` when they approach the
-   viewport. The gallery is isolated on `/gallery`, so its client chunk and
-   image grid are not loaded by the home page at all.
-4. **Deferred rendering:** sections below the fold carry `DEFER`
-   (`content-visibility: auto`). `lib/perf/PageEffects.tsx` renders each one
-   once in idle time so its real height is known before anyone scrolls there.
-5. **Idle queue:** all background work goes through `whenIdle()` in
+   which is why those files exist.) Global visual effects that are not needed
+   for first paint are deferred by `components/layout/DeferredGlobalEffects.tsx`
+   until the browser is idle.
+3. **Lazy:** every section after the hero on `/`, and every section of
+   `/blog` and `/gallery`, is wrapped in `LazySection` (`lib/perf/lazy.tsx`):
+   not in the HTML, a placeholder of the expected height (`.lazy-h-*` in
+   `app/globals.css`) holds its place, and it mounts in idle time or when the
+   reader gets within ~3 screens. A jump to its `#id` mounts it first.
+   While a section's chunk downloads, `SectionSkeleton` shows (it carries
+   `data-lazy-pending`, so jumps wait for it).
+4. **Idle queue:** all background work goes through `whenIdle()` in
    `lib/perf/schedule.ts` — one task at a time, only after load, in idle time,
    and never while the reader is scrolling.
-6. **Off-screen animations pause:** `lib/perf/OffscreenAnimations.tsx` tags
+5. **Off-screen animations pause:** `lib/perf/OffscreenAnimations.tsx` tags
    infinite CSS loops when they start and pauses them (via `data-offscreen`)
    while their section is off screen; framer-motion loops are paused through
    the Animation API.
@@ -113,3 +111,31 @@ long-animation-frame total / layout shift):
 
 Checks that pass on every change: `npm run lint`, `type-check`, `check:data`,
 `check:links`, `check:a11y` (0 violations) and `check:layout` (0 findings).
+
+## Where to edit what
+
+Every file starts with a comment saying what it is and how to change it.
+The common edits:
+
+| I want to change… | Edit |
+|---|---|
+| Name, title, roles (typing line), contact links, hero tagline/specs | `data/portfolio-data.ts` → `PORTFOLIO_DATA.profile` |
+| The hero summary paragraph / the 4 numbers under the roles | `data/cv.ts` (`CV_SUMMARY`), `data/live-copy.ts` (`stats`) |
+| The "roles I fit" cards | `components/home/RolesCards.tsx` → `ROLES` |
+| A project card | `data/portfolio-data.ts` → `work` |
+| A job / course in the experience timeline and CV | `data/experience.ts` (+ `ROLE_INTRO` / `ROLE_PROOF` in `data/portfolio-data.ts`) |
+| Teaching numbers, diploma modules | `data/teaching.ts` |
+| Training platforms | `data/platforms.ts` |
+| A case report | `data/cases.ts` (+ `data/case-details.ts`, `data/attack.ts`) — steps in the header of `data/cases.ts` |
+| A video | `data/youtube.ts` |
+| A Wazuh rule in the detection library | `data/detection-rules.ts` |
+| A gallery photo / certificate | numbered image + `GALLERY_IMAGE_COUNT` / `ALL_GALLERY_CERTIFICATES` in `data/certifications.ts` |
+| The CV page | `data/cv.ts`, `data/experience.ts`, `data/certifications.ts` |
+| Navbar links | `components/layout/SiteNav.tsx` → `navItems` |
+| Command palette entries | `components/layout/CommandPalette.tsx` → `commands` |
+| Keyboard shortcuts / terminal commands | `components/layout/KeyboardShortcuts.tsx`, `components/layout/Terminal.tsx` |
+| Colours, theme, global animations | `app/globals.css` (`:root` = light, `.dark` = dark) |
+| Fonts | `app/fonts.ts` |
+| Page titles / descriptions / share cards | `metadata` in each `app/**/page.tsx`; defaults in `app/layout.tsx` |
+| Allow a new external site (image, embed, API) | `lib/security.ts` (Content-Security-Policy) |
+| Add a new section | recipe in the header of `app/page.tsx` |

@@ -5,6 +5,13 @@
  * (the ordering, the search index, the filter facets, the counts). Imported
  * only by the server page, which hands the results to the client section —
  * so none of this computation ships to the browser.
+ *
+ * Nothing to edit by hand here — it's all derived from data/cases.ts,
+ * data/case-details.ts and data/attack.ts. Notable outputs:
+ *   sortedCases  → the default library order ("recommended" sort rules below)
+ *   kindFacets / categoryFacets / toolFacets → filter buttons + counts
+ *     (toolFacets keeps only the 12 most used tools)
+ *   caseIndex    → what the command palette searches (/palette-index.json)
  */
 
 import { caseEvidenceLibrary, caseScreenshotsByEvidenceId, investigationReportCount } from "@/data/cases";

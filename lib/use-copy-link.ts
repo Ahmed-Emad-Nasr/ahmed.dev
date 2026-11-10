@@ -1,6 +1,9 @@
 "use client";
 
-/* Clipboard state for the "Copy" buttons: idle → done | error → idle */
+/* Clipboard state for the "Copy" buttons: idle → done | error → idle
+
+   Usage:  const { state, copy } = useCopyLink();
+           <button onClick={() => copy("text")}>{state === "done" ? "Copied" : "Copy"}</button> */
 
 import { useCallback, useEffect, useRef, useState } from "react";
 

@@ -11,6 +11,25 @@ import {
 import CaseFilterLink from "@/components/blog/CaseFilterLink";
 import FadeIn from "@/components/ui/FadeIn";
 
+/*
+ * ═══ components/home/ExperienceTimeline.tsx — the EXPERIENCE section (#experience) ═══
+ *
+ * "Professional Experience." heading, then one big card per job (newest
+ * first, education last). Left column: period, role, company, location,
+ * Japanese role. Right panel: intro, bullet checklist, proof buttons
+ * (certificate / related cases).
+ *
+ * WHERE THE CONTENT COMES FROM — PORTFOLIO_DATA.experience in
+ * data/portfolio-data.ts, which is BUILT from data/experience.ts:
+ *   • role, company, dates, bullets → data/experience.ts
+ *       (the `desc` text is split on "•" into the bullet list)
+ *   • the one-line intro, Japanese role, city → ROLE_INTRO in data/portfolio-data.ts
+ *   • certificate / cases buttons           → ROLE_PROOF in data/portfolio-data.ts
+ *   (both keyed by the company name = `subTag` in data/experience.ts)
+ *   • hide a job from here and the CV       → `cv: false` on it in data/experience.ts
+ *
+ * Cards slide in from alternating sides (FadeIn x = ±100).
+ */
 export default function ExperienceTimeline() {
   return (
     <section className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">

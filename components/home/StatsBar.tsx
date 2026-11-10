@@ -6,6 +6,11 @@ import FadeIn from "@/components/ui/FadeIn";
    computed on the server (live-copy.ts) and passed in, so the case data
    itself never ships to the browser. */
 
+/* ═══ components/home/StatsBar.tsx — the 4 big numbers under the roles cards ═══
+   Each tile counts up from 0 (CountUp) and links somewhere. The numbers,
+   labels, Japanese words and links are LIVE_COPY.stats in data/live-copy.ts —
+   edit them there. 4 tiles = 2 columns on phones, 4 on desktop
+   (grid-cols-2 lg:grid-cols-4 below). */
 export default function StatsBar({ stats }: { stats: Stat[] }) {
   return (
     <section aria-label="Highlights" className="relative px-6 md:px-20 bg-background">

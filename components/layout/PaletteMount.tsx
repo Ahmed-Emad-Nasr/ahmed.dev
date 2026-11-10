@@ -1,7 +1,13 @@
 "use client";
 
 /* Only this listener ships with the page; the first Ctrl/⌘K (or a
-   "sensei:palette" event) loads the palette chunk, which then takes over. */
+   "sensei:palette" event) loads the palette chunk, which then takes over.
+
+   ═══ components/layout/PaletteMount.tsx — lazy loader for the COMMAND PALETTE ═══
+   The palette itself is components/layout/CommandPalette.tsx.
+   To open the palette from your own button anywhere on the site:
+     window.dispatchEvent(new Event("sensei:palette"))
+   (that's what the ⌘ button in the navbar does). */
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";

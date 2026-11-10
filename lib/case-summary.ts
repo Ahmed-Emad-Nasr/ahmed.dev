@@ -2,6 +2,10 @@
  * Turns a case's one-paragraph description into a briefing for the case page
  * (objective, actions or phases, outcome, artifacts). Conservative: a
  * sentence that does not split cleanly is kept whole.
+ *
+ * Used by components/blog/CaseSummary.tsx (case page) and caseCardBlurb()
+ * (the short text on library cards). You don't call it yourself: write the
+ * case description as normal sentences in data/cases.ts.
  */
 
 /** Text with inline code spans swapped for \u0000N\u0000 placeholders */

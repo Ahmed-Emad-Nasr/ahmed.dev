@@ -1,3 +1,7 @@
+/* ═══ components/ui/SectionSkeleton.tsx — grey pulsing placeholder ═══
+   Shown while a section's JS chunk downloads (the `loading` option in
+   components/home/dynamic.tsx and components/blog/dynamic.tsx).
+   lines = number of grey cards, tall = more vertical padding. */
 export default function SectionSkeleton({
   lines = 3,
   tall = false,

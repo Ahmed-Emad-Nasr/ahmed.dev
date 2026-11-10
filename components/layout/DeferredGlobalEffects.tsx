@@ -1,5 +1,16 @@
 "use client";
 
+/*
+ * ═══ components/layout/DeferredGlobalEffects.tsx ═══
+ * Two site-wide helpers that load only once the browser is idle (after the
+ * page is shown), so they never slow down the first paint:
+ *   • SpotlightHost        (components/ui/Motion.tsx) → makes the glow follow
+ *                          the mouse on every `.spotlight` card.
+ *   • OffscreenAnimations  (lib/perf/OffscreenAnimations.tsx) → pauses CSS
+ *                          animations that are off-screen, to save CPU/battery.
+ * No visible UI of its own.
+ */
+
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 

@@ -1,5 +1,11 @@
 /* /sitemap.xml with absolute URLs (the site lives under /ahmed.dev), plus
-   image and video extensions. Case PDFs are listed as documents of their own. */
+   image and video extensions. Case PDFs are listed as documents of their own.
+
+   ═══ app/sitemap.ts — the list of pages for search engines ═══
+   Generated at build time into out/sitemap.xml. Case pages, their
+   screenshots, videos and PDFs are added automatically from the data files.
+   HOW TO EDIT: only when you add a NEW PAGE (a new folder with page.tsx under
+   app/) — add an entry to the array returned below. */
 
 import type { MetadataRoute } from "next";
 import { caseEvidenceLibrary, caseScreenshotsByEvidenceId } from "@/data/cases";
@@ -32,8 +38,10 @@ const blogVideos = blogYoutubeVideos.map((video) => ({
   ...(video.tags?.[0] ? { tag: xml(video.tags[0]) } : {}),
 }));
 
+/* Required by the static export (see the same line in app/manifest.ts) */
 export const dynamic = "force-static";
 
+/* A case's "YYYY-MM-DD" date → Date (today if missing or invalid) */
 const parseDate = (value?: string): Date => {
   if (!value) return new Date();
   const parsed = new Date(value);
@@ -47,6 +55,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     return date > latest ? date : latest;
   }, new Date(0));
 
+  /* One entry per URL. priority (0–1) and changeFrequency are hints only. */
   return [
     {
       url: absoluteUrl("/"),

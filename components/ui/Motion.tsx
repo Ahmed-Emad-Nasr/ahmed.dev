@@ -1,5 +1,19 @@
 "use client";
 
+/*
+ * ═══ components/ui/Motion.tsx — card hover effects ═══
+ *   <CardEffects index={n} /> → put inside a card that has class "group":
+ *                               a big faded number in the corner + the red
+ *                               top line that grows on hover.
+ *   <TiltCard>               → a card that tilts in 3D toward the mouse
+ *                               (max = tilt in degrees, default 7).
+ *   <SpotlightHost />        → mounted once (DeferredGlobalEffects); makes the
+ *                               soft glow follow the mouse on `.spotlight` cards
+ *                               by setting --mx / --my (glow CSS in globals.css).
+ * Typical card:
+ *   <TiltCard className="group spotlight relative …"><CardEffects index={1} />…</TiltCard>
+ */
+
 import { useEffect, useRef, type ReactNode, type MouseEvent } from "react";
 import { m as motion, useMotionValue, useSpring } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/fx";
@@ -48,6 +62,7 @@ export function SpotlightHost() {
 }
 
 /** 3D tilt on hover with spring return. Pure framer-motion, zero WebGL. */
+/* 3D tilt on hover. The springs (stiffness / damping) set how soft it feels. */
 export function TiltCard({
   children,
   className,
