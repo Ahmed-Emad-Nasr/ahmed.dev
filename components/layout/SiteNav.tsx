@@ -100,7 +100,7 @@ function NavLink({
      the nav is always on screen, so viewport prefetching would download
      the other page on every load */
   return (
-    <PageLink href={href.startsWith("#") ? `/${href}` : href} className={className} {...rest}>
+    <PageLink href={href.startsWith("#") ? `/${href}` : href} className={className} eager {...rest}>
       {children}
     </PageLink>
   );
