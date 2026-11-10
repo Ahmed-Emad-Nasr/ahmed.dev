@@ -47,7 +47,7 @@ export default function ExperienceTimeline() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Section Header ─── */}
-        <div className="exp-header mb-16 md:mb-20">
+        <div className="mb-16 md:mb-20">
           <FadeIn
             as="h2"
             y={40}
@@ -77,7 +77,7 @@ export default function ExperienceTimeline() {
               y={0}
               duration={1.2}
               key={idx}
-              className="exp-item group relative grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-10 lg:gap-16 items-start"
+              className="group relative grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-10 lg:gap-16 items-start"
             >
               {/* Left Column: Metadata */}
               <div className="flex flex-col gap-4">

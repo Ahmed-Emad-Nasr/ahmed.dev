@@ -247,7 +247,7 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
               <FadeIn key={t.id} y={16} duration={0.5}>
                 <div
                   id={`tactic-${t.id}`}
-                  className={`attack-tactic grid grid-cols-1 md:grid-cols-[260px_minmax(0,1fr)] gap-4 md:gap-8 py-6 border-b border-foreground/10 scroll-mt-28`}
+                  className={`grid grid-cols-1 md:grid-cols-[260px_minmax(0,1fr)] gap-4 md:gap-8 py-6 border-b border-foreground/10 scroll-mt-28`}
                 >
                   <div className="min-w-0">
                     <div className="flex items-baseline gap-3">

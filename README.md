@@ -186,9 +186,10 @@ keyboard shortcuts, and the `3omda` terminal easter egg.
 
 Copy `.env.example` to `.env.local` when local configuration is needed:
 
-- `NEXT_PUBLIC_WEB3FORMS_KEY` for the contact form
+- `NEXT_PUBLIC_BASE_PATH` if the site moves away from `/ahmed.dev`
 
-Without a Web3Forms key, the contact form opens the visitor's mail app.
+The contact form needs no configuration: it opens the visitor's mail app
+with the message filled in (and offers Gmail or "copy message" as fallbacks).
 
 ---
 

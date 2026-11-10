@@ -450,7 +450,7 @@ export default function HeroSection({
         </div>
 
         {/* ─── Content: proof + field record ─── */}
-        <div className="hero-secondary mt-20 md:mt-24 grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)] gap-10 items-start w-full">
+        <div className="mt-20 md:mt-24 grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)] gap-10 items-start w-full">
           <div>
             {/* Tech Spec Sheet */}
             <div className="mb-8 w-full border border-foreground/5 bg-foreground/[0.02] backdrop-blur-sm">

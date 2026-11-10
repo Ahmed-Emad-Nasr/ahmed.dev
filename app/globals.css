@@ -38,7 +38,6 @@
  *   • Add a new colour     → add --mycolor in :root and .dark, then
  *                            `--color-mycolor: var(--mycolor);` in @theme →
  *                            you can now write text-mycolor / bg-mycolor.
- *   • Change corner radius → --radius-* in :root.
  *   • New animation        → add an @keyframes here + a class that uses it, and
  *                            turn it off inside a prefers-reduced-motion block.
  *   • A section's lazy placeholder height → the .lazy-h-* blocks at the end.
@@ -67,24 +66,11 @@
   /* Three-Color Palette & Design Tokens */
   --color-primary: var(--primary);
   --color-primary-ink: var(--primary-ink);
-  --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-tertiary: var(--tertiary);
-  --color-quaternary: var(--quaternary);
 
   --color-surface: var(--surface);
-  --color-on-surface: var(--on-surface);
   --color-on-surface-variant: var(--on-surface-variant);
-  --color-surface-variant: var(--surface-variant);
-
-  --color-primary-container: var(--primary-container);
-  --color-tertiary-container: var(--tertiary-container);
-
-  /* Geometry Tokens */
-  --radius-base: var(--radius-base);
-  --radius-card: var(--radius-card);
-  --radius-button: var(--radius-button);
-  --radius-katana: 0.5rem 2rem 0.5rem 2rem;
 
   /* Font Families */
   /* The Sensei-Dev font stacks; the faces come from next/font (app/fonts.ts).
@@ -107,28 +93,16 @@
     --primary: #bc002d;
     /* Red used AS TEXT. Same as --primary on the light theme (6.1:1). */
     --primary-ink: #bc002d;
-    --secondary: #1a1a1a;
     /* Darkened a step from #8a6d00 / #007a8a: the chips sit on a 10% tint
        of their own colour, which took them just under 4.5:1. */
     --accent: #7a6000;
     --tertiary: #006b78;
-    --quaternary: #5b54d6;
 
     --background: #f7f5f0;
     --foreground: #141210;
 
     --surface: #ffffff;
-    --on-surface: #141210;
     --on-surface-variant: #57534a;
-    --surface-variant: #ece8df;
-
-    --primary-container: rgba(188, 0, 45, 0.08);
-    --tertiary-container: rgba(0, 122, 138, 0.1);
-
-    /* Border Radius Tokens */
-    --radius-base: 0px;
-    --radius-card: 4px;
-    --radius-button: 2px;
   }
 
   .dark {
@@ -140,21 +114,14 @@
        wants 4.5:1). Text gets a lighter cut of the same red: 5:1 on the
        background, 4.6:1 on cards. Buttons and borders keep --primary. */
     --primary-ink: #f0304f;
-    --secondary: #1a1a1a;
     --accent: #ffd700;
     --tertiary: #00d2ef;
-    --quaternary: #a29bfe;
 
     --background: #080808;
     --foreground: #ffffff;
 
     --surface: #121212;
-    --on-surface: #fcfcfc;
     --on-surface-variant: #a0a0a0;
-    --surface-variant: #1e1e1e;
-
-    --primary-container: rgba(226, 0, 26, 0.1);
-    --tertiary-container: rgba(0, 210, 239, 0.1);
   }
 
   /*
@@ -572,11 +539,6 @@
   inherits: true;
   initial-value: #006b78;
 }
-@property --quaternary {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #5b54d6;
-}
 @property --background {
   syntax: "<color>";
   inherits: true;
@@ -592,30 +554,10 @@
   inherits: true;
   initial-value: #ffffff;
 }
-@property --on-surface {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #141210;
-}
 @property --on-surface-variant {
   syntax: "<color>";
   inherits: true;
   initial-value: #57534a;
-}
-@property --surface-variant {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #ece8df;
-}
-@property --primary-container {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: rgba(188, 0, 45, 0.08);
-}
-@property --tertiary-container {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: rgba(0, 122, 138, 0.1);
 }
 
 .fx-morph {
@@ -623,15 +565,10 @@
     --primary-ink 0.55s ease,
     --accent 0.55s ease,
     --tertiary 0.55s ease,
-    --quaternary 0.55s ease,
     --background 0.55s ease,
     --foreground 0.55s ease,
     --surface 0.55s ease,
-    --on-surface 0.55s ease,
-    --on-surface-variant 0.55s ease,
-    --surface-variant 0.55s ease,
-    --primary-container 0.55s ease,
-    --tertiary-container 0.55s ease;
+    --on-surface-variant 0.55s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -654,12 +591,6 @@
   100% {
     transform: translate3d(10px, -20px, 0);
     opacity: 0.1;
-  }
-}
-
-@keyframes caret-blink {
-  50% {
-    opacity: 0;
   }
 }
 
@@ -1130,17 +1061,6 @@
   transform: translateY(-2px) scale(1.04);
   z-index: 1;
   position: relative;
-}
-
-/* ── Contact form: transmission bar while a message is sending ── */
-.send-progress {
-  width: 0;
-  animation: send-progress 2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-@keyframes send-progress {
-  to {
-    width: 92%;
-  }
 }
 
 /* ── Palette hint: the top line runs down like a timer while it is open ── */
