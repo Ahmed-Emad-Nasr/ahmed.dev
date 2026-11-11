@@ -67,7 +67,7 @@
   --blur-md: 10.2px;
   --blur-xl: 20.4px;
   --blur-2xl: 34px;
-  --animate-pulse: pulse 2.35s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-pulse: pulse 2.7s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -151,6 +151,12 @@
   /* Route changes should land immediately; section jumps use lib/scroll.ts. */
   html {
     scroll-behavior: auto;
+  }
+
+  /* Smooth wheel scrolling (lib/smooth-scroll.ts): while the page glides, an
+     embedded video must not swallow the wheel and stop the glide half-way. */
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
   }
   @media (min-width: 1800px) {
     html {
@@ -465,7 +471,7 @@
 .ticker-track {
   display: flex;
   min-width: max-content;
-  animation: ticker-scroll 94s linear infinite;
+  animation: ticker-scroll 108s linear infinite;
 }
 
 .ticker-strip:hover .ticker-track {
@@ -500,8 +506,8 @@
 /* ─── Contribution cells pop as Pac-Man passes ─── */
 
 .cell-pop {
-  animation: cell-pop 0.4s ease both;
-  animation-delay: calc(var(--i, 0) * 12ms);
+  animation: cell-pop 0.46s ease both;
+  animation-delay: calc(var(--i, 0) * 14ms);
 }
 
 @keyframes cell-pop {
@@ -991,7 +997,7 @@
        motion none of it runs and nothing is hidden. ─────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   .process-packet {
-    animation: process-packet 2.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    animation: process-packet 3s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
   /* The pulse is a pseudo-element scaling out (transform + opacity only,
      no repaint every frame) */
@@ -1000,7 +1006,7 @@
     position: absolute;
     inset: -1px;
     border: 1px solid var(--primary);
-    animation: brief-node 3.5s ease-out infinite;
+    animation: brief-node 4s ease-out infinite;
     animation-delay: inherit;
   }
 }
@@ -1060,6 +1066,38 @@
   position: relative;
 }
 
+/* ── Page navigation: a bar across the top from the press until the new
+   page is shown (components/ui/PageLink.tsx sets data-nav-pending) ── */
+html[data-nav-pending]::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 2px;
+  background: var(--primary);
+  transform-origin: left;
+  animation: nav-pending 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  pointer-events: none;
+}
+
+@keyframes nav-pending {
+  from {
+    transform: scaleX(0.08);
+  }
+
+  to {
+    transform: scaleX(0.9);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-nav-pending]::after {
+    animation: none;
+  }
+}
+
 /* ── Palette hint: the top line runs down like a timer while it is open ── */
 .hint-timer {
   transform: scaleX(1);
@@ -1071,7 +1109,7 @@
 
 /* ── Detection library: rows cascade in (again on every filter), radar spins ── */
 .rule-row {
-  animation: rule-row-in 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: rule-row-in 0.58s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 @keyframes rule-row-in {
   from {
@@ -1080,7 +1118,7 @@
   }
 }
 .radar-spin {
-  animation: radar-spin 4.7s linear infinite;
+  animation: radar-spin 5.4s linear infinite;
 }
 @keyframes radar-spin {
   to {
@@ -1096,7 +1134,7 @@
 
 /* ── Triage challenge ── */
 .siren-pulse {
-  animation: siren-pulse 2.25s ease-in-out infinite;
+  animation: siren-pulse 2.6s ease-in-out infinite;
 }
 @keyframes siren-pulse {
   50% {
@@ -1105,7 +1143,7 @@
   }
 }
 .caret-blink {
-  animation: caret-blink 1.6s steps(1) infinite;
+  animation: caret-blink 1.84s steps(1) infinite;
 }
 @keyframes caret-blink {
   50% {
@@ -1126,7 +1164,7 @@
   }
 }
 .answer-in {
-  animation: answer-in 0.5s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: answer-in 0.58s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 @keyframes answer-in {
   from {
@@ -1153,7 +1191,7 @@
   }
 }
 .lab-beacon {
-  animation: siren-pulse 2.35s ease-in-out infinite;
+  animation: siren-pulse 2.7s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }

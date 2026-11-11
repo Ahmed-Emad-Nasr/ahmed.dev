@@ -100,7 +100,7 @@ export default function DetectionLibrary() {
               <li
                 key={r.id}
                 className="grid grid-cols-[5.5rem_1fr] md:grid-cols-[5.5rem_7rem_1fr_6.5rem] items-center gap-x-4 gap-y-1 px-5 py-3 hover:bg-foreground/[0.03] transition-colors rule-row"
-                style={{ animationDelay: `${Math.min(i, 14) * 35}ms` }}
+                style={{ animationDelay: `${Math.min(i, 14) * 40}ms` }}
               >
                 <span className="font-mono text-xs font-bold text-foreground/80 tabular-nums">{r.id}</span>
                 <span className="flex items-center gap-2 md:order-none order-3">

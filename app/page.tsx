@@ -62,6 +62,7 @@ import { getTryHackMeStats } from "@/lib/api/tryhackme";
 import { getSyncedWorkItems } from "@/lib/api/github-repos";
 import { STATIC_PLATFORMS, tryHackMePlatform } from "@/data/platforms";
 import { LIVE_COPY } from "@/data/live-copy";
+import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { knowledgeEducationItems } from "@/data/experience";
 import { OG_IMAGE } from "@/lib/site";
 import { KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd } from "@/lib/seo";
@@ -218,7 +219,12 @@ export default async function Home() {
 
       {/* ═══ 01 · The pitch: who → roles → proof → experience ═══ */}
       {/* Hero: name, title, CTA buttons, mascot. Text comes from data/live-copy.ts */}
-      <HeroSection description={LIVE_COPY.heroDescription} evidenceLabel={LIVE_COPY.heroEvidence} />
+      <HeroSection
+        description={LIVE_COPY.heroDescription}
+        evidenceLabel={LIVE_COPY.heroEvidence}
+        projectCount={PORTFOLIO_DATA.work.length}
+        languageCodes={PORTFOLIO_DATA.languages.map((l) => l.code).join(" · ")}
+      />
       {/* LazySection props:
             id   → the #anchor (kept on the placeholder, so /#roles works before it loads)
             size → the placeholder's height class from app/globals.css (.lazy-h-*) */}

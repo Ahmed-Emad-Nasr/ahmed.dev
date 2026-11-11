@@ -10,9 +10,13 @@
  *
  * WHERE THE TEXT COMES FROM (edit there, not here):
  *   name, japaneseTitle, roles (ticker), hero.specs, hero.tagline,
- *   hero.cvUrl, availability, title, focus, contact.*   → data/portfolio-data.ts
+ *   hero.cvUrl, availability, title, focus, contact.*   → data/profile.ts
  *   the summary paragraph + "Evidence" row               → data/live-copy.ts
- *                                                          (passed in as props)
+ *   the project count + the language codes               → app/page.tsx
+ *                                                          (all passed in as
+ *                                                          props, so the hero
+ *                                                          never downloads the
+ *                                                          full project list)
  *   the portrait image   → public/Assets/art-gallery/Images/logo/3omda-*.webp
  *                          (regenerate the sizes with `npm run hero:sizes`)
  *
@@ -30,7 +34,7 @@
 import { preload } from "react-dom";
 import { useEffect, useRef } from "react";
 import { m as motion, useScroll, useTransform } from "framer-motion";
-import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { PROFILE } from "@/data/profile";
 import { normalizePublicHref } from "@/lib/shared";
 import { RevealText } from "@/components/ui/RevealText";
 import { HeroMascot } from "@/components/home/HeroMascot";
@@ -94,7 +98,13 @@ const HERO_PHOTO = {
 export default function HeroSection({
   description,
   evidenceLabel,
+  projectCount,
+  languageCodes,
 }: {
+  /** How many projects the "Shipped" row counts */
+  projectCount: number;
+  /** "AR · EN · …" for the "Languages" row */
+  languageCodes: string;
   /** "28 reports · 1 rule merged upstream" — the strongest proof, from live-copy.ts */
   evidenceLabel?: string;
   /** The summary paragraph — quotes the case-library numbers (live-copy.ts) */
@@ -115,7 +125,7 @@ export default function HeroSection({
     target: containerRef,
     offset: ["start start", "end start"],
   });
-  const bgY = useTransform(scrollYProgress, [0, 1], [0, 140]);
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 119]);
 
   /* Entrance — GSAP, as in Sensei-Dev. Loaded on demand (its own chunk,
      fetched after the page is up, while the intro screen still covers it). */
@@ -128,28 +138,28 @@ export default function HeroSection({
       ctx = gsap.context(() => {
         /* Entrance: content stack */
         gsap.from(".hero-content > *", {
-          y: 51,
+          y: 43.4,
           opacity: 0,
-          duration: 1.15,
-          stagger: 0.15,
+          duration: 1.32,
+          stagger: 0.172,
           ease: "power4.out",
           delay: 0.4,
         });
 
         /* Entrance: portrait */
         gsap.from(".hero-image", {
-          scale: 1.085,
+          scale: 1.072,
           opacity: 0,
-          duration: 1.5,
+          duration: 1.72,
           ease: "power2.out",
           delay: 0.15,
         });
 
         /* Entrance: background kanji */
         gsap.from(".japanese-bg", {
-          x: 85,
+          x: 72.2,
           opacity: 0,
-          duration: 1.5,
+          duration: 1.72,
           ease: "expo.out",
           delay: 0.8,
         });
@@ -158,17 +168,17 @@ export default function HeroSection({
         gsap.from(".hinomaru-sun", {
           scale: 0,
           opacity: 0,
-          duration: 1.8,
+          duration: 2.07,
           ease: "expo.out",
           delay: 0.25,
         });
 
         /* Entrance: spec sheet */
         gsap.from(".spec-item", {
-          x: -25.5,
+          x: -21.7,
           opacity: 0,
-          duration: 0.65,
-          stagger: 0.1,
+          duration: 0.75,
+          stagger: 0.115,
           ease: "power3.out",
           delay: 1,
         });
@@ -177,8 +187,8 @@ export default function HeroSection({
         gsap.from(".speed-line", {
           scaleX: 0,
           opacity: 0,
-          duration: 1.15,
-          stagger: 0.05,
+          duration: 1.32,
+          stagger: 0.057,
           ease: "expo.out",
           delay: 1.25,
           transformOrigin: "left center",
@@ -198,31 +208,30 @@ export default function HeroSection({
     {
       name: "GitHub",
       icon: Github,
-      href: `https://github.com/${PORTFOLIO_DATA.profile.contact.github}`,
+      href: `https://github.com/${PROFILE.contact.github}`,
     },
     {
       name: "LinkedIn",
       icon: Linkedin,
-      href: `${PORTFOLIO_DATA.profile.contact.linkedin}`,
+      href: `${PROFILE.contact.linkedin}`,
     },
     {
       name: "WhatsApp",
       icon: MessageCircle,
-      href: `https://wa.me/${PORTFOLIO_DATA.profile.contact.whatsapp}`,
+      href: `https://wa.me/${PROFILE.contact.whatsapp}`,
     },
     {
       name: "YouTube",
       icon: Youtube,
-      href: PORTFOLIO_DATA.profile.contact.youtube,
+      href: PROFILE.contact.youtube,
     },
   ];
 
   /* Was built from the first two service titles plus "+N" — it read
      "+0" with exactly two services and fell back to the template's
      "Full-Stack" with none. The areas are now stated in the data. */
-  const focusLabel = PORTFOLIO_DATA.profile.focus.join(" · ");
-  const shippedLabel = `${PORTFOLIO_DATA.work.length} open-source projects`;
-  const tongueCodes = PORTFOLIO_DATA.languages.map((l) => l.code).join(" · ");
+  const focusLabel = PROFILE.focus.join(" · ");
+  const shippedLabel = `${projectCount} open-source projects`;
 
   return (
     <section
@@ -282,7 +291,7 @@ export default function HeroSection({
         <div className="flex max-w-full items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8 backdrop-blur-sm">
           <div className="w-2 h-2 shrink-0 bg-primary animate-pulse" />
           <span className="min-w-0 sm:whitespace-nowrap text-[0.5rem] font-mono font-bold uppercase tracking-[0.15em] text-on-surface-variant sm:text-xs sm:tracking-[0.3em]">
-            {PORTFOLIO_DATA.profile.japaneseTitle}
+            {PROFILE.japaneseTitle}
           </span>
         </div>
 
@@ -323,7 +332,7 @@ export default function HeroSection({
               data-jp="アハメド・エマド・ナスル  情報セキュリティ"
             />
             <RoleTicker
-              roles={PORTFOLIO_DATA.profile.roles}
+              roles={PROFILE.roles}
               className="mt-5 text-sm sm:text-base md:text-lg"
             />
           </div>
@@ -346,7 +355,7 @@ export default function HeroSection({
 
             {/* Orbit inscription  stack names circling the portrait */}
             <div
-              className="absolute -inset-3 hidden sm:block animate-[spin_56s_linear_infinite] pointer-events-none"
+              className="absolute -inset-3 hidden sm:block animate-[spin_64s_linear_infinite] pointer-events-none"
               aria-hidden="true"
             >
               <svg viewBox="0 0 200 200" className="w-full h-full">
@@ -371,7 +380,7 @@ export default function HeroSection({
 
             {/* The Photo */}
             <a
-              href={PORTFOLIO_DATA.profile.contact.youtube}
+              href={PROFILE.contact.youtube}
               target="_blank"
               rel="noopener noreferrer"
               /* The link is the circle itself (absolute inset-5): as a plain
@@ -391,7 +400,7 @@ export default function HeroSection({
                   src={HERO_PHOTO.src}
                   srcSet={HERO_PHOTO.srcSet}
                   sizes={HERO_PHOTO.sizes}
-                  alt={PORTFOLIO_DATA.profile.name}
+                  alt={PROFILE.name}
                   width={560}
                   height={560}
                   fetchPriority="high"
@@ -442,7 +451,7 @@ export default function HeroSection({
                 </span>
               </div>
               <div className="px-4 py-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-                {PORTFOLIO_DATA.profile.hero.specs.map((spec, i) => (
+                {PROFILE.hero.specs.map((spec, i) => (
                   <div
                     key={spec.label}
                     className="spec-item flex flex-col gap-1.5"
@@ -463,7 +472,7 @@ export default function HeroSection({
             {/* Tagline & Description */}
             <div className="mb-8">
               <p className="text-2xl md:text-3xl font-medium text-foreground leading-relaxed mb-5">
-                {PORTFOLIO_DATA.profile.hero.tagline}
+                {PROFILE.hero.tagline}
               </p>
               <p className="text-lg text-on-surface-variant font-light leading-relaxed">
                 {description}
@@ -474,7 +483,7 @@ export default function HeroSection({
             <div className="flex flex-wrap gap-6 items-center">
               <div className="flex flex-wrap gap-4">
                 <a
-                  href={PORTFOLIO_DATA.profile.hero.cvUrl}
+                  href={PROFILE.hero.cvUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   download
@@ -566,20 +575,20 @@ export default function HeroSection({
             <dl className="flex flex-col">
               <FieldRow
                 label="Status"
-                value={PORTFOLIO_DATA.profile.availability}
+                value={PROFILE.availability}
                 hot
               />
-              <FieldRow label="Role" value={PORTFOLIO_DATA.profile.title} />
+              <FieldRow label="Role" value={PROFILE.title} />
               <FieldRow
                 label="Base"
-                value={PORTFOLIO_DATA.profile.contact.location}
+                value={PROFILE.contact.location}
               />
               <FieldRow label="Focus" value={focusLabel} wide />
               {evidenceLabel && (
                 <FieldRow label="Evidence" value={evidenceLabel} />
               )}
               <FieldRow label="Shipped" value={shippedLabel} wide />
-              <FieldRow label="Languages" value={tongueCodes} wide />
+              <FieldRow label="Languages" value={languageCodes} wide />
             </dl>
           </aside>
         </div>

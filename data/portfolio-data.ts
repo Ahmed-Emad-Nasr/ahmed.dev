@@ -7,11 +7,9 @@
  *
  *   Part of PORTFOLIO_DATA      What it fills
  *   ──────────────────────────  ──────────────────────────────────────────────
- *   profile.name / title …      hero name, title, badge, availability
- *   profile.roles               the typing role line in the hero
- *   profile.focus               the hero's "Focus" row
- *   profile.contact             e-mail, phone, socials — used site-wide
- *   profile.hero.tagline/specs  hero tagline + the spec strip
+ *   profile                     name, roles, contact, hero tagline — edited in
+ *                               data/profile.ts (kept apart so the first load
+ *                               does not download the lists below)
  *   experience                  the Experience cards (built from data/experience.ts
  *                               + ROLE_INTRO + ROLE_PROOF below)
  *   work                        the project cards (#work) — the `work` array below
@@ -31,7 +29,8 @@ import { knowledgeEducationItems } from "@/data/experience";
 import { languages } from "@/data/skills";
 import { GITHUB_USERNAME, staticProjectFallback } from "@/data/projects";
 import { GALLERY_IMAGE_COUNT, galleryImagePath, galleryMetadata } from "@/data/certifications";
-import { CV_PDF_HREF, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
+import { YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
+import { PROFILE } from "@/data/profile";
 
 /* "2026-02-01" → "Feb 2026" */
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -265,47 +264,7 @@ const work: WorkItem[] = [
 
 /* ═══ Everything put together — components import this one object ═══ */
 export const PORTFOLIO_DATA: PortfolioData = {
-  profile: {
-    name: "Ahmed Emad Nasr",
-    title: "Information Security Officer",
-    japaneseTitle: "情報セキュリティ担当 • Information Security Officer",
-    availability: "Open to InfoSec roles: Officer, Engineer, GRC, SOC, IR/DFIR, IAM and Security Education",
-    /* The areas shown on the hero's "Focus" row */
-    focus: ["GRC", "SOC", "IR & DFIR", "Malware", "IAM", "Data Security"],
-    roles: [
-      "Information Security Officer",
-      "Information Security Engineer",
-      "GRC & Compliance Analyst",
-      "SOC Analyst (L1/L2)",
-      "DFIR & Malware Analyst",
-      "IAM & Data Security Analyst",
-      "Cybersecurity Instructor",
-    ],
-    contact: {
-      email: "ahmed.em.nasr@gmail.com",
-      phone: "+201013972690",
-      github: GITHUB_USERNAME,
-      linkedin: "https://www.linkedin.com/in/ahmed-emad-nasr/",
-      location: "Cairo, Egypt",
-      whatsapp: "201013972690",
-      youtube: YOUTUBE_CHANNEL_URL,
-      instagram: "https://www.instagram.com/ahmed_emad_nasr/",
-      x: "https://x.com/0x3omda",
-    },
-    hero: {
-      tagline: "From the risk register to the root cause.",
-      japaneseTagline: "統治から根本原因まで。",
-      /* The "Technical Specifications" strip under the name */
-      specs: [
-        { label: "Govern", value: "ISO 27001, PCI DSS, NIST CSF" },
-        { label: "Detect", value: "Wazuh, Splunk, ATT&CK" },
-        { label: "Respond", value: "NIST 800-61, Volatility, YARA" },
-        { label: "Protect", value: "IAM, PAM, DLP" },
-      ],
-      photo: normalizePublicHref("Assets/art-gallery/Images/logo/3omda.webp"),
-      cvUrl: normalizePublicHref(CV_PDF_HREF),
-    },
-  },
+  profile: PROFILE,
   experience,
   work,
   process: [

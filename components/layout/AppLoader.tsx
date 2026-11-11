@@ -96,7 +96,7 @@ export default function AppLoader() {
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ y: "-100%" }}
-          transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
+          transition={{ duration: 0.58, ease: [0.76, 0, 0.24, 1] }}
           data-app-loader
           className="fixed inset-0 z-[9999] flex cursor-pointer flex-col items-center justify-center bg-background"
           onClick={() => setLoading(false)}
@@ -106,9 +106,9 @@ export default function AppLoader() {
         >
           <motion.span
             key={word}
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 7 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: 0.4 }}
             className="brush-jp text-5xl text-foreground/80"
             lang="ja"
           >

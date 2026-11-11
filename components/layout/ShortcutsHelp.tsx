@@ -8,6 +8,7 @@
    add a line to GROUPS here: keys = the key caps shown, label = what it does. */
 
 import { useEffect, useRef } from "react";
+import { lockScroll } from "@/lib/scroll";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import { m as motion } from "framer-motion";
 import { Keyboard } from "lucide-react";
@@ -49,14 +50,13 @@ export default function ShortcutsHelp({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     closeRef.current?.focus();
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    lockScroll(true);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = prev;
+      lockScroll(false);
       window.removeEventListener("keydown", onKey);
     };
   }, [onClose]);

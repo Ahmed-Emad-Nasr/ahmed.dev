@@ -25,8 +25,7 @@
 
 import Image from "next/image";
 import PageLink from "@/components/ui/PageLink";
-import dynamic from "next/dynamic";
-import { useCallback, useMemo, useState, type ReactNode } from "react";
+import { Suspense, useCallback, useMemo, useState, type ReactNode } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -44,6 +43,7 @@ import {
 import { normalizePublicHref, getThumbnail, formatDate, type CaseKind } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
 import CaseSummary from "@/components/blog/CaseSummary";
+import { parseCaseSummary } from "@/lib/case-summary";
 import CaseFile, { VerdictBar, caseFileHas } from "@/components/blog/CaseFile";
 import type { CaseDetail } from "@/data/case-details";
 import {
@@ -55,11 +55,13 @@ import {
   Chapter,
   KanjiWatermark,
 } from "@/components/ui/kit";
+import { preloadable } from "@/lib/perf/lazy";
 import FadeIn from "@/components/ui/FadeIn";
 
-const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
-  ssr: false,
-});
+/* preloadable = fetched in idle time and then rendered without a suspended
+   frame: React holds back a suspended→ready swap for ~300ms, which is what
+   made the first open feel late. */
+const Lightbox = preloadable(() => import("@/components/ui/Lightbox"));
 
 /* The fields of a data/cases.ts entry this page uses */
 type CaseItem = {
@@ -241,6 +243,9 @@ export default function CaseArticle({
     [screenshots, item.title],
   );
 
+  /* The description is parsed once and shared by the three places that draw it */
+  const summary = useMemo(() => parseCaseSummary(item.description), [item.description]);
+
   /* Which chapters this case has, numbered in the order they appear */
   const has = caseFileHas(detail, item.href);
   let chapterNo = 0;
@@ -385,7 +390,7 @@ export default function CaseArticle({
                 <p className="mb-3 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.3em] text-foreground/60">
                   The task itself
                 </p>
-                <CaseSummary description={item.description} part="goal" />
+                <CaseSummary summary={summary} part="goal" />
               </div>
             </div>
             <div className="relative z-10 px-6 md:px-12 pt-6 pb-8 flex flex-wrap gap-4 border-t border-foreground/5">
@@ -468,7 +473,7 @@ export default function CaseArticle({
             it.
           </Chapter>
           <div className="space-y-12">
-            <CaseSummary description={item.description} part="work" />
+            <CaseSummary summary={summary} part="work" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               <div>
                 <BlockTitle japanese="道具" hint="The software used in this case.">Tools I used</BlockTitle>
@@ -536,7 +541,7 @@ export default function CaseArticle({
               <CaseFile detail={detail} href={item.href} title={item.title} part="evidence" />
             )}
 
-            <CaseSummary description={item.description} part="artifacts" />
+            <CaseSummary summary={summary} part="artifacts" />
 
             {techniques.length > 0 && (
               <div>
@@ -704,11 +709,13 @@ export default function CaseArticle({
       </div>
 
       {galleryIndex !== null && (
-        <Lightbox
-          close={() => setGalleryIndex(null)}
-          index={galleryIndex}
-          slides={slides}
-        />
+        <Suspense fallback={null}>
+          <Lightbox
+            close={() => setGalleryIndex(null)}
+            index={galleryIndex}
+            slides={slides}
+          />
+        </Suspense>
       )}
     </article>
   );

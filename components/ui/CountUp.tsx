@@ -12,7 +12,7 @@ import { prefersReducedMotion } from "@/lib/fx";
 function useCountUp(
   target: number,
   ref: React.RefObject<HTMLSpanElement | null>,
-  duration = 1250,
+  duration = 1440,
 ): number {
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const [value, setValue] = useState(0);

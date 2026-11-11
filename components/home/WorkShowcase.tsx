@@ -23,7 +23,6 @@
 
 import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import type { WorkItem, WorkType } from "@/data/types";
 import {
   ExternalLink,
@@ -58,11 +57,7 @@ const TYPE_ICON = {
   platform: Server,
 } as const;
 
-export default function WorkShowcase({
-  items: workList = PORTFOLIO_DATA.work,
-}: {
-  items?: WorkItem[];
-}) {
+export default function WorkShowcase({ items: workList }: { items: WorkItem[] }) {
   /* Which filter button is active, and the projects that match it */
   const [filter, setFilter] = useState<WorkType | "all">("all");
   const items = workList.filter((w) => filter === "all" || w.type === filter);

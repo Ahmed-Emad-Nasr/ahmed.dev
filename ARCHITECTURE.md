@@ -10,8 +10,8 @@ Everything is built at build time; there is no server.
 | Folder | Rule |
 |---|---|
 | `app/` | Routes only. Pages are Server Components that read `data/` and pass finished values down. |
-| `components/layout/` | Mounted on every page (from `app/layout.tsx` or `PageShell`). |
-| `components/ui/` | Small shared building blocks; `kit.tsx` holds the shared class strings. |
+| `components/layout/` | Mounted on every page (from `app/layout.tsx` or `PageShell.tsx`, the frame of every page except home). |
+| `components/ui/` | Small shared building blocks; `kit.tsx` holds the shared class strings (strings and tiny markup only — nothing with behaviour, so borrowing a class never drags a navbar into a section's chunk). |
 | `components/home/`, `components/blog/`, `components/gallery/` | One file per section. Home and blog have a `dynamic.tsx`; the gallery is a page-owned interactive surface. |
 | `data/` | Content only. `cases.ts`, `case-details.ts` and `attack.ts` are large — keep them out of client components (see below). |
 | `lib/` | Helpers with no UI: URLs (`site.ts`), JSON-LD (`seo.ts`), paths and case kinds (`shared.ts`), section → page routing (`routes.ts`), scrolling (`scroll.ts`). |
@@ -31,7 +31,17 @@ server. A client component pulls everything it imports into the browser, so:
   case file, IOC and timeline into the browser. The one exception is the
   hidden terminal, a chunk that loads only when someone opens it;
 - `data/portfolio-data.ts` is read by client sections, so it must stay free
-  of those imports too.
+  of those imports too;
+- `data/profile.ts` (name, roles, contact) is the only content in the first
+  download: the hero, footer bar, palette and terminal import `PROFILE` from
+  it, never `PORTFOLIO_DATA` — that object carries every project and job, and
+  loads later with the sections that show them. The hero's project count and
+  language codes arrive as props from `app/page.tsx` for the same reason.
+
+Libraries that are not needed to paint stay out of the first download too:
+`focus-trap` (fetched in idle time / when a dialog opens —
+`lib/use-focus-trap.ts`), GSAP (hero entrance), Lenis (smooth scrolling), the
+lightbox, the command palette and the terminal.
 
 ## How a page loads
 
@@ -73,8 +83,16 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
 
 ## Motion
 
-- Scrolling: native browser scrolling, with instant in-page jumps handled by
-  `lib/scroll.ts`.
+- Scrolling: the mouse wheel / trackpad glides (Lenis, `lib/smooth-scroll.ts`,
+  same settings as Sensei-Dev: lerp 0.1, duration 1.2). It is fetched in idle
+  time, only on devices with a mouse, never under reduced motion
+  (`components/layout/SmoothScroll.tsx`), and its animation loop runs only
+  while a glide is in progress. Touch, keyboard and scrollbar stay native.
+  In-page jumps stay **instant** and go through `lib/scroll.ts`, which also
+  cancels a glide in progress; `lockScroll()` there holds the page (and
+  Lenis) still behind every dialog and the lightbox.
+- Calmness dials: `CALM` and the duration factor in `components/ui/FadeIn.tsx`,
+  `MOTION_ENTER_DURATION` / `MOTION_STAGGER_STEP` in `lib/motion.ts`.
 - Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
   only, staggered top to bottom). framer-motion loads lazily
   (`LazyMotion` + `m`).
@@ -123,7 +141,9 @@ The common edits:
 
 | I want to change… | Edit |
 |---|---|
-| Name, title, roles (typing line), contact links, hero tagline/specs | `data/portfolio-data.ts` → `PORTFOLIO_DATA.profile` |
+| Name, title, roles (typing line), contact links, hero tagline/specs | `data/profile.ts` → `PROFILE` |
+| Smooth scrolling speed / what it skips | `lib/smooth-scroll.ts` |
+| Footer links | `components/layout/FooterBar.tsx` |
 | The hero summary paragraph / the 4 numbers under the roles | `data/cv.ts` (`CV_SUMMARY`), `data/live-copy.ts` (`stats`) |
 | The "roles I fit" cards | `components/home/RolesCards.tsx` → `ROLES` |
 | A project card | `data/portfolio-data.ts` → `work` |

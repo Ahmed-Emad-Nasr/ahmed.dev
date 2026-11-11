@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { useInView } from "framer-motion";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { PROFILE } from "@/data/profile";
 import { useContributionStats } from "@/lib/api/contributions";
 import { ContributionGraph } from "@/components/home/ContributionGraph";
 import { CountUp } from "@/components/ui/CountUp";
@@ -17,13 +18,13 @@ import FadeIn from "@/components/ui/FadeIn";
      in data/portfolio-data.ts.
    • The green-squares year graph → components/home/ContributionGraph.tsx; its
      data is fetched live in the visitor's browser by lib/api/contributions.ts
-     (GitHub username = PORTFOLIO_DATA.profile.contact.github).
+     (GitHub username = PROFILE.contact.github).
    `near` becomes true ~600px before the section scrolls into view; only
    then does the fetch start. */
 export default function ContributionsGrid() {
   const sectionRef = useRef<HTMLElement>(null);
   const near = useInView(sectionRef, { once: true, margin: "600px 0px" });
-  const stats = useContributionStats(PORTFOLIO_DATA.profile.contact.github, near);
+  const stats = useContributionStats(PROFILE.contact.github, near);
 
   return (
     <section ref={sectionRef} aria-label="Open-source contributions" className="relative py-16 md:py-20 px-6 md:px-20 bg-background overflow-hidden">

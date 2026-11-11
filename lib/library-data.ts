@@ -32,7 +32,7 @@ type Facet = { value: string; count: number };
    lists are served once as /case-screenshots.json and fetched only when a
    gallery is opened, instead of riding along in the home page's HTML. */
 type CaseMedia = { cover?: string; count: number };
-export const mediaById: Record<string, CaseMedia> = Object.fromEntries(
+const mediaById: Record<string, CaseMedia> = Object.fromEntries(
   caseEvidenceLibrary.map((item) => {
     const shots = caseScreenshotsByEvidenceId[item.id] ?? [];
     return [item.id, { cover: shots[0], count: shots.length }];
@@ -67,7 +67,7 @@ const KIND_ORDER = new Map(CASE_KINDS.map((k, i) => [k.id, i]));
    learning notes in that order; inside each, cases with a full case file
    (case-details.ts) first, then screenshots, then newest. A reviewer with
    five minutes meets the real investigations before the practice labs. */
-export const sortedCases: PdfResource[] = [...caseEvidenceLibrary].map(toCard).sort((a, b) => {
+const sortedCases: PdfResource[] = [...caseEvidenceLibrary].map(toCard).sort((a, b) => {
   if (a.id === FEATURED_ID) return -1;
   if (b.id === FEATURED_ID) return 1;
   const kind = (KIND_ORDER.get(a.kind!) ?? 9) - (KIND_ORDER.get(b.kind!) ?? 9);
@@ -82,7 +82,7 @@ export const sortedCases: PdfResource[] = [...caseEvidenceLibrary].map(toCard).s
 });
 
 /* Case counts per kind, for the library's kind tabs */
-export const kindFacets = CASE_KINDS.map((k) => ({
+const kindFacets = CASE_KINDS.map((k) => ({
   value: k.id,
   label: k.label,
   count: sortedCases.filter((c) => c.kind === k.id).length,
@@ -99,9 +99,9 @@ const countValues = (values: (string | undefined)[]): Facet[] => {
     .sort((a, b) => b.count - a.count || a.value.localeCompare(b.value));
 };
 
-export const categoryFacets = countValues(caseEvidenceLibrary.map((item) => item.category));
+const categoryFacets = countValues(caseEvidenceLibrary.map((item) => item.category));
 /* Only the most common tools — a very long chip list is noise, not filtering */
-export const toolFacets = countValues(caseEvidenceLibrary.flatMap((item) => [...item.tools])).slice(0, 12);
+const toolFacets = countValues(caseEvidenceLibrary.flatMap((item) => [...item.tools])).slice(0, 12);
 
 export const libraryCounts = {
   total: caseEvidenceLibrary.length,

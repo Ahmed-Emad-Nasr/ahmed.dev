@@ -42,7 +42,7 @@ export default function ProcessSection() {
               {idx < PORTFOLIO_DATA.process.length - 1 && (
                 <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-[2px] bg-primary/40 overflow-visible" aria-hidden="true">
                   {/* A packet travelling to the next step */}
-                  <span className="process-packet absolute -top-[2px] left-0 h-[6px] w-[6px] bg-primary" style={{ animationDelay: `${idx * 0.45}s` }} />
+                  <span className="process-packet absolute -top-[2px] left-0 h-[6px] w-[6px] bg-primary" style={{ animationDelay: `${idx * 0.52}s` }} />
                 </div>
               )}
             </FadeIn>

@@ -1,4 +1,4 @@
-import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { PROFILE } from "@/data/profile";
 import { CountUp } from "@/components/ui/CountUp";
 import type { ContributionStats } from "@/lib/api/contributions";
 import FadeIn from "@/components/ui/FadeIn";
@@ -23,7 +23,7 @@ const LEVEL_BG = [
  */
 export function ContributionGraph({ stats }: { stats: ContributionStats }) {
   const { status, days, total } = stats;
-  const username = PORTFOLIO_DATA.profile.contact.github;
+  const username = PROFILE.contact.github;
   if (status === "loading") {
     return (
       <div role="status" aria-label="Loading contribution graph" className="border border-foreground/10 bg-surface/60 p-6 overflow-hidden">
@@ -62,7 +62,7 @@ export function ContributionGraph({ stats }: { stats: ContributionStats }) {
     >
       <div className="mb-4 flex flex-wrap items-baseline gap-x-4 gap-y-1">
         <span className="font-mono text-2xl font-black text-accent tabular-nums">
-          <CountUp target={total} duration={1800} />
+          <CountUp target={total} duration={2070} />
         </span>
         <span className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">
           contributions in the last year

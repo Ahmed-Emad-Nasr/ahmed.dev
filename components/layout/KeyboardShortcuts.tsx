@@ -26,13 +26,17 @@
  */
 
 import dynamic from "next/dynamic";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { preloadable } from "@/lib/perf/lazy";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { isTypingTarget, scrollToTop } from "@/lib/scroll";
 import { scrollToHash } from "@/lib/perf/jump";
 import { pageOf } from "@/lib/routes";
 
-const ShortcutsHelp = dynamic(() => import("@/components/layout/ShortcutsHelp"), { ssr: false });
+/* preloadable = fetched in idle time and then rendered without a suspended
+   frame: React holds back a suspended→ready swap for ~300ms, which is what
+   made the first open feel late. */
+const ShortcutsHelp = preloadable(() => import("@/components/layout/ShortcutsHelp"));
 const Terminal = dynamic(() => import("@/components/layout/Terminal"), { ssr: false });
 
 type Overlay = "shortcuts" | "terminal" | null;
@@ -151,7 +155,11 @@ export default function KeyboardShortcuts() {
 
   return (
     <>
-      {overlay === "shortcuts" && <ShortcutsHelp onClose={close} />}
+      {overlay === "shortcuts" && (
+        <Suspense fallback={null}>
+          <ShortcutsHelp onClose={close} />
+        </Suspense>
+      )}
       {overlay === "terminal" && <Terminal onClose={close} />}
     </>
   );

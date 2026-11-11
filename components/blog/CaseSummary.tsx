@@ -7,17 +7,18 @@
  *   part="artifacts" → the copyable technical ids      (chapter "Evidence")
  *
  * ═══ components/blog/CaseSummary.tsx ═══
- * Input: the plain `description` text of a case (data/cases.ts). It is split
- * into steps automatically — you don't format it by hand. Inside the text,
+ * Input: the parsed description of a case (CaseArticle parses data/cases.ts'
+ * plain `description` once and hands the result to all three parts). It is
+ * split into steps automatically — you don't format it by hand. Inside the text,
  * IPs, CVE ids, ATT&CK ids (T1059…), ports (443/tcp) and percentages are
  * highlighted by the TOKEN pattern below, and text in 'single quotes'
  * becomes a code chip (see CODE_SPAN in lib/case-summary.ts).
  */
 
-import { useMemo, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useCopyLink } from "@/lib/use-copy-link";
 import { Check, Copy, ListChecks, Route, ShieldCheck, Fingerprint } from "lucide-react";
-import { parseCaseSummary, type Artifact, type SummaryStep } from "@/lib/case-summary";
+import type { Artifact, CaseSummary as ParsedSummary, SummaryStep } from "@/lib/case-summary";
 import FadeIn from "@/components/ui/FadeIn";
 
 /* ── Inline highlighting ───────────────────────────────────────────────── */
@@ -86,7 +87,7 @@ function Steps({ steps, code, start = 1 }: { steps: SummaryStep[]; code: readonl
         <FadeIn as="li" x={-14} y={0} duration={0.55} delay={Math.min(i, 8) * 0.07} key={i} className="relative pl-6 md:pl-8 pb-5 last:pb-0">
           <span
             className="brief-node absolute -left-[5px] top-[0.55em] w-[9px] h-[9px] bg-background border border-primary rotate-45"
-            style={{ animationDelay: `${i * 0.3}s` }}
+            style={{ animationDelay: `${i * 0.345}s` }}
             aria-hidden="true"
           />
           <span className="block font-mono text-[0.5625rem] font-bold tracking-[0.25em] text-foreground/65 mb-1 tabular-nums" aria-hidden="true">
@@ -144,10 +145,9 @@ function ArtifactChip({ artifact }: { artifact: Artifact }) {
 
 /* ── The briefing ──────────────────────────────────────────────────────── */
 
-export type SummaryPart = "goal" | "work" | "artifacts";
+type SummaryPart = "goal" | "work" | "artifacts";
 
-export default function CaseSummary({ description, part }: { description: string; part: SummaryPart }) {
-  const s = useMemo(() => parseCaseSummary(description), [description]);
+export default function CaseSummary({ summary: s, part }: { summary: ParsedSummary; part: SummaryPart }) {
   let n = 1;
   const next = () => String(n++).padStart(2, "0");
 

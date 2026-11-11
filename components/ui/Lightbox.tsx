@@ -8,14 +8,23 @@
    description? }], index = which one opens first. Plugins: Zoom, Fullscreen,
    Thumbnails (remove one from `plugins` to drop that feature). */
 
+import { useEffect } from "react";
 import YarlLightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import { Zoom, Fullscreen, Thumbnails } from "yet-another-react-lightbox/plugins";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
+import { lockScroll } from "@/lib/scroll";
 
 type Slide = { src: string; title: string; description?: string };
 
 export default function Lightbox({ close, index, slides }: { close: () => void; index: number; slides: Slide[] }) {
+  /* This component is mounted only while the viewer is open: hold the page
+     (and its smooth scrolling) still behind it */
+  useEffect(() => {
+    lockScroll(true);
+    return () => lockScroll(false);
+  }, []);
+
   return (
     <YarlLightbox
       open

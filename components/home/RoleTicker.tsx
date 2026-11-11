@@ -4,7 +4,7 @@
  * ═══ components/home/RoleTicker.tsx — the "> SOC Analyst_" typing line in the hero ═══
  *
  * Types a role, holds it, erases it letter by letter, types the next one.
- * The list of roles is PORTFOLIO_DATA.profile.roles in data/portfolio-data.ts.
+ * The list of roles is PROFILE.roles in data/profile.ts.
  * Screen readers get the whole list at once (the sr-only span); visitors who
  * prefer reduced motion see all roles joined with " · " instead of typing.
  * It pauses while off-screen or when the browser tab is hidden.
@@ -14,10 +14,10 @@ import { useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "@/lib/fx";
 
 /* Timing in milliseconds — change these to speed up / slow down the typing */
-const TYPE = 82; // per letter typed
-const ERASE = 41; // per letter erased
-const HOLD = 1800; // how long a full role stays on screen
-const GAP = 350; // pause between erasing one role and typing the next
+const TYPE = 94; // per letter typed
+const ERASE = 47; // per letter erased
+const HOLD = 2070; // how long a full role stays on screen
+const GAP = 400; // pause between erasing one role and typing the next
 
 export function RoleTicker({ roles, className = "" }: { roles: string[]; className?: string }) {
   const [text, setText] = useState(roles[0] ?? "");
@@ -98,7 +98,7 @@ export function RoleTicker({ roles, className = "" }: { roles: string[]; classNa
         >
           <span className="text-primary">&gt;&nbsp;</span>
           <span className="text-foreground/85">{text}</span>
-          <span className="ml-1 inline-block h-[1.1em] w-[0.55em] bg-primary animate-[caret-blink_1.18s_step-end_infinite]" />
+          <span className="ml-1 inline-block h-[1.1em] w-[0.55em] bg-primary animate-[caret-blink_1.36s_step-end_infinite]" />
         </span>
       )}
     </p>

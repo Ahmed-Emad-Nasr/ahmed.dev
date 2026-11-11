@@ -70,9 +70,11 @@ type FadeInProps = Omit<
 
 const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
-/* CALM = 0.85: every entrance travels (and scales) 15% less than the
-   numbers its caller passes. One dial for the whole site. */
-const CALM = 0.85;
+/* CALM = 0.72: every entrance travels (and scales) 28% less than the
+   numbers its caller passes. One dial for the whole site — lower = calmer.
+   (Speed is the other dial: the 0.99 factor on `duration` below, and
+   MOTION_ENTER_DURATION / MOTION_STAGGER_STEP in lib/motion.ts.) */
+const CALM = 0.72;
 const travel = (v: number, k: number) =>
   v ? Math.sign(v) * Math.min(Math.abs(v) * k * 0.9, 50) * CALM : 0;
 const calmScale = (s: number) => 1 - (1 - s) * CALM;
@@ -127,7 +129,7 @@ export default function FadeIn({
             transition: {
               duration:
                 clamp(duration || MOTION_ENTER_DURATION, 0.6, 1.2) *
-                0.86 *
+                0.99 *
                 tempo,
               delay:
                 (MOTION_STAGGER_STEP +

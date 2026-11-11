@@ -17,7 +17,7 @@
  */
 
 import type { Metadata } from "next";
-import { PageShell } from "@/components/ui/kit";
+import PageShell from "@/components/layout/PageShell";
 import { ArtGallery } from "@/components/gallery/dynamic";
 import LazySection from "@/lib/perf/lazy";
 import PageEffects from "@/lib/perf/PageEffects";

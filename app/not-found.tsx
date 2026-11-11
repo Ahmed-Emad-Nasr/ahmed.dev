@@ -12,8 +12,9 @@ import type { Metadata } from "next";
 import { startHere } from "@/data/start-here";
 import { caseEvidenceLibrary } from "@/data/cases";
 import { Home, FolderSearch, FileText } from "lucide-react";
+import PageShell from "@/components/layout/PageShell";
 import {
-  PageShell, KanjiWatermark, ctaPrimary, ctaSecondary,
+  KanjiWatermark, ctaPrimary, ctaSecondary,
   statusActions, statusCode, statusInner, statusLede, statusPage, statusReport, statusTitle,
 } from "@/components/ui/kit";
 

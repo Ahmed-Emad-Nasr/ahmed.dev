@@ -21,6 +21,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
+import { lockScroll } from "@/lib/scroll";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import { m as motion } from "framer-motion";
 import { X } from "lucide-react";
@@ -29,6 +30,7 @@ import { caseEvidenceLibrary } from "@/data/cases";
 import { ALL_GALLERY_CERTIFICATES } from "@/data/certifications";
 import { CV_PDF_HREF, normalizePublicHref } from "@/lib/shared";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { PROFILE } from "@/data/profile";
 import { STATIC_PLATFORMS, THM_SNAPSHOT, tryHackMePlatform } from "@/data/platforms";
 
 type Line = { id: number; text: string; kind: "in" | "out" | "err" | "dim" };
@@ -131,8 +133,8 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
 
         case "whoami":
           printAll([
-            `${PORTFOLIO_DATA.profile.name} — ${PORTFOLIO_DATA.profile.title}.`,
-            `Focus: ${PORTFOLIO_DATA.profile.focus.join(", ")}.`,
+            `${PROFILE.name} — ${PROFILE.title}.`,
+            `Focus: ${PROFILE.focus.join(", ")}.`,
             `${cases.length} documented cases in the library.`,
           ]);
           break;
@@ -246,9 +248,9 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
 
         case "contact":
           printAll([
-            `email     ${PORTFOLIO_DATA.profile.contact.email}`,
-            `linkedin  ${PORTFOLIO_DATA.profile.contact.linkedin.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, "")}`,
-            `github    github.com/${PORTFOLIO_DATA.profile.contact.github}`,
+            `email     ${PROFILE.contact.email}`,
+            `linkedin  ${PROFILE.contact.linkedin.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, "")}`,
+            `github    github.com/${PROFILE.contact.github}`,
           ]);
           break;
 
@@ -264,7 +266,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
               printAll([
                 "",
                 "▲ flag captured. Nicely done.",
-                `If you read logs like that, we should talk: ${PORTFOLIO_DATA.profile.contact.email}`,
+                `If you read logs like that, we should talk: ${PROFILE.contact.email}`,
               ], "dim");
             }
           } catch {
@@ -277,10 +279,10 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
           printAll([
             "   ▄▀▀▄      3omda@portfolio",
             "  █ AE █     ───────────────",
-            "   ▀▄▄▀      role     " + PORTFOLIO_DATA.profile.title,
-            "             focus    " + PORTFOLIO_DATA.profile.focus.join(" · "),
+            "   ▀▄▄▀      role     " + PROFILE.title,
+            "             focus    " + PROFILE.focus.join(" · "),
             "             cases    " + cases.length,
-            "             base     " + PORTFOLIO_DATA.profile.contact.location,
+            "             base     " + PROFILE.contact.location,
             "             shell    3omda-sh 1.2",
             "             theme    Neo-Samurai (dark)",
           ]);
@@ -313,11 +315,8 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
   // ── focus + scroll lock ─────────────────────────────────────────────────
   useEffect(() => {
     inputRef.current?.focus();
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = prev;
-    };
+    lockScroll(true);
+    return () => lockScroll(false);
   }, []);
 
   // Keep the view pinned to the last line

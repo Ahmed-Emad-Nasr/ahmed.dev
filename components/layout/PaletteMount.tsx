@@ -9,10 +9,13 @@
      window.dispatchEvent(new Event("sensei:palette"))
    (that's what the ⌘ button in the navbar does). */
 
-import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
+import { Suspense, useEffect, useState } from "react";
+import { preloadable } from "@/lib/perf/lazy";
 
-const CommandPalette = dynamic(() => import("@/components/layout/CommandPalette"), { ssr: false });
+/* preloadable = fetched in idle time and then rendered without a suspended
+   frame: React holds back a suspended→ready swap for ~300ms, which is what
+   made the first open feel late. */
+const CommandPalette = preloadable(() => import("@/components/layout/CommandPalette"));
 
 export default function PaletteMount() {
   const [loaded, setLoaded] = useState(false);
@@ -34,5 +37,9 @@ export default function PaletteMount() {
     };
   }, [loaded]);
 
-  return loaded ? <CommandPalette /> : null;
+  return loaded ? (
+    <Suspense fallback={null}>
+      <CommandPalette />
+    </Suspense>
+  ) : null;
 }

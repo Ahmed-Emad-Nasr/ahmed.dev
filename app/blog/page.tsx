@@ -32,7 +32,7 @@
  */
 
 import type { Metadata } from "next";
-import { PageShell } from "@/components/ui/kit";
+import PageShell from "@/components/layout/PageShell";
 import LazySection from "@/lib/perf/lazy";
 import SlashDivider from "@/components/ui/SlashDivider";
 import TickerStrip from "@/components/ui/TickerStrip";
@@ -145,7 +145,7 @@ function structuredData() {
 
 export default function BlogPage() {
   return (
-    /* PageShell (components/ui/kit.tsx) = navbar + <main> + footer bar.
+    /* PageShell (components/layout/PageShell.tsx) = navbar + <main> + footer bar.
        showLoader → also play the intro boot screen on this page. */
     <PageShell showLoader>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData() }} />

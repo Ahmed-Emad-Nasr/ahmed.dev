@@ -3,81 +3,35 @@
 /*
  * ═══ components/layout/ContactFooter.tsx — the CONTACT section + FOOTER ═══
  *
- * Two exports:
- *   ContactFooter (default) → the CONTACT section at the bottom of the HOME
- *                             page (#contact): big heading, e-mail with copy
- *                             button, social icons, the contact form — and it
- *                             ends with FooterBar.
- *   FooterBar               → the thin last line (© year, Blog • Gallery • CV,
- *                             design credit). Every OTHER page ends with just
- *                             this, through PageShell in components/ui/kit.tsx.
+ * The CONTACT section at the bottom of the HOME page (#contact): big
+ * heading, e-mail with copy button, social icons, the contact form — and it
+ * ends with FooterBar (components/layout/FooterBar.tsx — its own file, so
+ * the other pages can show the footer line without downloading this form).
  *
  * HOW THE FORM SENDS (no server — GitHub Pages is static, and no
  * third-party form service): it opens the visitor's own mail app with the
  * message filled in, and offers Gmail / "copy message" when none opens.
  *
  * HOW TO EDIT
- *   • E-mail, GitHub, LinkedIn, WhatsApp, YouTube… → PORTFOLIO_DATA.profile.contact
- *     in data/portfolio-data.ts.
+ *   • E-mail, GitHub, LinkedIn, WhatsApp, YouTube… → PROFILE.contact
+ *     in data/profile.ts.
  *   • Add / remove a social icon → the socialLinks array in ContactFooter.
- *   • Footer links → the <nav> inside FooterBar.
+ *   • Footer links → components/layout/FooterBar.tsx.
  */
 
 import { useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
-import PageLink from "@/components/ui/PageLink";
 import { MessageCircle, ArrowUpRight, Mail, Copy, Check } from "lucide-react";
 import { Github, Linkedin, Youtube, Instagram, XLogo } from "@/components/ui/BrandIcons";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { PROFILE } from "@/data/profile";
 import { useCopyLink } from "@/lib/use-copy-link";
 import FadeIn from "@/components/ui/FadeIn";
-
-/* The last line of every page: the mark, the copyright, the legal pages and
-   the design credit. On the home page it closes the contact section; the
-   other pages render it on its own. */
-export function FooterBar({ className = "" }: { className?: string }) {
-  const currentYear = new Date().getFullYear();
-  return (
-    <div className={`pt-8 border-t border-foreground/5 flex flex-col md:flex-row justify-between items-center gap-6 text-on-surface-variant font-mono text-[0.625rem] tracking-[0.3em] uppercase ${className}`}>
-      <div className="flex items-center gap-4">
-        <span className="text-primary-ink font-black text-base tracking-normal font-display">
-          AE.
-        </span>
-        {/* The HTML is built once; the year can roll over before the next
-            build, so the browser's year wins without a hydration warning */}
-        <span suppressHydrationWarning>
-          © {currentYear} {PORTFOLIO_DATA.profile.name}
-        </span>
-      </div>
-      <nav aria-label="Site information" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <PageLink href="/blog" className="hover:text-primary-ink transition-colors">Blog</PageLink>
-        <span className="text-primary-ink" aria-hidden="true">•</span>
-        <PageLink href="/gallery" className="hover:text-primary-ink transition-colors">Gallery</PageLink>
-        <span className="text-primary-ink" aria-hidden="true">•</span>
-        <PageLink href="/cv" className="hover:text-primary-ink transition-colors">CV</PageLink>
-      </nav>
-      <div className="flex items-center gap-2 text-on-surface-variant">
-        <span>
-          Design{" "}
-          <a
-            href={`https://github.com/${PORTFOLIO_DATA.profile.contact.github}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-primary-ink transition-colors"
-          >
-            Ahmed Emad Nasr
-          </a>
-        </span>
-        <span className="text-primary-ink">•</span>
-        <span lang="ja" aria-hidden="true" data-jp="次のレベル" />
-      </div>
-    </div>
-  );
-}
+import FooterBar from "@/components/layout/FooterBar";
 
 type Draft = { subject: string; body: string };
 
-const EMAIL = PORTFOLIO_DATA.profile.contact.email;
+const EMAIL = PROFILE.contact.email;
 
 /* Gmail's web composer, prefilled — for visitors with no mail app set up,
    where a mailto: link silently does nothing. */
@@ -93,12 +47,12 @@ export default function ContactFooter() {
 
   /* The social icon buttons — add one by copying an entry */
   const socialLinks = [
-    { name: "GitHub", icon: Github, href: `https://github.com/${PORTFOLIO_DATA.profile.contact.github}`, color: "text-primary-ink" },
-    { name: "LinkedIn", icon: Linkedin, href: `${PORTFOLIO_DATA.profile.contact.linkedin}`, color: "text-[#0077b5]" },
-    { name: "WhatsApp", icon: MessageCircle, href: `https://wa.me/${PORTFOLIO_DATA.profile.contact.whatsapp}`, color: "text-[#25d366]" },
-    { name: "YouTube", icon: Youtube, href: PORTFOLIO_DATA.profile.contact.youtube, color: "text-[#ff0000]" },
-    { name: "Instagram", icon: Instagram, href: PORTFOLIO_DATA.profile.contact.instagram, color: "text-[#e1306c]" },
-    { name: "X", icon: XLogo, href: `${PORTFOLIO_DATA.profile.contact.x}`, color: "text-foreground" },
+    { name: "GitHub", icon: Github, href: `https://github.com/${PROFILE.contact.github}`, color: "text-primary-ink" },
+    { name: "LinkedIn", icon: Linkedin, href: `${PROFILE.contact.linkedin}`, color: "text-[#0077b5]" },
+    { name: "WhatsApp", icon: MessageCircle, href: `https://wa.me/${PROFILE.contact.whatsapp}`, color: "text-[#25d366]" },
+    { name: "YouTube", icon: Youtube, href: PROFILE.contact.youtube, color: "text-[#ff0000]" },
+    { name: "Instagram", icon: Instagram, href: PROFILE.contact.instagram, color: "text-[#e1306c]" },
+    { name: "X", icon: XLogo, href: `${PROFILE.contact.x}`, color: "text-foreground" },
   ];
 
   return (
@@ -230,7 +184,7 @@ export default function ContactFooter() {
               Write to me
             </h3>
             <p className="font-mono text-[0.6875rem] text-foreground/60 tracking-wider mb-8">
-              {PORTFOLIO_DATA.profile.availability} — training and collaborations welcome too.
+              {PROFILE.availability} — training and collaborations welcome too.
             </p>
 
             <form

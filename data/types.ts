@@ -3,7 +3,7 @@
  * TypeScript types only (no content). They make the editor warn you when a
  * data entry is missing a field or has a typo. If you add a new field to
  * entries in data/portfolio-data.ts, add it to the matching type here too.
- *   ContactInfo / HeroInfo / Profile → PORTFOLIO_DATA.profile
+ *   ContactInfo / HeroInfo / Profile → PROFILE (data/profile.ts)
  *   Experience                       → one card of the Experience section
  *   WorkType / WorkItem              → one project card (#work)
  *   ProcessStep / ArtGalleryItem / Contribution → process cards, gallery
@@ -32,14 +32,12 @@ interface HeroSpec {
 
 interface HeroInfo {
   tagline: string;
-  japaneseTagline: string;
   /** The "Technical Specifications" strip in the hero */
   specs: HeroSpec[];
-  photo: string;
   cvUrl: string;
 }
 
-interface Profile {
+export interface Profile {
   name: string;
   title: string;
   japaneseTitle: string;

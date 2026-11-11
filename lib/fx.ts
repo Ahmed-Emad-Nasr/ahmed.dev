@@ -14,9 +14,6 @@
  *     to --background in app/globals.css.
  */
 
-/** The one easing curve every entrance uses */
-export const EASE: [number, number, number, number] = [0.23, 1, 0.32, 1];
-
 const DURATION_KEY = "sensei-fx-duration";
 const DEFAULT_FX_DURATION = 800;
 export const FX_DURATIONS = [400, 800, 1250] as const;

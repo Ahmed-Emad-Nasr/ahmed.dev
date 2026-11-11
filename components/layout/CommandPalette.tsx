@@ -50,10 +50,11 @@ import {
   Award,
 } from "lucide-react";
 import { Github, Linkedin } from "@/components/ui/BrandIcons";
-import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { PROFILE } from "@/data/profile";
 import { ALL_GALLERY_CERTIFICATES } from "@/data/certifications";
 import { normalizePublicHref } from "@/lib/shared";
 import { scrollToHash } from "@/lib/perf/jump";
+import { lockScroll } from "@/lib/scroll";
 import { pageOf } from "@/lib/routes";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import { useThemeFx } from "@/components/layout/ThemeFxProvider";
@@ -122,13 +123,14 @@ export default function CommandPalette() {
       setCopied(false);
       setFxDurationState(getFxDuration());
       requestAnimationFrame(() => inputRef.current?.focus());
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
     }
-    return () => {
-      document.body.style.overflow = "";
-    };
+  }, [open]);
+
+  /* The page behind stands still while the palette is open */
+  useEffect(() => {
+    if (!open) return;
+    lockScroll(true);
+    return () => lockScroll(false);
   }, [open]);
 
   useEffect(() => {
@@ -165,7 +167,7 @@ export default function CommandPalette() {
 
   /* ═══ The fixed commands — add / edit / remove entries here ═══ */
   const commands: Command[] = useMemo(() => {
-    const c = PORTFOLIO_DATA.profile.contact;
+    const c = PROFILE.contact;
     const isDark = resolvedTheme === "dark";
     return [
       { id: "home", group: "Go to", label: "Home", icon: Home, run: () => go("#home") },
@@ -224,7 +226,7 @@ export default function CommandPalette() {
       {
         id: "cv", group: "Actions", label: "Download CV (PDF)", icon: Download,
         run: () => {
-          window.open(PORTFOLIO_DATA.profile.hero.cvUrl, "_blank", "noopener,noreferrer");
+          window.open(PROFILE.hero.cvUrl, "_blank", "noopener,noreferrer");
           setOpen(false);
         },
       },

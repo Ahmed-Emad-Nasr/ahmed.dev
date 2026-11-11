@@ -4,7 +4,7 @@
  * ═══ components/layout/SiteNav.tsx — the TOP NAVIGATION BAR ═══
  *
  * On every page (home renders it in app/page.tsx; the other pages through
- * PageShell in components/ui/kit.tsx). Contains: the "AE" logo, the links,
+ * components/layout/PageShell.tsx). Contains: the "AE" logo, the links,
  * the theme toggle, the ⌘ command-palette button, and on phones/tablets a
  * menu button that opens a full-screen menu.
  *
@@ -212,7 +212,7 @@ export default function SiteNav() {
         }}
         initial={navEntered ? false : { y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 200, damping: 20 }}
+        transition={{ type: "spring", stiffness: 170, damping: 22 }}
       >
         {/* Logo */}
         <NavLink
@@ -339,11 +339,11 @@ export default function SiteNav() {
               {navItems.map((item, idx) => (
                 <motion.div
                   key={item.name}
-                  initial={{ opacity: 0, x: -51 }}
+                  initial={{ opacity: 0, x: -43 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{
-                    delay: 0.1 + idx * 0.06,
-                    duration: 0.5,
+                    delay: 0.1 + idx * 0.07,
+                    duration: 0.58,
                     ease: [0.25, 0.46, 0.45, 0.94],
                   }}
                   className="border-b border-foreground/5 last:border-b-0"

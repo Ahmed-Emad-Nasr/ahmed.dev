@@ -1,7 +1,7 @@
 "use client";
 
 import { m as motion } from "framer-motion";
-import { EASE } from "@/lib/fx";
+import { MOTION_EASE } from "@/lib/motion";
 
 /**
  * ═══ components/ui/RevealText.tsx ═══
@@ -33,7 +33,7 @@ export function RevealText({
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ staggerChildren: 0.06, delayChildren: delay }}
+      transition={{ staggerChildren: 0.07, delayChildren: delay }}
     >
       {/* What assistive tech reads; the moving words are hidden from it */}
       <span className="sr-only">{text}</span>
@@ -49,7 +49,7 @@ export function RevealText({
             className="inline-block will-change-transform"
             variants={{
               hidden: { y: "110%" },
-              show: { y: "0%", transition: { duration: 0.52, ease: EASE } },
+              show: { y: "0%", transition: { duration: 0.6, ease: MOTION_EASE } },
             }}
           >
             {u}

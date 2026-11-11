@@ -32,7 +32,7 @@
  */
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import {
   ALL_GALLERY_CERTIFICATES,
@@ -40,16 +40,17 @@ import {
 } from "@/data/certifications";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import { Eyebrow, filterTab } from "@/components/ui/kit";
-import dynamic from "next/dynamic";
 import { useSearchParams } from "next/navigation";
 import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
+import { preloadable } from "@/lib/perf/lazy";
 import FadeIn from "@/components/ui/FadeIn";
 import OrgLogo from "@/components/ui/OrgLogo";
 import { scrollToHash } from "@/lib/perf/jump";
 
-const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), {
-  ssr: false,
-});
+/* preloadable = fetched in idle time and then rendered without a suspended
+   frame: React holds back a suspended→ready swap for ~300ms, which is what
+   made the first open feel late. */
+const Lightbox = preloadable(() => import("@/components/ui/Lightbox"));
 
 /* Images shown at first, and added by each "show more" click */
 const FIRST = 12;
@@ -565,11 +566,13 @@ export default function ArtGallery() {
       </div>
 
       {open && (
-        <Lightbox
-          close={() => setOpen(false)}
-          index={index}
-          slides={lightboxSlides}
-        />
+        <Suspense fallback={null}>
+          <Lightbox
+            close={() => setOpen(false)}
+            index={index}
+            slides={lightboxSlides}
+          />
+        </Suspense>
       )}
     </section>
   );

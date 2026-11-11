@@ -322,7 +322,7 @@ function ReportViewer({ href, title }: { href: string; title: string }) {
 
 /* ── The case file ───────────────────────────────────────────────────── */
 
-export type CaseFilePart = "happened" | "prevent" | "evidence";
+type CaseFilePart = "happened" | "prevent" | "evidence";
 
 /* Which parts have something to show for this case (CaseArticle uses it to
    decide which chapters exist) */

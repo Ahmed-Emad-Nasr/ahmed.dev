@@ -11,8 +11,9 @@
 import { useEffect } from "react";
 import PageLink from "@/components/ui/PageLink";
 import { RotateCcw } from "lucide-react";
+import PageShell from "@/components/layout/PageShell";
 import {
-  PageShell, ctaPrimary, ctaSecondary,
+  ctaPrimary, ctaSecondary,
   statusActions, statusCode, statusInner, statusLede, statusPage, statusReport, statusTitle,
 } from "@/components/ui/kit";
 

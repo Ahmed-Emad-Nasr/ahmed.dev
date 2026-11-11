@@ -53,6 +53,7 @@ import { CONTENT_SECURITY_POLICY } from "@/lib/security";
 import KeyboardShortcuts from "@/components/layout/KeyboardShortcuts";
 import DeferredGlobalEffects from "@/components/layout/DeferredGlobalEffects";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
+import SmoothScroll from "@/components/layout/SmoothScroll";
 import { normalizePublicHref, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { OG_IMAGE } from "@/lib/site";
 import { homeDataFixScript } from "@/lib/routes";
@@ -264,6 +265,7 @@ const HOME_DATA_FIX = homeDataFixScript(normalizePublicHref("/").replace(/\/$/, 
    • PaletteMount / KeyboardShortcuts / CursorMount / DeferredGlobalEffects →
      site-wide overlays; each loads its code only when needed.
    • {children}      → the current page.
+   • SmoothScroll    → smooth wheel scrolling, loaded in idle time (desktop).
    suppressHydrationWarning on <html>: the theme class is set by a script
    before React starts, so React must not complain that it differs. */
 
@@ -306,6 +308,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <DeferredGlobalEffects />
             <CursorMount />
             {children}
+            {/* Smooth wheel scrolling (Lenis) — after {children} on purpose: its
+                page-change reset must run after the router has placed the page */}
+            <SmoothScroll />
             {/* Registers public/sw.js (offline cache) in production */}
             <ServiceWorkerRegister />
           </ThemeFxProvider>

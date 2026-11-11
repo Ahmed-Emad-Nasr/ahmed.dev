@@ -86,7 +86,7 @@ export default function TriageChallenge() {
         const tick = () => {
           n += 1;
           setStreamed(n);
-          if (n < ALERT.length) timer = window.setTimeout(tick, 180);
+          if (n < ALERT.length) timer = window.setTimeout(tick, 207);
         };
         tick();
       },

@@ -23,7 +23,7 @@ type SummaryPhase = { index: number; title: string; steps: SummaryStep[] };
 type ArtifactKind = "ip" | "cve" | "osvdb" | "port" | "technique";
 export type Artifact = { kind: ArtifactKind; value: string };
 
-type CaseSummary = {
+export type CaseSummary = {
   /** Shared code-span table — every text field below may hold placeholders */
   code: readonly string[];
   objective: string;

@@ -31,10 +31,11 @@
  */
 
 import dynamic from "next/dynamic";
-import { useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import SlashDivider from "@/components/ui/SlashDivider";
 import TickerStrip from "@/components/ui/TickerStrip";
+import { preloadable } from "@/lib/perf/lazy";
 import FadeIn from "@/components/ui/FadeIn";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { normalizePublicHref, type CaseKind } from "@/lib/shared";
@@ -48,7 +49,10 @@ import CaseList from "@/components/blog/CaseList";
 import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
 
 const MediaSections = dynamic(() => import("@/components/blog/MediaSections"));
-const Lightbox = dynamic(() => import("@/components/ui/Lightbox"), { ssr: false });
+/* preloadable = fetched in idle time and then rendered without a suspended
+   frame: React holds back a suspended→ready swap for ~300ms, which is what
+   made the first open feel late. */
+const Lightbox = preloadable(() => import("@/components/ui/Lightbox"));
 
 /* Cards shown at first and added per "show more" */
 const PAGE = 6;
@@ -382,11 +386,13 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
       </div>
 
       {gallery && (
-        <Lightbox
-          close={() => setGallery(null)}
-          index={gallery.index}
-          slides={slides}
-        />
+        <Suspense fallback={null}>
+          <Lightbox
+            close={() => setGallery(null)}
+            index={gallery.index}
+            slides={slides}
+          />
+        </Suspense>
       )}
     </>
   );

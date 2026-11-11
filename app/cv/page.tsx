@@ -39,7 +39,8 @@ import { SITE_BASE_URL, OG_IMAGE } from "@/lib/site";
 import { jsonLd, KEYWORDS, PERSON_REF, SITE_URL, WEBSITE_ID } from "@/lib/seo";
 import { Download, ArrowLeft, Mail, Phone, MapPin } from "lucide-react";
 import { Github, Linkedin } from "@/components/ui/BrandIcons";
-import { PageShell, KanjiWatermark, ctaPrimary, ctaSecondary } from "@/components/ui/kit";
+import PageShell from "@/components/layout/PageShell";
+import { KanjiWatermark, ctaPrimary, ctaSecondary } from "@/components/ui/kit";
 
 /* ── classes ─────────────────────────────────────────────────────────── */
 /* print: = the Ctrl/Cmd+P version — a compact, single-column CV on paper */

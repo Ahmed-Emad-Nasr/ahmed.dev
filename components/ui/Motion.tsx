@@ -74,7 +74,7 @@ export function SpotlightHost() {
 export function TiltCard({
   children,
   className,
-  max = 6,
+  max = 5,
 }: {
   children: ReactNode;
   className?: string;
@@ -83,8 +83,8 @@ export function TiltCard({
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 210, damping: 20 });
-  const sry = useSpring(ry, { stiffness: 210, damping: 20 });
+  const srx = useSpring(rx, { stiffness: 180, damping: 22 });
+  const sry = useSpring(ry, { stiffness: 180, damping: 22 });
 
   const onMove = (e: MouseEvent) => {
     if (prefersReducedMotion()) return;

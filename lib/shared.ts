@@ -131,6 +131,10 @@ export const formatDate = (value: string): string => {
 
 export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AhmedEmad-0x3omda";
 
+/* The GitHub account: profile links, the contribution graph and the repos
+   lib/api/github-repos.ts reads at build time */
+export const GITHUB_USERNAME = "Ahmed-Emad-Nasr";
+
 /* ── Case kinds ──────────────────────────────────────────────────────────
    The library mixes four different things, and a reviewer reads them very
    differently: an incident report is evidence of the job, a capstone or rule
