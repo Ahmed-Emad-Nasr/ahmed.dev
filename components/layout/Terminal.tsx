@@ -118,7 +118,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
             "ls                — list all cases",
             "ls <keyword>      — filter the list",
             "open <n|id>       — open a case page",
-            `certs [keyword]   — list all ${ALL_GALLERY_CERTIFICATES.length} certificates`,
+            `certs [keyword]   — list all ${ALL_GALLERY_CERTIFICATES.length} certifications, courses & records`,
             "work              — list open-source projects",
             "cat cv            — open the CV",
             "skills            — most used tools",
@@ -212,7 +212,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
             break;
           }
           printAll(
-            list.map((c, idx) => `${String(idx + 1).padStart(2, "0")}  ${c.title}  [${c.issuer}]`),
+            list.map((c, idx) => `${String(idx + 1).padStart(2, "0")}  ${c.title}  [${c.issuer}] (${c.group})`),
           );
           break;
         }

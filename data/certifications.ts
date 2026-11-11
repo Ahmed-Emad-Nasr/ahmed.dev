@@ -14,11 +14,12 @@
  *       public/Assets/art-gallery/Images/image_display_thumb/ (1.webp … N.webp).
  *       Add an image → save it as N+1.webp and raise this number.
  *     • ALL_GALLERY_CERTIFICATES → which of those images are certificates, with
- *       title, issuer, kind, group ("core" | "labs" | "exams" | "badges" =
- *       the filter buttons) and summary. galleryIndex = the image number.
+ *       title, issuer, kind, group (see GalleryCertGroup below = the filter
+ *       buttons) and summary. galleryIndex = the image number.
  *     Images not listed there show as photos ("Record 07").
- *     The certificate count on the home page and gallery is the length of
- *     ALL_GALLERY_CERTIFICATES.
+ *     The home page counts professional CERTIFICATIONS only
+ *     (PROFESSIONAL_CERTIFICATION_COUNT) — courses, programmes, exam score
+ *     reports and badges are listed in the gallery under their own filters.
  */
 
 type Certification = {
@@ -48,18 +49,25 @@ type Certification = {
 export const certifications: readonly Certification[] = [
   { id: "ejpt-v2", credential: "exam", name: "eLearnSecurity Junior Penetration Tester v2", shortName: "eJPT v2", issuer: "INE", year: 2026, galleryIndex: 2 },
   { id: "ccep", name: "Certified Cybersecurity Educator Professional", shortName: "CCEP", issuer: "Red Team Leaders", year: 2026, galleryIndex: 6 },
-  { id: "rh124", name: "Red Hat System Administration I (RH124)", shortName: "RH124", issuer: "Red Hat", year: 2026, galleryIndex: 10 },
+  { id: "rh124", credential: "course", name: "Red Hat System Administration I (RH124)", shortName: "RH124", issuer: "Red Hat", year: 2026, galleryIndex: 10 },
   { id: "hcia-datacom", name: "HCIA-Datacom V1.0 & HCCDA-Tech Essentials", shortName: "HCIA-Datacom", issuer: "Huawei", year: 2025, galleryIndex: 24 },
   { id: "thm-soc-l1-l2", credential: "course", name: "SOC Level 1 & SOC Level 2 Learning Paths", issuer: "TryHackMe", year: 2025, galleryIndex: 12 },
   { id: "malware-analysis-fundamentals", credential: "course", name: "Malware Analysis Fundamentals", issuer: "Mahara-Tech (ITI)", year: 2025, galleryIndex: 27 },
   { id: "cti-101", credential: "course", name: "Cyber Threat Intelligence 101", issuer: "arcX", year: 2025, galleryIndex: 15 },
-  { id: "ccna", credential: "exam", name: "Cisco Certified Network Associate (CCNA 200-301)", shortName: "CCNA", issuer: "Cisco Systems", year: 2024, galleryIndex: 37 },
+  { id: "ccna", credential: "exam", name: "Cisco Certified Network Associate (CCNA 200-301)", shortName: "CCNA", issuer: "Cisco Systems", year: 2024 /* no scan of the CCNA certificate itself in the gallery yet (image 37 is the practice-exam score) — add its galleryIndex or verifyUrl when uploaded */ },
   { id: "hcia-cloud", name: "HCIA-Cloud Computing V5.0", shortName: "HCIA-Cloud", issuer: "Huawei", year: 2024, cv: false, galleryIndex: 25 },
 ];
 
 export const GALLERY_IMAGE_COUNT = 99;
 
-export type GalleryCertGroup = "core" | "labs" | "exams" | "badges";
+/* What kind of document each gallery item is — the filter buttons on /gallery:
+     certifications → professional certifications passed by exam (eJPT, HCIA…)
+     education      → the degree, internship and long government/institute programmes
+     courses        → courses, learning paths, bootcamps and exam-prep training
+     exams          → score reports of graded exams
+     badges         → digital badges that verify one of the above
+   Only "certifications" counts as a certification anywhere on the site. */
+export type GalleryCertGroup = "certifications" | "education" | "courses" | "exams" | "badges";
 
 type GalleryCertificateItem = {
   /** 1-based image index in image_display_thumb/{galleryIndex}.webp */
@@ -82,7 +90,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "B.Sc. Computers & Artificial Intelligence — Proof of Graduation",
     issuer: "Benha University",
     kind: "University Degree",
-    group: "core",
+    group: "education",
     summary: "Official proof of graduation from the Faculty of Computers & Artificial Intelligence, majoring in Information Security & Digital Forensics, with the grade Excellent. Approved by the faculty council on 22 June 2026 and by the university on 30 July 2026.",
   },
   {
@@ -90,7 +98,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Banque Misr — Rowad Program, Certificate of Completion",
     issuer: "Banque Misr",
     kind: "Internship Certificate",
-    group: "core",
+    group: "education",
     summary: "Information Security Internship assessing GRC gaps against ISO 27001, PCI DSS, COBIT and SWIFT, plus IAM, PAM and SIEM/DFIR workflows.",
   },
   {
@@ -98,7 +106,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "eJPT — Junior Penetration Tester",
     issuer: "INE Security",
     kind: "Professional Certification",
-    group: "core",
+    group: "certifications",
     summary: "Proctored hands-on penetration testing certification covering network & web auditing, enumeration, exploitation and pivoting (90% score).",
   },
   {
@@ -106,7 +114,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Incident Handling & Response Professional",
     issuer: "INE",
     kind: "Professional Credential",
-    group: "core",
+    group: "courses",
     summary: "Incident response lifecycle, alert triage, digital forensics investigation, containment and root-cause reporting.",
   },
   {
@@ -114,7 +122,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "DEPI — Information Security Analyst (Infrastructure & Security)",
     issuer: "DEPI",
     kind: "Ministry Track",
-    group: "core",
+    group: "education",
     summary: "Digital Egypt Pioneers Initiative scholarship track focused on enterprise infrastructure security, CIS hardening and SIEM monitoring.",
   },
   {
@@ -122,7 +130,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "DEPI — Cyber Security Incident Response Analyst",
     issuer: "DEPI",
     kind: "Ministry Track",
-    group: "core",
+    group: "education",
     summary: "Intensive incident response and SOC operations track: NIST 800-61 triage, Wazuh + Suricata detection labs, Sysmon and YARA rules.",
   },
   {
@@ -130,7 +138,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Certified Cybersecurity Educator Professional (CCEP)",
     issuer: "Red Team Leaders",
     kind: "Professional Certification",
-    group: "core",
+    group: "certifications",
     summary: "Credential validating cybersecurity curriculum design, lab instruction, technical mentoring and learner assessment.",
   },
   {
@@ -138,7 +146,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "CCNA: Introduction to Networks",
     issuer: "Cisco Networking Academy",
     kind: "Course Certificate",
-    group: "core",
+    group: "courses",
     summary: "Network architectures, IPv4/IPv6 addressing, Ethernet switching, TCP/IP protocol suite and router/switch configuration.",
   },
   {
@@ -146,7 +154,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "CCNA: Switching, Routing & Wireless Essentials",
     issuer: "Cisco Networking Academy",
     kind: "Course Certificate",
-    group: "core",
+    group: "courses",
     summary: "VLANs, inter-VLAN routing, STP, EtherChannel, DHCPv4/v6, FHRP, wireless LANs and Layer 2 security controls.",
   },
   {
@@ -154,7 +162,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "CCNA: Enterprise Networking, Security & Automation",
     issuer: "Cisco Networking Academy",
     kind: "Course Certificate",
-    group: "core",
+    group: "courses",
     summary: "Single-area OSPF, ACLs, NAT, WAN concepts, VPNs, QoS, network virtualization and infrastructure automation.",
   },
   {
@@ -162,7 +170,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Red Hat System Administration I (RH124)",
     issuer: "Red Hat",
     kind: "Official Course Certificate",
-    group: "core",
+    group: "courses",
     summary: "Enterprise Linux administration: systemd services, users and permissions, storage, networking, SSH hardening and SELinux basics.",
   },
   {
@@ -170,7 +178,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "SOC Level 1 Learning Path",
     issuer: "TryHackMe",
     kind: "Learning Path",
-    group: "labs",
+    group: "courses",
     summary: "Blue-team operations path covering SIEM alert triage, network traffic analysis, endpoint forensics, phishing investigation and threat intel.",
   },
   {
@@ -178,7 +186,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "SOC Level 2 Learning Path",
     issuer: "TryHackMe",
     kind: "Learning Path",
-    group: "labs",
+    group: "courses",
     summary: "Advanced security operations path: log analysis, detection engineering, threat hunting, malware analysis and incident response.",
   },
   {
@@ -186,7 +194,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Introduction to Cybersecurity Bootcamp",
     issuer: "CyberTalents",
     kind: "Bootcamp Certificate",
-    group: "labs",
+    group: "courses",
     summary: "Hands-on cybersecurity bootcamp covering attack vectors, defensive controls and 20+ practical security challenges.",
   },
   {
@@ -194,7 +202,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "ITI Universities Pentesting Bootcamp 2025",
     issuer: "CyberTalents & ITI",
     kind: "Bootcamp Certificate",
-    group: "labs",
+    group: "courses",
     summary: "Joint ITI & CyberTalents penetration testing bootcamp covering web vulnerabilities, network exploitation and CTF challenges.",
   },
   {
@@ -202,7 +210,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Cyber Threat Intelligence 101",
     issuer: "arcX",
     kind: "Foundation Certificate",
-    group: "core",
+    group: "courses",
     summary: "Threat intelligence lifecycle, strategic vs. tactical intelligence, IOC enrichment, adversary profiling and MITRE ATT&CK mapping.",
   },
   {
@@ -210,7 +218,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Cybersecurity for Beginners",
     issuer: "Mahara-Tech (ITI)",
     kind: "Course Certificate",
-    group: "labs",
+    group: "courses",
     summary: "Foundational information security principles, threat landscape, cryptography basics and defensive operations.",
   },
   {
@@ -218,7 +226,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "SEC450 — Blue Team Fundamentals & GSOC Prep",
     issuer: "NetRiders",
     kind: "SOC Training",
-    group: "labs",
+    group: "courses",
     summary: "Security operations center workflows, SIEM architecture, alert triage methodology, network/endpoint telemetry and incident automation.",
   },
   {
@@ -226,7 +234,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "eCIR — Certified Incident Responder Prep",
     issuer: "NetRiders",
     kind: "IR & DFIR Training",
-    group: "labs",
+    group: "courses",
     summary: "Preparation track for eCIR: Splunk/ELK investigations, memory and disk forensics, lateral movement detection and packet analysis.",
   },
   {
@@ -234,7 +242,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "CompTIA Security+ (SY0-601) Prep",
     issuer: "NetRiders Academy",
     kind: "Security Training",
-    group: "labs",
+    group: "courses",
     summary: "Core security domains: threats, vulnerabilities, enterprise architecture, IAM, cryptography, incident response and GRC.",
   },
   {
@@ -242,7 +250,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Red Teaming, Ethical Hacking, Bug Hunting & Penetration Testing",
     issuer: "Udemy",
     kind: "Course Certificate",
-    group: "labs",
+    group: "courses",
     summary: "Offensive security techniques, reconnaissance, OWASP Top 10 web vulnerabilities, privilege escalation and reporting.",
   },
   {
@@ -250,7 +258,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "SEC504 — Hacker Tools, Techniques & Incident Handling (GCIH Prep)",
     issuer: "NetRiders",
     kind: "Incident Handling",
-    group: "labs",
+    group: "courses",
     summary: "NIST 800-61 incident handling steps paired with attacker TTP analysis, memory/network forensics and containment strategies.",
   },
   {
@@ -258,7 +266,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "HCCDA — Tech Essentials",
     issuer: "Huawei ICT Academy",
     kind: "Cloud Credential",
-    group: "core",
+    group: "certifications",
     summary: "Huawei Cloud developer and architecture essentials: compute, storage, VPC networking, IAM and cloud security controls.",
   },
   {
@@ -266,7 +274,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "HCIA — Datacom V1.0",
     issuer: "Huawei Talent Online",
     kind: "Professional Certification",
-    group: "core",
+    group: "certifications",
     summary: "Enterprise data communication certification: VRPs, OSPF, VLANs, STP, ACLs, NAT, IPsec VPN and network management.",
   },
   {
@@ -274,7 +282,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "HCIA — Cloud Computing V5.0",
     issuer: "Huawei ICT Academy",
     kind: "Professional Certification",
-    group: "core",
+    group: "certifications",
     summary: "Virtualization, compute/network/storage virtualization, cloud resource pools and virtual environment hardening.",
   },
   {
@@ -282,7 +290,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Cyber Security Track (120 Hours)",
     issuer: "Information Technology Institute (ITI)",
     kind: "Intensive Program",
-    group: "core",
+    group: "education",
     summary: "120-hour intensive training at ITI covering network security, operating system hardening, vulnerability assessment and web security labs.",
   },
   {
@@ -290,7 +298,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Malware Analysis Fundamentals",
     issuer: "Mahara-Tech (ITI)",
     kind: "Course Certificate",
-    group: "core",
+    group: "courses",
     summary: "Static and dynamic malware analysis, PE header inspection, string/import analysis, sandbox monitoring and IOC extraction.",
   },
   {
@@ -298,7 +306,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Jr Penetration Tester Learning Path",
     issuer: "TryHackMe",
     kind: "Learning Path",
-    group: "labs",
+    group: "courses",
     summary: "Hands-on offensive path covering web application security, Burp Suite, network enumeration, Metasploit and privilege escalation.",
   },
   {
@@ -306,7 +314,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Junior Cybersecurity Analyst Career Path",
     issuer: "Cisco Networking Academy",
     kind: "Career Path",
-    group: "core",
+    group: "courses",
     summary: "Cisco career path covering network defense, endpoint protection, threat intelligence, vulnerability assessment and risk management.",
   },
   {
@@ -314,7 +322,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Student SOC Program Foundations",
     issuer: "Microsoft",
     kind: "Program Certificate",
-    group: "core",
+    group: "courses",
     summary: "Microsoft Student SOC Program covering modern security operations, SIEM/XDR concepts, KQL hunting and incident triage.",
   },
   {
@@ -322,7 +330,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "DEPI — Forensics Investigator (Infrastructure & Security)",
     issuer: "DEPI",
     kind: "Ministry Track",
-    group: "core",
+    group: "education",
     summary: "Digital forensics track covering evidence acquisition, memory analysis with Volatility, disk/registry forensics with Autopsy and timeline building.",
   },
   {
@@ -330,7 +338,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "DEPI — Business English Track, Round 3",
     issuer: "OTO Courses & DEPI",
     kind: "Professional Communication",
-    group: "labs",
+    group: "education",
     summary: "Professional communication, technical presentation and workplace English completed alongside the DEPI cybersecurity track.",
   },
   {
@@ -338,7 +346,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "Digital Forensics Fundamentals",
     issuer: "NetRiders",
     kind: "DFIR Training",
-    group: "labs",
+    group: "courses",
     summary: "Chain of custody, disk imaging, Windows registry and event log artifacts, browser forensics and forensic report writing.",
   },
   {
@@ -346,7 +354,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "eJPTv1 Penetration Testing Prep",
     issuer: "NetRiders Academy",
     kind: "Pentest Training",
-    group: "labs",
+    group: "courses",
     summary: "Practical lab preparation covering footprinting, Nmap scanning, web attacks, password cracking and network pivoting.",
   },
   {
@@ -354,7 +362,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "HCIA-Datacom Learning Course — Certificate of Attendance",
     issuer: "Huawei",
     kind: "Course Completion",
-    group: "labs",
+    group: "courses",
     summary: "Completed Huawei enterprise routing, switching and network security lab topologies on Huawei eNSP.",
   },
   {
@@ -362,7 +370,7 @@ export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
     title: "GDG on Campus Benha BootCamp 24/25 — Cyber Security Technical",
     issuer: "Google Developer Groups (GDG)",
     kind: "Instructor & Bootcamp",
-    group: "core",
+    group: "education",
     summary: "Recognized for delivering 35+ cybersecurity training sessions and co-designing 10+ CTF challenges (ranked 1st among 250 instructors).",
   },
   {
@@ -509,9 +517,17 @@ export const certificationsJsonLd = (personId: string) =>
   certifications.map((cert) => ({
     "@type": "EducationalOccupationalCredential",
     name: cert.name,
-    credentialCategory: "certification",
+    credentialCategory: cert.credential === "course" ? "certificate" : "certification",
     educationalLevel: "professional",
     dateCreated: String(cert.year),
     recognizedBy: { "@type": "Organization", name: cert.issuer },
     about: { "@id": personId },
   }));
+
+/** Professional certifications (not courses) — the CV list minus course completions */
+export const PROFESSIONAL_CERTIFICATIONS = certifications.filter((c) => c.credential !== "course");
+export const PROFESSIONAL_CERTIFICATION_COUNT = PROFESSIONAL_CERTIFICATIONS.length;
+
+/** Gallery items of one group */
+export const galleryGroupCount = (group: GalleryCertGroup): number =>
+  ALL_GALLERY_CERTIFICATES.filter((c) => c.group === group).length;

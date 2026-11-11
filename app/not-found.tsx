@@ -20,8 +20,10 @@ import {
 
 export const metadata: Metadata = {
   title: "Page not found",
-  // noindex: there's no point indexing an error page
-  robots: { index: false, follow: true },
+  /* robots: null — Next already adds <meta name="robots" content="noindex">
+     to the 404 page. Setting our own made a second tag, and leaving it out
+     would inherit the layout's "index, follow"; null clears the inherited one */
+  robots: null,
   /* No canonical: the layout's "/" would tell crawlers this 404 is the home page */
   alternates: { canonical: null },
 };

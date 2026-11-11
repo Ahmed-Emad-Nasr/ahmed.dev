@@ -7,19 +7,16 @@
  * empty square of the same size (the real theme isn't known yet).
  */
 
-import { useEffect, useState, type MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
 import { useThemeFx } from "@/components/layout/ThemeFxProvider";
+import { useMounted } from "@/lib/use-client";
 
 export function ThemeToggle() {
   const { resolvedTheme } = useTheme();
   const { transitionTo } = useThemeFx();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   // Never show stale UI: render a neutral placeholder until mounted.
   if (!mounted) {

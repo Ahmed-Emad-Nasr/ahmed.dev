@@ -4,7 +4,7 @@
  *   /       the portfolio: pitch and contact
  *   /blog   the evidence: start here, the case
  *           library, videos, ATT&CK coverage, detection rules, triage
- *   /gallery the visual proof archive & all 48 certificates
+ *   /gallery the visual proof archive: certifications, courses & records
  *
  * Everything that links to a section by id (nav, command palette,
  * g-shortcuts, the stats bar, filter links) asks this file where it is.

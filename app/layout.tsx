@@ -53,7 +53,7 @@ import { CONTENT_SECURITY_POLICY } from "@/lib/security";
 import KeyboardShortcuts from "@/components/layout/KeyboardShortcuts";
 import DeferredGlobalEffects from "@/components/layout/DeferredGlobalEffects";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
-import { normalizePublicHref, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
+import { HOME_LOCATION, normalizePublicHref, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { OG_IMAGE } from "@/lib/site";
 import { homeDataFixScript } from "@/lib/routes";
 import {
@@ -146,10 +146,10 @@ export const metadata: Metadata = {
   },
   /* Location and audience hints read by Bing, Yandex and local search. */
   other: {
-    "geo.region": "EG-C",
-    "geo.placename": "Cairo, Egypt",
-    "geo.position": "30.0444;31.2357",
-    ICBM: "30.0444, 31.2357",
+    "geo.region": HOME_LOCATION.regionCode,
+    "geo.placename": HOME_LOCATION.label,
+    "geo.position": `${HOME_LOCATION.lat};${HOME_LOCATION.lng}`,
+    ICBM: `${HOME_LOCATION.lat}, ${HOME_LOCATION.lng}`,
   },
 };
 
@@ -202,6 +202,7 @@ const STRUCTURED_DATA_JSON = jsonLd({
       hasOccupation: { ...OCCUPATION, skills: skillGroups.flatMap((group) => group.items).join(", ") },
       knowsAbout: [...new Set([...KEYWORDS.grc, ...KEYWORDS.operations, ...KEYWORDS.response, ...KEYWORDS.identityData, ...skillGroups.flatMap((group) => group.items)])],
       knowsLanguage: [
+        { "@type": "Language", name: "Arabic", alternateName: "ar" },
         { "@type": "Language", name: "English", alternateName: "en" },
       ],
       hasCredential: certificationsJsonLd(PERSON_ID),
@@ -211,13 +212,13 @@ const STRUCTURED_DATA_JSON = jsonLd({
       worksFor: currentOrgs.map(orgNode),
       alumniOf: alumniOrgs.map(orgNode),
       nationality: { "@type": "Country", name: "Egypt" },
-      homeLocation: { "@type": "Place", name: "Cairo, Egypt", address: { "@type": "PostalAddress", addressLocality: "Cairo", addressCountry: "EG" } },
+      homeLocation: { "@type": "Place", name: HOME_LOCATION.label, address: { "@type": "PostalAddress", addressLocality: HOME_LOCATION.city, addressRegion: HOME_LOCATION.region, addressCountry: HOME_LOCATION.country } },
       email: "mailto:ahmed.em.nasr@gmail.com",
       telephone: "+20 101 397 2690",
-      address: { "@type": "PostalAddress", addressLocality: "Cairo/Benha", addressCountry: "EG" },
+      address: { "@type": "PostalAddress", addressLocality: HOME_LOCATION.city, addressRegion: HOME_LOCATION.region, addressCountry: HOME_LOCATION.country },
       contactPoint: {
         "@type": "ContactPoint", contactType: "professional inquiry",
-        email: "ahmed.em.nasr@gmail.com", availableLanguage: ["en"],
+        email: "ahmed.em.nasr@gmail.com", availableLanguage: ["en", "ar"],
       },
       /* Every public profile that is the same person — the identity graph
          a knowledge panel is built from. */

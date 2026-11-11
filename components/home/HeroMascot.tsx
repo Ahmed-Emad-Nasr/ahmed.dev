@@ -12,9 +12,9 @@
  * Speed of the float → `duration: 4.5` in the motion.div at the bottom.
  */
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { m as motion, useAnimationControls } from "framer-motion";
-import { prefersReducedMotion } from "@/lib/fx";
+import { useReducedMotion } from "@/lib/use-client";
 
 interface Mascot {
   id: string;
@@ -126,23 +126,23 @@ const MASCOTS: Mascot[] = [
  * and client render the same first paint). Idle float + click cycles to
  * the next mascot with a bounce. Static when reduced-motion is on.
  */
-export function HeroMascot({ className }: { className?: string }) {
-  // Deterministic first paint (hydration-safe), randomize on mount.
-  const [index, setIndex] = useState(0);
-  const [reduced] = useState(
-    () => typeof window !== "undefined" && prefersReducedMotion(),
-  );
+/* The random first mascot, picked once per page load in the browser. The
+   server HTML (and hydration) always use the first one; useSyncExternalStore
+   then swaps in this pick — no "mount, then setState" pass. */
+const CLIENT_START = typeof window === "undefined" ? 0 : Math.floor(Math.random() * MASCOTS.length);
+const noSubscribe = () => () => {};
 
-  useEffect(() => {
-    setIndex(Math.floor(Math.random() * MASCOTS.length));
-  }, []);
+export function HeroMascot({ className }: { className?: string }) {
+  const start = useSyncExternalStore(noSubscribe, () => CLIENT_START, () => 0);
+  const [clicks, setClicks] = useState(0);
+  const reduced = useReducedMotion();
 
   const bounce = useAnimationControls();
-  const mascot = MASCOTS[index % MASCOTS.length] ?? MASCOTS[0]!;
+  const mascot = MASCOTS[(start + clicks) % MASCOTS.length] ?? MASCOTS[0]!;
 
   /* Click → next mascot + a quick jump (skipped with reduced motion) */
   const play = () => {
-    setIndex((i) => (i + 1) % MASCOTS.length);
+    setClicks((c) => c + 1);
     if (!reduced) {
       bounce.start({
         y: [0, -15.3, 0],

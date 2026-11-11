@@ -146,5 +146,6 @@ export const skillGroups: readonly SkillGroup[] = [
 
 /* One list for the CV page (full level) and the home page (code + short level) */
 export const languages = [
+  { code: "AR", name: "Arabic", level: "Native", short: "Native" },
   { code: "EN", name: "English", level: "Professional Working Proficiency", short: "Professional" },
 ] as const;

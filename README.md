@@ -197,12 +197,18 @@ with the message filled in (and offers Gmail or "copy message" as fallbacks).
 
 The Neo-Samurai design language and component structure are based on
 [Sensei-Dev](https://github.com/MostafaSensei106/Sensei-Dev) by Mostafa
-Mahmoud, licensed under GPL-3.0. Portfolio content is original.
+Mahmoud, licensed under GPL-3.0. Portfolio content is original and is not
+covered by the GPL (see the license section below).
 
 ## `10 // LICENSE`
 
-This repository is licensed under [GPL-3.0](./LICENSE). Fonts are provided under
-the SIL Open Font License 1.1.
+Two licenses — details in [CONTENT-LICENSE.md](./CONTENT-LICENSE.md):
+
+- **Code** (`app/`, `components/`, `lib/`, `scripts/`, configs): [GPL-3.0](./LICENSE).
+- **Content** (CV, reports, screenshots, photos, certificates, and the written
+  text in `data/`): © Ahmed Emad Nasr, all rights reserved.
+
+Testimonials belong to their authors; fonts are under the SIL Open Font License 1.1.
 
 <div align="center">
 

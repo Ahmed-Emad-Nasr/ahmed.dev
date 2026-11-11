@@ -4,7 +4,7 @@ import type { ContributionStats } from "@/lib/api/contributions";
 import FadeIn from "@/components/ui/FadeIn";
 
 /* ═══ components/home/ContributionGraph.tsx — the year of GitHub squares ═══
-   Draws what lib/api/contributions.ts fetched. Each day is a small square;
+   Draws what lib/api/contributions.ts read at build time. Each day is a small square;
    its colour depends on the day's level (0 = none … 4 = most), picked from
    LEVEL_BG below — change those classes to recolour the graph. */
 const LEVEL_BG = [
@@ -16,32 +16,19 @@ const LEVEL_BG = [
 ];
 
 /**
- * Year contribution graph (presentational  data comes from
- * useContributionStats so the section header can share the total).
- * Loading skeleton -> graph | empty notice | error notice with profile link.
- * Never blocks the page: failures degrade to a single line.
+ * Year contribution graph (presentational — the data is read at build time
+ * and shared with the section header's total).
+ * Graph | empty notice | error notice with a profile link.
  */
 export function ContributionGraph({ stats }: { stats: ContributionStats }) {
-  const { status, days, total } = stats;
+  const { status, days, total, asOf } = stats;
   const username = PROFILE.contact.github;
-  if (status === "loading") {
-    return (
-      <div role="status" aria-label="Loading contribution graph" className="border border-foreground/10 bg-surface/60 p-6 overflow-hidden">
-        <div className="mb-4 h-4 w-48 animate-pulse bg-foreground/10" />
-        <div className="grid grid-flow-col grid-rows-7 gap-1">
-          {Array.from({ length: 130 }).map((_, i) => (
-            <div key={i} className="h-3 w-3 animate-pulse bg-foreground/[0.06]" />
-          ))}
-        </div>
-      </div>
-    );
-  }
 
   if (status === "error" || status === "empty") {
     return (
       <div className="flex items-center border border-foreground/10 bg-surface/60 px-6 py-5 font-mono text-xs text-foreground/60">
         <p>
-          {status === "error" ? "Contribution graph is unreachable right now — " : "No recent activity to draw — "}
+          {status === "error" ? "Contribution graph unavailable — " : "No recent activity to draw — "}
           <a
             href={`https://github.com/${username}`}
             target="_blank"
@@ -66,6 +53,9 @@ export function ContributionGraph({ stats }: { stats: ContributionStats }) {
         </span>
         <span className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">
           contributions in the last year
+        </span>
+        <span className="ml-auto font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
+          as of <time dateTime={asOf}>{asOf}</time>
         </span>
       </div>
       <div

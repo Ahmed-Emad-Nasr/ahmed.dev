@@ -11,7 +11,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
-import { prefersReducedMotion } from "@/lib/fx";
+import { useReducedMotion } from "@/lib/use-client";
 
 /* Timing in milliseconds — change these to speed up / slow down the typing */
 const TYPE = 56; // per letter typed
@@ -21,16 +21,12 @@ const GAP = 240; // pause between erasing one role and typing the next
 
 export function RoleTicker({ roles, className = "" }: { roles: string[]; className?: string }) {
   const [text, setText] = useState(roles[0] ?? "");
-  const [reduced, setReduced] = useState(false);
+  const reduced = useReducedMotion();
   const ref = useRef<HTMLParagraphElement>(null);
   const longest = Math.max(...roles.map((role) => role.length), 0);
 
   useEffect(() => {
-    if (roles.length < 2) return;
-    if (prefersReducedMotion()) {
-      setReduced(true);
-      return;
-    }
+    if (roles.length < 2 || reduced) return;
 
     let visible = true;
     const observer = new IntersectionObserver(([entry]) => {
@@ -79,7 +75,7 @@ export function RoleTicker({ roles, className = "" }: { roles: string[]; classNa
       clearTimeout(timer);
       observer.disconnect();
     };
-  }, [roles]);
+  }, [roles, reduced]);
 
   return (
     <p ref={ref} className={`font-mono font-bold uppercase tracking-[0.18em] ${className}`}>

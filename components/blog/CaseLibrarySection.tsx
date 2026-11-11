@@ -92,7 +92,14 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
   const [activeKind, setActiveKind] = useState<CaseKind | null>(null);
   const [sort, setSort] = useState<"recommended" | "newest">("recommended");
   const [view, setView] = useState<"cards" | "list">("cards");
-  const [visible, setVisible] = useState(PAGE);
+  /* A #case-… deep link past the first page opens the pages up to it from
+     the start (this section only mounts in the browser — LazySection) */
+  const [visible, setVisible] = useState(() => {
+    if (typeof window === "undefined") return PAGE;
+    const hash = window.location.hash;
+    const at = hash.startsWith("#case-") ? sortedCases.findIndex((item) => `#case-${item.id}` === hash) : -1;
+    return at >= PAGE ? Math.ceil((at + 1) / PAGE) * PAGE : PAGE;
+  });
 
   const deferredQuery = useDeferredValue(query);
 
@@ -219,10 +226,6 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
 
     let cancelled = false;
     let attempts = 0;
-
-    /* The target may be past the first page — open the pages up to it */
-    const at = sortedCases.findIndex((item) => `#case-${item.id}` === hash);
-    if (at >= PAGE) setVisible(Math.ceil((at + 1) / PAGE) * PAGE);
 
     const tryScroll = () => {
       if (cancelled) return;

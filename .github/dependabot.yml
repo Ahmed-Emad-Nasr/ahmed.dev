@@ -9,6 +9,11 @@ updates:
       interval: "weekly"
       day: "monday"
     open-pull-requests-limit: 5
+    ignore:
+      # ESLint stays on 9 until eslint-plugin-react (inside eslint-config-next)
+      # supports ESLint 10 — its peer range ends at ^9.7 today.
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
     groups:
       # One pull request for the routine minor / patch bumps instead of ten
       minor-and-patch:

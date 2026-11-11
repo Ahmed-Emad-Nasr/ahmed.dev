@@ -674,7 +674,7 @@ export const caseEvidenceLibrary: CaseEvidence[] = [
     title: "Insider Threat: Payroll PII Opened from a USB Drive",
     description: "Offline triage of a payroll-leak case with Eric Zimmerman's Registry Explorer, ShellBags Explorer and JumpList Explorer. USBSTOR shows a USB device (serial 5639311262174133917) first connected at 03:36:22; ShellBags show the user browsing E:\\NewProject_Hires_Data; JumpLists show Employee_PII.csv opened in Notepad at 03:38:07 — under two minutes end to end. The report covers impact (GDPR, CCPA), root cause and controls: DLP, USB device control, EDR and UEBA.",
     platform: "DFIR lab",
-    type: "PDF & DOCX Report",
+    type: "DOCX & PDF Report",
     category: "Digital Forensics",
     difficulty: "Hard",
     href: "Assets/Cases/Usb Forencics/AhmedEmad_UsbForencics.pdf",

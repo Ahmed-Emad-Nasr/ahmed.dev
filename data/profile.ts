@@ -19,7 +19,7 @@
  */
 
 import type { Profile } from "@/data/types";
-import { CV_PDF_HREF, GITHUB_USERNAME, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
+import { CV_PDF_HREF, GITHUB_USERNAME, HOME_LOCATION, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
 
 export const PROFILE: Profile = {
   name: "Ahmed Emad Nasr",
@@ -42,7 +42,7 @@ export const PROFILE: Profile = {
     phone: "+201013972690",
     github: GITHUB_USERNAME,
     linkedin: "https://www.linkedin.com/in/ahmed-emad-nasr/",
-    location: "Cairo, Egypt",
+    location: HOME_LOCATION.label,
     whatsapp: "201013972690",
     youtube: YOUTUBE_CHANNEL_URL,
     instagram: "https://www.instagram.com/ahmed_emad_nasr/",

@@ -35,7 +35,7 @@ export function GET(): Response {
     <title>${escapeXml(`${PROFILE.name} — Case Library`)}</title>
     <link>${absoluteUrl("/blog")}</link>
     <atom:link href="${feedUrl}" rel="self" type="application/rss+xml" />
-    <description>Incident investigations, DFIR and malware analysis reports, labs and detection notes.</description>
+    <description>Hands-on investigations (labs and simulations), DFIR and malware analysis reports, labs and detection notes.</description>
     <language>en</language>
     <lastBuildDate>${updated}</lastBuildDate>
 ${items

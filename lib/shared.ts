@@ -133,6 +133,19 @@ export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AhmedEmad-0x3omda";
 
 /* The GitHub account: profile links, the contribution graph and the repos
    lib/api/github-repos.ts reads at build time */
+/* Where he lives — the ONE place the personal location is written. The
+   profile, the CV, the terminal, the JSON-LD and the geo meta tags all read
+   it. (Each job's own city stays on its Experience card, data/portfolio-data.ts.) */
+export const HOME_LOCATION = {
+  label: "Benha, Egypt",
+  city: "Benha",
+  region: "Qalyubia",
+  regionCode: "EG-KB",
+  country: "EG",
+  lat: 30.4667,
+  lng: 31.1833,
+} as const;
+
 export const GITHUB_USERNAME = "Ahmed-Emad-Nasr";
 
 /* This site's own repository (the security policy link in security.txt) */
@@ -157,7 +170,7 @@ export const CASE_KINDS: readonly { id: CaseKind; label: string; short: string }
   { id: "note", label: "Learning notes", short: "Note" },
 ];
 
-const REPORT_TYPES = new Set(["PDF Report", "DOCX & PDF Report", "PDF & DOCX Report", "Report"]);
+const REPORT_TYPES = new Set(["PDF Report", "DOCX & PDF Report", "Report"]);
 const PROJECT_TYPES = new Set(["Project Report", "Team Playbook", "Detection Rules", "Intel Brief"]);
 
 /* TryHackMe learning rooms: concept walkthroughs rather than hands-on investigations */

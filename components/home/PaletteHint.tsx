@@ -20,7 +20,9 @@ const KEY = "palette-hint-seen";
 
 export default function PaletteHint() {
   const [open, setOpen] = useState(false);
-  const [mac, setMac] = useState(false);
+  /* Client-only component (ssr: false in home/dynamic.tsx), so the
+     platform can be read straight away */
+  const [mac] = useState(() => /Mac|iPhone|iPad/.test(navigator.platform));
 
   useEffect(() => {
     /* Keyboard users only: on touch screens there is nothing to press */
@@ -30,7 +32,6 @@ export default function PaletteHint() {
     } catch {
       return; // storage blocked: better to never show than to show every time
     }
-    setMac(/Mac|iPhone|iPad/.test(navigator.platform));
     /* Shown once the reader is past the hero (IntersectionObserver, not a
        scroll listener) and has spent a few seconds on the page */
     let timeUp = false;

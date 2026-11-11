@@ -7,7 +7,7 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 export default defineConfig([
   /* .next and out are build output — linting them slows lint down and reports
      false errors from generated code. */
-  { ignores: [".venv/**", ".next/**", "out/**", "node_modules/**", "Sensei-Dev/**"] },
+  { ignores: [".venv/**", ".next/**", "out/**", "node_modules/**"] },
   ...nextVitals,
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
@@ -19,9 +19,12 @@ export default defineConfig([
       "@next/next/no-img-element": "warn",
       "react/no-unescaped-entities": "warn",
       "react-hooks/exhaustive-deps": "warn",
-      "react-hooks/preserve-manual-memoization": "off",
-      "react-hooks/immutability": "off",
-      "react-hooks/set-state-in-effect": "off"
+      /* React Compiler checks, on: browser-only values are read with
+         useSyncExternalStore (lib/use-client.ts) or a lazy useState, never
+         "mount, then setState" in an effect */
+      "react-hooks/preserve-manual-memoization": "error",
+      "react-hooks/immutability": "error",
+      "react-hooks/set-state-in-effect": "error"
     }
   }
 ]);

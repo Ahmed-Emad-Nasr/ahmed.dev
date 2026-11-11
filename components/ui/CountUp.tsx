@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useInView } from "framer-motion";
-import { prefersReducedMotion } from "@/lib/fx";
+import { useReducedMotion } from "@/lib/use-client";
 
 /* ═══ components/ui/CountUp.tsx ═══
    Usage: <CountUp target={300} suffix="+" />  → counts 0 → 300+ once, when
@@ -16,13 +16,10 @@ function useCountUp(
 ): number {
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const [value, setValue] = useState(0);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
-    if (!inView) return;
-    if (prefersReducedMotion()) {
-      setValue(target);
-      return;
-    }
+    if (!inView || reduced) return;
     let raf = 0;
     const start = performance.now();
     const tick = (now: number) => {
@@ -32,9 +29,10 @@ function useCountUp(
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [inView, target, duration]);
+  }, [inView, reduced, target, duration]);
 
-  return value;
+  /* Reduced motion: the final number straight away, no count */
+  return inView && reduced ? target : value;
 }
 
 export function CountUp({

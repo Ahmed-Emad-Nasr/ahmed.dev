@@ -17,6 +17,7 @@
  *   Projects     #work     components/home/WorkShowcase     data/projects.ts (+ GitHub API)
  *   Experience   #experience components/home/ExperienceTimeline  data/experience.ts
  *   Teaching     #teaching components/home/TeachingSection  data/teaching.ts
+ *   Testimonials #testimonials components/home/Testimonials  data/testimonials.ts
  *   Platforms    #platforms components/home/PlatformsSection data/platforms.ts (+ TryHackMe API)
  *   Contact      #contact  components/layout/ContactFooter
  *
@@ -53,6 +54,7 @@ import {
   WorkShowcase,
   ExperienceTimeline,
   TeachingSection,
+  Testimonials,
   PlatformsSection,
   ContactFooter,
   MobileActionBar,
@@ -256,6 +258,13 @@ export default async function Home() {
       <LazySection id="teaching" size="lazy-h-teaching">
         <TeachingSection />
       </LazySection>
+
+      {/* What others wrote: LinkedIn recommendations + student feedback (data/testimonials.ts) */}
+      <div className="tone-blue">
+        <LazySection id="testimonials" size="lazy-h-testimonials">
+          <Testimonials />
+        </LazySection>
+      </div>
 
       {/* Training platforms: TryHackMe as the big card (live stats), others from data/platforms.ts */}
       <div className="tone-blue">

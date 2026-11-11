@@ -25,6 +25,7 @@ import { AnimatePresence, m as motion } from "framer-motion";
 import { useTheme } from "next-themes";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  MessageSquareQuote,
   Home,
   Briefcase,
   Code2,
@@ -90,7 +91,7 @@ export default function CommandPalette() {
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
   const [copied, setCopied] = useState(false);
-  const [fxDuration, setFxDurationState] = useState(getFxDuration());
+  const [fxDuration, setFxDurationState] = useState(getFxDuration);
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   useFocusTrap([dialogRef], open);
@@ -99,31 +100,39 @@ export default function CommandPalette() {
   const router = useRouter();
   const pathname = usePathname() || "/";
 
+  /* Opening always starts fresh: empty search, first item, current speed */
+  const openRef = useRef(open);
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
+  const show = useCallback(() => {
+    setQuery("");
+    setIndex(0);
+    setCopied(false);
+    setFxDurationState(getFxDuration());
+    setOpen(true);
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen((v) => !v);
+        if (openRef.current) setOpen(false);
+        else show();
       }
       if (e.key === "Escape") setOpen(false);
     };
-    const onExternal = () => setOpen(true);
+    const onExternal = () => show();
     window.addEventListener("keydown", onKey);
     window.addEventListener("sensei:palette", onExternal);
     return () => {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("sensei:palette", onExternal);
     };
-  }, []);
+  }, [show]);
 
   useEffect(() => {
-    if (open) {
-      setQuery("");
-      setIndex(0);
-      setCopied(false);
-      setFxDurationState(getFxDuration());
-      requestAnimationFrame(() => inputRef.current?.focus());
-    }
+    if (open) requestAnimationFrame(() => inputRef.current?.focus());
   }, [open]);
 
   /* The page behind stands still while the palette is open */
@@ -175,9 +184,10 @@ export default function CommandPalette() {
       { id: "lab", group: "Go to", label: "Home lab architecture", icon: Code2, run: () => go("#lab") },
       { id: "experience", group: "Go to", label: "Experience", icon: Briefcase, run: () => go("#experience") },
       { id: "teaching", group: "Go to", label: "Teaching", icon: GraduationCap, run: () => go("#teaching") },
+      { id: "testimonials", group: "Go to", label: "Testimonials & recommendations", icon: MessageSquareQuote, run: () => go("#testimonials") },
       { id: "platforms", group: "Go to", label: "Practice platforms (THM, HTB …)", icon: Trophy, run: () => go("#platforms") },
       { id: "gallery", group: "Pages", label: "Proof gallery", icon: Palette, run: () => visit("/gallery") },
-      { id: "all-certs", group: "Go to", label: `All certificates (${ALL_GALLERY_CERTIFICATES.length})`, icon: Award, run: () => go("#all-certificates") },
+      { id: "all-certs", group: "Go to", label: `Certifications, courses & records (${ALL_GALLERY_CERTIFICATES.length})`, icon: Award, run: () => go("#all-certificates") },
       { id: "attack", group: "Go to", label: "MITRE ATT&CK coverage", icon: Crosshair, run: () => go("#attack") },
       { id: "detections", group: "Go to", label: "Detection library (Wazuh rules)", icon: Crosshair, run: () => go("#detections") },
       { id: "triage", group: "Go to", label: "Triage challenge", icon: Crosshair, run: () => go("#triage") },
@@ -283,8 +293,6 @@ export default function CommandPalette() {
     );
   }, [commands, caseCommands, certCommands, query]);
 
-  useEffect(() => setIndex(0), [query]);
-
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -326,7 +334,10 @@ export default function CommandPalette() {
               <input
                 ref={inputRef}
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setIndex(0);
+                }}
                 onKeyDown={onKeyDown}
                 placeholder="Search the site — a page, a case, a certificate…"
                 className="w-full bg-transparent py-4 text-sm text-foreground outline-none placeholder:text-foreground/60"
@@ -390,4 +401,4 @@ export default function CommandPalette() {
       )}
     </AnimatePresence>
   );
-}
+}

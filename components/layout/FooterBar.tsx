@@ -19,7 +19,7 @@
 
 import PageLink from "@/components/ui/PageLink";
 import { PROFILE } from "@/data/profile";
-import { PGP_KEY_FILE, normalizePublicHref } from "@/lib/shared";
+import { PGP_KEY_FILE, REPO_URL, normalizePublicHref } from "@/lib/shared";
 
 /* The last line of every page: the mark, the copyright, the legal pages and
    the design credit. On the home page it closes the contact section; the
@@ -48,6 +48,16 @@ export default function FooterBar({ className = "" }: { className?: string }) {
         {/* Files, not pages: plain links (how to report a security issue) */}
         <a href={normalizePublicHref(".well-known/security.txt")} className="hover:text-primary-ink transition-colors">
           Security
+        </a>
+        <span className="text-primary-ink" aria-hidden="true">•</span>
+        {/* Code GPL-3.0, content all rights reserved (CONTENT-LICENSE.md) */}
+        <a
+          href={`${REPO_URL}/blob/master/CONTENT-LICENSE.md`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:text-primary-ink transition-colors"
+        >
+          License
         </a>
         {PROFILE.contact.pgpFingerprint && (
           <>

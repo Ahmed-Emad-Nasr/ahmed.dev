@@ -32,10 +32,11 @@
  */
 
 import Image from "next/image";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import {
   ALL_GALLERY_CERTIFICATES,
+  galleryGroupCount,
   type GalleryCertGroup,
 } from "@/data/certifications";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
@@ -59,10 +60,10 @@ const PAGE = 12;
 const START_HERE_CARDS = [
   {
     n: "01",
-    meta: "01 • MAIN CERTIFICATES",
+    meta: "01 • CERTIFICATIONS",
     title: "Information Security Officer",
-    why: "Validated by top certifications including INE eJPT v2, Red Hat RH124, Cisco CCNA, CCEP, Huawei HCIA and security fundamentals.",
-    action: "core" as const,
+    why: "Professional certifications passed by exam: INE eJPT v2, Cisco CCNA, CCEP and Huawei HCIA.",
+    action: "certifications" as const,
     targetId: "all-certificates",
   },
   {
@@ -70,7 +71,7 @@ const START_HERE_CARDS = [
     meta: "02 • HANDS-ON TRAINING",
     title: "Hands-On Training & Labs",
     why: "Over 79 documented cases, CTFs, TryHackMe SOC Level 1 & 2, DEPI Incident Response & Forensics tracks, and ITI Pentesting Bootcamp.",
-    action: "labs" as const,
+    action: "courses" as const,
     targetId: "all-certificates",
   },
   {
@@ -85,9 +86,10 @@ const START_HERE_CARDS = [
 
 /* The certificate filter buttons (id must be a GalleryCertGroup or "all") */
 const CERT_FILTERS: { id: GalleryCertGroup | "all"; label: string }[] = [
-  { id: "all", label: "All Certificates" },
-  { id: "core", label: "Core & Tracks" },
-  { id: "labs", label: "Hands-On Labs & Prep" },
+  { id: "all", label: "Everything" },
+  { id: "certifications", label: "Certifications" },
+  { id: "education", label: "Degree & Programs" },
+  { id: "courses", label: "Courses & Training" },
   { id: "exams", label: "Exam Scores" },
   { id: "badges", label: "Verified Badges" },
 ];
@@ -105,14 +107,17 @@ export default function ArtGallery() {
      again when the palette links to another scan while the gallery is open.
      (Never prerendered: LazySection mounts the gallery in the browser.) */
   const certParam = useSearchParams().get("cert");
-  useEffect(() => {
-    if (!certParam) return;
+  /* React's "adjust state when an input changes" pattern: compared while
+     rendering, so the lightbox opens in the same pass (no effect + setState) */
+  const [seenCertParam, setSeenCertParam] = useState<string | null>(null);
+  if (certParam !== seenCertParam) {
+    setSeenCertParam(certParam);
     const idx = Number(certParam) - 1;
-    if (Number.isInteger(idx) && idx >= 0 && idx < PORTFOLIO_DATA.artGallery.length) {
+    if (certParam && Number.isInteger(idx) && idx >= 0 && idx < PORTFOLIO_DATA.artGallery.length) {
       setIndex(idx);
       setOpen(true);
     }
-  }, [certParam]);
+  }
   const [certFilter, setCertFilter] = useState<GalleryCertGroup | "all">("all");
   const [archiveFilter, setArchiveFilter] = useState<
     "all" | "certs" | "photos"
@@ -156,7 +161,7 @@ export default function ArtGallery() {
   };
 
   const handleStartHereClick = (
-    action: "core" | "labs" | "photos",
+    action: "certifications" | "courses" | "photos",
     targetId: string,
   ) => {
     if (action === "photos") {
@@ -206,14 +211,14 @@ export default function ArtGallery() {
               <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-accent" />
               <div className="flex items-center gap-3">
                 <span className="font-mono text-accent text-2xl font-black tabular-nums">
-                  {String(ALL_GALLERY_CERTIFICATES.length).padStart(2, "0")}
+                  {String(galleryGroupCount("certifications")).padStart(2, "0")}
                 </span>
                 <div className="flex flex-col">
                   <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    Certificates
+                    Certifications
                   </span>
                   <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    &amp; Badges
+                    + {ALL_GALLERY_CERTIFICATES.length - galleryGroupCount("certifications")} courses &amp; records
                   </span>
                 </div>
               </div>
@@ -298,20 +303,21 @@ export default function ArtGallery() {
           aria-labelledby="all-certificates-title"
         >
           <Eyebrow japanese="認定">
-            The full list // every certificate
+            The full list // certifications, courses &amp; records
           </Eyebrow>
           <h2
             id="all-certificates-title"
             className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"
           >
-            All <span className="text-primary italic">Certificates.</span>
+            All <span className="text-primary italic">Credentials.</span>
           </h2>
           <p className="mb-8 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Every qualification I hold ({ALL_GALLERY_CERTIFICATES.length} in
-            total): my degree, professional certificates, government
-            scholarship tracks, bootcamps and exam results. Each card says who
-            issued it and what it covers — click one to see the original
-            document.
+            Everything on paper ({ALL_GALLERY_CERTIFICATES.length} documents),
+            sorted by what it really is: {galleryGroupCount("certifications")}{" "}
+            professional certifications passed by exam, then my degree and
+            programmes, courses and training, exam score reports and the badges
+            that verify them. Each card says who issued it and what it covers —
+            click one to see the original document.
           </p>
 
           <div

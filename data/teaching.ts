@@ -6,12 +6,14 @@
    "where it was taught" cards. Add an item to any array and it appears. */
 
 import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
+import { TESTIMONIALS } from "@/data/testimonials";
 
 type TeachingStat = { value: string; label: string; japanese: string };
 
 export const TEACHING_STATS: TeachingStat[] = [
-  { value: "300+", label: "Students at AMIT & NTI", japanese: "受講生" },
-  { value: "10/10", label: "Avg. student feedback", japanese: "評価" },
+  { value: "300+", label: "Students at AMIT & NTI (combined)", japanese: "受講生" },
+  /* Counted from data/testimonials.ts — each one is quoted on the home page */
+  { value: String(TESTIMONIALS.length), label: "Written testimonials", japanese: "推薦" },
   { value: "1st", label: "Of 250 instructors · GDG", japanese: "首位" },
   { value: "60K+", label: "YouTube views", japanese: "視聴" },
 ];
@@ -52,7 +54,7 @@ export const TEACHING_ROLES: TeachingRole[] = [
     period: "Now",
     link: "https://amit-learning.com/",
     topics: "Authoring and teaching the 160-hour cybersecurity track: CCNA Networking, Red Hat Linux (RH124/RH134), CompTIA Security+, SANS SEC450/SEC504, Splunk/QRadar/Wazuh SIEM labs, Web VAPT, IAM and GRC.",
-    results: ["300+ students", "10/10 avg. feedback", "100% Red Hat pass rate"],
+    results: ["160-hour track", "Red Hat RH124/RH134 cohorts", "Student testimonials"],
   },
   {
     org: "National Telecommunication Institute (NTI)",

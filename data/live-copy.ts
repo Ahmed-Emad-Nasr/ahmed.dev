@@ -13,7 +13,7 @@
 
 import type { Stat } from "@/data/types";
 import { investigationReportCount } from "@/data/cases";
-import { ALL_GALLERY_CERTIFICATES } from "@/data/certifications";
+import { PROFESSIONAL_CERTIFICATION_COUNT } from "@/data/certifications";
 import { coveredTechniqueCount } from "@/data/attack";
 import { CV_SUMMARY } from "@/data/cv";
 import { normalizePublicHref } from "@/lib/shared";
@@ -26,10 +26,10 @@ type LiveCopy = {
 
 export const LIVE_COPY: LiveCopy = {
   heroDescription: CV_SUMMARY,
-  heroEvidence: `${investigationReportCount} incident investigations · ${coveredTechniqueCount()} attack techniques covered`,
+  heroEvidence: `${investigationReportCount} hands-on investigations (labs & simulations) · ${coveredTechniqueCount()} attack techniques covered`,
   stats: [
-    { target: investigationReportCount, suffix: "", label: "Incident investigations", japanese: "記録", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
-    { target: ALL_GALLERY_CERTIFICATES.length, suffix: "", label: "Certificates earned", japanese: "認定", href: `${normalizePublicHref("/gallery")}#all-certificates` },
+    { target: investigationReportCount, suffix: "", label: "Hands-on investigations", japanese: "記録", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
+    { target: PROFESSIONAL_CERTIFICATION_COUNT, suffix: "", label: "Professional certifications", japanese: "認定", href: `${normalizePublicHref("/gallery")}#all-certificates` },
     { target: 300, suffix: "+", label: "Students taught", japanese: "指導", href: "#teaching" },
     { target: 60, suffix: "K+", label: "YouTube views", japanese: "動画", href: `${normalizePublicHref("/blog")}#videos` },
   ],

@@ -33,6 +33,7 @@ import dynamic from "next/dynamic";
 import LazySection, { preloadable } from "@/lib/perf/lazy";
 import SectionSkeleton from "@/components/ui/SectionSkeleton";
 import type { AttackCoverageData } from "@/lib/library-data";
+import type { ContributionStats } from "@/lib/api/contributions";
 
 /* Pattern 1 — split into its own chunk; the page decides when it mounts */
 export const AreaIntro = dynamic(() => import("@/components/ui/AreaIntro"));
@@ -80,10 +81,11 @@ export function LazyTriage() {
 
 const ContributionsGrid = preloadable(() => import("@/components/home/ContributionsGrid"));
 
-export function LazyContributions() {
+/* stats = the GitHub calendar, read at build time by app/blog/page.tsx */
+export function LazyContributions({ stats }: { stats: ContributionStats }) {
   return (
     <LazySection id="contributions" size="lazy-h-contributions">
-      <ContributionsGrid />
+      <ContributionsGrid stats={stats} />
     </LazySection>
   );
 }

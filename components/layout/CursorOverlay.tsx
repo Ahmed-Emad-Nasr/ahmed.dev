@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { m as motion, useMotionValue, useSpring } from "framer-motion";
+import { useMediaQuery, useReducedMotion } from "@/lib/use-client";
 
 /**
  * Katana cursor  your blade for browsing the dojo.
@@ -18,7 +19,11 @@ import { m as motion, useMotionValue, useSpring } from "framer-motion";
  */
 export default function CursorOverlay() {
   const [isHovering, setIsHovering] = useState(false);
-  const [enabled, setEnabled] = useState(false);
+  /* Fine pointer (mouse) and motion allowed — live, so plugging a mouse in
+     or changing the OS motion setting switches it on or off */
+  const fine = useMediaQuery("(pointer: fine)");
+  const reduced = useReducedMotion();
+  const enabled = fine && !reduced;
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   const pendingPosition = useRef({ x: -100, y: -100 });
@@ -30,12 +35,7 @@ export default function CursorOverlay() {
   const smoothY = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    const fine = window.matchMedia("(pointer: fine)").matches;
-    const reduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (!fine || reduced) return;
-    setEnabled(true);
+    if (!enabled) return;
     document.body.classList.add("custom-cursor-on");
 
     const moveCursor = (e: MouseEvent) => {
@@ -72,7 +72,7 @@ export default function CursorOverlay() {
       window.removeEventListener("mouseover", handleElementHover);
       if (moveFrame.current !== null) cancelAnimationFrame(moveFrame.current);
     };
-  }, [cursorX, cursorY]);
+  }, [enabled, cursorX, cursorY]);
 
   if (!enabled) return null;
 

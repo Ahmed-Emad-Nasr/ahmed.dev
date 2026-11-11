@@ -15,12 +15,12 @@
 import { investigationReportCount, publishedCaseCount } from "@/data/cases";
 import { coveredTechniqueCount } from "@/data/attack";
 import { projectBullets, staticProjectFallback } from "@/data/projects";
-import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
+import { HOME_LOCATION, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 
 export const CV_CONTACT = {
   name: "Ahmed Emad Nasr",
   headline: "Information Security Officer · GRC · SOC · DFIR · IAM",
-  location: "Cairo, Egypt",
+  location: HOME_LOCATION.label,
   email: "ahmed.em.nasr@gmail.com",
   phone: "+20 101 397 2690",
   linkedin: { label: "linkedin.com/in/ahmed-emad-nasr", href: "https://www.linkedin.com/in/ahmed-emad-nasr/" },
@@ -112,6 +112,6 @@ export const CV_SKILLS: readonly { label: string; items: readonly string[] }[] =
 /** The opening line of the CV (its numbers are computed from the data) */
 export const CV_SUMMARY =
   "Information security officer working across GRC and compliance, security operations, DFIR, IAM and data security. " +
-  `The record so far: ${investigationReportCount} investigation reports across ${publishedCaseCount} documented cases, ` +
+  `The record so far: ${investigationReportCount} hands-on investigation reports (labs & simulations) across ${publishedCaseCount} documented cases, ` +
   `${coveredTechniqueCount()} MITRE ATT&CK techniques mapped, a detection rule merged into SOC Fortress, ` +
-  "GRC gap assessments at Banque Misr, and 300+ students taught.";
+  "GRC gap assessments at Banque Misr, and 300+ students taught at AMIT & NTI.";

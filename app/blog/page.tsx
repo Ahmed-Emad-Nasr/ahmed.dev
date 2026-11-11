@@ -17,7 +17,7 @@
  *   Triage challenge          components/blog/TriageChallenge        inside the component
  *   Home lab  #lab            components/home/HomeLab                inside the component
  *   Process   #process        components/home/ProcessSection         inside the component
- *   Contributions             components/home/ContributionsGrid      GitHub contributions API (live)
+ *   Contributions             components/home/ContributionsGrid      GitHub calendar, read at build time
  *
  * A single case page (/blog/<id>) is app/blog/[slug]/page.tsx.
  *
@@ -50,6 +50,8 @@ import { attackCoverage, libraryCounts, libraryData, libraryStructuredData } fro
 import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
 import { CHANNEL_ID, PERSON_REF, SITE_URL, jsonLd, youtubeEmbed, youtubeThumb, youtubeWatch } from "@/lib/seo";
 import { absoluteUrl, OG_IMAGE } from "@/lib/site";
+import { getContributionStats } from "@/lib/api/contributions";
+import { PROFILE } from "@/data/profile";
 
 /* Used for the meta description, the share cards and the text under the title */
 const DESCRIPTION =
@@ -143,7 +145,10 @@ function structuredData() {
   });
 }
 
-export default function BlogPage() {
+/* `async`: runs at BUILD time (static export) and reads the GitHub
+   contribution calendar once — visitors never call that API */
+export default async function BlogPage() {
+  const contributions = await getContributionStats(PROFILE.contact.github);
   return (
     /* PageShell (components/layout/PageShell.tsx) = navbar + <main> + footer bar.
        showLoader → also play the intro boot screen on this page. */
@@ -201,7 +206,7 @@ export default function BlogPage() {
         <ProcessSection />
       </LazySection>
       <div className="tone-blue">
-        <LazyContributions />
+        <LazyContributions stats={contributions} />
       </div>
     </PageShell>
   );

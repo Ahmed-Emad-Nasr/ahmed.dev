@@ -28,8 +28,8 @@
  *   • Bar look → the className of <motion.nav> (w-[85%] / w-[95%], blur, border).
  */
 
-import { m as motion, AnimatePresence, useMotionValueEvent, useScroll } from "framer-motion";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { m as motion, AnimatePresence } from "framer-motion";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { lockScroll } from "@/lib/scroll";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import PageLink from "@/components/ui/PageLink";
@@ -64,6 +64,7 @@ const navItems = [
    while #teaching is on screen, "Experience" stays highlighted. */
 const AREA_OF: Record<string, string> = {
   teaching: "#experience",
+  testimonials: "#experience",
   platforms: "#platforms",
 };
 
@@ -72,6 +73,12 @@ const AREA_OF: Record<string, string> = {
    there, instead of vanishing and bouncing back in on /blog, /gallery and
    every case page. */
 let navEntered = false;
+
+/* Scroll listener for the narrow-bar check (passive: never blocks scrolling) */
+const subscribeScroll = (onChange: () => void) => {
+  window.addEventListener("scroll", onChange, { passive: true });
+  return () => window.removeEventListener("scroll", onChange);
+};
 
 /* One link: a plain <a href="#x"> on the home page, otherwise a Next link
    to another page (or to /#x from another page). */
@@ -107,40 +114,29 @@ function NavLink({
 }
 
 export default function SiteNav() {
-  const { scrollY } = useScroll();
   const pathname = usePathname() || "/";
   const onHome = pathname === "/";
-  const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false); // phone menu open?
-  const [active, setActive] = useState("#home"); // which link is highlighted
-  const [scrolled, setScrolled] = useState(false); // past 100px → narrower bar
-
-  /* Runs on every scroll; only updates state when crossing the 100px line */
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    const next = latest > 100;
-    setScrolled((current) => (current === next ? current : next));
-  });
+  const [homeActive, setHomeActive] = useState("#home"); // which home section is in view
+  /* Past 100px → narrower bar. Read straight from the scroll position
+     (useSyncExternalStore): right on arrival mid-page (back button, reload),
+     and it re-renders only when the 100px line is crossed. */
+  const scrolled = useSyncExternalStore(subscribeScroll, () => window.scrollY > 100, () => false);
+  /* Blog and gallery pages each light their own top-level destination */
+  const active = onHome ? homeActive : pathname.startsWith("/blog") ? "/blog" : pathname.startsWith("/gallery") ? "/gallery" : "";
 
   useEffect(() => {
-    setMounted(true);
     navEntered = true;
-    /* Arriving mid-page (back button, reload): start at the right width
-       instead of full width until the next scroll */
-    setScrolled(window.scrollY > 100);
   }, []);
 
   /* Which link to highlight */
   useEffect(() => {
-    if (!onHome) {
-      /* Blog and gallery pages each light their own top-level destination. */
-      setActive(pathname.startsWith("/blog") ? "/blog" : pathname.startsWith("/gallery") ? "/gallery" : "");
-      return;
-    }
+    if (!onHome) return;
     const ids = [...navItems.filter((i) => i.href.startsWith("#")).map((i) => i.href.slice(1)), ...Object.keys(AREA_OF)];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) setActive(AREA_OF[e.target.id] ?? `#${e.target.id}`);
+          if (e.isIntersecting) setHomeActive(AREA_OF[e.target.id] ?? `#${e.target.id}`);
         });
       },
       { rootMargin: "-40% 0px -55% 0px" }
@@ -163,7 +159,7 @@ export default function SiteNav() {
       observer.disconnect();
       window.removeEventListener(LAZY_MOUNTED, watch);
     };
-  }, [mounted, onHome, pathname]);
+  }, [onHome]);
 
   /* While the menu is open: freeze the page, close on
      Escape, and move focus into the menu; on close, focus returns to the

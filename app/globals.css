@@ -1560,6 +1560,9 @@ html[data-nav-pending]::after {
 .lazy-h-contributions {
   --lazy-h: 1110px;
 }
+.lazy-h-testimonials {
+  --lazy-h: 3600px;
+}
 .lazy-h-triage {
   --lazy-h: 1600px;
 }
@@ -1572,6 +1575,9 @@ html[data-nav-pending]::after {
 @media (min-width: 48rem) {
   .lazy-h-contributions {
     --lazy-h: 870px;
+  }
+  .lazy-h-testimonials {
+    --lazy-h: 2300px;
   }
   .lazy-h-triage {
     --lazy-h: 1400px;
@@ -1586,6 +1592,9 @@ html[data-nav-pending]::after {
 @media (min-width: 64rem) {
   .lazy-h-contributions {
     --lazy-h: 680px;
+  }
+  .lazy-h-testimonials {
+    --lazy-h: 1800px;
   }
   .lazy-h-triage {
     --lazy-h: 1300px;

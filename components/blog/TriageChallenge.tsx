@@ -62,22 +62,23 @@ const QUESTIONS: Q[] = [
 
 export default function TriageChallenge() {
   const [answers, setAnswers] = useState<(number | null)[]>(QUESTIONS.map(() => null));
-  /* Starts fully shown (the server HTML, and any browser without JavaScript,
-     shows the whole alert); after hydration, with motion allowed, it is
-     reset and streamed in line by line when it scrolls into view. */
-  const [streamed, setStreamed] = useState<number>(ALERT.length);
+  /* This section only mounts in the browser (LazySection). With motion
+     allowed it starts empty and streams in line by line when it scrolls into
+     view; with reduced motion (or no IntersectionObserver) it is shown whole. */
+  const [canStream] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      "IntersectionObserver" in window &&
+      !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  const [streamed, setStreamed] = useState<number>(canStream ? 0 : ALERT.length);
   const cardRef = useRef<HTMLDivElement>(null);
 
   /* Stream the alert in, line by line, when it scrolls into view */
   useEffect(() => {
     const el = cardRef.current;
-    if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) {
-      setStreamed(ALERT.length);
-      return;
-    }
+    if (!el || !canStream) return;
     let timer: number | undefined;
-    setStreamed(0);
     const io = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return;
@@ -97,7 +98,7 @@ export default function TriageChallenge() {
       io.disconnect();
       if (timer) window.clearTimeout(timer);
     };
-  }, []);
+  }, [canStream]);
 
   const done = answers.every((a) => a !== null);
   const score = answers.filter((a, i) => a !== null && QUESTIONS[i].options[a].correct).length;

@@ -1,14 +1,15 @@
-"use client";
-
 /*
  * ═══ lib/api/contributions.ts — the GitHub contribution calendar ═══
- * Unlike the other lib/api files this runs IN THE VISITOR'S BROWSER (a hook):
- * it fetches github-contributions-api.jogruber.de (allowed in lib/security.ts)
- * once the section is near the screen. status: loading → ready | empty | error.
- * Used by components/home/ContributionsGrid.tsx.
+ *
+ * Read once at BUILD time (app/blog/page.tsx), like the TryHackMe stats:
+ * visitors' browsers never call a third-party API, and the Content-Security-
+ * Policy (lib/security.ts) does not have to allow one. The monthly rebuild
+ * (.github/workflows/nextjs.yml) keeps it fresh; `asOf` is the build date.
+ *
+ * Source: github-contributions-api.jogruber.de (GitHub's public calendar,
+ * no token needed). Offline or failing → status "error", and the section
+ * shows a link to the GitHub profile instead of the graph.
  */
-
-import { useEffect, useState } from "react";
 
 interface ContributionDay {
   date: string;
@@ -16,55 +17,41 @@ interface ContributionDay {
   level: number;
 }
 
-type ContributionStatus = "loading" | "ready" | "empty" | "error";
-
 export interface ContributionStats {
-  status: ContributionStatus;
+  status: "ready" | "empty" | "error";
   days: ContributionDay[];
   total: number;
+  /** Build date, "YYYY-MM-DD" */
+  asOf: string;
 }
 
-/** Last-year GitHub contributions (public API), fetched once the section is
- *  near the viewport (`enabled`) */
-export function useContributionStats(username: string, enabled = true): ContributionStats {
-  const [status, setStatus] = useState<ContributionStatus>("loading");
-  const [days, setDays] = useState<ContributionDay[]>([]);
-  const [total, setTotal] = useState(0);
+const isDay = (d: unknown): d is ContributionDay =>
+  !!d &&
+  typeof (d as ContributionDay).date === "string" &&
+  Number.isFinite((d as ContributionDay).count) &&
+  Number.isFinite((d as ContributionDay).level);
 
-  useEffect(() => {
-    if (!enabled) return;
-    let cancelled = false;
-    const ctrl = new AbortController();
-    fetch(`https://github-contributions-api.jogruber.de/v4/${username}?y=last`, {
-      signal: ctrl.signal,
-    })
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
-      .then((data) => {
-        if (cancelled) return;
-        const list: ContributionDay[] = Array.isArray(data?.contributions)
-          ? data.contributions
-          : [];
-        if (list.length === 0) {
-          setStatus("empty");
-          return;
-        }
-        setDays(list.slice(-182));
-        setTotal(
-          Number(data?.total?.lastYear ?? list.reduce((s, d) => s + d.count, 0))
-        );
-        setStatus("ready");
-      })
-      .catch(() => {
-        if (!cancelled) setStatus("error");
-      });
-    return () => {
-      cancelled = true;
-      ctrl.abort();
+/** Last-year GitHub contributions — the latest 26 weeks are drawn */
+export async function getContributionStats(username: string): Promise<ContributionStats> {
+  const asOf = new Date().toISOString().slice(0, 10);
+  try {
+    const response = await fetch(
+      `https://github-contributions-api.jogruber.de/v4/${encodeURIComponent(username)}?y=last`,
+      { signal: AbortSignal.timeout(8000) },
+    );
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data: { contributions?: unknown; total?: { lastYear?: unknown } } = await response.json();
+    const list = Array.isArray(data?.contributions) ? data.contributions.filter(isDay) : [];
+    if (list.length === 0) return { status: "empty", days: [], total: 0, asOf };
+    const total = Number(data?.total?.lastYear);
+    return {
+      status: "ready",
+      days: list.slice(-182),
+      total: Number.isFinite(total) ? total : list.reduce((s, d) => s + d.count, 0),
+      asOf,
     };
-  }, [username, enabled]);
-
-  return { status, days, total };
+  } catch (error) {
+    console.warn("GitHub contributions unavailable at build time:", error instanceof Error ? error.message : error);
+    return { status: "error", days: [], total: 0, asOf };
+  }
 }

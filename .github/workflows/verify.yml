@@ -1,12 +1,14 @@
-# Runs the checks on every push and pull request. Every check runs even if an
-# earlier one failed, so one run reports every problem.
+# The site's checks. Every check runs even if an earlier one failed, so one run
+# reports every problem. Also called by the deploy workflow as its gate.
 name: Verify
 
 on:
-  push:
-    branches: [master, main]
+  # Pull requests (and Dependabot's) are checked here. Pushes to master run
+  # these same checks through the deploy workflow (nextjs.yml calls this file
+  # and deploys only if it passes), so they are not repeated here.
   pull_request:
   workflow_dispatch:
+  workflow_call:
 
 jobs:
   verify:
