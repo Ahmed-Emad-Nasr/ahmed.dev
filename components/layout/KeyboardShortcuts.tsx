@@ -21,7 +21,10 @@
  * Other components can open the overlays with
  *   window.dispatchEvent(new Event("sensei:open-terminal"))   or
  *   window.dispatchEvent(new Event("sensei:open-shortcuts")).
- * Shortcuts are ignored while typing in an input/textarea (isTypingTarget).
+ * Shortcuts are ignored while typing in an input/textarea (isTypingTarget),
+ * and ALL of them are single keys, so all of them stop when the visitor
+ * turns single-key shortcuts off (lib/shortcut-prefs.ts, WCAG 2.1.4) —
+ * the palette (Ctrl/⌘+K) and its "Keyboard shortcuts" command still work.
  */
 
 import dynamic from "next/dynamic";
@@ -30,6 +33,7 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { isTypingTarget, scrollToTop } from "@/lib/scroll";
 import { scrollToHash } from "@/lib/perf/jump";
+import { singleKeyShortcutsOn } from "@/lib/shortcut-prefs";
 
 /* preloadable = fetched in idle time and then rendered without a suspended
    frame: React holds back a suspended→ready swap for ~300ms, which is what
@@ -80,6 +84,11 @@ export default function KeyboardShortcuts() {
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       if (isTypingTarget(e.target)) return;
+      if (!singleKeyShortcutsOn()) {
+        pendingG.current = false;
+        secretBuffer.current = "";
+        return;
+      }
       const key = e.key.toLowerCase();
 
       if (key.length === 1) {

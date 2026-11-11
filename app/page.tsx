@@ -72,11 +72,12 @@ import {
   PlatformsSection,
   ContactFooter,
   PaletteHint,
+  SectionRail,
 } from "@/components/home/dynamic";
 import {
   AreaIntro,
-  CaseLibrarySection,
   HomeLab,
+  LazyCaseLibrary,
   LazyAttackCoverage,
   LazyContributions,
   LazyDetectionLibrary,
@@ -86,7 +87,7 @@ import { ArtGallery } from "@/components/gallery/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
 import { getTryHackMeStats } from "@/lib/api/tryhackme";
 import { getContributionStats } from "@/lib/api/contributions";
-import { attackCoverage, libraryCounts, libraryData } from "@/lib/library-data";
+import { attackCoverage, libraryCounts } from "@/lib/library-data";
 import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
 import { PROFILE } from "@/data/profile";
 import { STATIC_PLATFORMS, tryHackMePlatform } from "@/data/platforms";
@@ -310,6 +311,8 @@ export default async function Home() {
       <SiteNav />
       {/* One-time "press Ctrl+K" hint toast (keyboard/mouse devices only) */}
       <PaletteHint />
+      {/* Chapter rail on the right edge (1280px+) and the back-to-top button */}
+      <SectionRail />
 
       {/* ═══ 01 · The pitch: who → roles → proof → experience ═══ */}
       {/* Hero: name, title, CTA buttons, mascot. Text comes from data/live-copy.ts */}
@@ -392,11 +395,9 @@ export default async function Home() {
       />
 
       {/* The case library (filters, cards) and the videos. Its data is
-          computed at build time and passed in: the raw case files
-          (data/cases.ts, case-details.ts, attack.ts) stay on the server */}
-      <LazySection id="cases" size="lazy-h-cases">
-        <CaseLibrarySection data={libraryData} />
-      </LazySection>
+          computed at build time into /library.json (app/library.json) and
+          fetched with the section's code — not part of this page's HTML */}
+      <LazyCaseLibrary />
 
       <SlashDivider label="03 // Detection" japanese="検知" origin="left" />
 

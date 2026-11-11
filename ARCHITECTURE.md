@@ -26,8 +26,10 @@ server. A client component pulls everything it imports into the browser, so:
 - client components never import `data/cases.ts`, `data/case-details.ts` or
   `data/attack.ts` — the page computes what they need (`data/live-copy.ts`,
   `lib/library-data.ts`) at build time and passes it as props
-  (`app/page.tsx` → `CaseLibrarySection data={libraryData}`,
-  `LazyAttackCoverage coverage={attackCoverage}`). Client files may only
+  (`LazyAttackCoverage coverage={attackCoverage}`) or, when it is large,
+  writes it to a static JSON file the section fetches together with its
+  code (`app/library.json/route.ts` → `LazyCaseLibrary` in
+  `components/blog/dynamic.tsx` — ~100 KB the home HTML no longer carries). Client files may only
   `import type` from `lib/library-data.ts`: a value import would bundle every
   case file, IOC and timeline into the browser. The one exception is the
   hidden terminal, a chunk that loads only when someone opens it;
@@ -125,9 +127,12 @@ so the brush text costs one small file. Regenerate it with
 
 ## Offline
 
-`public/sw.js` caches what the visitor has already loaded: pages
-network-first, hashed build files cache-first, images
-stale-while-revalidate, all bounded. Registered after load, production only.
+`public/sw.js` caches what the visitor has already loaded: pages, RSC
+payloads and the site's JSON files network-first, hashed build files
+cache-first, images stale-while-revalidate, all bounded. Registered after
+load, production only, as `sw.js?v=<build id>` (`NEXT_PUBLIC_BUILD_ID` in
+`next.config.mjs` — the commit on GitHub Actions): every deploy installs a
+fresh worker that drops the old page cache by itself; nothing to bump.
 
 ## Security
 

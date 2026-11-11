@@ -74,7 +74,10 @@ def main() -> None:
     cps = sorted(c for c in used_chars() if c in font_cmap)
     opts = subset.Options()
     opts.flavor = "woff2"
-    opts.layout_features = ["*"]
+    # The default features plus the vertical-text ones (writing-mode:
+    # vertical-rl in globals.css). "*" also kept every alternate form the
+    # font carries (aalt, jp78, trad …): ~500 extra glyphs, 180 KB instead of ~100.
+    opts.layout_features = [*subset.Options().layout_features, "vert", "vrt2", "vkrn", "vpal", "palt"]
     opts.name_IDs = ["*"]
     opts.notdef_outline = True
     # Hinting instructions do nothing for a display face at these sizes

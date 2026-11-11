@@ -5,18 +5,26 @@
  *   · Pages and RSC payloads: network-first (navigation preload), cached copy
  *     offline; a URL with a query falls back to the same page without it.
  *   · /_next/static/ (hashed names): cache-first.
+ *   · The site's JSON files (library.json, palette-index.json …):
+ *     network-first, cached copy offline — like pages.
  *   · Images with fixed names: stale-while-revalidate.
  *   · Link prefetches, PDFs and anything else: network only.
  *
- * Every cache is bounded (MAX_*). Bump VERSION when cached pages would be
- * stale in shape — the old caches are dropped on activate. A lazy section
- * whose chunk was never fetched online shows a "could not load" note offline.
+ * VERSION changes BY ITSELF with every deploy: the page registers
+ * sw.js?v=<build id> (components/layout/ServiceWorkerRegister.tsx), a new
+ * URL makes the browser install this worker again, and on activate the old
+ * deploy's page cache is dropped — so nobody is served an old page shape.
+ * The asset and image caches are NOT per deploy: hashed build files never
+ * change under the same name, and images refresh themselves (stale-while-
+ * revalidate), so a deploy does not throw them away. Every cache is bounded
+ * (MAX_*). A lazy section whose chunk was never fetched online shows a
+ * "could not load" note offline.
  */
 
-const VERSION = "v4";
+const VERSION = new URL(self.location.href).searchParams.get("v") || "dev";
 const PAGE_CACHE = `3omda-pages-${VERSION}`;
-const ASSET_CACHE = `3omda-assets-${VERSION}`;
-const IMAGE_CACHE = `3omda-images-${VERSION}`;
+const ASSET_CACHE = "3omda-assets";
+const IMAGE_CACHE = "3omda-images";
 
 /* Case screenshots alone are ~225 MB: keep the most recent N images only. */
 const MAX_IMAGES = 120;
@@ -106,6 +114,12 @@ self.addEventListener("fetch", (event) => {
   if (url.searchParams.has("_rsc") || request.headers.get("RSC") === "1") {
     /* Prefetches are not cached: they would push out pages actually visited */
     if (request.headers.has("Next-Router-Prefetch")) return;
+    event.respondWith(networkFirst(event, fetch(request)));
+    return;
+  }
+
+  // ── The site's JSON files: network-first, cached copy offline ─────────
+  if (url.pathname.endsWith(".json")) {
     event.respondWith(networkFirst(event, fetch(request)));
     return;
   }

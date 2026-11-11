@@ -7,7 +7,8 @@
    components/layout/KeyboardShortcuts.tsx. When you add a shortcut there,
    add a line to GROUPS here: keys = the key caps shown, label = what it does. */
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { setSingleKeyShortcuts, singleKeyShortcutsOn } from "@/lib/shortcut-prefs";
 import { lockScroll } from "@/lib/scroll";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import { m as motion } from "framer-motion";
@@ -46,6 +47,7 @@ const GROUPS: { title: string; items: { keys: string[]; label: string }[] }[] = 
 export default function ShortcutsHelp({ onClose }: { onClose: () => void }) {
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const [singleKeys, setSingleKeys] = useState(singleKeyShortcutsOn);
   useFocusTrap([dialogRef], true);
 
   useEffect(() => {
@@ -121,6 +123,24 @@ export default function ShortcutsHelp({ onClose }: { onClose: () => void }) {
               </ul>
             </section>
           ))}
+
+          {/* WCAG 2.1.4: every shortcut above but Ctrl+K and Esc is one key */}
+          <div className="flex flex-wrap items-center gap-3 border-t border-foreground/10 pt-4">
+            <p className="flex-1 text-xs text-foreground/60">
+              Single-key shortcuts are <strong className="text-foreground/80">{singleKeys ? "on" : "off"}</strong>.
+              {" "}Ctrl+K and Esc always work.
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setSingleKeyShortcuts(!singleKeys);
+                setSingleKeys(!singleKeys);
+              }}
+              className="border border-foreground/15 px-2 py-1 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-foreground/70 transition-colors hover:border-primary hover:text-primary-ink"
+            >
+              {singleKeys ? "Turn off" : "Turn on"}
+            </button>
+          </div>
         </div>
       </motion.div>
     </motion.div>

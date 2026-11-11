@@ -25,7 +25,7 @@
 
 import Image from "next/image";
 import PageLink from "@/components/ui/PageLink";
-import { Suspense, useCallback, useMemo, useState, type ReactNode } from "react";
+import { Suspense, useCallback, useMemo, useState, ViewTransition, type ReactNode } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -317,9 +317,12 @@ export default function CaseArticle({
               data-jp="事件"
             />
           </div>
-          <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter [word-spacing:0.12em] uppercase leading-[0.95] text-foreground [text-wrap:balance]">
-            {item.title}
-          </h1>
+          {/* Shares its name with the title on the library card it was opened from */}
+          <ViewTransition name={`case-title-${item.id}`}>
+            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter [word-spacing:0.12em] uppercase leading-[0.95] text-foreground [text-wrap:balance]">
+              {item.title}
+            </h1>
+          </ViewTransition>
           <p className="mt-5 font-mono text-xs uppercase tracking-[0.25em] text-tertiary">
             {item.platform}
           </p>

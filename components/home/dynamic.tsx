@@ -37,3 +37,5 @@ export const PlatformsSection = dynamic(() => import("@/components/home/Platform
 export const ContactFooter = dynamic(() => import("@/components/layout/ContactFooter"), { loading: () => <SectionSkeleton lines={2} /> });
 /* Overlays: client only */
 export const PaletteHint = dynamic(() => import("@/components/home/PaletteHint"), { ssr: false });
+/* The chapter rail (wide screens) + back-to-top button */
+export const SectionRail = dynamic(() => import("@/components/home/SectionRail"), { ssr: false });

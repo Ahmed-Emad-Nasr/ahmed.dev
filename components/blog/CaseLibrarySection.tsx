@@ -4,7 +4,7 @@
  * The case library in the blog part of the home page (#cases, then #videos).
  * Filters are synced to the URL; cards are paged a few at a time, while
  * filtering always searches the whole library. The data is computed at
- * build time (lib/library-data.ts) by app/page.tsx and arrives as the
+ * build time (lib/library-data.ts) into /library.json and arrives as the
  * `data` prop — the raw case files never reach the browser.
  *
  * ═══ components/blog/CaseLibrarySection.tsx — the CASE LIBRARY (#cases) ═══

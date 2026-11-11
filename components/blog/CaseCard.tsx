@@ -9,7 +9,7 @@
    Every field comes from the case's entry in data/cases.ts — to change what
    a card says, edit that entry. memo() = re-renders only when its props change. */
 
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useState, ViewTransition } from "react";
 import Image from "next/image";
 import PageLink from "@/components/ui/PageLink";
 import {
@@ -23,7 +23,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
-import { getThumbnail, normalizePublicHref } from "@/lib/shared";
+import { getThumbnail, markLoaded, normalizePublicHref } from "@/lib/shared";
 import type { PdfResource } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
 import {
@@ -90,7 +90,7 @@ function CaseCard({
           <button
             type="button"
             onClick={() => void onOpenGallery(title, id, 0)}
-            className="relative block h-52 w-full overflow-hidden border-b border-foreground/5"
+            className="relative block h-52 w-full overflow-hidden border-b border-foreground/5 bg-foreground/[0.04]"
             aria-label={`Open ${shotCount} screenshot(s) of ${title}`}
           >
             <Image
@@ -103,8 +103,12 @@ function CaseCard({
               loading="lazy"
               decoding="async"
               fetchPriority="low"
-              onError={() => setCoverFailed(true)}
-              className="object-cover object-top grayscale group-hover:grayscale-0 group-hover:scale-[1.0425] transition-all duration-600"
+              onLoad={markLoaded}
+              onError={(e) => {
+                if (coverFailed) markLoaded(e);
+                else setCoverFailed(true);
+              }}
+              className="img-fade object-cover object-top grayscale group-hover:grayscale-0 group-hover:scale-[1.0425] transition-all duration-600"
             />
             <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover:bg-transparent transition-all duration-420" />
             <span className="absolute bottom-3 right-3 flex items-center gap-1.5 px-2.5 py-1 bg-background/80 backdrop-blur-md border border-foreground/15 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-foreground">
@@ -156,7 +160,11 @@ function CaseCard({
               href={detailPath}
               className="hover:text-primary-ink transition-colors duration-180"
             >
-              {title}
+              {/* Same name as the case page's title: opening the case, this
+                  title glides into place as the page's heading */}
+              <ViewTransition name={`case-title-${id}`}>
+                <span>{title}</span>
+              </ViewTransition>
             </PageLink>
           </h3>
           {verdict && (

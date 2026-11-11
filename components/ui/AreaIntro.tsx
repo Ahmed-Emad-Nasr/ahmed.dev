@@ -28,8 +28,9 @@ export default function AreaIntro({
   description: string;
   links: AreaLink[];
 }) {
+  /* Small top padding: a chapter divider (SlashDivider) always sits right above */
   return (
-    <header id={id} className="relative pt-24 md:pt-32 pb-4 px-6 md:px-20 bg-background scroll-mt-24">
+    <header id={id} className="relative pt-8 md:pt-12 pb-4 px-6 md:px-20 bg-background scroll-mt-24">
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader titleA={titleA} titleB={titleB} description={description} />
         <FadeIn as="nav" y={16} duration={0.6} delay={0.1} aria-label={`${titleA} ${titleB}`.replace(/\.$/, "") + " — sections"} className="-mt-8 md:-mt-10 flex flex-wrap items-center gap-2">

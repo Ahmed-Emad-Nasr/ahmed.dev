@@ -34,6 +34,7 @@
 import Image from "next/image";
 import { Suspense, useMemo, useState } from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { markLoaded } from "@/lib/shared";
 import {
   ALL_GALLERY_CERTIFICATES,
   galleryGroupCount,
@@ -126,7 +127,7 @@ export default function ArtGallery() {
     <section
       id="art"
       aria-labelledby="art-title"
-      className="relative pt-24 md:pt-32 pb-24 md:pb-32 px-6 md:px-20 bg-background overflow-hidden"
+      className="relative pt-8 md:pt-12 pb-24 md:pb-32 px-6 md:px-20 bg-background overflow-hidden"
     >
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── 01 · Main Header ─── */}
@@ -350,7 +351,9 @@ export default function ArtGallery() {
                     width={500}
                     height={500}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-600 group-hover:scale-[1.0425]"
+                    className="img-fade w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-600 group-hover:scale-[1.0425]"
+                    onLoad={markLoaded}
+                    onError={markLoaded}
                     loading="lazy"
                     decoding="async"
                     fetchPriority="low"

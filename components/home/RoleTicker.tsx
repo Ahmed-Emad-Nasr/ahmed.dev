@@ -1,32 +1,43 @@
 "use client";
 
 /*
- * ═══ components/home/RoleTicker.tsx — the "> SOC Analyst_" typing line in the hero ═══
+ * ═══ components/home/RoleTicker.tsx — the "> SOC Analyst_" line in the hero ═══
  *
- * Types a role, holds it, erases it letter by letter, types the next one.
+ * Shows a role, holds it, then DECRYPTS into the next one: the letters
+ * scramble through random characters and settle into the new word
+ * (GSAP's ScrambleTextPlugin — loaded only when the first change is due).
  * The list of roles is PROFILE.roles in data/profile.ts.
  * Screen readers get the whole list at once (the sr-only span); visitors who
- * prefer reduced motion see all roles joined with " · " instead of typing.
+ * prefer reduced motion see all roles joined with " · " instead.
  * It pauses while off-screen or when the browser tab is hidden.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useReducedMotion } from "@/lib/use-client";
 
-/* Timing in milliseconds — change these to speed up / slow down the typing */
-const TYPE = 56; // per letter typed
-const ERASE = 28; // per letter erased
-const HOLD = 1240; // how long a full role stays on screen
-const GAP = 240; // pause between erasing one role and typing the next
+/* Timing — change these to speed up / slow down */
+const HOLD = 1600; // ms a role stays on screen before the next one
+const DECRYPT = 0.75; // seconds the scramble into the next role takes
+/* The characters the letters flicker through */
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>";
+
+/* GSAP + the plugin, fetched once, after the hero is already on screen */
+let gsapReady: Promise<typeof import("gsap").gsap> | null = null;
+const loadGsap = () =>
+  (gsapReady ??= Promise.all([import("gsap"), import("gsap/ScrambleTextPlugin")]).then(([{ gsap }, { ScrambleTextPlugin }]) => {
+    gsap.registerPlugin(ScrambleTextPlugin);
+    return gsap;
+  }));
 
 export function RoleTicker({ roles, className = "" }: { roles: string[]; className?: string }) {
-  const [text, setText] = useState(roles[0] ?? "");
   const reduced = useReducedMotion();
   const ref = useRef<HTMLParagraphElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null);
   const longest = Math.max(...roles.map((role) => role.length), 0);
 
   useEffect(() => {
-    if (roles.length < 2 || reduced) return;
+    const el = textRef.current;
+    if (roles.length < 2 || reduced || !el) return;
 
     let visible = true;
     const observer = new IntersectionObserver(([entry]) => {
@@ -34,45 +45,37 @@ export function RoleTicker({ roles, className = "" }: { roles: string[]; classNa
     });
     if (ref.current) observer.observe(ref.current);
 
-    /* A tiny state machine: hold → erase → type → hold … (one tick per letter) */
     let role = 0;
-    let shown = roles[0].length;
-    let phase: "hold" | "erase" | "type" = "hold";
+    let stopped = false;
     let timer: ReturnType<typeof setTimeout>;
+    let tween: { kill: () => void } | undefined;
 
-    const tick = () => {
+    /* hold → decrypt into the next role → hold … (GSAP writes the text) */
+    const next = () => {
+      if (stopped) return;
       if (!visible || document.hidden) {
-        timer = setTimeout(tick, 400);
+        timer = setTimeout(next, 400);
         return;
       }
-      if (phase === "hold") {
-        phase = "erase";
-        timer = setTimeout(tick, ERASE);
-      } else if (phase === "erase") {
-        shown -= 1;
-        setText(roles[role].slice(0, shown));
-        if (shown > 0) {
-          timer = setTimeout(tick, ERASE);
-        } else {
-          role = (role + 1) % roles.length;
-          phase = "type";
-          timer = setTimeout(tick, GAP);
-        }
-      } else {
-        shown += 1;
-        setText(roles[role].slice(0, shown));
-        if (shown < roles[role].length) {
-          timer = setTimeout(tick, TYPE);
-        } else {
-          phase = "hold";
-          timer = setTimeout(tick, HOLD);
-        }
-      }
+      void loadGsap().then((gsap) => {
+        if (stopped) return;
+        role = (role + 1) % roles.length;
+        tween = gsap.to(el, {
+          duration: DECRYPT,
+          ease: "none",
+          scrambleText: { text: roles[role], chars: CHARS, speed: 0.7, revealDelay: 0.12 },
+          onComplete: () => {
+            timer = setTimeout(next, HOLD);
+          },
+        });
+      });
     };
-    timer = setTimeout(tick, HOLD + 1200);
+    timer = setTimeout(next, HOLD + 1200);
 
     return () => {
+      stopped = true;
       clearTimeout(timer);
+      tween?.kill();
       observer.disconnect();
     };
   }, [roles, reduced]);
@@ -93,7 +96,9 @@ export function RoleTicker({ roles, className = "" }: { roles: string[]; classNa
           style={{ width: `calc(${longest + 3} * (1ch + 0.18em))` }}
         >
           <span className="text-primary">&gt;&nbsp;</span>
-          <span className="text-foreground/85">{text}</span>
+          <span ref={textRef} className="text-foreground/85">
+            {roles[0]}
+          </span>
           <span className="ml-1 inline-block h-[1.1em] w-[0.55em] bg-primary animate-[caret-blink_0.82s_step-end_infinite]" />
         </span>
       )}

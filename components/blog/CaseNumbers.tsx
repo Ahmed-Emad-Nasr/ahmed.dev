@@ -7,12 +7,14 @@
  * extracted. And, when the case has it, one line on what was prevented.
  *
  * What the figures are and where each one comes from: lib/case-numbers.ts
- * (they are counted from the case's own data, never typed in).
+ * (they are counted from the case's own data, never typed in). Each figure
+ * counts up from 0 once, when the strip comes into view.
  */
 
 import FadeIn from "@/components/ui/FadeIn";
 import PageLink from "@/components/ui/PageLink";
 import type { CaseNumber } from "@/lib/case-numbers";
+import { CountUpText } from "@/components/ui/CountUp";
 
 const TILE = "flex h-full flex-col-reverse justify-end gap-2 bg-surface/60 px-5 py-5";
 
@@ -42,7 +44,10 @@ export default function CaseNumbers({ numbers, prevented }: { numbers: readonly 
                 )}
                 {n.note && <span className="mt-1 block font-mono text-[0.625rem] leading-relaxed text-foreground/70">{n.note}</span>}
               </dt>
-              <dd className="font-display text-2xl leading-none tracking-tight text-foreground tabular-nums md:text-3xl">{n.value}</dd>
+              <dd className="font-display text-2xl leading-none tracking-tight text-foreground tabular-nums md:text-3xl">
+                {/* Counts up once when the strip comes into view */}
+                <CountUpText text={n.value} />
+              </dd>
             </div>
           ))}
         </dl>

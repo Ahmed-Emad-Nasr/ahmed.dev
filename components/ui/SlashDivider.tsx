@@ -7,7 +7,9 @@ import { MOTION_EASE } from "@/lib/motion";
 /* ═══ components/ui/SlashDivider.tsx — the red "slash" line between chapters ═══
    Usage:  <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
    The red line draws itself as you scroll past (scrollYProgress → scaleX);
-   origin = which side it grows from. Purely decorative (aria-hidden). */
+   origin = which side it grows from. The label settles in with it: it
+   fades in while its letter-spacing closes up, and the Japanese word rises
+   into place. Purely decorative (aria-hidden). */
 export default function SlashDivider({
   label,
   japanese,
@@ -22,6 +24,10 @@ export default function SlashDivider({
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start 0.95", "start 0.45"] });
   const draw = useTransform(scrollYProgress, [0, 1], [0, 1]);
   const echo = useTransform(scrollYProgress, [0.15, 1], [0, 1]);
+  const labelIn = useTransform(scrollYProgress, [0.2, 0.7], [0, 1]);
+  const labelTracking = useTransform(scrollYProgress, [0.2, 0.7], ["0.6em", "0.3em"]);
+  const jpRise = useTransform(scrollYProgress, [0.35, 0.85], [8, 0]);
+  const jpIn = useTransform(scrollYProgress, [0.35, 0.85], [0, 1]);
   const primaryOrigin = origin === "left" ? "origin-left" : "origin-right";
   const echoOrigin = origin === "left" ? "origin-right" : "origin-left";
 
@@ -42,8 +48,19 @@ export default function SlashDivider({
       </div>
       <span className="relative z-10 flex items-center gap-3 bg-background px-4">
         <span className="inline-block h-1.5 w-1.5 rotate-45 bg-primary/70" />
-        <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">{label}</span>
-        <span className="brush-jp text-base text-foreground/70" lang="ja">{japanese}</span>
+        <motion.span
+          className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink"
+          style={reduce ? undefined : { opacity: labelIn, letterSpacing: labelTracking }}
+        >
+          {label}
+        </motion.span>
+        <motion.span
+          className="brush-jp inline-block text-base text-foreground/70"
+          lang="ja"
+          style={reduce ? undefined : { opacity: jpIn, y: jpRise }}
+        >
+          {japanese}
+        </motion.span>
         <span className="inline-block h-1.5 w-1.5 rotate-45 bg-primary/70" />
       </span>
     </div>

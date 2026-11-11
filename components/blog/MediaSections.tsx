@@ -18,7 +18,7 @@ import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import { CountUp } from "@/components/ui/CountUp";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Youtube } from "@/components/ui/BrandIcons";
-import { formatDate, normalizePublicHref, YOUTUBE_CHANNEL_URL, type ChannelVideo } from "@/lib/shared";
+import { formatDate, markLoaded, normalizePublicHref, YOUTUBE_CHANNEL_URL, type ChannelVideo } from "@/lib/shared";
 import { blogFeaturedYoutubeVideo, blogYoutubePlaylists as playlists, blogYoutubeVideos } from "@/data/youtube";
 import type { LibraryCounts } from "@/lib/library-data";
 import { CounterBadge, KanjiWatermark, btnOutline } from "@/components/ui/kit";
@@ -74,7 +74,9 @@ const Embed = memo(function Embed({
             decoding="async"
             fetchPriority="low"
             unoptimized
-            className="object-cover grayscale group-hover/play:grayscale-0 group-hover/play:scale-[1.0425] transition-all duration-600"
+            onLoad={markLoaded}
+            onError={markLoaded}
+            className="img-fade object-cover grayscale group-hover/play:grayscale-0 group-hover/play:scale-[1.0425] transition-all duration-600"
           />
           <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover/play:bg-transparent transition-all duration-420" />
           <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-5 py-3 bg-primary text-white font-mono text-[0.625rem] font-black uppercase tracking-[0.2em] transition-transform duration-180 group-hover/play:scale-[1.0425]">

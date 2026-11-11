@@ -121,6 +121,13 @@ export const normalizePublicHref = (href: string): string => {
 };
 
 /** The thumbnail next to an image (npm run thumbs): a.webp → a-thumb.webp */
+/* For <Image className="img-fade" onLoad={markLoaded} onError={markLoaded}>:
+   a lazy image fades in when it arrives instead of popping in (globals.css
+   .img-fade). onError too, so a broken image still shows its alt text. */
+export const markLoaded = (e: { currentTarget: Element }): void => {
+  e.currentTarget.setAttribute("data-loaded", "");
+};
+
 export const getThumbnail = (imgPath: string): string =>
   imgPath.replace(/(\.webp|\.png|\.jpg|\.jpeg)$/i, "-thumb$1");
 

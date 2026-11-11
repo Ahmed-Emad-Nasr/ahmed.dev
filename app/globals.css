@@ -239,9 +239,18 @@
     }
   }
 
+  /* Keyboard focus: the accent outline snaps in from a little further out
+     (a short, one-off move — nothing loops) */
   :focus-visible {
     outline: 2px solid var(--primary);
     outline-offset: 3px;
+    animation: focus-snap 0.16s ease-out;
+  }
+  @keyframes focus-snap {
+    from {
+      outline-offset: 8px;
+      outline-color: transparent;
+    }
   }
 
   /* Pointer affordance on touch / non-fine pointers
@@ -643,6 +652,43 @@
 [data-app-loader] {
   animation: app-loader-out 0.5s cubic-bezier(0.76, 0, 0.24, 1) 6s forwards;
 }
+/* ─── Lazy images fade in when they arrive (lib/shared.ts markLoaded) ───
+   Their box keeps its size and tint meanwhile, so nothing pops or jumps. */
+.img-fade {
+  opacity: 0;
+}
+.img-fade[data-loaded] {
+  opacity: 1;
+}
+
+/* ─── Reading progress (app/layout.tsx) ───
+   A 2px red→blue line across the top that fills as the page scrolls. Pure
+   CSS: a scroll-driven animation runs on the compositor, no JavaScript and
+   no scroll listener. Browsers without animation-timeline simply skip it. */
+.scroll-progress {
+  display: none;
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 2px;
+    z-index: 105;
+    pointer-events: none;
+    transform-origin: 0 50%;
+    transform: scaleX(0);
+    background: linear-gradient(90deg, var(--primary), var(--tertiary));
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root block);
+  }
+  @keyframes scroll-progress {
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
+
 /* Intro already played in this visit (lib/intro.ts) → never painted */
 html[data-intro-seen] [data-app-loader] {
   display: none;
@@ -1537,7 +1583,7 @@ html[data-nav-pending]::after {
   --lazy-h: 1110px;
 }
 .lazy-h-testimonials {
-  --lazy-h: 3600px;
+  --lazy-h: 6000px;
 }
 .lazy-h-triage {
   --lazy-h: 1600px;
@@ -1553,7 +1599,7 @@ html[data-nav-pending]::after {
     --lazy-h: 870px;
   }
   .lazy-h-testimonials {
-    --lazy-h: 2300px;
+    --lazy-h: 4000px;
   }
   .lazy-h-triage {
     --lazy-h: 1400px;
@@ -1570,7 +1616,7 @@ html[data-nav-pending]::after {
     --lazy-h: 680px;
   }
   .lazy-h-testimonials {
-    --lazy-h: 1800px;
+    --lazy-h: 2700px;
   }
   .lazy-h-triage {
     --lazy-h: 1300px;

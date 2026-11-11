@@ -298,6 +298,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <ThemeFxProvider>
             {/* Keyboard users: first Tab shows this link, jumps past the navbar */}
             <a href="#main-content" className="skip-link">Skip to content</a>
+            {/* Reading progress: a 2px line along the top edge, drawn by CSS
+                alone (scroll-driven animation, globals.css .scroll-progress) */}
+            <div className="scroll-progress" aria-hidden="true" />
             <script
               type="application/ld+json"
               dangerouslySetInnerHTML={{ __html: STRUCTURED_DATA_JSON }}

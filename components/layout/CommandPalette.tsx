@@ -49,6 +49,7 @@ import {
   GraduationCap,
   Trophy,
   Award,
+  KeyboardOff,
 } from "lucide-react";
 import { Github, Linkedin } from "@/components/ui/BrandIcons";
 import { PROFILE } from "@/data/profile";
@@ -59,6 +60,7 @@ import { lockScroll } from "@/lib/scroll";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import { useThemeFx } from "@/components/layout/ThemeFxProvider";
 import { FX_DURATIONS, getFxDuration, setFxDuration } from "@/lib/fx";
+import { SHORTCUTS_EVENT, setSingleKeyShortcuts, singleKeyShortcutsOn } from "@/lib/shortcut-prefs";
 
 /* One row in the palette */
 interface Command {
@@ -91,6 +93,7 @@ export default function CommandPalette() {
   const [index, setIndex] = useState(0);
   const [copied, setCopied] = useState(false);
   const [fxDuration, setFxDurationState] = useState(getFxDuration);
+  const [singleKeys, setSingleKeys] = useState(singleKeyShortcutsOn);
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   useFocusTrap([dialogRef], open);
@@ -144,8 +147,13 @@ export default function CommandPalette() {
   useEffect(() => {
     const onFx = (e: Event) =>
       setFxDurationState((e as CustomEvent<number>).detail);
+    const onKeys = (e: Event) => setSingleKeys((e as CustomEvent<boolean>).detail);
     window.addEventListener("sensei-fx-duration", onFx);
-    return () => window.removeEventListener("sensei-fx-duration", onFx);
+    window.addEventListener(SHORTCUTS_EVENT, onKeys);
+    return () => {
+      window.removeEventListener("sensei-fx-duration", onFx);
+      window.removeEventListener(SHORTCUTS_EVENT, onKeys);
+    };
   }, []);
 
   /* Every section is on the home page: jump to it there, or open it from
@@ -217,6 +225,14 @@ export default function CommandPalette() {
         },
       })),
       {
+        /* WCAG 2.1.4 — lib/shortcut-prefs.ts */
+        id: "single-keys", group: "Accessibility",
+        label: singleKeys ? "Turn single-key shortcuts off (/, ?, g + key)" : "Turn single-key shortcuts back on",
+        hint: singleKeys ? "on" : "off",
+        icon: singleKeys ? KeyboardOff : Keyboard,
+        run: () => setSingleKeyShortcuts(!singleKeys),
+      },
+      {
         id: "copy-email", group: "Actions", label: copied ? "Email copied!" : "Copy email address",
         hint: c.email, icon: copied ? Check : Copy,
         run: async () => {
@@ -248,7 +264,7 @@ export default function CommandPalette() {
         run: () => { setOpen(false); window.dispatchEvent(new Event("sensei:open-shortcuts")); },
       },
     ];
-  }, [go, resolvedTheme, transitionTo, copied, fxDuration]);
+  }, [go, resolvedTheme, transitionTo, copied, fxDuration, singleKeys]);
 
   /* Cases and certificates join the list once you type */
   const caseCommands: Command[] = useMemo(

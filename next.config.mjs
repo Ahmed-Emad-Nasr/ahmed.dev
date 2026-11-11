@@ -20,6 +20,10 @@ const nextConfig = {
   basePath: BASE_PATH,
   /* Static export: no image optimizer; thumbnails are pre-generated (npm run thumbs) */
   images: { unoptimized: true },
+  /* A per-deploy id: the commit on GitHub Actions, the build time locally.
+     public/sw.js is registered as sw.js?v=<this>, so each deploy renews the
+     offline cache by itself (components/layout/ServiceWorkerRegister.tsx). */
+  env: { NEXT_PUBLIC_BUILD_ID: (process.env.GITHUB_SHA ?? Date.now().toString(36)).slice(0, 12) },
   experimental: { optimizePackageImports: ["framer-motion", "lucide-react"] },
 };
 

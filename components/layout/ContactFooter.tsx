@@ -18,7 +18,7 @@
  *   • Footer links → components/layout/FooterBar.tsx.
  */
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, ArrowUpRight, Mail, Copy, Check } from "lucide-react";
 import { Github, Linkedin, Youtube, Instagram, XLogo } from "@/components/ui/BrandIcons";
@@ -42,6 +42,13 @@ export default function ContactFooter() {
   /* The last message handed to the mail app — kept so the fallback panel
      can offer the same text another way. */
   const [draft, setDraft] = useState<Draft | null>(null);
+  /* The "READY TO SEND" stamp: bumped on every send, shown for ~2 s */
+  const [stamp, setStamp] = useState(0);
+  useEffect(() => {
+    if (!stamp) return;
+    const t = window.setTimeout(() => setStamp(0), 2200);
+    return () => window.clearTimeout(t);
+  }, [stamp]);
 
   /* The social icon buttons — add one by copying an entry */
   const socialLinks = [
@@ -167,6 +174,24 @@ export default function ContactFooter() {
             <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-primary/40" />
             <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary/40" />
 
+            {/* The stamp: lands on the form when the mail app opens. Not
+                "sent" — the visitor still presses send in their mail app. */}
+            <AnimatePresence>
+              {stamp > 0 && (
+                <motion.div
+                  key={stamp}
+                  aria-hidden="true"
+                  initial={{ opacity: 0, scale: 1.6, rotate: -16 }}
+                  animate={{ opacity: 1, scale: 1, rotate: -8 }}
+                  exit={{ opacity: 0, scale: 0.96 }}
+                  transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                  className="pointer-events-none absolute right-6 top-6 z-20 border-2 border-primary px-4 py-2 font-mono text-[0.6875rem] font-black uppercase tracking-[0.35em] text-primary-ink bg-background/80"
+                >
+                  Ready to send <span className="brush-jp ml-2 text-base tracking-normal" lang="ja">送信</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* Background mail icon */}
             <div className="absolute top-4 right-4 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity pointer-events-none">
               <Mail size={120} className="text-primary-ink" />
@@ -206,6 +231,7 @@ export default function ContactFooter() {
                 const mailto = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
 
                 setDraft({ subject: `[${type}] Inquiry from ${name}`, body: fullBody });
+                setStamp((n) => n + 1);
                 window.location.assign(mailto);
               }}
             >

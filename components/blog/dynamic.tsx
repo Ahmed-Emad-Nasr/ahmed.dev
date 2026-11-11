@@ -30,22 +30,45 @@
  */
 
 import dynamic from "next/dynamic";
+import type { ComponentType } from "react";
 import LazySection, { preloadable } from "@/lib/perf/lazy";
 import SectionSkeleton from "@/components/ui/SectionSkeleton";
-import type { AttackCoverageData } from "@/lib/library-data";
+import type { AttackCoverageData, LibraryData } from "@/lib/library-data";
+import { normalizePublicHref } from "@/lib/shared";
 import type { ContributionStats } from "@/lib/api/contributions";
 
 /* Pattern 1 — split into its own chunk; the page decides when it mounts */
 export const AreaIntro = dynamic(() => import("@/components/ui/AreaIntro"));
 /* The body of a single case page (/blog/<id>) */
 export const CaseArticle = dynamic(() => import("@/components/blog/CaseArticle"));
-export const CaseLibrarySection = dynamic(() => import("@/components/blog/CaseLibrarySection"), {
-  loading: () => <SectionSkeleton lines={4} tall />,
-});
 export const HomeLab = dynamic(() => import("@/components/home/HomeLab"), {
   loading: () => <SectionSkeleton lines={3} />,
 });
 /* Pattern 2 — chunk + its own LazySection (id = the #anchor, size = placeholder height) */
+
+/* The case library: its code AND its data (/library.json, app/library.json/
+   route.ts) are fetched together, so the data is not in the home page's
+   HTML. Until both are here the placeholder holds the place — and a jump to
+   #cases waits for it (lib/perf/schedule.ts → revealAll). */
+const loadCaseLibrary = async (): Promise<{ default: ComponentType<object> }> => {
+  const [{ default: CaseLibrarySection }, data] = await Promise.all([
+    import("@/components/blog/CaseLibrarySection"),
+    fetch(normalizePublicHref("/library.json")).then((response) => {
+      if (!response.ok) throw new Error(`library.json: HTTP ${response.status}`);
+      return response.json() as Promise<LibraryData>;
+    }),
+  ]);
+  return { default: () => <CaseLibrarySection data={data} /> };
+};
+const CaseLibrary = preloadable(loadCaseLibrary);
+
+export function LazyCaseLibrary() {
+  return (
+    <LazySection id="cases" size="lazy-h-cases">
+      <CaseLibrary />
+    </LazySection>
+  );
+}
 const AttackCoverage = preloadable(() => import("@/components/blog/AttackCoverage"));
 const DetectionLibrary = preloadable(() => import("@/components/blog/DetectionLibrary"));
 
