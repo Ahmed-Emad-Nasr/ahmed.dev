@@ -13,7 +13,7 @@
  *   Hero (top)             components/home/HeroSection      data/portfolio-data.ts, data/live-copy.ts
  *   Roles cards  #roles    components/home/RolesCards       inside the component (ROLES)
  *   Numbers strip          components/home/StatsBar         data/live-copy.ts (stats)
- *   Divider + ticker       components/ui/SlashDivider, TickerStrip
+ *   Divider                components/ui/SlashDivider
  *   Projects     #work     components/home/WorkShowcase     data/projects.ts (+ GitHub API)
  *   Experience   #experience components/home/ExperienceTimeline  data/experience.ts
  *   Teaching     #teaching components/home/TeachingSection  data/teaching.ts
@@ -70,7 +70,6 @@ import { normalizePublicHref } from "@/lib/shared";
 import LazySection from "@/lib/perf/lazy";
 import { homeForwardScript } from "@/lib/routes";
 import SlashDivider from "@/components/ui/SlashDivider";
-import TickerStrip from "@/components/ui/TickerStrip";
 
 /* <head> tags for the home page only (merged over app/layout.tsx's defaults).
    This title is used as-is: the layout's "%s | Ahmed Emad Nasr" template only
@@ -240,9 +239,8 @@ export default async function Home() {
         </LazySection>
       </div>
 
-      {/* Decorative divider with a label + the scrolling keyword strip */}
+      {/* Decorative divider with a label */}
       <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
-      <TickerStrip />
 
       {/* Projects grid. workItems = data/projects.ts merged with GitHub repo info */}
       <LazySection id="work" size="lazy-h-work">

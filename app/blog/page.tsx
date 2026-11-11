@@ -35,7 +35,6 @@ import type { Metadata } from "next";
 import PageShell from "@/components/layout/PageShell";
 import LazySection from "@/lib/perf/lazy";
 import SlashDivider from "@/components/ui/SlashDivider";
-import TickerStrip from "@/components/ui/TickerStrip";
 import {
   AreaIntro,
   CaseLibrarySection,
@@ -179,7 +178,6 @@ export default function BlogPage() {
       </LazySection>
 
       <SlashDivider label="01 // Detection" japanese="検知" origin="right" />
-      <TickerStrip items={["戦術", "技術", "網羅", "証拠", "READ THE RECORD"]} />
 
       {/* ─── The library on MITRE ATT&CK, the rule pack, one real alert ───
           These "Lazy*" components already wrap themselves in a LazySection
@@ -194,7 +192,6 @@ export default function BlogPage() {
       <LazyTriage />
 
       <SlashDivider label="02 // Operating model" japanese="実務" origin="left" />
-      <TickerStrip reverse items={["継続", "改善", "実務", "計測", "BUILD THE RECORD"]} />
       <div className="tone-blue">
         <LazySection id="lab" size="lazy-h-lab">
           <HomeLab />

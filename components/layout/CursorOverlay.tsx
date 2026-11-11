@@ -5,20 +5,19 @@ import { m as motion, useMotionValue, useSpring } from "framer-motion";
 
 /**
  * Katana cursor  your blade for browsing the dojo.
- * States: gold blade (default) → red lock-on (interactive) → slash flash (click).
+ * States: gold blade (default) → red lock-on (interactive).
  * Desktop fine-pointers only; touch keeps the native cursor.
  *
  * ═══ components/layout/CursorOverlay.tsx — the custom KATANA CURSOR ═══
  * Loaded by CursorMount.tsx. It follows the mouse with a spring (springConfig
  * below: lower stiffness = lazier, more trailing cursor). It turns red and
  * shows a label over links, buttons and anything with class="interactive"
- * (handleElementHover). A click draws a short slash flash.
+ * (handleElementHover).
  * While it's active, <body> gets the class "custom-cursor-on", which
  * app/globals.css uses to hide the normal system pointer.
  */
 export default function CursorOverlay() {
   const [isHovering, setIsHovering] = useState(false);
-  const [slashes, setSlashes] = useState<number[]>([]);
   const [enabled, setEnabled] = useState(false);
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -64,24 +63,13 @@ export default function CursorOverlay() {
       }
     };
 
-    // Katana slash on every click
-    const handleSlash = () => {
-      const id = Date.now() + Math.random();
-      setSlashes((prev) => [...prev.slice(-2), id]);
-      setTimeout(() => {
-        setSlashes((prev) => prev.filter((s) => s !== id));
-      }, 400);
-    };
-
     window.addEventListener("mousemove", moveCursor);
     window.addEventListener("mouseover", handleElementHover);
-    window.addEventListener("mousedown", handleSlash);
 
     return () => {
       document.body.classList.remove("custom-cursor-on");
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("mouseover", handleElementHover);
-      window.removeEventListener("mousedown", handleSlash);
       if (moveFrame.current !== null) cancelAnimationFrame(moveFrame.current);
     };
   }, [cursorX, cursorY]);
@@ -191,27 +179,6 @@ export default function CursorOverlay() {
             ${isHovering ? "w-8 h-8 opacity-0 scale-150" : "w-4 h-4 opacity-100 scale-100"}`}
         />
       </motion.div>
-
-      {/* Click slashes */}
-      {slashes.map((id) => (
-        <motion.div
-          key={id}
-          className="fixed top-0 left-0 pointer-events-none z-[10001]"
-          style={{
-            x: cursorX,
-            y: cursorY,
-            translateX: "-50%",
-            translateY: "-50%",
-          }}
-        >
-          <motion.div
-            initial={{ scaleX: 0, opacity: 1, rotate: -30 }}
-            animate={{ scaleX: 1.8, opacity: 0 }}
-            transition={{ duration: 0.21, ease: "easeOut" }}
-            className="h-[2px] w-14 origin-center bg-gradient-to-r from-transparent via-primary to-accent"
-          />
-        </motion.div>
-      ))}
     </div>
   );
 }

@@ -22,7 +22,7 @@
  *                                     skip link, scrollbar, text selection
  *   ─── Neo-Samurai Components ─── → vertical text, brush font, button sheen,
  *                                     .jp-eyebrow (Japanese labels), .site-texture,
- *                                     .spotlight cards, ticker strip, chapter slash
+ *                                     .spotlight cards, chapter slash
  *   Contribution cells / theme morph / loader → animations for those parts
  *   @media print                   → how /cv looks when printed
  *   @utility title-fit             → big headings that shrink to fit
@@ -524,22 +524,6 @@
   mix-blend-mode: screen;
 }
 
-.ticker-track {
-  display: flex;
-  min-width: max-content;
-  animation: ticker-scroll 64.8s linear infinite;
-}
-
-.ticker-strip:hover .ticker-track {
-  animation-play-state: paused;
-}
-
-@keyframes ticker-scroll {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 .chapter-slash {
   margin: 2rem 0;
 }
@@ -554,9 +538,6 @@
     display: none;
   }
 
-  .ticker-track {
-    animation: none;
-  }
 }
 
 /* ─── Contribution cells pop as Pac-Man passes ─── */
