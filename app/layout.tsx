@@ -141,8 +141,11 @@ export const metadata: Metadata = {
     site: "@0x3omda",
     images: [OG_IMAGE.url],
   },
+  /* Google Search Console. Both stay: removing a token un-verifies the
+     property it belongs to. The first is the URL-prefix property
+     https://ahmed-emad-nasr.github.io/ahmed.dev/ (added Nov 2026). */
   verification: {
-    google: "VCIeVhcDb-vQGmE68weZARtruR_F2bUwv6hcjKYdwqo",
+    google: ["e3SczIbkSrdElwRDQN5J7KL1GzfH7McL2xq_Hk-DEzw", "VCIeVhcDb-vQGmE68weZARtruR_F2bUwv6hcjKYdwqo"],
   },
   /* Location and audience hints read by Bing, Yandex and local search. */
   other: {
