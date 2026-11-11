@@ -14,10 +14,16 @@ import { GALLERY_IMAGE_COUNT, galleryImagePath } from "@/data/certifications";
 import { blogYoutubeVideos } from "@/data/youtube";
 import { PERSON_IMAGE, SITE_URL, youtubeEmbed, youtubeThumb } from "@/lib/seo";
 
+/* A URL as a sitemap needs it: asset paths have spaces ("Assets/Cases/Depi
+   R4 Project/…", "Screenshot (328).webp") and Next writes <loc> as given —
+   a raw space is an invalid URL, and Search Console rejects the entry.
+   decodeURI first, so an already-encoded path is not encoded twice. */
+const loc = (url: string) => encodeURI(decodeURI(url));
+
 /* The home page (the whole portfolio): the portrait, the share image and
    every gallery image */
-const galleryImages = Array.from({ length: GALLERY_IMAGE_COUNT }, (_, i) => absoluteUrl(galleryImagePath(i + 1)));
-const homeImages = [PERSON_IMAGE, OG_IMAGE.url, ...galleryImages];
+const galleryImages = Array.from({ length: GALLERY_IMAGE_COUNT }, (_, i) => loc(absoluteUrl(galleryImagePath(i + 1))));
+const homeImages = [PERSON_IMAGE, OG_IMAGE.url, ...galleryImages].map(loc);
 
 /* Google allows 2,048 characters of description; keep well under */
 const clip = (text: string, max = 1000) => (text.length > max ? `${text.slice(0, max - 1)}…` : text);
@@ -67,25 +73,25 @@ export default function sitemap(): MetadataRoute.Sitemap {
       videos: blogVideos,
     },
     {
-      url: absoluteUrl("/Assets/cv/AhmedEmadNasr_CV.pdf"),
+      url: loc(absoluteUrl("/Assets/cv/AhmedEmadNasr_CV.pdf")),
       lastModified: latestCaseDate,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     ...caseEvidenceLibrary.map((item) => ({
-      url: caseUrl(item.id),
+      url: loc(caseUrl(item.id)),
       lastModified: parseDate(item.date),
       changeFrequency: "yearly" as const,
       priority: 0.8,
       images: [...new Set([...(item.image ? [item.image] : []), ...(caseScreenshotsByEvidenceId[item.id] ?? [])])]
         .slice(0, 50)
-        .map((src) => absoluteUrl(src)),
+        .map((src) => loc(absoluteUrl(src))),
     })),
     /* The case PDFs that exist */
     ...caseEvidenceLibrary
       .filter((item): item is typeof item & { href: string } => Boolean(item.href))
       .map((item) => ({
-        url: absoluteUrl(item.href),
+        url: loc(absoluteUrl(item.href)),
         lastModified: parseDate(item.date),
         changeFrequency: "yearly" as const,
         priority: 0.6,

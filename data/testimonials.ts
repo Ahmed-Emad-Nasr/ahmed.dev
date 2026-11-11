@@ -34,14 +34,14 @@ export const RECOMMENDATIONS: readonly Testimonial[] = [
     source: "Head of Cyber Security · GDG Benha & 3C — managed Ahmed directly",
     date: "2026-03-26",
     quote:
-      "As Head of Cyber Security, I worked with Ahmed Emad Eldeen as a Technical Cyber Security member. He is dedicated, ambitious, and always eager to learn. One of the best I've worked with. Wishing him all the best!",
+      "As Head of Cyber Security, I worked with Ahmed Emad Eldeen as a Technical Cyber Security member. He is dedicated, ambitious, and always eager to learn.\nOne of the best I’ve worked with. Wishing him all the best!",
   },
   {
     author: "Ahmed Hamdto",
     source: "Freelancing Instructor @ MCIT (DEPI) — mentored Ahmed directly",
     date: "2026-03-26",
     quote:
-      "I highly recommend Ahmed, one of the most dedicated and hardworking students I've mentored in freelancing. He demonstrated strong professionalism and commitment throughout the training. Ahmed successfully set up and optimized his freelancing profiles with great attention to detail, showing a clear understanding of the market. Notably, his portfolio was recognized as a “Best Portfolio”, reflecting the high quality of his work and presentation…",
+      "I highly recommend Ahmed, one of the most dedicated and hardworking students I’ve mentored in freelancing. He demonstrated strong professionalism and commitment throughout the training.\nAhmed successfully set up and optimized his freelancing profiles with great attention to detail, showing a clear understanding of the market. Notably, his portfolio was recognized as a “Best Portfolio”, reflecting the high quality of his work and presentation.\nHe is a fast learner, disciplined, and able to apply his knowledge effectively. I’m confident he will be a valuable addition to any team or project.\nI strongly recommend him for any freelancing opportunity, job, or professional opportunity.",
   },
 ];
 
