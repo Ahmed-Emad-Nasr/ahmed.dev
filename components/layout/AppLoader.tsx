@@ -77,7 +77,7 @@ export default function AppLoader() {
           </motion.span>
 
           <p className="mt-4 font-display text-xl font-black uppercase tracking-tighter text-foreground">
-            Mostafa<span className="text-primary">.</span>
+            Ahmed Emad Nasr<span className="text-primary">.</span>
           </p>
           <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.45em] text-foreground/40">
             Portfolio
