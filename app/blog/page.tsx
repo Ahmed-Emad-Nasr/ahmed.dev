@@ -185,18 +185,27 @@ export default function BlogPage() {
           These "Lazy*" components already wrap themselves in a LazySection
           (see components/blog/dynamic.tsx), so no wrapper is needed here. */}
       <LazyAttackCoverage coverage={attackCoverage} />
-      <LazyDetectionLibrary />
+      {/* .tone-blue = this section uses the blue of the role cards instead of
+          the red (app/globals.css). ATT&CK and the alert stay red on purpose:
+          there the red means heat and severity. */}
+      <div className="tone-blue">
+        <LazyDetectionLibrary />
+      </div>
       <LazyTriage />
 
       <SlashDivider label="02 // Operating model" japanese="実務" origin="left" />
       <TickerStrip reverse items={["継続", "改善", "実務", "計測", "BUILD THE RECORD"]} />
-      <LazySection id="lab" size="lazy-h-lab">
-        <HomeLab />
-      </LazySection>
+      <div className="tone-blue">
+        <LazySection id="lab" size="lazy-h-lab">
+          <HomeLab />
+        </LazySection>
+      </div>
       <LazySection id="process" size="lazy-h-process">
         <ProcessSection />
       </LazySection>
-      <LazyContributions />
+      <div className="tone-blue">
+        <LazyContributions />
+      </div>
     </PageShell>
   );
 }

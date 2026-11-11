@@ -106,6 +106,8 @@
        of their own colour, which took them just under 4.5:1. */
     --accent: #7a6000;
     --tertiary: #006b78;
+    /* A filled button under the cursor (kit.tsx → ctaPrimary) */
+    --primary-hover: #d60030;
 
     --background: #f7f5f0;
     --foreground: #141210;
@@ -131,6 +133,25 @@
 
     --surface: #121212;
     --on-surface-variant: #a0a0a0;
+  }
+
+  /* ── .tone-blue: a section in the blue of the role cards ──
+     The site's accent is red; a section wrapped in .tone-blue (app/page.tsx,
+     app/blog/page.tsx) uses the blue instead, for everything in it — lines,
+     labels, card borders, glows, buttons — with no change to the components:
+     inside the wrapper the "primary" colour simply IS the blue.
+     To switch a section: add or remove the wrapper around it in the page.
+     (--color-* are declared again because Tailwind's classes read those, and
+     they were worked out once, on <html>, from the red.) */
+  .tone-blue {
+    --primary: var(--tertiary);
+    --primary-ink: var(--tertiary);
+    --primary-hover: #007f8f;
+    --color-primary: var(--primary);
+    --color-primary-ink: var(--primary-ink);
+  }
+  .dark .tone-blue {
+    --primary-hover: #5fe6fb;
   }
 
   /*
@@ -413,6 +434,18 @@
     36px 36px,
     100% 100%;
   opacity: 0.35;
+}
+
+/* ─── .tone-blue, dark theme: text ON a blue fill ─────────────────────
+   On sumi black the blue is a bright cyan: white button text on it would
+   be unreadable (1.9:1), so a filled blue button gets ink-dark text (10:1).
+   (On the light theme the blue is deep and white text stays.)
+   `.border-primary.text-white` = a selected tab whose fill is a separate
+   sliding layer behind the label (the detection library's filter).
+   Outside every @layer on purpose: it has to win over Tailwind's
+   `text-white`, which lives in the utilities layer. */
+.dark .tone-blue :is(.bg-primary, .hover\:bg-primary:hover, .border-primary.text-white) {
+  color: #04161a;
 }
 
 /* ─── Mouse spotlight cards  radial highlight follows the cursor.

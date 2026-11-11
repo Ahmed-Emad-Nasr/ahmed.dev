@@ -231,9 +231,14 @@ export default async function Home() {
       <LazySection id="roles" size="lazy-h-roles">
         <RolesCards />
       </LazySection>
-      <LazySection size="lazy-h-stats">
-        <StatsBar stats={LIVE_COPY.stats} />
-      </LazySection>
+      {/* .tone-blue = this section uses the blue of the role cards instead of
+          the red (app/globals.css). Red and blue sections alternate down the
+          page; add or remove the wrapper to switch one. */}
+      <div className="tone-blue">
+        <LazySection size="lazy-h-stats">
+          <StatsBar stats={LIVE_COPY.stats} />
+        </LazySection>
+      </div>
 
       {/* Decorative divider with a label + the scrolling keyword strip */}
       <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
@@ -255,9 +260,11 @@ export default async function Home() {
       </LazySection>
 
       {/* Training platforms: TryHackMe as the big card (live stats), others from data/platforms.ts */}
-      <LazySection id="platforms" size="lazy-h-platforms">
-        <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
-      </LazySection>
+      <div className="tone-blue">
+        <LazySection id="platforms" size="lazy-h-platforms">
+          <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
+        </LazySection>
+      </div>
 
       {/* Contact section + form + footer bar (only on the home page; other pages end with FooterBar) */}
       <div id="contact" className="mt-20">
