@@ -204,7 +204,7 @@ export default function SiteNav() {
       <motion.nav
         ref={navRef}
         data-site-header="true"
-        className={`fixed z-[100] left-1/2 -translate-x-1/2 backdrop-blur-xl bg-background/60 border border-foreground/10 px-4 md:px-8 py-2 md:py-3 flex items-center justify-between transition-[width,background-color,border-color] duration-500 ease-out ${scrolled ? "w-[85%]" : "w-[95%]"}`}
+        className={`fixed z-[100] left-1/2 -translate-x-1/2 backdrop-blur-xl bg-background/60 border border-foreground/10 px-4 md:px-8 py-2 md:py-3 flex items-center justify-between transition-[width,background-color,border-color] duration-300 ease-out ${scrolled ? "w-[85%]" : "w-[95%]"}`}
         style={{
           top: 20,
           borderTop: "2px solid #BC002D",
@@ -212,7 +212,7 @@ export default function SiteNav() {
         }}
         initial={navEntered ? false : { y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 170, damping: 22 }}
+        transition={{ type: "spring", stiffness: 470, damping: 37 }}
       >
         {/* Logo */}
         <NavLink
@@ -221,7 +221,7 @@ export default function SiteNav() {
           className="font-display font-bold text-lg md:text-xl tracking-tighter cursor-pointer flex items-center group shrink-0"
           aria-label="AE. — Ahmed Emad Nasr, home"
         >
-          <span className="text-foreground group-hover:text-primary-ink transition-colors duration-300">
+          <span className="text-foreground group-hover:text-primary-ink transition-colors duration-180">
             AE
           </span>
           <span className="text-primary text-2xl leading-none">.</span>
@@ -237,7 +237,7 @@ export default function SiteNav() {
               href={item.href}
               onHome={onHome}
               aria-current={active === item.href ? "page" : undefined}
-              className={`relative flex items-center gap-2 text-[0.625rem] font-mono font-bold uppercase tracking-[0.22em] transition-all duration-300 group ${
+              className={`relative flex items-center gap-2 text-[0.625rem] font-mono font-bold uppercase tracking-[0.22em] transition-all duration-180 group ${
                 active === item.href ? "text-foreground" : "text-foreground/60 hover:text-foreground"
               }`}
             >
@@ -245,11 +245,11 @@ export default function SiteNav() {
                 size={12}
                 strokeWidth={2.5}
                 aria-hidden="true"
-                className={`hidden xl:block transition-colors duration-300 ${active === item.href ? "text-primary-ink" : "text-foreground/30 group-hover:text-primary-ink"}`}
+                className={`hidden xl:block transition-colors duration-180 ${active === item.href ? "text-primary-ink" : "text-foreground/30 group-hover:text-primary-ink"}`}
               />
               <span>{item.name}</span>
               {/* Red dot indicator */}
-              <span className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-none transition-opacity duration-300 ${active === item.href ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`} />
+              <span className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-none transition-opacity duration-180 ${active === item.href ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`} />
             </NavLink>
           ))}
         </div>
@@ -276,7 +276,7 @@ export default function SiteNav() {
             onClick={() => window.dispatchEvent(new Event("sensei:palette"))}
             aria-label="Open command palette (Ctrl+K)"
             title="Commands (Ctrl+K)"
-            className="flex items-center gap-1.5 border border-foreground/10 bg-foreground/[0.03] px-2.5 py-2.5 font-mono text-[0.625rem] text-foreground/60 transition-colors duration-300 hover:border-primary hover:text-primary-ink"
+            className="flex items-center gap-1.5 border border-foreground/10 bg-foreground/[0.03] px-2.5 py-2.5 font-mono text-[0.625rem] text-foreground/60 transition-colors duration-180 hover:border-primary hover:text-primary-ink"
           >
             <Command size={14} />
             <kbd>K</kbd>
@@ -302,7 +302,7 @@ export default function SiteNav() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.18 }}
             className="fixed inset-0 z-[95] lg:hidden bg-background/95 backdrop-blur-2xl overflow-y-auto overscroll-contain"
             onClick={() => setIsOpen(false)}
           >
@@ -342,8 +342,8 @@ export default function SiteNav() {
                   initial={{ opacity: 0, x: -43 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{
-                    delay: 0.1 + idx * 0.07,
-                    duration: 0.58,
+                    delay: 0.06 + idx * 0.042,
+                    duration: 0.348,
                     ease: [0.25, 0.46, 0.45, 0.94],
                   }}
                   className="border-b border-foreground/5 last:border-b-0"
@@ -365,13 +365,13 @@ export default function SiteNav() {
                     size={24}
                     strokeWidth={1.5}
                     aria-hidden="true"
-                    className={`shrink-0 transition-colors duration-300 ${active === item.href ? "text-primary-ink" : "text-foreground/15 group-hover:text-primary-ink"}`}
+                    className={`shrink-0 transition-colors duration-180 ${active === item.href ? "text-primary-ink" : "text-foreground/15 group-hover:text-primary-ink"}`}
                   />
 
                   {/* Name — sized to the screen so "EXPERIENCE" fits a
                       320px phone (it overflowed and squeezed its icon) */}
                   <div className="flex flex-col min-w-0">
-                    <span className={`font-display text-[clamp(1.375rem,7.2vw,1.875rem)] leading-tight font-black uppercase tracking-tight transition-colors duration-300 group-hover:text-primary ${active === item.href ? "text-primary-ink" : "text-foreground"}`}>
+                    <span className={`font-display text-[clamp(1.375rem,7.2vw,1.875rem)] leading-tight font-black uppercase tracking-tight transition-colors duration-180 group-hover:text-primary ${active === item.href ? "text-primary-ink" : "text-foreground"}`}>
                       {item.name}
                     </span>
                     <span className="font-mono text-[0.625rem] text-foreground/60 tracking-[0.3em]" lang="ja">
@@ -380,7 +380,7 @@ export default function SiteNav() {
                   </div>
 
                   {/* Red accent on hover */}
-                  <span className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 w-0 h-[2px] bg-primary group-hover:w-3 sm:group-hover:w-4 transition-all duration-300" aria-hidden="true" />
+                  <span className="absolute -left-4 sm:-left-6 top-1/2 -translate-y-1/2 w-0 h-[2px] bg-primary group-hover:w-3 sm:group-hover:w-4 transition-all duration-180" aria-hidden="true" />
                 </NavLink>
                 </motion.div>
               ))}
@@ -390,7 +390,7 @@ export default function SiteNav() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
+                transition={{ delay: 0.36 }}
                 className="mt-10 flex flex-wrap items-center justify-between gap-4"
               >
                 <div className="flex flex-col gap-3">

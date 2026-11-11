@@ -49,13 +49,13 @@ export const btnPrimary =
 export const btnOutline =
   "inline-flex items-center gap-2 px-4 py-2.5 border border-foreground/15 text-foreground/70 font-mono text-[0.625rem] uppercase tracking-[0.2em] hover:border-primary hover:text-foreground transition-colors";
 export const ctaPrimary =
-  "interactive btn-sheen group flex items-center gap-3 px-6 min-[360px]:px-8 md:px-10 py-4 md:py-5 bg-primary text-white font-mono font-black uppercase tracking-widest text-sm transition-all duration-300 hover:bg-[var(--primary-hover)] hover:-translate-y-[1.7px] active:translate-y-0";
+  "interactive btn-sheen group flex items-center gap-3 px-6 min-[360px]:px-8 md:px-10 py-4 md:py-5 bg-primary text-white font-mono font-black uppercase tracking-widest text-sm transition-all duration-180 hover:bg-[var(--primary-hover)] hover:-translate-y-[1.7px] active:translate-y-0";
 export const ctaSecondary =
-  "interactive group flex items-center gap-3 px-6 min-[360px]:px-8 md:px-10 py-4 md:py-5 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0";
+  "interactive group flex items-center gap-3 px-6 min-[360px]:px-8 md:px-10 py-4 md:py-5 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0";
 
 /* Filter tabs — WorkShowcase */
 export const filterTab = (active: boolean) =>
-  `px-5 py-2.5 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] border transition-all duration-300 ${
+  `px-5 py-2.5 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] border transition-all duration-180 ${
     active
       ? "bg-primary text-white border-primary"
       : "bg-foreground/[0.03] text-foreground/70 border-foreground/10 hover:border-primary/50 hover:text-foreground"
@@ -63,7 +63,7 @@ export const filterTab = (active: boolean) =>
 
 /* Card surface — WorkShowcase / PlatformsSection (used with TiltCard) */
 export const cardSurface =
-  "spotlight group relative bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500";
+  "spotlight group relative bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300";
 
 /* Small label row — the "eyebrow" inside cards and blocks */
 export function Eyebrow({ children, japanese }: { children: ReactNode; japanese?: string }) {

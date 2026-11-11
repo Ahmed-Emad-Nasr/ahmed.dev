@@ -83,7 +83,7 @@ function CaseCard({
       id={`case-${id}`}
       className="scroll-mt-28"
     >
-      <TiltCard className="spotlight group relative bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500 flex flex-col h-full overflow-hidden">
+      <TiltCard className="spotlight group relative bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300 flex flex-col h-full overflow-hidden">
         <CardEffects index={index + 1} />
 
         {cover && (
@@ -104,9 +104,9 @@ function CaseCard({
               decoding="async"
               fetchPriority="low"
               onError={() => setCoverFailed(true)}
-              className="object-cover object-top grayscale group-hover:grayscale-0 group-hover:scale-[1.0425] transition-all duration-1000"
+              className="object-cover object-top grayscale group-hover:grayscale-0 group-hover:scale-[1.0425] transition-all duration-600"
             />
-            <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover:bg-transparent transition-all duration-700" />
+            <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover:bg-transparent transition-all duration-420" />
             <span className="absolute bottom-3 right-3 flex items-center gap-1.5 px-2.5 py-1 bg-background/80 backdrop-blur-md border border-foreground/15 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-foreground">
               <Images size={11} className="text-accent" /> {shotCount}
             </span>
@@ -154,7 +154,7 @@ function CaseCard({
           <h3 className="font-display text-xl md:text-lg lg:text-2xl font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
             <PageLink
               href={detailPath}
-              className="hover:text-primary-ink transition-colors duration-300"
+              className="hover:text-primary-ink transition-colors duration-180"
             >
               {title}
             </PageLink>

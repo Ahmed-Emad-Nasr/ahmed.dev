@@ -32,7 +32,7 @@ export default function ProcessSection() {
           {PORTFOLIO_DATA.process.map((p, idx) => (
             <FadeIn y={28} duration={0.65} delay={idx * 0.08}
               key={p.id}
-              className="relative spotlight bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500"
+              className="relative spotlight bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-300"
             >
               <div className="font-mono text-5xl font-black text-foreground/[0.06] absolute top-4 right-5 select-none" aria-hidden="true" data-deco={p.index} />
               <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.3em] uppercase mb-1">{p.index}</div>
@@ -42,7 +42,7 @@ export default function ProcessSection() {
               {idx < PORTFOLIO_DATA.process.length - 1 && (
                 <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-[2px] bg-primary/40 overflow-visible" aria-hidden="true">
                   {/* A packet travelling to the next step */}
-                  <span className="process-packet absolute -top-[2px] left-0 h-[6px] w-[6px] bg-primary" style={{ animationDelay: `${idx * 0.52}s` }} />
+                  <span className="process-packet absolute -top-[2px] left-0 h-[6px] w-[6px] bg-primary" style={{ animationDelay: `${idx * 0.31}s` }} />
                 </div>
               )}
             </FadeIn>

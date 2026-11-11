@@ -75,7 +75,7 @@ export default function PaletteHint() {
       /* Out of the tab order and the accessibility tree while it is hidden —
          its Dismiss button was reachable by Tab at opacity 0 */
       inert={!open}
-      className={`hidden md:flex fixed left-6 bottom-6 z-[85] max-w-sm items-start gap-4 border border-foreground/10 bg-surface/90 backdrop-blur-xl px-5 py-4 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+      className={`hidden md:flex fixed left-6 bottom-6 z-[85] max-w-sm items-start gap-4 border border-foreground/10 bg-surface/90 backdrop-blur-xl px-5 py-4 transition-all duration-420 ease-[cubic-bezier(0.23,1,0.32,1)] ${
         open ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0 pointer-events-none"
       }`}
     >

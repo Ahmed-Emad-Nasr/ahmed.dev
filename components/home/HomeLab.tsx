@@ -49,15 +49,15 @@ const TONE: Record<Node["tone"], string> = {
 
 /* Links as paths, in the direction the data flows */
 const LINKS: { d: string; tone: Node["tone"]; label?: string; lx?: number; ly?: number; dur: number }[] = [
-  { d: "M230 77 H310", tone: "primary", label: "attack", lx: 270, ly: 68, dur: 2.98 },
-  { d: "M230 77 C270 77 270 227 310 227", tone: "primary", dur: 3.78 },
-  { d: "M125 264 V340", tone: "muted", label: "mirror", lx: 160, ly: 306, dur: 2.7 },
-  { d: "M520 77 C560 77 560 190 600 190", tone: "muted", label: "logs", lx: 585, ly: 118, dur: 3.24 },
-  { d: "M520 227 H600", tone: "muted", dur: 2.7 },
-  { d: "M230 377 C420 377 460 270 600 270", tone: "tertiary", label: "alerts", lx: 420, ly: 352, dur: 4.32 },
-  { d: "M810 190 C830 190 830 77 850 77", tone: "accent", dur: 2.98 },
-  { d: "M810 227 H850", tone: "accent", dur: 2.44 },
-  { d: "M810 270 C830 270 830 377 850 377", tone: "tertiary", dur: 3.24 },
+  { d: "M230 77 H310", tone: "primary", label: "attack", lx: 270, ly: 68, dur: 1.79 },
+  { d: "M230 77 C270 77 270 227 310 227", tone: "primary", dur: 2.27 },
+  { d: "M125 264 V340", tone: "muted", label: "mirror", lx: 160, ly: 306, dur: 1.62 },
+  { d: "M520 77 C560 77 560 190 600 190", tone: "muted", label: "logs", lx: 585, ly: 118, dur: 1.94 },
+  { d: "M520 227 H600", tone: "muted", dur: 1.62 },
+  { d: "M230 377 C420 377 460 270 600 270", tone: "tertiary", label: "alerts", lx: 420, ly: 352, dur: 2.59 },
+  { d: "M810 190 C830 190 830 77 850 77", tone: "accent", dur: 1.79 },
+  { d: "M810 227 H850", tone: "accent", dur: 1.46 },
+  { d: "M810 270 C830 270 830 377 850 377", tone: "tertiary", dur: 1.94 },
 ];
 
 export default function HomeLab() {
@@ -106,7 +106,7 @@ export default function HomeLab() {
                 )}
                 {i % 2 === 0 && (
                   <circle r="4" fill={TONE[l.tone]} className="lab-packet">
-                    <animateMotion dur={`${l.dur * 1.6}s`} repeatCount="indefinite" path={l.d} begin={`${(i * 0.37).toFixed(2)}s`} />
+                    <animateMotion dur={`${l.dur * 1.6}s`} repeatCount="indefinite" path={l.d} begin={`${(i * 0.22).toFixed(2)}s`} />
                   </circle>
                 )}
                 {l.label && (

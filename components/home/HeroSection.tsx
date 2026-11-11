@@ -146,57 +146,57 @@ export default function HeroSection({
           gsap.from(".hero-content > *", {
             y: 43.4,
             opacity: 0,
-            duration: 1.32,
-            stagger: 0.172,
+            duration: 0.792,
+            stagger: 0.103,
             ease: "power4.out",
-            delay: 0.4,
+            delay: 0.24,
           });
 
           /* Entrance: portrait */
           gsap.from(".hero-image", {
             scale: 1.072,
             opacity: 0,
-            duration: 1.72,
+            duration: 1.032,
             ease: "power2.out",
-            delay: 0.15,
+            delay: 0.09,
           });
 
           /* Entrance: background kanji */
           gsap.from(".japanese-bg", {
             x: 72.2,
             opacity: 0,
-            duration: 1.72,
+            duration: 1.032,
             ease: "expo.out",
-            delay: 0.8,
+            delay: 0.48,
           });
 
           /* Entrance: hinomaru sun */
           gsap.from(".hinomaru-sun", {
             scale: 0,
             opacity: 0,
-            duration: 2.07,
+            duration: 1.242,
             ease: "expo.out",
-            delay: 0.25,
+            delay: 0.15,
           });
 
           /* Entrance: spec sheet */
           gsap.from(".spec-item", {
             x: -21.7,
             opacity: 0,
-            duration: 0.75,
-            stagger: 0.115,
+            duration: 0.45,
+            stagger: 0.069,
             ease: "power3.out",
-            delay: 1,
+            delay: 0.6,
           });
 
           /* Entrance: speed lines */
           gsap.from(".speed-line", {
             scaleX: 0,
             opacity: 0,
-            duration: 1.32,
-            stagger: 0.057,
+            duration: 0.792,
+            stagger: 0.034,
             ease: "expo.out",
-            delay: 1.25,
+            delay: 0.75,
             transformOrigin: "left center",
           });
         }, containerRef);
@@ -363,7 +363,7 @@ export default function HeroSection({
 
             {/* Orbit inscription  stack names circling the portrait */}
             <div
-              className="absolute -inset-3 hidden sm:block animate-[spin_64s_linear_infinite] pointer-events-none"
+              className="absolute -inset-3 hidden sm:block animate-[spin_38s_linear_infinite] pointer-events-none"
               aria-hidden="true"
             >
               <svg viewBox="0 0 200 200" className="w-full h-full">
@@ -397,7 +397,7 @@ export default function HeroSection({
               className="group/photo absolute inset-5 block rounded-full"
               aria-label="Watch the YouTube channel"
             >
-              <div className="absolute inset-0 rounded-full overflow-hidden border-2 border-foreground/10 group-hover/photo:border-primary/40 transition-colors duration-700">
+              <div className="absolute inset-0 rounded-full overflow-hidden border-2 border-foreground/10 group-hover/photo:border-primary/40 transition-colors duration-420">
                 {/* A plain <img> on purpose: with `images.unoptimized` (required
                     by the static export) next/image never writes a srcset, so
                     every phone downloaded the 2048px original (318 KB) for a
@@ -413,15 +413,15 @@ export default function HeroSection({
                   height={560}
                   fetchPriority="high"
                   decoding="async"
-                  className="w-full h-full object-cover object-top grayscale group-hover/photo:grayscale-0 group-hover/photo:scale-[1.0425] transition-all duration-1000"
+                  className="w-full h-full object-cover object-top grayscale group-hover/photo:grayscale-0 group-hover/photo:scale-[1.0425] transition-all duration-600"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/25 via-transparent to-transparent group-hover/photo:from-transparent transition-all duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/25 via-transparent to-transparent group-hover/photo:from-transparent transition-all duration-420" />
               </div>
             </a>
 
             {/* Hanko seal  the maker's stamp */}
             <div
-              className="absolute bottom-5 right-5 z-20 w-12 h-12 lg:w-14 lg:h-14 bg-primary rotate-6 hover:rotate-0 transition-transform duration-500 flex items-center justify-center"
+              className="absolute bottom-5 right-5 z-20 w-12 h-12 lg:w-14 lg:h-14 bg-primary rotate-6 hover:rotate-0 transition-transform duration-300 flex items-center justify-center"
               role="img"
               aria-label="Maker's seal"
             >
@@ -495,7 +495,7 @@ export default function HeroSection({
                   target="_blank"
                   rel="noopener noreferrer"
                   download
-                  className="interactive btn-sheen group flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 bg-primary text-white font-mono font-black uppercase tracking-widest text-sm transition-all duration-300 hover:bg-[#d60030] hover:-translate-y-[1.7px] active:translate-y-0"
+                  className="interactive btn-sheen group flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 bg-primary text-white font-mono font-black uppercase tracking-widest text-sm transition-all duration-180 hover:bg-[#d60030] hover:-translate-y-[1.7px] active:translate-y-0"
                   style={{
                     clipPath: "polygon(0 0, 100% 0, 96% 100%, 4% 100%)",
                   }}
@@ -505,7 +505,7 @@ export default function HeroSection({
                   <Download
                     size={16}
                     aria-hidden="true"
-                    className="transition-transform duration-300 group-hover:translate-y-[1.7px]"
+                    className="transition-transform duration-180 group-hover:translate-y-[1.7px]"
                   />
                   Download CV
                   <span className="sr-only"> (download)</span>
@@ -518,11 +518,11 @@ export default function HeroSection({
                 </a>
                 <a
                   href="#work"
-                  className="interactive group flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0"
+                  className="interactive group flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0"
                 >
                   <ArrowDown
                     size={14}
-                    className="text-primary-ink transition-transform duration-300 group-hover:translate-y-[1.7px]"
+                    className="text-primary-ink transition-transform duration-180 group-hover:translate-y-[1.7px]"
                   />
                   View Work
                   <span
@@ -542,16 +542,16 @@ export default function HeroSection({
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/social relative w-11 h-11 flex items-center justify-center border border-foreground/10 bg-foreground/[0.02] text-foreground/60 transition-all duration-300 hover:border-primary hover:text-primary-ink hover:-translate-y-[3.4px] active:translate-y-0"
+                    className="group/social relative w-11 h-11 flex items-center justify-center border border-foreground/10 bg-foreground/[0.02] text-foreground/60 transition-all duration-180 hover:border-primary hover:text-primary-ink hover:-translate-y-[3.4px] active:translate-y-0"
                     aria-label={s.name}
                   >
                     <span
-                      className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-primary/0 group-hover/social:border-primary transition-colors duration-300"
+                      className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-primary/0 group-hover/social:border-primary transition-colors duration-180"
                       aria-hidden="true"
                     />
                     <s.icon size={18} strokeWidth={1.5} />
                     <span
-                      className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 bg-background border border-primary/40 font-mono text-[0.5625rem] font-bold tracking-[0.25em] uppercase text-primary-ink opacity-0 group-hover/social:opacity-100 transition-opacity duration-300"
+                      className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 bg-background border border-primary/40 font-mono text-[0.5625rem] font-bold tracking-[0.25em] uppercase text-primary-ink opacity-0 group-hover/social:opacity-100 transition-opacity duration-180"
                       aria-hidden="true"
                     >
                       {s.name}

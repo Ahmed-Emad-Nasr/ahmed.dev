@@ -128,7 +128,7 @@ function Facts({ facts }: { facts: NonNullable<CaseDetail["facts"]> }) {
 
 function Chain({ chain }: { chain: NonNullable<CaseDetail["chain"]> }) {
   const { ref, inView } = useInView<HTMLOListElement>();
-  const step = 0.35; // seconds between nodes
+  const step = 0.21; // seconds between nodes
   return (
     <ol ref={ref} className="relative pl-8" data-inview={inView}>
       {/* the spine draws from top to bottom across the whole chain */}
@@ -142,7 +142,7 @@ function Chain({ chain }: { chain: NonNullable<CaseDetail["chain"]> }) {
       {chain.map((c, i) => (
         <li key={i} className="relative pb-5 last:pb-0">
           <span
-            className="absolute -left-8 top-0.5 flex h-6 w-6 items-center justify-center border border-foreground/20 bg-background font-mono text-[0.5625rem] font-bold text-foreground/60 transition-all duration-500 data-[on=true]:border-primary data-[on=true]:text-primary-ink"
+            className="absolute -left-8 top-0.5 flex h-6 w-6 items-center justify-center border border-foreground/20 bg-background font-mono text-[0.5625rem] font-bold text-foreground/60 transition-all duration-300 data-[on=true]:border-primary data-[on=true]:text-primary-ink"
             style={{ transitionDelay: `${i * step}s` }}
             data-on={inView}
             aria-hidden="true"
@@ -150,7 +150,7 @@ function Chain({ chain }: { chain: NonNullable<CaseDetail["chain"]> }) {
             {String(i + 1).padStart(2, "0")}
           </span>
           <div
-            className="flex flex-wrap items-baseline gap-x-3 gap-y-1 opacity-70 translate-x-2 transition-all duration-500 data-[on=true]:opacity-100 data-[on=true]:translate-x-0 motion-reduce:opacity-100 motion-reduce:translate-x-0 motion-reduce:transition-none"
+            className="flex flex-wrap items-baseline gap-x-3 gap-y-1 opacity-70 translate-x-2 transition-all duration-300 data-[on=true]:opacity-100 data-[on=true]:translate-x-0 motion-reduce:opacity-100 motion-reduce:translate-x-0 motion-reduce:transition-none"
             style={{ transitionDelay: `${i * step}s` }}
             data-on={inView}
           >
@@ -180,15 +180,15 @@ function Timeline({ timeline }: { timeline: NonNullable<CaseDetail["timeline"]> 
     <ol ref={ref} className="relative border-l border-foreground/10 ml-2">
       <span
         className="absolute -left-px top-0 h-full w-[2px] bg-tertiary origin-top scale-y-0 transition-transform ease-out data-[on=true]:scale-y-100"
-        style={{ transitionDuration: `${Math.max(0.6, timeline.length * 0.3)}s` }}
+        style={{ transitionDuration: `${Math.max(0.36, timeline.length * 0.18)}s` }}
         data-on={inView}
         aria-hidden="true"
       />
       {timeline.map((t, i) => (
         <li
           key={i}
-          className="relative pl-7 pb-6 last:pb-0 opacity-70 translate-y-1.5 transition-all duration-500 data-[on=true]:opacity-100 data-[on=true]:translate-y-0"
-          style={{ transitionDelay: `${i * 0.3}s` }}
+          className="relative pl-7 pb-6 last:pb-0 opacity-70 translate-y-1.5 transition-all duration-300 data-[on=true]:opacity-100 data-[on=true]:translate-y-0"
+          style={{ transitionDelay: `${i * 0.18}s` }}
           data-on={inView}
         >
           <span className="absolute -left-[6px] top-1.5 h-[11px] w-[11px] rotate-45 border border-tertiary bg-background" aria-hidden="true" />
@@ -304,7 +304,7 @@ function ReportViewer({ href, title }: { href: string; title: string }) {
           onClick={() => setOpen(true)}
           className="group relative w-full border border-dashed border-foreground/15 bg-surface/40 px-6 py-10 flex flex-col items-center gap-3 hover:border-primary/50 transition-colors"
         >
-          <FileText size={28} className="text-primary-ink transition-transform duration-500 group-hover:-translate-y-[3.4px]" aria-hidden="true" />
+          <FileText size={28} className="text-primary-ink transition-transform duration-300 group-hover:-translate-y-[3.4px]" aria-hidden="true" />
           <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.3em] text-foreground">Read the full report here</span>
           <span className="text-xs text-foreground/60">Opens the technical PDF inside this page — nothing is downloaded</span>
         </button>

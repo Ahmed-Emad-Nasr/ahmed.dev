@@ -74,9 +74,9 @@ export default function NotFound() {
                   <li key={entry.id}>
                     <PageLink
                       href={`/blog/${entry.id}`}
-                      className="group spotlight relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-500"
+                      className="group spotlight relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-300"
                     >
-                      <span className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-primary transition-colors duration-300 mb-3">
+                      <span className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-primary transition-colors duration-180 mb-3">
                         {entry.label}
                       </span>
                       <span className="text-sm text-foreground/60 font-light leading-relaxed">{entry.why}</span>

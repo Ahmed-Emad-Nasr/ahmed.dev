@@ -9,7 +9,7 @@
  *
  * HOW TO ADD A MASCOT: draw an SVG (viewBox 0 0 100 100) as a const like OWL
  * below, then add { id, name, role, art } to the MASCOTS array.
- * Speed of the float → `duration: 5.5` in the motion.div at the bottom.
+ * Speed of the float → `duration: 4.5` in the motion.div at the bottom.
  */
 
 import { useEffect, useState, type ReactNode } from "react";
@@ -147,7 +147,7 @@ export function HeroMascot({ className }: { className?: string }) {
       bounce.start({
         y: [0, -15.3, 0],
         scale: [1, 1.051, 1],
-        transition: { duration: 0.5, ease: "easeOut" },
+        transition: { duration: 0.3, ease: "easeOut" },
       });
     }
   };
@@ -156,7 +156,7 @@ export function HeroMascot({ className }: { className?: string }) {
     <motion.div
       className={className}
       animate={reduced ? {} : { y: [0, -3.6, 0] }}
-      transition={{ duration: 7.5, repeat: Infinity, ease: "easeInOut" }}
+      transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
     >
       <motion.button
         type="button"
@@ -169,7 +169,7 @@ export function HeroMascot({ className }: { className?: string }) {
         <span className="block">
           {mascot.art}
         </span>
-        <span className="pointer-events-none absolute -bottom-7 left-0 sm:left-1/2 sm:-translate-x-1/2 whitespace-nowrap border border-foreground/15 bg-background/90 px-2 py-0.5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-foreground opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+        <span className="pointer-events-none absolute -bottom-7 left-0 sm:left-1/2 sm:-translate-x-1/2 whitespace-nowrap border border-foreground/15 bg-background/90 px-2 py-0.5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-foreground opacity-0 backdrop-blur-sm transition-opacity duration-180 group-hover:opacity-100 group-focus-visible:opacity-100">
           {mascot.name} • {mascot.role}
         </span>
       </motion.button>

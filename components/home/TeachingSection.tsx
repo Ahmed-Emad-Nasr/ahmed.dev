@@ -173,7 +173,7 @@ export default function TeachingSection() {
                             href={r.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-start gap-1.5 hover:text-primary transition-colors duration-300"
+                            className="inline-flex items-start gap-1.5 hover:text-primary transition-colors duration-180"
                           >
                             {r.org}
                             <ArrowUpRight

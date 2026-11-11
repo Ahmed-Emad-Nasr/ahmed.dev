@@ -22,9 +22,9 @@ export default function StatsBar({ stats }: { stats: Stat[] }) {
           <FadeIn as="a" y={16} duration={0.55} delay={i * 0.07}
             key={s.label}
             href={s.href ?? "#"}
-            className="group relative px-6 py-5 flex items-center gap-4 overflow-hidden hover:bg-foreground/[0.03] transition-colors duration-300"
+            className="group relative px-6 py-5 flex items-center gap-4 overflow-hidden hover:bg-foreground/[0.03] transition-colors duration-180"
           >
-            <span className="absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 bg-accent transition-transform duration-500 group-hover:scale-x-100" aria-hidden="true" />
+            <span className="absolute bottom-0 left-0 h-[2px] w-full origin-left scale-x-0 bg-accent transition-transform duration-300 group-hover:scale-x-100" aria-hidden="true" />
             <span className="font-mono text-xl md:text-2xl font-black text-accent tabular-nums">
               <CountUp target={s.target} suffix={s.suffix} />
             </span>
@@ -32,7 +32,7 @@ export default function StatsBar({ stats }: { stats: Stat[] }) {
               <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">{s.label}</span>
               <span className="jp-eyebrow text-[0.5625rem] text-foreground/25" lang="ja" aria-hidden="true" data-jp={s.japanese} />
             </span>
-            <span className="ml-auto font-mono text-xs text-foreground/20 group-hover:text-accent transition-all duration-300 group-hover:translate-x-[1.7px]" aria-hidden="true">→</span>
+            <span className="ml-auto font-mono text-xs text-foreground/20 group-hover:text-accent transition-all duration-180 group-hover:translate-x-[1.7px]" aria-hidden="true">→</span>
           </FadeIn>
         ))}
       </div>

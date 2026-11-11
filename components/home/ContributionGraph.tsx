@@ -62,7 +62,7 @@ export function ContributionGraph({ stats }: { stats: ContributionStats }) {
     >
       <div className="mb-4 flex flex-wrap items-baseline gap-x-4 gap-y-1">
         <span className="font-mono text-2xl font-black text-accent tabular-nums">
-          <CountUp target={total} duration={2070} />
+          <CountUp target={total} duration={1240} />
         </span>
         <span className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">
           contributions in the last year

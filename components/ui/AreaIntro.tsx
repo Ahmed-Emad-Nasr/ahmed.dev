@@ -41,7 +41,7 @@ export default function AreaIntro({
             <a
               key={j.href}
               href={j.href}
-              className="group inline-flex items-center gap-2 border border-foreground/10 bg-foreground/[0.03] px-3.5 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:border-primary hover:text-foreground"
+              className="group inline-flex items-center gap-2 border border-foreground/10 bg-foreground/[0.03] px-3.5 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-180 hover:border-primary hover:text-foreground"
             >
               {j.label}
               {j.n !== undefined && <span className="text-accent tabular-nums">{j.n}</span>}

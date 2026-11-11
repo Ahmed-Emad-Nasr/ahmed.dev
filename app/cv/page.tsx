@@ -46,7 +46,7 @@ import { KanjiWatermark, ctaPrimary, ctaSecondary } from "@/components/ui/kit";
 /* print: = the Ctrl/Cmd+P version — a compact, single-column CV on paper */
 const sectionWrap = "mt-20 print:mt-[14pt]";
 const panel =
-  "spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm hover:border-primary/20 transition-all duration-700 overflow-hidden " +
+  "spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm hover:border-primary/20 transition-all duration-420 overflow-hidden " +
   "print:bg-transparent print:border-0 print:backdrop-blur-none print:overflow-visible";
 const entryWrap =
   "relative px-6 md:px-10 py-7 border-b border-foreground/5 last:border-b-0 break-inside-avoid print:px-0 print:py-[5pt] print:border-0";
@@ -251,12 +251,12 @@ export default function CvPage() {
 
             <div className="mt-8 flex flex-wrap gap-4 print:hidden">
               <a className={ctaPrimary} href={normalizePublicHref(CV_PDF_HREF)} download style={{ clipPath: "polygon(0 0, 100% 0, 96% 100%, 4% 100%)" }}>
-                <Download size={16} className="transition-transform duration-300 group-hover:translate-y-[1.7px]" />
+                <Download size={16} className="transition-transform duration-180 group-hover:translate-y-[1.7px]" />
                 RESUME.pdf
                 <span className="brush-jp text-base normal-case tracking-normal opacity-70" lang="ja" aria-hidden="true" data-jp="履歴書" />
               </a>
               <PageLink className={ctaSecondary} href="/">
-                <ArrowLeft size={14} className="text-primary-ink transition-transform duration-300 group-hover:-translate-x-[1.7px]" />
+                <ArrowLeft size={14} className="text-primary-ink transition-transform duration-180 group-hover:-translate-x-[1.7px]" />
                 ahmed.dev
               </PageLink>
             </div>
@@ -342,7 +342,7 @@ export default function CvPage() {
               {[...CV_SKILLS, { label: "Languages", items: languages.map((l) => `${l.name} (${l.level})`) }].map((group) => (
                 <div
                   key={group.label}
-                  className="spotlight spotlight-blue group relative bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-500 break-inside-avoid print:bg-transparent print:border-0 print:p-0 print:flex print:gap-[6pt]"
+                  className="spotlight spotlight-blue group relative bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-300 break-inside-avoid print:bg-transparent print:border-0 print:p-0 print:flex print:gap-[6pt]"
                 >
                   <dt className="font-display text-base font-black uppercase tracking-tight text-foreground mb-3 print:mb-0 print:text-[9pt] print:font-bold print:normal-case print:tracking-normal print:text-black print:shrink-0">
                     {group.label}

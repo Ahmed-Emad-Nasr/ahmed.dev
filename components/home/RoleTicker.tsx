@@ -14,10 +14,10 @@ import { useEffect, useRef, useState } from "react";
 import { prefersReducedMotion } from "@/lib/fx";
 
 /* Timing in milliseconds — change these to speed up / slow down the typing */
-const TYPE = 94; // per letter typed
-const ERASE = 47; // per letter erased
-const HOLD = 2070; // how long a full role stays on screen
-const GAP = 400; // pause between erasing one role and typing the next
+const TYPE = 56; // per letter typed
+const ERASE = 28; // per letter erased
+const HOLD = 1240; // how long a full role stays on screen
+const GAP = 240; // pause between erasing one role and typing the next
 
 export function RoleTicker({ roles, className = "" }: { roles: string[]; className?: string }) {
   const [text, setText] = useState(roles[0] ?? "");
@@ -98,7 +98,7 @@ export function RoleTicker({ roles, className = "" }: { roles: string[]; classNa
         >
           <span className="text-primary">&gt;&nbsp;</span>
           <span className="text-foreground/85">{text}</span>
-          <span className="ml-1 inline-block h-[1.1em] w-[0.55em] bg-primary animate-[caret-blink_1.36s_step-end_infinite]" />
+          <span className="ml-1 inline-block h-[1.1em] w-[0.55em] bg-primary animate-[caret-blink_0.82s_step-end_infinite]" />
         </span>
       )}
     </p>

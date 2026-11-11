@@ -93,7 +93,7 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
               role="tab"
               aria-selected={filter === f.id}
               onClick={() => setFilter(f.id)}
-              className={`px-5 py-2.5 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] border transition-all duration-300 ${
+              className={`px-5 py-2.5 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] border transition-all duration-180 ${
                 filter === f.id
                   ? "bg-primary text-white border-primary"
                   : "bg-foreground/[0.03] text-foreground/70 border-foreground/10 hover:border-primary/50 hover:text-foreground"
@@ -115,7 +115,7 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
             const Icon = TYPE_ICON[w.type];
             return (
               <FadeIn y={32} duration={0.7} delay={(idx % 2) * 0.1} key={w.id}>
-                <TiltCard className="spotlight group relative bg-surface/60 border border-foreground/5 p-8 hover:border-primary/40 transition-colors duration-500 flex flex-col h-full">
+                <TiltCard className="spotlight group relative bg-surface/60 border border-foreground/5 p-8 hover:border-primary/40 transition-colors duration-300 flex flex-col h-full">
                   <CardEffects index={idx + 1} />
                   <div className="flex items-start justify-between gap-4 mb-5">
                     <div className="flex items-center gap-3">
@@ -218,7 +218,7 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
                       >
                         <FileText
                           size={13}
-                          className="transition-transform duration-300 group-hover/cs:-translate-y-[1.7px]"
+                          className="transition-transform duration-180 group-hover/cs:-translate-y-[1.7px]"
                         />{" "}
                         Case study
                       </PageLink>

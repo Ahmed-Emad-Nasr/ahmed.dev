@@ -87,7 +87,7 @@ function Steps({ steps, code, start = 1 }: { steps: SummaryStep[]; code: readonl
         <FadeIn as="li" x={-14} y={0} duration={0.55} delay={Math.min(i, 8) * 0.07} key={i} className="relative pl-6 md:pl-8 pb-5 last:pb-0">
           <span
             className="brief-node absolute -left-[5px] top-[0.55em] w-[9px] h-[9px] bg-background border border-primary rotate-45"
-            style={{ animationDelay: `${i * 0.345}s` }}
+            style={{ animationDelay: `${i * 0.207}s` }}
             aria-hidden="true"
           />
           <span className="block font-mono text-[0.5625rem] font-bold tracking-[0.25em] text-foreground/65 mb-1 tabular-nums" aria-hidden="true">

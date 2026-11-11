@@ -61,13 +61,13 @@
   --container-7xl: 80rem;
 
   /* Lighter effects: every blur radius is 15% under Tailwind's default
-     (8 / 12 / 24 / 40px), and the pulse loops 15% slower (default 2s).
+     (8 / 12 / 24 / 40px); the pulse loops in 1.62s (default 2s).
      To go back, delete these five lines. */
   --blur-sm: 6.8px;
   --blur-md: 10.2px;
   --blur-xl: 20.4px;
   --blur-2xl: 34px;
-  --animate-pulse: pulse 2.7s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-pulse: pulse 1.62s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -212,10 +212,10 @@
   button:not(:disabled),
   a[role="button"] {
     transition:
-      transform 0.3s var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
-      border-color 0.3s ease,
-      background-color 0.3s ease,
-      color 0.3s ease;
+      transform 0.18s var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+      border-color 0.18s ease,
+      background-color 0.18s ease,
+      color 0.18s ease;
   }
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
@@ -286,7 +286,7 @@
     font-family: var(--font-mono);
     font-size: 0.75rem;
     padding: 10px 16px;
-    transition: top 0.2s ease;
+    transition: top 0.12s ease;
   }
 
   .skip-link:focus {
@@ -333,8 +333,8 @@
 
   body {
     transition:
-      background-color 0.35s ease,
-      color 0.35s ease;
+      background-color 0.21s ease,
+      color 0.21s ease;
   }
 }
 
@@ -383,7 +383,7 @@
     transparent
   );
   transform: skewX(-20deg);
-  transition: left 0.5s ease;
+  transition: left 0.3s ease;
   z-index: 1;
 }
 
@@ -477,7 +477,7 @@
   inset: 0;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.21s ease;
   background: radial-gradient(
     320px circle at var(--mx, 50%) var(--my, 50%),
     color-mix(in srgb, var(--primary) 14%, transparent),
@@ -492,8 +492,8 @@
 @media (hover: hover) {
   .spotlight {
     transition:
-      border-color 0.34s ease,
-      background-color 0.34s ease;
+      border-color 0.204s ease,
+      background-color 0.204s ease;
   }
 
   .spotlight:hover {
@@ -527,7 +527,7 @@
 .ticker-track {
   display: flex;
   min-width: max-content;
-  animation: ticker-scroll 108s linear infinite;
+  animation: ticker-scroll 64.8s linear infinite;
 }
 
 .ticker-strip:hover .ticker-track {
@@ -562,8 +562,8 @@
 /* ─── Contribution cells pop as Pac-Man passes ─── */
 
 .cell-pop {
-  animation: cell-pop 0.46s ease both;
-  animation-delay: calc(var(--i, 0) * 14ms);
+  animation: cell-pop 0.276s ease both;
+  animation-delay: calc(var(--i, 0) * 8ms);
 }
 
 @keyframes cell-pop {
@@ -751,9 +751,9 @@
     var(--surface)
   );
   transition:
-    border-color 0.3s,
-    transform 0.3s,
-    background-color 0.8s ease-out;
+    border-color 0.18s,
+    transform 0.18s,
+    background-color 0.48s ease-out;
 }
 .attack-seg::before {
   content: "";
@@ -846,9 +846,9 @@
     var(--surface)
   );
   transition:
-    border-color 0.3s,
-    transform 0.3s,
-    background-color 0.8s ease-out;
+    border-color 0.18s,
+    transform 0.18s,
+    background-color 0.48s ease-out;
 }
 .attack-tile:hover,
 .attack-tile:focus-visible {
@@ -889,7 +889,7 @@
 }
 .attack-tile-foot > span {
   color: var(--primary-ink);
-  transition: transform 0.3s;
+  transition: transform 0.18s;
 }
 .attack-tile:hover .attack-tile-foot > span {
   transform: translateX(2.55px);
@@ -924,7 +924,7 @@
   border-top: 2px solid var(--primary);
 }
 .attack-pop:popover-open {
-  animation: attack-pop-in 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: attack-pop-in 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .attack-pop::backdrop {
   background: rgb(0 0 0 / 0.65);
@@ -969,8 +969,8 @@
   border: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
   color: color-mix(in srgb, var(--foreground) 70%, transparent);
   transition:
-    border-color 0.2s,
-    color 0.2s;
+    border-color 0.12s,
+    color 0.12s;
 }
 .attack-pop-close:hover {
   border-color: var(--primary);
@@ -990,8 +990,8 @@
   border-bottom: 1px solid
     color-mix(in srgb, var(--foreground) 10%, transparent);
   transition:
-    color 0.2s,
-    background-color 0.2s;
+    color 0.12s,
+    background-color 0.12s;
 }
 .attack-pop-cases a:hover,
 .attack-pop-cases a:focus-visible {
@@ -1005,7 +1005,7 @@
 }
 .attack-pop-go {
   color: var(--primary-ink);
-  transition: transform 0.2s;
+  transition: transform 0.12s;
 }
 .attack-pop-cases a:hover .attack-pop-go {
   transform: translateX(2.55px);
@@ -1055,7 +1055,7 @@
        motion none of it runs and nothing is hidden. ─────────────────── */
 @media (prefers-reduced-motion: no-preference) {
   .process-packet {
-    animation: process-packet 3s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+    animation: process-packet 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
   /* The pulse is a pseudo-element scaling out (transform + opacity only,
      no repaint every frame) */
@@ -1064,7 +1064,7 @@
     position: absolute;
     inset: -1px;
     border: 1px solid var(--primary);
-    animation: brief-node 4s ease-out infinite;
+    animation: brief-node 2.4s ease-out infinite;
     animation-delay: inherit;
   }
 }
@@ -1113,9 +1113,9 @@
     var(--surface)
   );
   transition:
-    transform 0.3s,
-    border-color 0.3s,
-    background-color 0.8s ease-out;
+    transform 0.18s,
+    border-color 0.18s,
+    background-color 0.48s ease-out;
 }
 .attack-cell:hover,
 .attack-cell:focus-visible {
@@ -1168,7 +1168,7 @@ html[data-nav-pending]::after {
 
 /* ── Detection library: rows cascade in (again on every filter), radar spins ── */
 .rule-row {
-  animation: rule-row-in 0.58s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: rule-row-in 0.348s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 @keyframes rule-row-in {
   from {
@@ -1177,7 +1177,7 @@ html[data-nav-pending]::after {
   }
 }
 .radar-spin {
-  animation: radar-spin 5.4s linear infinite;
+  animation: radar-spin 3.24s linear infinite;
 }
 @keyframes radar-spin {
   to {
@@ -1193,7 +1193,7 @@ html[data-nav-pending]::after {
 
 /* ── Triage challenge ── */
 .siren-pulse {
-  animation: siren-pulse 2.6s ease-in-out infinite;
+  animation: siren-pulse 1.56s ease-in-out infinite;
 }
 @keyframes siren-pulse {
   50% {
@@ -1202,7 +1202,7 @@ html[data-nav-pending]::after {
   }
 }
 .caret-blink {
-  animation: caret-blink 1.84s steps(1) infinite;
+  animation: caret-blink 1.104s steps(1) infinite;
 }
 @keyframes caret-blink {
   50% {
@@ -1210,7 +1210,7 @@ html[data-nav-pending]::after {
   }
 }
 .answer-shake {
-  animation: answer-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: answer-shake 0.24s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 @keyframes answer-shake {
   20%,
@@ -1223,7 +1223,7 @@ html[data-nav-pending]::after {
   }
 }
 .answer-in {
-  animation: answer-in 0.58s cubic-bezier(0.23, 1, 0.32, 1) both;
+  animation: answer-in 0.348s cubic-bezier(0.23, 1, 0.32, 1) both;
 }
 @keyframes answer-in {
   from {
@@ -1250,7 +1250,7 @@ html[data-nav-pending]::after {
   }
 }
 .lab-beacon {
-  animation: siren-pulse 2.7s ease-in-out infinite;
+  animation: siren-pulse 1.62s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -1274,7 +1274,7 @@ html[data-nav-pending]::after {
   opacity: 0.55;
 }
 .lab-node rect:first-child {
-  transition: stroke-opacity 0.3s;
+  transition: stroke-opacity 0.18s;
 }
 .lab-node:hover rect:first-child {
   stroke-opacity: 1;
