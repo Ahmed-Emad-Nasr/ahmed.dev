@@ -5,7 +5,7 @@
  * no JavaScript of its own (styles in globals.css, .attack-*; the heat
  * filling in on arrival is HeatReveal.tsx).
  *
- * ═══ components/blog/AttackCoverage.tsx — the MITRE ATT&CK section (#attack on /blog) ═══
+ * ═══ components/blog/AttackCoverage.tsx — the MITRE ATT&CK section (#attack, blog part of the home page) ═══
  * Nothing to type in here: the numbers are computed from which ATT&CK
  * techniques each case uses — caseAttackMapping in data/attack.ts
  * (case id → ["T1059.001", …]). Map a new case there and its techniques
@@ -167,7 +167,7 @@ function TechniqueTile({ technique, tactic, max }: { technique: CoverageTechniqu
 }
 
 /* The coverage is computed at build time (lib/library-data.ts) by
-   app/blog/page.tsx and passed in — the case and ATT&CK data files never
+   app/page.tsx and passed in — the case and ATT&CK data files never
    ship with this component's chunk. */
 export default function AttackCoverage({ coverage }: { coverage: AttackCoverageData }) {
   const { tactics, techniqueCount, mappedCaseCount }: Props = coverage;

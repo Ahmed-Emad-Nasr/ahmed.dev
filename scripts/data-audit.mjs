@@ -2,7 +2,7 @@
 /*
  * data-audit.mjs — cross-file checks TypeScript cannot do.
  *
- * The data files reference cases by string id (skills, start-here, ATT&CK).
+ * The data files reference cases by string id (skills, ATT&CK).
  * A renamed or mistyped id still compiles and builds, and the visitor gets a
  * 404. This reads the data files and checks every reference.
  *
@@ -44,7 +44,6 @@ section("2. References to cases");
     /* only the ids inside `evidence: [...]` (the group ids are not cases) */
     "skills.ts": (src) =>
       [...src.matchAll(/evidence:\s*\[([\s\S]*?)\]/g)].flatMap((blk) => [...blk[1].matchAll(/id:\s*"([a-z0-9-]+)"/g)].map((m) => m[1])),
-    "start-here.ts": (src) => [...src.matchAll(/^\s{4}id:\s*"([a-z0-9-]+)"/gm)].map((m) => m[1]),
     "attack.ts": (src) => [...src.slice(src.indexOf("caseAttackMapping")).matchAll(/^\s{2}"([a-z0-9-]+)":\s*\[/gm)].map((m) => m[1]),
   };
   let bad = 0;
@@ -95,20 +94,8 @@ if (has("youtube.ts")) {
   else ok("all playlist ids are valid");
 }
 
-/* ── 5. Avatar URLs ──────────────────────────────────────────────────── */
-section("5. GitHub avatar URLs");
-if (has("projects.ts")) {
-  const avatars = [...new Set([...read("projects.ts").matchAll(/avatar_url:\s*"([^"]+)"/g)].map((m) => m[1]))];
-  /* avatars.githubusercontent.com/u/<number> or github.com/<username>.png */
-  const bad = avatars.filter(
-    (u) => !/avatars\.githubusercontent\.com\/u\/\d+/.test(u) && !/^https:\/\/github\.com\/[\w-]+\.png$/.test(u),
-  );
-  if (bad.length) fail(`avatar URLs that return 404: ${bad.join(", ")}`);
-  else ok("avatar URLs are well-formed");
-}
-
-/* ── 6. Timeline dates ───────────────────────────────────────────────── */
-section("6. Timeline dates (experience.ts)");
+/* ── 5. Timeline dates ───────────────────────────────────────────────── */
+section("5. Timeline dates (experience.ts)");
 if (has("experience.ts")) {
   const src = read("experience.ts");
   const items = [...src.matchAll(/\n {2}\{([\s\S]*?)\n {2}\}/g)].map((m) => ({
@@ -127,4 +114,4 @@ if (has("experience.ts")) {
 
 console.log(`\n${"─".repeat(62)}`);
 console.log(`${errors} error(s) · ${warnings} warning(s)\n`);
-process.exit(errors ? 1 : 0);
+process.exit(errors ? 1 : 0);

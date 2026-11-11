@@ -2,8 +2,8 @@
 
 /*
  * CaseFilterLink — a link that opens the case library already filtered
- * (/blog?q=wazuh#cases). On the blog page itself it updates the URL and
- * fires popstate (the library listens) instead of navigating.
+ * (/?q=wazuh#cases). On the home page itself it updates the URL and fires
+ * popstate (the library listens) instead of navigating.
  *
  * ═══ components/blog/CaseFilterLink.tsx ═══
  * Usage: <CaseFilterLink params={{ q: "Wazuh" }}>Wazuh cases</CaseFilterLink>
@@ -27,14 +27,14 @@ type Props = {
 
 export default function CaseFilterLink({ params, className, children, ...rest }: Props) {
   const search = new URLSearchParams(params).toString();
-  const href = `${normalizePublicHref("/blog")}?${search}#cases`;
+  const href = `${normalizePublicHref("/")}?${search}#cases`;
   return (
     <a
       href={href}
       className={className}
       onClick={(e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-        if (!document.getElementById("cases")) return; // not on the blog page: follow the link
+        if (!document.getElementById("cases")) return; // on a case page: follow the link
         e.preventDefault();
         window.history.pushState(null, "", `${window.location.pathname}?${search}#cases`);
         /* The library may not be loaded yet (lib/perf/lazy.tsx) */

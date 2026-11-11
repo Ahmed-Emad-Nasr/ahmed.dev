@@ -1,17 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/fx";
-import { markIntroDone } from "@/lib/intro";
+import { INTRO_SEEN_KEY, introSeen, markIntroDone } from "@/lib/intro";
 
 /*
  * ═══ components/layout/AppLoader.tsx — the INTRO BOOT SCREEN ═══
  *
  * Sensei-Dev's boot screen: cycling kanji, the monogram, a hairline progress
  * bar with a 000% → 100% counter, then the whole screen slides up. Used on
- * the home page (app/page.tsx) and on /blog and /gallery (PageShell
- * showLoader).
+ * the home page only (app/page.tsx).
  *
  * TIMING (milliseconds):
  *   DURATION 1900 → how long the bar takes to fill (600 with reduced motion)
@@ -21,10 +20,10 @@ import { markIntroDone } from "@/lib/intro";
  *   The slide-up exit animation is the `exit` prop on the motion.div below.
  * Click anywhere on it to skip.
  *
- * ONCE PER VISIT: it plays on the first page you open (whichever page that
- * is). Moving around the site afterwards — Home, Blog, Gallery, a case —
- * does not play it again. Reloading the page or opening the site in a new
- * tab is a new visit, so it plays again then.
+ * ONCE PER VISIT: it plays the first time the home page opens in a tab.
+ * Coming back to the home page — from the blog, a case, a reload — does not
+ * play it again (sessionStorage, see lib/intro.ts). A new tab or a new
+ * browser session does.
  *
  * SMOOTHNESS: the page is busiest exactly while this screen is up (React is
  * waking the page underneath). So the bar is a compositor animation
@@ -48,8 +47,12 @@ const BAR_EASING = "cubic-bezier(0.215, 0.61, 0.355, 1)";
    after a full load still starts visible, exactly as in the HTML — so React
    finds the same markup it expects and nothing flickers. */
 let introPlayed = false;
+const noSubscribe = () => () => {};
 
 export default function AppLoader() {
+  /* Played earlier in this visit (reload / coming back): the inline script
+     already hid it with CSS; drop it right after hydration */
+  const seen = useSyncExternalStore(noSubscribe, introSeen, () => false);
   /* Already played during this visit → start (and stay) hidden */
   const [loading, setLoading] = useState(() => !introPlayed);
   const [wordIndex, setWordIndex] = useState(0);
@@ -57,12 +60,17 @@ export default function AppLoader() {
   const countRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading || seen) {
       /* Already played, skipped, or just finished: the page may come in */
       markIntroDone();
       return;
     }
     introPlayed = true;
+    try {
+      sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+    } catch {
+      /* Private mode / storage blocked: it simply plays again next time */
+    }
     const start = performance.now();
     /* On a slow device this code starts late. The CSS safety net (globals.css)
        slides the screen away 6 s after the page appears, so the bar is
@@ -104,13 +112,13 @@ export default function AppLoader() {
       if (doneTimer) clearTimeout(doneTimer);
       bar?.cancel();
     };
-  }, [loading]);
+  }, [loading, seen]);
 
   const word = BOOT_WORDS[wordIndex] ?? "起動中";
 
   return (
     <AnimatePresence>
-      {loading && (
+      {loading && !seen && (
         <motion.div
           initial={{ opacity: 1 }}
           exit={{ y: "-100%" }}

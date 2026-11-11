@@ -9,14 +9,13 @@
  *     downloads then (or earlier, in idle time, if it was wrapped with
  *     preloadable()). #x links still work (they
  *     mount it first, then jump). Every section below the hero on home, and
- *     every section on /blog and /gallery, is wrapped like this.
+ *     including the blog and the gallery, is wrapped like this.
  * You normally never edit this file — the technical detail follows.
  *
  * lib/perf/lazy.tsx — sections whose code AND data load only when needed,
  * and that never cost a dropped frame when they arrive.
  *
- * Every section after the hero (home), and every section of /blog and
- * /gallery, is wrapped in a LazySection and is not in the server HTML.
+ * Every section after the hero (the blog and the gallery included) is wrapped in a LazySection and is not in the server HTML.
  *
  *   1. Placeholder. An empty box that keeps the section's id (so #cases has
  *      a target) and its expected height per screen size (globals.css,

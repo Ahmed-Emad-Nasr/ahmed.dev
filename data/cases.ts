@@ -33,7 +33,6 @@
  *        data/case-details.ts → verdict, facts, attack chain, timeline, IOCs…
  *        data/attack.ts       → its ATT&CK techniques (caseAttackMapping)
  *        data/youtube.ts      → a video about it (caseId)
- *        data/start-here.ts   → feature it in "Start here"
  *   5. `npm run og:cases` makes its share image; `npm run check:data` checks
  *      everything links up.
  */

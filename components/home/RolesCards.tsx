@@ -13,7 +13,7 @@
  *   • Proof links (3 kinds, pick one per link):
  *       { label, href: "#work" }                → jumps on the home page
  *       { label, href: "/blog/<case-id>" }      → another page
- *       { label, params: { kind: "investigation" } } → opens /blog with the
+ *       { label, params: { kind: "investigation" } } → opens the case library with the
  *                                                 case filters pre-set
  *   • Grid columns → "grid-cols-1 md:grid-cols-2 xl:grid-cols-4" in the JSX.
  *
@@ -216,7 +216,7 @@ const ROLES: Role[] = [
     proof: [
       { label: "300+ students at AMIT Learning & NTI", href: "#teaching" },
       { label: "35+ GDG sessions and CTF challenges", href: "#experience" },
-      { label: "Security walkthroughs", href: "/blog#videos" },
+      { label: "Security walkthroughs", href: "/#videos" },
     ],
     credential: "CCEP · SOC & Cybersecurity Diploma (160h)",
   },

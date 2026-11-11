@@ -3,8 +3,8 @@
  * GitHub Pages cannot send response headers. Every origin the site really
  * loads from, and nothing else:
  *   · YouTube: the privacy-enhanced player and its thumbnails
- *   · GitHub: avatar images (the contribution calendar is read at build
- *     time, so no API is called from the browser)
+ *   · GitHub: nothing — the contribution calendar is read at build time,
+ *     so no API or image is loaded from GitHub in the browser
  *   · 'self' frames: the case pages show their own PDF reports inline
  * 'unsafe-inline' for scripts is required by Next.js static export (its
  * hydration data and the theme bootstrap are inline scripts with
@@ -24,7 +24,7 @@ export const CONTENT_SECURITY_POLICY = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data: blob: https://i.ytimg.com https://github.com https://avatars.githubusercontent.com",
+  "img-src 'self' data: blob: https://i.ytimg.com",
   "font-src 'self'",
   "connect-src 'self'",
   "frame-src 'self' https://www.youtube-nocookie.com",

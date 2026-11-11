@@ -3,7 +3,7 @@
  *
  * The case library as the blog shows it, computed once at build time (the
  * ordering, the filter facets, the counts, the ATT&CK coverage). SERVER ONLY:
- * imported by app/blog/page.tsx and the JSON routes, which hand the finished
+ * imported by app/page.tsx and the JSON routes, which hand the finished
  * values to the client sections as props (or as a static .json file). Client
  * components may `import type` from here, never import values — a value
  * import would pull data/cases.ts, data/case-details.ts and data/attack.ts
@@ -21,10 +21,7 @@ import { caseEvidenceLibrary, caseScreenshotsByEvidenceId, investigationReportCo
 import type { PdfResource } from "@/lib/shared";
 import { CASE_KINDS, caseKindOf } from "@/lib/shared";
 import { caseDetails } from "@/data/case-details";
-import { SITE_BASE_URL, caseUrl } from "@/lib/site";
 import { ATTACK_TACTICS, buildCoverage, caseAttackMapping, coveredTechniqueCount } from "@/data/attack";
-import { PERSON_ID } from "@/lib/seo";
-import { startHere } from "@/data/start-here";
 
 type Facet = { value: string; count: number };
 
@@ -110,10 +107,6 @@ export const libraryCounts = {
   screenshots: Object.values(caseScreenshotsByEvidenceId).reduce((sum, shots) => sum + shots.length, 0),
 };
 
-/* "Start here" entries whose case really exists (unknown ids are skipped) */
-const KNOWN_IDS = new Set(caseEvidenceLibrary.map((item) => item.id));
-const startHereEntries = startHere.filter((entry) => KNOWN_IDS.has(entry.id));
-
 /** Everything the case library section renders — passed in as one prop */
 export const libraryData = {
   cases: sortedCases,
@@ -122,39 +115,9 @@ export const libraryData = {
   toolFacets,
   counts: libraryCounts,
   mediaById,
-  startHere: startHereEntries,
 };
 export type LibraryData = typeof libraryData;
 export type LibraryCounts = typeof libraryCounts;
-
-const absoluteAsset = (href: string) => `${SITE_BASE_URL}/${href.replace(/^\/+/, "")}`;
-
-/* The library as structured data: every case page, and its PDF where there is one */
-export const libraryStructuredData = {
-  "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  "@id": `${SITE_BASE_URL}/blog#cases`,
-  name: "Ahmed Emad Nasr — Case Library: incident reports, DFIR, malware analysis, IAM, data & cloud security",
-  description:
-    "Information security cases with screenshots and documentation: SOC incident reports, DFIR investigations, malware analysis, detection engineering, IAM, data and cloud security, and web security labs.",
-  url: `${SITE_BASE_URL}/blog`,
-  inLanguage: "en",
-  author: { "@id": PERSON_ID },
-  isPartOf: { "@id": `${SITE_BASE_URL}/#website` },
-  hasPart: caseEvidenceLibrary.map((item) => ({
-    "@type": "TechArticle",
-    "@id": `${caseUrl(item.id)}#article`,
-    headline: item.title,
-    url: caseUrl(item.id),
-    articleSection: item.category,
-    author: { "@id": PERSON_ID },
-    datePublished: item.date,
-    keywords: item.tags.join(", "),
-    ...(item.href
-      ? { associatedMedia: { "@type": "DigitalDocument", encodingFormat: "application/pdf", contentUrl: absoluteAsset(item.href) } }
-      : {}),
-  })),
-};
 
 /*
  * The ATT&CK coverage section, ready to render: every tactic in kill-chain

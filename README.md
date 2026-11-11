@@ -170,11 +170,11 @@ To add a case:
 
 ## `07 // ROUTES`
 
-- `/` — portfolio home, services, experience, projects, and contact
-- `/blog` — case library, videos, ATT&CK coverage, detections, and triage
+- `/` — the whole portfolio on one page: services, projects, experience,
+  contact, then the blog (`#blog`: case library, videos, ATT&CK coverage,
+  detections, triage) and the gallery (`#gallery`) at the end
 - `/blog/<case-id>` — detailed case report
-- `/gallery` — certificates, events, classroom, and security journey
-- `/cv` — printable HTML CV
+- `Assets/cv/AhmedEmadNasr_CV.pdf` — the CV (PDF)
 - `/sitemap.xml` — machine-readable sitemap
 
 Hidden operator tools include `Ctrl/⌘ K` for the command palette, `?` for

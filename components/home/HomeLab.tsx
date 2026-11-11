@@ -3,7 +3,7 @@
  * collects, where logs go, what happens when a rule fires). Pure SVG + CSS:
  * dashes and packets travel in the direction the data flows.
  *
- * ═══ components/home/HomeLab.tsx — the HOME LAB diagram (#lab, on /blog) ═══
+ * ═══ components/home/HomeLab.tsx — the HOME LAB diagram (#lab) ═══
  *
  * The diagram is one SVG, 1040 × 440 units (viewBox). It is drawn from two
  * arrays below:

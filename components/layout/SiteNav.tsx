@@ -12,14 +12,13 @@
  *   • Drops in from the top on the first page load (only once per visit).
  *   • Gets narrower (95% → 85% width) once you scroll more than 100px.
  *   • Highlights the section you're reading (IntersectionObserver), or
- *     "Blog" / "Gallery" when you're on those pages.
+ *     "Blog" on a case page.
  *   • "#work"-style links jump within the home page; from other pages they
  *     go to /#work (handled by PageEffects + lib/perf/jump.ts on arrival).
  *
  * HOW TO EDIT
  *   • Add / rename / reorder a link → navItems below.
  *       href "#id"    → a section on the home page (the id must exist there)
- *       href "/page"  → another page
  *       icon          → any lucide-react icon (import it at the top)
  *       katakana      → the small Japanese word (phone menu)
  *   • Highlight timing → rootMargin "-40% 0px -55% 0px" (= a section counts as
@@ -48,15 +47,15 @@ import {
   Command,
 } from "lucide-react";
 
-/* The home page's sections (hash links — from another page they become
-   /#work …) plus the blog, which is its own page. */
+/* The home page's sections (hash links — from a case page they become
+   /#work …). The whole site is the home page. */
 const navItems = [
   { name: "Home", href: "#home", icon: Home, katakana: "ホーム" },
   { name: "Projects", href: "#work", icon: Code2, katakana: "仕事" },
   { name: "Experience", href: "#experience", icon: Briefcase, katakana: "経験" },
-  { name: "Blog", href: "/blog", icon: BookOpen, katakana: "記録" },
-  { name: "Gallery", href: "/gallery", icon: Images, katakana: "証明" },
   { name: "Contact", href: "#contact", icon: Mail, katakana: "連絡" },
+  { name: "Blog", href: "#blog", icon: BookOpen, katakana: "記録" },
+  { name: "Gallery", href: "#gallery", icon: Images, katakana: "証明" },
 ];
 
 /* Where each item's part of the home page ends.
@@ -66,12 +65,19 @@ const AREA_OF: Record<string, string> = {
   teaching: "#experience",
   testimonials: "#experience",
   platforms: "#platforms",
+  cases: "#blog",
+  videos: "#blog",
+  attack: "#blog",
+  detections: "#blog",
+  triage: "#blog",
+  lab: "#blog",
+  contributions: "#blog",
+  art: "#gallery",
 };
 
 /* Each page renders its own SiteNav, so it remounts on every page change.
    The drop-in plays on the first page only; after that the bar is simply
-   there, instead of vanishing and bouncing back in on /blog, /gallery and
-   every case page. */
+   there, instead of vanishing and bouncing back in on every case page. */
 let navEntered = false;
 
 /* Scroll listener for the narrow-bar check (passive: never blocks scrolling) */
@@ -80,8 +86,8 @@ const subscribeScroll = (onChange: () => void) => {
   return () => window.removeEventListener("scroll", onChange);
 };
 
-/* One link: a plain <a href="#x"> on the home page, otherwise a Next link
-   to another page (or to /#x from another page). */
+/* One link: a plain <a href="#x"> on the home page, a Next link to /#x
+   from a case page. */
 function NavLink({
   href,
   onHome,
@@ -103,11 +109,10 @@ function NavLink({
       </a>
     );
   }
-  /* Another page (or the home page from the blog): fetched on intent —
-     the nav is always on screen, so viewport prefetching would download
-     the other page on every load */
+  /* The home page from a case page: fetched early (eager) — the nav is
+     always on screen, so viewport prefetching would download it on every load */
   return (
-    <PageLink href={href.startsWith("#") ? `/${href}` : href} className={className} eager {...rest}>
+    <PageLink href={`/${href}`} className={className} eager {...rest}>
       {children}
     </PageLink>
   );
@@ -122,8 +127,8 @@ export default function SiteNav() {
      (useSyncExternalStore): right on arrival mid-page (back button, reload),
      and it re-renders only when the 100px line is crossed. */
   const scrolled = useSyncExternalStore(subscribeScroll, () => window.scrollY > 100, () => false);
-  /* Blog and gallery pages each light their own top-level destination */
-  const active = onHome ? homeActive : pathname.startsWith("/blog") ? "/blog" : pathname.startsWith("/gallery") ? "/gallery" : "";
+  /* A case page (/blog/<id>) lights "Blog" */
+  const active = onHome ? homeActive : pathname.startsWith("/blog") ? "#blog" : "";
 
   useEffect(() => {
     navEntered = true;

@@ -1,7 +1,7 @@
 /*
  * ═══ lib/api/contributions.ts — the GitHub contribution calendar ═══
  *
- * Read once at BUILD time (app/blog/page.tsx), like the TryHackMe stats:
+ * Read once at BUILD time (app/page.tsx), like the TryHackMe stats:
  * visitors' browsers never call a third-party API, and the Content-Security-
  * Policy (lib/security.ts) does not have to allow one. The monthly rebuild
  * (.github/workflows/nextjs.yml) keeps it fresh; `asOf` is the build date.

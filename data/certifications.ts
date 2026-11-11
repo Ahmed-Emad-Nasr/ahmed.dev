@@ -1,15 +1,16 @@
 /*
- * Certifications (from the CV): the list on the home page and the CV page,
- * and EducationalOccupationalCredential JSON-LD. `galleryIndex` links a
+ * Certifications (from the CV PDF): the professional-certification count on
+ * the home page and the EducationalOccupationalCredential JSON-LD. `galleryIndex` links a
  * certification to its scan in the proof gallery.
  *
  * ═══ data/certifications.ts — TWO lists, both about certificates ═══
  *
- *  1. `certifications` → the formal CV list (/cv page + JSON-LD).
+ *  1. `certifications` → the formal list (as on the CV PDF): JSON-LD and the
+ *     professional-certification count.
  *     Add one: { id, name, shortName?, issuer, year, verifyUrl?, galleryIndex?,
- *     cv?: false, credential?: "exam" | "course" }.
+ *     credential?: "exam" | "course" }.
  *
- *  2. The GALLERY (/gallery):
+ *  2. The GALLERY (#gallery, the end of the home page):
  *     • GALLERY_IMAGE_COUNT → how many numbered images exist in
  *       public/Assets/art-gallery/Images/image_display_thumb/ (1.webp … N.webp).
  *       Add an image → save it as N+1.webp and raise this number.
@@ -21,6 +22,8 @@
  *     (PROFESSIONAL_CERTIFICATION_COUNT) — courses, programmes, exam score
  *     reports and badges are listed in the gallery under their own filters.
  */
+
+import { SITE_BASE_URL } from "@/lib/site";
 
 type Certification = {
   /** Stable id — used as the key and in the JSON-LD */
@@ -37,8 +40,6 @@ type Certification = {
   verifyUrl?: string;
   /** Image number in image_display/{N}.webp, if known */
   galleryIndex?: number;
-  /** false = listed on the site but not on the CV page (it isn't in the PDF) */
-  cv?: boolean;
   /** "exam" = passed a proctored/graded exam; "course" = completion of a
       course or learning path. Left out where it isn't certain. */
   credential?: "exam" | "course";
@@ -46,7 +47,7 @@ type Certification = {
 
 /** Ordered newest to oldest — same order as the CV */
 /* Order and wording follow the CV PDF. */
-export const certifications: readonly Certification[] = [
+const certifications: readonly Certification[] = [
   { id: "ejpt-v2", credential: "exam", name: "eLearnSecurity Junior Penetration Tester v2", shortName: "eJPT v2", issuer: "INE", year: 2026, galleryIndex: 2 },
   { id: "ccep", name: "Certified Cybersecurity Educator Professional", shortName: "CCEP", issuer: "Red Team Leaders", year: 2026, galleryIndex: 6 },
   { id: "rh124", credential: "course", name: "Red Hat System Administration I (RH124)", shortName: "RH124", issuer: "Red Hat", year: 2026, galleryIndex: 10 },
@@ -55,12 +56,12 @@ export const certifications: readonly Certification[] = [
   { id: "malware-analysis-fundamentals", credential: "course", name: "Malware Analysis Fundamentals", issuer: "Mahara-Tech (ITI)", year: 2025, galleryIndex: 27 },
   { id: "cti-101", credential: "course", name: "Cyber Threat Intelligence 101", issuer: "arcX", year: 2025, galleryIndex: 15 },
   { id: "ccna", credential: "exam", name: "Cisco Certified Network Associate (CCNA 200-301)", shortName: "CCNA", issuer: "Cisco Systems", year: 2024 /* no scan of the CCNA certificate itself in the gallery yet (image 37 is the practice-exam score) — add its galleryIndex or verifyUrl when uploaded */ },
-  { id: "hcia-cloud", name: "HCIA-Cloud Computing V5.0", shortName: "HCIA-Cloud", issuer: "Huawei", year: 2024, cv: false, galleryIndex: 25 },
+  { id: "hcia-cloud", name: "HCIA-Cloud Computing V5.0", shortName: "HCIA-Cloud", issuer: "Huawei", year: 2024, galleryIndex: 25 },
 ];
 
 export const GALLERY_IMAGE_COUNT = 99;
 
-/* What kind of document each gallery item is — the filter buttons on /gallery:
+/* What kind of document each gallery item is — the gallery's filter buttons:
      certifications → professional certifications passed by exam (eJPT, HCIA…)
      education      → the degree, internship and long government/institute programmes
      courses        → courses, learning paths, bootcamps and exam-prep training
@@ -82,7 +83,7 @@ type GalleryCertificateItem = {
 /*
  * Every documented degree, certificate, diploma, bootcamp, exam score report
  * and verified digital badge in the gallery archive (images 1–21, 23–49 and
- * 99). Array order = display order on /gallery, so the degree comes first.
+ * 99). Array order = display order in the gallery, so the degree comes first.
  */
 export const ALL_GALLERY_CERTIFICATES: readonly GalleryCertificateItem[] = [
   {
@@ -517,6 +518,10 @@ export const certificationsJsonLd = (personId: string) =>
   certifications.map((cert) => ({
     "@type": "EducationalOccupationalCredential",
     name: cert.name,
+    ...(cert.shortName ? { alternateName: cert.shortName } : {}),
+    /* The issuer's own verification page, or the scan in the gallery */
+    ...(cert.verifyUrl ? { url: cert.verifyUrl } : {}),
+    ...(cert.galleryIndex ? { image: `${SITE_BASE_URL}/${galleryImagePath(cert.galleryIndex)}` } : {}),
     credentialCategory: cert.credential === "course" ? "certificate" : "certification",
     educationalLevel: "professional",
     dateCreated: String(cert.year),
@@ -525,8 +530,7 @@ export const certificationsJsonLd = (personId: string) =>
   }));
 
 /** Professional certifications (not courses) — the CV list minus course completions */
-export const PROFESSIONAL_CERTIFICATIONS = certifications.filter((c) => c.credential !== "course");
-export const PROFESSIONAL_CERTIFICATION_COUNT = PROFESSIONAL_CERTIFICATIONS.length;
+export const PROFESSIONAL_CERTIFICATION_COUNT = certifications.filter((c) => c.credential !== "course").length;
 
 /** Gallery items of one group */
 export const galleryGroupCount = (group: GalleryCertGroup): number =>

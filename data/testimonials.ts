@@ -97,6 +97,19 @@ export const STUDENT_FEEDBACK: readonly Testimonial[] = [
     quote:
       "اد ايه انت شخص جميل و بتحب تساعد الناس و بتحب تعلمهم و اهم حاجه كانت فيك انك مش بخيل في معلوماتك معانا حتي لو اسألتنا برا نطاق الكورس كنت بتساعدنا.",
   },
+  {
+    author: "Student",
+    source: "Cybersecurity course",
+    lang: "ar",
+    quote:
+      "تسلم يابشمهندس على شرحك … وشغلك معانا، بجد الواحد مستواه في السكيورتي فرق جدا",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity course",
+    lang: "ar",
+    quote: "وبفهم من حضرتك جدا وبستفاد من حضرتك جدا والسيشن نظامها كويس جدا، احسن instructor",
+  },
 ];
 
 /** Everything quoted — the count shown in the Teaching numbers */

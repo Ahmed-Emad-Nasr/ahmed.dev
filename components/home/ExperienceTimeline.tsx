@@ -27,7 +27,7 @@ import FadeIn from "@/components/ui/FadeIn";
  *   • the one-line intro, Japanese role, city → ROLE_INTRO in data/portfolio-data.ts
  *   • certificate / cases buttons           → ROLE_PROOF in data/portfolio-data.ts
  *   (both keyed by the company name = `subTag` in data/experience.ts)
- *   • hide a job from here and the CV       → `cv: false` on it in data/experience.ts
+ *   • hide a job from here                  → `hidden: true` on it in data/experience.ts
  *
  * Cards slide in from alternating sides (FadeIn x = ±100).
  */

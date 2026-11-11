@@ -270,7 +270,7 @@ export default function CaseArticle({
           aria-label="Breadcrumb"
         >
           <PageLink
-            href="/blog#cases"
+            href="/#cases"
             className="group flex items-center gap-2 text-primary-ink hover:text-foreground transition-colors"
           >
             <ArrowLeft
@@ -590,7 +590,7 @@ export default function CaseArticle({
                 {item.tags.map((tag) => (
                   <PageLink
                     key={tag}
-                    href={`/blog?q=${encodeURIComponent(tag)}#cases`}
+                    href={`/?q=${encodeURIComponent(tag)}#cases`}
                     className="px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-foreground/60 bg-foreground/[0.04] border border-foreground/10 hover:border-primary hover:text-primary-ink transition-colors"
                   >
                     #{tag}
@@ -710,7 +710,7 @@ export default function CaseArticle({
         </nav>
 
         <div className="mt-10 flex justify-center">
-          <PageLink href="/blog#cases" className={btnOutline}>
+          <PageLink href="/#cases" className={btnOutline}>
             <ArrowLeft size={13} /> Back to the library
           </PageLink>
         </div>

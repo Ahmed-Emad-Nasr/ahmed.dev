@@ -36,5 +36,4 @@ export const Testimonials = dynamic(() => import("@/components/home/Testimonials
 export const PlatformsSection = dynamic(() => import("@/components/home/PlatformsSection"), { loading: () => <SectionSkeleton lines={3} /> });
 export const ContactFooter = dynamic(() => import("@/components/layout/ContactFooter"), { loading: () => <SectionSkeleton lines={2} /> });
 /* Overlays: client only */
-export const MobileActionBar = dynamic(() => import("@/components/home/MobileActionBar"), { ssr: false });
 export const PaletteHint = dynamic(() => import("@/components/home/PaletteHint"), { ssr: false });

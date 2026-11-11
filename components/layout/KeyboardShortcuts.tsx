@@ -14,8 +14,7 @@
  *
  * HOW TO ADD A "g + key" JUMP:
  *   1. add  key: "section-id"  to GO_TO_SECTION below
- *      (the id must exist on some page; lib/routes.ts → pageOf() must know
- *      which page it's on — it already knows the home, blog and gallery ids),
+ *      (the id must exist on the home page — the whole site is that page),
  *   2. add a line to GROUPS in components/layout/ShortcutsHelp.tsx so it
  *      shows up in the "?" help sheet.
  * Change the secret word → SECRET below.
@@ -31,7 +30,6 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { isTypingTarget, scrollToTop } from "@/lib/scroll";
 import { scrollToHash } from "@/lib/perf/jump";
-import { pageOf } from "@/lib/routes";
 
 /* preloadable = fetched in idle time and then rendered without a suspended
    frame: React holds back a suspended→ready swap for ~300ms, which is what
@@ -41,7 +39,7 @@ const Terminal = dynamic(() => import("@/components/layout/Terminal"), { ssr: fa
 
 type Overlay = "shortcuts" | "terminal" | null;
 
-/* "g" then this key → jump to this section id (on whatever page it lives) */
+/* "g" then this key → jump to this section id on the home page */
 const GO_TO_SECTION: Record<string, string> = {
   h: "home",
   w: "work",
@@ -68,11 +66,9 @@ export default function KeyboardShortcuts() {
 
   const goToSection = useCallback(
     (id: string) => {
-      /* A section lives on the home page or the blog (lib/routes.ts):
-         jump to it here, or open its page at the anchor */
-      const page = pageOf(id);
-      if (pathname !== page) {
-        router.push(`${page}#${id}`);
+      /* Every section is on the home page: jump to it, or open it from a case page */
+      if (pathname !== "/") {
+        router.push(`/#${id}`);
         return;
       }
       scrollToHash(id);

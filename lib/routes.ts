@@ -1,40 +1,19 @@
 /*
- * lib/routes.ts — which page each section lives on.
+ * lib/routes.ts — the site's pages.
  *
- *   /       the portfolio: pitch and contact
- *   /blog   the evidence: start here, the case
- *           library, videos, ATT&CK coverage, detection rules, triage
- *   /gallery the visual proof archive: certifications, courses & records
+ *   /             THE WHOLE PORTFOLIO, one page: pitch, contact, then the
+ *                 blog (#blog: cases, videos, ATT&CK, rules, triage, lab,
+ *                 contributions) and the gallery (#gallery) at the end
+ *   /blog/<id>    one page per case (app/blog/[slug]/page.tsx)
  *
- * Everything that links to a section by id (nav, command palette,
- * g-shortcuts, the stats bar, filter links) asks this file where it is.
- * Old links to the blog's sections on the home page (/#cases,
- * /?q=wazuh#cases, /#case-…, /#attack …) are forwarded by
- * homeForwardScript() before the home page paints.
- *
- * ═══ When you add a section with an id to /blog or /gallery ═══
- * Add its id to BLOG_IDS or GALLERY_IDS below. Then links to it from anywhere
- * (navbar, palette, g-shortcuts) open the right page first. Ids not listed
- * are assumed to be on the home page.
+ * /blog and /gallery used to be pages of their own. Old links to them
+ * (/blog?q=wazuh#cases, /gallery?cert=14 …) land on the 404 page, whose
+ * legacyPageForwardScript() sends them to the same place on the home page
+ * before anything paints.
  */
-
-type SitePage = "/" | "/blog" | "/gallery";
-
-/** Section ids that live on /blog (plus every #case-… and #tactic-… anchor) */
-const BLOG_IDS = new Set(["start-here", "cases", "videos", "youtube", "attack", "detections", "triage", "lab", "process", "contributions"]);
-const BLOG_PREFIX = /^(case|tactic)-/;
-
-/** Section ids that live on /gallery */
-const GALLERY_IDS = new Set(["art", "gallery-start-here", "all-certificates", "visual-archive"]);
 
 /** Search params that belong to the case library's filters */
 export const LIBRARY_PARAMS = ["q", "cat", "tools", "kind", "sort", "view"] as const;
-
-/** The page a section id lives on */
-export function pageOf(id: string): SitePage {
-  if (GALLERY_IDS.has(id)) return "/gallery";
-  return BLOG_IDS.has(id) || BLOG_PREFIX.test(id) ? "/blog" : "/";
-}
 
 /**
  * Inline script for every page (layout.tsx). With a basePath, Next's static
@@ -51,17 +30,12 @@ export function homeDataFixScript(base: string): string {
 }
 
 /**
- * Inline script for the home page: an old link to one of the blog's or
- * gallery's sections opens the target page with the same filters and anchor.
- * Runs before paint, so the home page never flashes first. `base` is the
+ * Inline script for the 404 page: /blog… and /gallery… were pages before the
+ * site became one page. Keeps the filters (?q=…, ?cert=…) and the anchor;
+ * with no anchor, opens the matching part (#blog / #gallery). `base` is the
  * deploy prefix ("/ahmed.dev" in production).
  */
-export function homeForwardScript(base: string): string {
-  const ids = JSON.stringify([...BLOG_IDS]);
-  const gIds = JSON.stringify([...GALLERY_IDS]);
-  const params = JSON.stringify(LIBRARY_PARAMS);
-  return `(function(){try{var h=location.hash.slice(1),s=location.search,b=${ids}.indexOf(h)>-1||/^(case|tactic)-/.test(h);
-if(${gIds}.indexOf(h)>-1){location.replace(${JSON.stringify(base)}+"/gallery"+s+(h==="art"?"":location.hash));return}
-if(!b&&s){var q=new URLSearchParams(s),k=${params};for(var i=0;i<k.length;i++)if(q.has(k[i])){b=true;break}}
-if(b)location.replace(${JSON.stringify(base)}+"/blog"+s+location.hash);}catch(e){}})();`;
+export function legacyPageForwardScript(base: string): string {
+  const b = JSON.stringify(base);
+  return `(function(){try{var p=location.pathname.slice(${b}.length).replace(/\\/+$/,""),t=p==="/blog"?"#blog":p==="/gallery"?"#gallery":"";if(t)location.replace(${b}+"/"+location.search+(location.hash||t));}catch(e){}})();`;
 }

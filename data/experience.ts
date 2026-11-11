@@ -1,7 +1,7 @@
 /* The experience / education timeline (sorted by date in data/portfolio-data.ts)
 
    ═══ data/experience.ts — every job, volunteer role and course ═══
-   Feeds: the home page Experience section, the /cv page, and the JSON-LD.
+   Feeds: the home page Experience section, and the JSON-LD.
 
    HOW TO ADD AN ENTRY: copy a { … } block below (order here doesn't matter —
    it's sorted by date):
@@ -14,7 +14,7 @@
      desc            → bullet points separated by " • " (split into a list)
      startDate       → "YYYY-MM-DD";  endDate → leave out for "Present"
      skills          → chips;  certificateUrl → optional link
-     cv: false       → keep it on the website but leave it off /cv
+     hidden: true    → keep the entry in the data but leave it off the site
    Note: the home Experience section shows education only for Benha
    University (filter in data/portfolio-data.ts). */
 
@@ -138,7 +138,7 @@ export const knowledgeEducationItems = [
   },
   {
     tag: "ITI Cybersecurity Summer Training",
-    cv: false,
+    hidden: true,
     kind: "education" as const,
     subTag: "Information Technology Institute (ITI)",
     subTagHyperlink: "https://www.iti.gov.eg/",
@@ -151,7 +151,7 @@ export const knowledgeEducationItems = [
   },
   {
     tag: "Introduction to Cybersecurity Bootcamp",
-    cv: false,
+    hidden: true,
     kind: "education" as const,
     subTag: "CyberTalents",
     subTagHyperlink: "https://cybertalents.com/",

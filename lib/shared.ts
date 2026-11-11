@@ -131,10 +131,8 @@ export const formatDate = (value: string): string => {
 
 export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AhmedEmad-0x3omda";
 
-/* The GitHub account: profile links, the contribution graph and the repos
-   lib/api/github-repos.ts reads at build time */
 /* Where he lives — the ONE place the personal location is written. The
-   profile, the CV, the terminal, the JSON-LD and the geo meta tags all read
+   profile, the terminal, the JSON-LD and the geo meta tags all read
    it. (Each job's own city stays on its Experience card, data/portfolio-data.ts.) */
 export const HOME_LOCATION = {
   label: "Benha, Egypt",
@@ -146,6 +144,7 @@ export const HOME_LOCATION = {
   lng: 31.1833,
 } as const;
 
+/* The GitHub account: profile links, project links and the contribution graph */
 export const GITHUB_USERNAME = "Ahmed-Emad-Nasr";
 
 /* This site's own repository (the security policy link in security.txt) */

@@ -1,12 +1,13 @@
 /*
- * AreaIntro — the opening of a group of sections
- * page, the blog page's own header): a section header and a row of jump
- * links to the sections in the group. Server-rendered; the links are plain #anchors
- * (lib/perf/PageEffects.tsx mounts lazy targets before jumping).
+ * AreaIntro — the opening of a group of sections: a section header and a
+ * row of jump links to the sections in the group. Server-rendered; the links
+ * are plain #anchors (lib/perf/PageEffects.tsx mounts lazy targets before
+ * jumping).
  *
- * ═══ components/ui/AreaIntro.tsx — page/area heading + row of jump links ═══
- * Used at the top of /blog. Props: titleA / titleB / description (passed to
- * SectionHeader), and links = [{ href: "#section-id", label: "Text", n?: count }].
+ * ═══ components/ui/AreaIntro.tsx — area heading + row of jump links ═══
+ * Used for the blog part of the home page (#blog). Props: titleA / titleB /
+ * description (passed to SectionHeader), and
+ * links = [{ href: "#section-id", label: "Text", n?: count }].
  */
 
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -20,22 +21,17 @@ export default function AreaIntro({
   titleB,
   description,
   links,
-  as = "h2",
 }: {
   id: string;
   titleA: string;
   titleB: string;
   description: string;
   links: AreaLink[];
-  /** h1 when this is the page's own title (the blog page) */
-  as?: "h1" | "h2";
 }) {
-  /* A page title sits under the fixed nav, so it needs more room on top */
-  const top = as === "h1" ? "pt-36 md:pt-44" : "pt-24 md:pt-32";
   return (
-    <header id={id} className={`relative ${top} pb-4 px-6 md:px-20 bg-background scroll-mt-24`}>
+    <header id={id} className="relative pt-24 md:pt-32 pb-4 px-6 md:px-20 bg-background scroll-mt-24">
       <div className="max-w-7xl mx-auto relative z-10">
-        <SectionHeader as={as} titleA={titleA} titleB={titleB} description={description} />
+        <SectionHeader titleA={titleA} titleB={titleB} description={description} />
         <FadeIn as="nav" y={16} duration={0.6} delay={0.1} aria-label={`${titleA} ${titleB}`.replace(/\.$/, "") + " — sections"} className="-mt-8 md:-mt-10 flex flex-wrap items-center gap-2">
           {links.map((j) => (
             <a

@@ -13,7 +13,6 @@
  *   experience                  the Experience cards (built from data/experience.ts
  *                               + ROLE_INTRO + ROLE_PROOF below)
  *   work                        the project cards (#work) — the `work` array below
- *   process                     the "Risk to Response." step cards
  *   languages                   from data/skills.ts
  *   contributions               the open-source contribution cards
  *   artGallery                  the numbered gallery images (data/certifications.ts)
@@ -27,9 +26,8 @@
 import type { Experience, PortfolioData, WorkItem } from "@/data/types";
 import { knowledgeEducationItems } from "@/data/experience";
 import { languages } from "@/data/skills";
-import { GITHUB_USERNAME, staticProjectFallback } from "@/data/projects";
 import { GALLERY_IMAGE_COUNT, galleryImagePath, galleryMetadata } from "@/data/certifications";
-import { YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
+import { GITHUB_USERNAME, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
 import { PROFILE } from "@/data/profile";
 
 /* "2026-02-01" → "Feb 2026" */
@@ -114,9 +112,9 @@ const ROLE_INTRO: Record<string, { intro: string; japanese: string; location: st
   },
 };
 
-/* Newest start date first, education last — the same order as the CV */
+/* Newest start date first, education last — the same order as the CV PDF */
 const experience: Experience[] = [...knowledgeEducationItems]
-  .filter((item) => !("cv" in item && item.cv === false))
+  .filter((item) => !("hidden" in item && item.hidden))
   .filter((item) => item.kind !== "education" || item.subTag === "Benha University")
   .sort((a, b) => Number(a.kind === "education") - Number(b.kind === "education") || b.startDate.localeCompare(a.startDate))
   .map((item) => {
@@ -139,8 +137,8 @@ const experience: Experience[] = [...knowledgeEducationItems]
 
 /* ── Selected work ──────────────────────────────────────────────────────── */
 
-const repoByName = (name: string) => staticProjectFallback.find((r) => r.name === name);
-const urlOf = (name: string) => repoByName(name)?.html_url ?? `https://github.com/${GITHUB_USERNAME}`;
+/* A project's GitHub repository */
+const repo = (name: string) => `https://github.com/${GITHUB_USERNAME}/${name}`;
 
 /* ═══ The project cards (#work), in display order ═══ */
 const work: WorkItem[] = [
@@ -155,7 +153,7 @@ const work: WorkItem[] = [
     platform: "AI-assisted web app",
     status: "open-source",
     year: "2026",
-    links: { github: urlOf("Compliance-Framework"), demo: repoByName("Compliance-Framework")?.homepage || undefined },
+    links: { github: repo("VerifAI360-Compliance-Framwork"), demo: "https://youtu.be/G-Ys6VuV91g" },
     metrics: ["150+ frameworks", "−30% manual effort", "+15% faster assessments"],
     featured: true,
   },
@@ -170,7 +168,7 @@ const work: WorkItem[] = [
     platform: "Virtual SOC",
     status: "open-source",
     year: "2025",
-    links: { github: urlOf("SOC-Environment"), caseStudy: "/blog/soc-env-depi-r3-project" },
+    links: { github: repo("SOC-Environment"), caseStudy: "/blog/soc-env-depi-r3-project" },
     metrics: ["Rule merged into SOC Fortress", "95%+ true positives", "50+ simulated attacks"],
     featured: true,
   },
@@ -185,7 +183,7 @@ const work: WorkItem[] = [
     platform: "Wazuh + pfSense",
     status: "open-source",
     year: "2025",
-    links: { github: urlOf("insider-threat-detection-deception") },
+    links: { github: repo("insider-threat-detection-deception") },
     metrics: ["100% of access attempts caught", "−30% false positives", "−10% triage time"],
     featured: true,
   },
@@ -200,7 +198,7 @@ const work: WorkItem[] = [
     platform: "Isolated lab",
     status: "open-source",
     year: "2025",
-    links: { github: urlOf("Malware-Analysis-and-Prevention-Strategy"), caseStudy: "/blog/depi-r4-project" },
+    links: { github: repo("Malware-Analysis-and-Prevention-Strategy"), caseStudy: "/blog/depi-r4-project" },
     metrics: ["20+ samples", "C2 behaviour mapped", "Actionable IOCs"],
     featured: true,
   },
@@ -215,7 +213,7 @@ const work: WorkItem[] = [
     platform: "CLI",
     status: "open-source",
     year: "2025",
-    links: { github: urlOf("Threat-Intelligence-Tool"), demo: repoByName("Threat-Intelligence-Tool")?.homepage || undefined },
+    links: { github: repo("Threat-Intelligence-Tool"), demo: "https://youtu.be/u_hezaAwnmM" },
     metrics: ["4 intel sources", "10 GitHub stars", "Video demo"],
   },
   {
@@ -229,7 +227,7 @@ const work: WorkItem[] = [
     platform: "Kali + Nessus",
     status: "open-source",
     year: "2026",
-    links: { github: urlOf("Attack-Simulation-Security-Assessment") },
+    links: { github: repo("Attack-Simulation-Security-Assessment") },
     metrics: ["15+ attacks simulated", "Kill Chain mapped", "Fixes recommended"],
   },
   {
@@ -243,7 +241,7 @@ const work: WorkItem[] = [
     platform: "Desktop (Tkinter)",
     status: "open-source",
     year: "2026",
-    links: { github: `https://github.com/${GITHUB_USERNAME}/3omda-PDFparser-tool` },
+    links: { github: repo("3omda-PDFparser-tool") },
     metrics: ["Static PDF analysis", "5 intel sources", "Built from two earlier tools"],
   },
   {
@@ -257,7 +255,7 @@ const work: WorkItem[] = [
     platform: "CLI + desktop",
     status: "open-source",
     year: "2026",
-    links: { github: `https://github.com/${GITHUB_USERNAME}/3omda-WEBP-Converter-and-compressor` },
+    links: { github: repo("3omda-WEBP-Converter-and-compressor") },
     metrics: ["CLI + GUI", "Batch conversion", "Compression"],
   },
 ];
@@ -267,13 +265,6 @@ export const PORTFOLIO_DATA: PortfolioData = {
   profile: PROFILE,
   experience,
   work,
-  process: [
-    /* The NIST CSF functions, folded into four steps */
-    { id: "govern", index: "01", title: "Govern", japanese: "統治", description: "Assets, risks and controls mapped against ISO 27001 and NIST CSF. Every gap gets an owner, a priority and a fix." },
-    { id: "protect", index: "02", title: "Protect", japanese: "防御", description: "Least privilege, hardened baselines, encrypted data — IAM, PAM and CIS Benchmarks before anything else." },
-    { id: "detect", index: "03", title: "Detect", japanese: "検知", description: "Baselines, logs and alerts. Know what normal looks like, then map what isn't to ATT&CK." },
-    { id: "respond", index: "04", title: "Respond", japanese: "対応", description: "Contain, eradicate, recover — NIST 800-61, not instinct — then a report with the root cause and the fix." },
-  ],
   languages: languages.map((l) => ({ code: l.code, name: l.name, level: l.short })),
   contributions: [
     {

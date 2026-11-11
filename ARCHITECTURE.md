@@ -1,8 +1,9 @@
 # Architecture
 
 A static Next.js 16 export (`output: "export"`) served by GitHub Pages under
-`/ahmed.dev`. Three primary pages (`/`, `/blog` and `/gallery`) plus one
-static page per case.
+`/ahmed.dev`. One page (`/`) holds the whole portfolio — the blog (`#blog`)
+and the gallery (`#gallery`) are its last parts — plus one static page per
+case (`/blog/<id>`).
 Everything is built at build time; there is no server.
 
 ## Folders
@@ -12,9 +13,9 @@ Everything is built at build time; there is no server.
 | `app/` | Routes only. Pages are Server Components that read `data/` and pass finished values down. |
 | `components/layout/` | Mounted on every page (from `app/layout.tsx` or `PageShell.tsx`, the frame of every page except home). |
 | `components/ui/` | Small shared building blocks; `kit.tsx` holds the shared class strings (strings and tiny markup only — nothing with behaviour, so borrowing a class never drags a navbar into a section's chunk). |
-| `components/home/`, `components/blog/`, `components/gallery/` | One file per section. Home and blog have a `dynamic.tsx`; the gallery is a page-owned interactive surface. |
+| `components/home/`, `components/blog/`, `components/gallery/` | One file per section. Each folder has a `dynamic.tsx` (the code-splitting list); all of them are arranged by `app/page.tsx`. |
 | `data/` | Content only. `cases.ts`, `case-details.ts` and `attack.ts` are large — keep them out of client components (see below). |
-| `lib/` | Helpers with no UI: URLs (`site.ts`), JSON-LD (`seo.ts`), paths and case kinds (`shared.ts`), section → page routing (`routes.ts`), scrolling (`scroll.ts`). |
+| `lib/` | Helpers with no UI: URLs (`site.ts`), JSON-LD (`seo.ts`), paths and case kinds (`shared.ts`), the old-page forwarding (`routes.ts`), scrolling (`scroll.ts`). |
 | `lib/perf/` | Everything that decides *when* work happens. |
 
 ## Server and client
@@ -25,7 +26,7 @@ server. A client component pulls everything it imports into the browser, so:
 - client components never import `data/cases.ts`, `data/case-details.ts` or
   `data/attack.ts` — the page computes what they need (`data/live-copy.ts`,
   `lib/library-data.ts`) at build time and passes it as props
-  (`/blog` → `CaseLibrarySection data={libraryData}`,
+  (`app/page.tsx` → `CaseLibrarySection data={libraryData}`,
   `LazyAttackCoverage coverage={attackCoverage}`). Client files may only
   `import type` from `lib/library-data.ts`: a value import would bundle every
   case file, IOC and timeline into the browser. The one exception is the
@@ -54,8 +55,8 @@ lightbox, the command palette and the terminal.
    which is why those files exist.) Global visual effects that are not needed
    for first paint are deferred by `components/layout/DeferredGlobalEffects.tsx`
    until the browser is idle.
-3. **Lazy:** every section after the hero on `/`, and every section of
-   `/blog` and `/gallery`, is wrapped in `LazySection` (`lib/perf/lazy.tsx`):
+3. **Lazy:** every section after the hero on `/` (the blog and the gallery
+   included) is wrapped in `LazySection` (`lib/perf/lazy.tsx`):
    not in the HTML, a placeholder of the expected height (`.lazy-h-*` in
    `app/globals.css`) holds its place, and it mounts in idle time or when the
    reader gets within ~3 screens. A jump to its `#id` mounts it first.
@@ -91,7 +92,8 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
   the content, so cards sliding under a still cursor do not each start a
   hover (measured: half the work of a scrolled frame). It lifts as soon as
   the scroll slows.
-- Intro: `components/layout/AppLoader.tsx` (about 2 s, once per visit). Its
+- Intro: `components/layout/AppLoader.tsx` (home page only, about 2 s, once per
+  visit — sessionStorage + an inline script, `lib/intro.ts`). Its
   bar is a compositor animation, so it stays smooth while the page wakes up
   underneath. Entrances wait for it through `lib/intro.ts`, and the idle
   queue starts early under it (`lib/perf/schedule.ts`) so the sections are
@@ -156,10 +158,10 @@ The common edits:
 | Footer links | `components/layout/FooterBar.tsx` |
 | Security contact / PGP key | `SECURITY.md` (steps), `data/profile.ts` → `contact.pgpFingerprint`, `app/.well-known/security.txt/route.ts` |
 | The RSS feed | nothing — `app/blog/feed.xml/route.ts` follows `data/cases.ts` |
-| The hero summary paragraph / the 4 numbers under the roles | `data/cv.ts` (`CV_SUMMARY`), `data/live-copy.ts` (`stats`) |
+| The hero summary paragraph / the 4 numbers under the roles | `data/live-copy.ts` (`CV_SUMMARY`, `stats`) |
 | The "roles I fit" cards | `components/home/RolesCards.tsx` → `ROLES` |
 | A project card | `data/portfolio-data.ts` → `work` |
-| A job / course in the experience timeline and CV | `data/experience.ts` (+ `ROLE_INTRO` / `ROLE_PROOF` in `data/portfolio-data.ts`) |
+| A job / course in the experience timeline | `data/experience.ts` (+ `ROLE_INTRO` / `ROLE_PROOF` in `data/portfolio-data.ts`) |
 | Teaching numbers, diploma modules | `data/teaching.ts` |
 | Training platforms | `data/platforms.ts` |
 | A case report | `data/cases.ts` (+ `data/case-details.ts`, `data/attack.ts`) — steps in the header of `data/cases.ts` |
@@ -167,7 +169,7 @@ The common edits:
 | A video | `data/youtube.ts` |
 | A Wazuh rule in the detection library | `data/detection-rules.ts` |
 | A gallery photo / certificate | numbered image + `GALLERY_IMAGE_COUNT` / `ALL_GALLERY_CERTIFICATES` in `data/certifications.ts` |
-| The CV page | `data/cv.ts`, `data/experience.ts`, `data/certifications.ts` |
+| The CV | the PDF in `public/Assets/cv/` (`CV_PDF_HREF` in `lib/shared.ts`) |
 | Navbar links | `components/layout/SiteNav.tsx` → `navItems` |
 | Command palette entries | `components/layout/CommandPalette.tsx` → `commands` |
 | Keyboard shortcuts / terminal commands | `components/layout/KeyboardShortcuts.tsx`, `components/layout/Terminal.tsx` |

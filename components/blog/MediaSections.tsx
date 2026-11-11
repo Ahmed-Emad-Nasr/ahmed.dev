@@ -5,7 +5,7 @@
  * Videos show a thumbnail first; the youtube-nocookie iframe mounts only
  * after a click (see the privacy page).
  *
- * ═══ components/blog/MediaSections.tsx (#videos on /blog) ═══
+ * ═══ components/blog/MediaSections.tsx (#videos, blog part of the home page) ═══
  * Videos and playlists → data/youtube.ts (blogFeaturedYoutubeVideo first,
  * then blogYoutubeVideos newest first). VIDEO_PAGE = videos per "show more".
  * Thumbnails come from YouTube (lib/seo.ts → youtubeThumb).

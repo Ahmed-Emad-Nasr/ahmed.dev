@@ -4,11 +4,7 @@
  * ═══ components/layout/FooterBar.tsx — the LAST LINE of every page ═══
  *
  * The mark, © year, Blog • Gallery • CV and the design credit. The home page
- * shows it at the end of the contact section (ContactFooter); every other
- * page gets it from PageShell.
- *
- * It lives in its own small file on purpose: the contact form is only on the
- * home page, so the other pages must not download it just to draw this line.
+ * ends with it (app/page.tsx); the case pages get it from PageShell.
  *
  * HOW TO EDIT
  *   • Footer links → the <nav> below. "Security" opens
@@ -19,11 +15,10 @@
 
 import PageLink from "@/components/ui/PageLink";
 import { PROFILE } from "@/data/profile";
-import { PGP_KEY_FILE, REPO_URL, normalizePublicHref } from "@/lib/shared";
+import { CV_PDF_HREF, PGP_KEY_FILE, REPO_URL, normalizePublicHref } from "@/lib/shared";
 
 /* The last line of every page: the mark, the copyright, the legal pages and
-   the design credit. On the home page it closes the contact section; the
-   other pages render it on its own. */
+   the design credit */
 export default function FooterBar({ className = "" }: { className?: string }) {
   const currentYear = new Date().getFullYear();
   return (
@@ -39,13 +34,15 @@ export default function FooterBar({ className = "" }: { className?: string }) {
         </span>
       </div>
       <nav aria-label="Site information" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <PageLink href="/blog" className="hover:text-primary-ink transition-colors">Blog</PageLink>
+        <PageLink href="/#blog" className="hover:text-primary-ink transition-colors">Blog</PageLink>
         <span className="text-primary-ink" aria-hidden="true">•</span>
-        <PageLink href="/gallery" className="hover:text-primary-ink transition-colors">Gallery</PageLink>
+        <PageLink href="/#gallery" className="hover:text-primary-ink transition-colors">Gallery</PageLink>
         <span className="text-primary-ink" aria-hidden="true">•</span>
-        <PageLink href="/cv" className="hover:text-primary-ink transition-colors">CV</PageLink>
+        {/* Files, not pages: plain links (the CV, how to report a security issue) */}
+        <a href={normalizePublicHref(CV_PDF_HREF)} target="_blank" rel="noopener noreferrer" className="hover:text-primary-ink transition-colors">
+          CV
+        </a>
         <span className="text-primary-ink" aria-hidden="true">•</span>
-        {/* Files, not pages: plain links (how to report a security issue) */}
         <a href={normalizePublicHref(".well-known/security.txt")} className="hover:text-primary-ink transition-colors">
           Security
         </a>

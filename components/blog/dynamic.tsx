@@ -11,7 +11,7 @@
  * Two patterns are used here:
  *   1. `dynamic(() => import(...))`  → a separate JS file for that component.
  *      `loading` = what shows while its code downloads (a grey skeleton).
- *      The page wraps these in <LazySection> itself (app/blog/page.tsx).
+ *      The page wraps these in <LazySection> itself (app/page.tsx).
  *   2. `preloadable(...)` + a `Lazy*` wrapper → the component AND its
  *      <LazySection> in one, so the page just writes <LazyTriage />.
  *      preloadable() also starts downloading the code in idle time.
@@ -25,7 +25,7 @@
  *       </LazySection>
  *     );
  *   }
- * then use <LazyMyThing /> in app/blog/page.tsx and add .lazy-h-my-thing to
+ * then use <LazyMyThing /> in app/page.tsx and add .lazy-h-my-thing to
  * app/globals.css.
  */
 
@@ -43,9 +43,6 @@ export const CaseLibrarySection = dynamic(() => import("@/components/blog/CaseLi
   loading: () => <SectionSkeleton lines={4} tall />,
 });
 export const HomeLab = dynamic(() => import("@/components/home/HomeLab"), {
-  loading: () => <SectionSkeleton lines={3} />,
-});
-export const ProcessSection = dynamic(() => import("@/components/home/ProcessSection"), {
   loading: () => <SectionSkeleton lines={3} />,
 });
 /* Pattern 2 — chunk + its own LazySection (id = the #anchor, size = placeholder height) */
@@ -81,7 +78,7 @@ export function LazyTriage() {
 
 const ContributionsGrid = preloadable(() => import("@/components/home/ContributionsGrid"));
 
-/* stats = the GitHub calendar, read at build time by app/blog/page.tsx */
+/* stats = the GitHub calendar, read at build time by app/page.tsx */
 export function LazyContributions({ stats }: { stats: ContributionStats }) {
   return (
     <LazySection id="contributions" size="lazy-h-contributions">

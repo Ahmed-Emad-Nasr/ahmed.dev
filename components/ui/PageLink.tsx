@@ -7,7 +7,7 @@
  *
  * ═══ components/ui/PageLink.tsx ═══
  * Use it exactly like next/link for links to OTHER PAGES of the site:
- *   <PageLink href="/blog">Blog</PageLink>
+ *   <PageLink href="/blog/soc336-report">The case</PageLink>
  * (the basePath /ahmed.dev is added automatically). For #anchors on the
  * same page use a plain <a href="#id">; for external sites a plain <a>.
  *
@@ -16,16 +16,22 @@
  * the screen until the new page is on screen — so a press always answers at
  * once, even when the page still has to download.
  *
- * eager → fetch the page as soon as the browser is idle, without waiting
- * for a hover. Only for the handful of links in the navbar: a click there
- * then opens the page at once instead of starting four downloads in a row
- * (on a phone there is no hover, so the wait used to begin at the tap).
+ * WARMING = the page's data (router.prefetch) AND the code of its first
+ * screen (lib/perf/warm-route.ts), so the page opens without a wait or grey
+ * skeletons. It starts on hover / focus / touch / press.
+ *
+ * eager → warm without waiting for a hover. Only for the handful of links in
+ * the navbar: the data right after the page loads (soonAfterLoad — not
+ * behind the background queue, where it used to arrive ~8 s late), the code
+ * in idle time (whenIdle). A click there then opens the page at once (on a
+ * phone there is no hover, so the wait used to begin at the tap).
  */
 
 import Link, { useLinkStatus } from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, type ComponentProps } from "react";
-import { whenIdle } from "@/lib/perf/schedule";
+import { soonAfterLoad, whenIdle } from "@/lib/perf/schedule";
+import { warmRouteCode } from "@/lib/perf/warm-route";
 
 /* Lives inside the <Link>: pending is true from the press until the new
    page has rendered. Draws nothing itself. */
@@ -45,13 +51,19 @@ type Props = Omit<ComponentProps<typeof Link>, "prefetch" | "href"> & { href: st
 export default function PageLink({ href, eager = false, onMouseEnter, onFocus, onTouchStart, onPointerDown, children, ...rest }: Props) {
   const router = useRouter();
   const done = useRef(false);
-  const warm = () => {
+  const prefetchData = () => {
     if (done.current) return;
     done.current = true;
     router.prefetch(href);
   };
+  const warm = () => {
+    prefetchData();
+    warmRouteCode(href);
+  };
   useEffect(() => {
-    if (eager) whenIdle(warm);
+    if (!eager) return;
+    soonAfterLoad(prefetchData);
+    whenIdle(() => warmRouteCode(href));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- once per link
   }, [eager]);
   return (

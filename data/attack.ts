@@ -3,7 +3,7 @@
  * the case's report actually shows (alert, command line, registry key …),
  * not a guess from its title.
  *
- * ═══ data/attack.ts — powers the ATT&CK section on /blog and the techniques on case pages ═══
+ * ═══ data/attack.ts — powers the ATT&CK section (#attack) and the techniques on case pages ═══
  *
  * HOW TO MAP A CASE TO ATT&CK (the usual edit):
  *   add a line to caseAttackMapping below:

@@ -4,8 +4,8 @@
  * One entry per case, newest first, so a reader (or a recruiter's feed
  * reader) is told when a new case is published. Written at build time into
  * out/blog/feed.xml; browsers and readers find it through the
- * <link rel="alternate" type="application/rss+xml"> in the head of /blog
- * (metadata.alternates.types in app/blog/page.tsx).
+ * <link rel="alternate" type="application/rss+xml"> in the head of the home page
+ * (metadata.alternates.types in app/page.tsx).
  * Nothing to edit: it follows data/cases.ts.
  */
 
@@ -33,7 +33,7 @@ export function GET(): Response {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${escapeXml(`${PROFILE.name} — Case Library`)}</title>
-    <link>${absoluteUrl("/blog")}</link>
+    <link>${absoluteUrl("/")}#blog</link>
     <atom:link href="${feedUrl}" rel="self" type="application/rss+xml" />
     <description>Hands-on investigations (labs and simulations), DFIR and malware analysis reports, labs and detection notes.</description>
     <language>en</language>

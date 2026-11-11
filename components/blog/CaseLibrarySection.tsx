@@ -1,16 +1,15 @@
 "use client";
 
 /*
- * The case library on the blog page (#start-here, #cases, then #videos).
+ * The case library in the blog part of the home page (#cases, then #videos).
  * Filters are synced to the URL; cards are paged a few at a time, while
  * filtering always searches the whole library. The data is computed at
- * build time (lib/library-data.ts) by app/blog/page.tsx and arrives as the
+ * build time (lib/library-data.ts) by app/page.tsx and arrives as the
  * `data` prop — the raw case files never reach the browser.
  *
- * ═══ components/blog/CaseLibrarySection.tsx — the CASE LIBRARY on /blog ═══
+ * ═══ components/blog/CaseLibrarySection.tsx — the CASE LIBRARY (#cases) ═══
  *
  * Pieces it puts together:
- *   StartHere      → 3 recommended reports (#start-here, data/start-here.ts)
  *   CaseFilters    → search box, kind / category tabs, tool chips, sort, view
  *   CaseCard       → one case as a card    (view = cards)
  *   CaseList       → all cases as a table  (view = list)
@@ -21,7 +20,7 @@
  *   ?q=wazuh            search text           ?kind=investigation  case kind
  *   ?cat=Malware…       category              ?tools=Wazuh,Splunk  tool chips
  *   ?sort=newest        sort order            ?view=list           table view
- *   e.g. /blog?kind=investigation#cases
+ *   e.g. /?kind=investigation#cases
  * (CaseFilterLink builds these links from anywhere on the site.)
  *
  * HOW TO EDIT
@@ -40,7 +39,6 @@ import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { normalizePublicHref, type CaseKind } from "@/lib/shared";
 import type { GalleryState } from "@/lib/shared";
 import CaseFilters from "@/components/blog/CaseFilters";
-import StartHere from "@/components/blog/StartHere";
 import type { LibraryData } from "@/lib/library-data";
 import { scrollToHash } from "@/lib/perf/jump";
 import CaseCard from "@/components/blog/CaseCard";
@@ -270,8 +268,6 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
               <CounterBadge value={libraryCounts.total} top="Cases" bottom="Indexed" tone="accent" />
             </div>
           </div>
-
-          <StartHere entries={data.startHere} />
 
           <div className="flex items-center gap-4 mb-10">
             <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />

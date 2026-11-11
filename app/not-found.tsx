@@ -3,16 +3,22 @@
    ═══ app/not-found.tsx — the 404 PAGE ═══
    Built into out/404.html; GitHub Pages shows it for any URL that doesn't
    exist. HOW TO EDIT:
-     • the buttons → the <nav> below (ahmed.dev / Case library / CV),
-     • the 3 suggested cases → the first entries of data/start-here.ts,
-     • the wording → the <h1> and <p> below. */
+     • the buttons → the <nav> below (home / case library / CV PDF),
+     • the 3 suggested cases → the first three of the case library's
+       "Recommended" order (lib/library-data.ts),
+     • the wording → the <h1> and <p> below.
+   Old /blog… and /gallery… links (separate pages before the site became one
+   page) are sent to the same place on the home page before this paints
+   (legacyPageForwardScript, lib/routes.ts). */
 
 import PageLink from "@/components/ui/PageLink";
 import type { Metadata } from "next";
-import { startHere } from "@/data/start-here";
-import { caseEvidenceLibrary } from "@/data/cases";
+import { libraryData } from "@/lib/library-data";
+import { summarize } from "@/lib/site";
+import { CV_PDF_HREF, normalizePublicHref } from "@/lib/shared";
+import { legacyPageForwardScript } from "@/lib/routes";
 import { Home, FolderSearch, FileText } from "lucide-react";
-import PageShell from "@/components/layout/PageShell";
+import PageShell from "@/components/layout/StatusShell";
 import {
   KanjiWatermark, ctaPrimary, ctaSecondary,
   statusActions, statusCode, statusInner, statusLede, statusPage, statusReport, statusTitle,
@@ -28,12 +34,20 @@ export const metadata: Metadata = {
   alternates: { canonical: null },
 };
 
-/* Suggest the first 3 "start here" cases that really exist in data/cases.ts */
-const KNOWN = new Set(caseEvidenceLibrary.map((item) => item.id));
-const SUGGESTIONS = startHere.filter((entry) => KNOWN.has(entry.id)).slice(0, 3);
+/* The first 3 cases the library recommends (featured case, then the
+   strongest investigations) */
+const SUGGESTIONS = libraryData.cases.slice(0, 3).map((item) => ({
+  id: item.id,
+  label: item.title,
+  why: summarize(item.verdict ?? item.description ?? item.category ?? "", 120),
+}));
+
+const FORWARD_SCRIPT = legacyPageForwardScript(normalizePublicHref("/").replace(/\/$/, ""));
 
 export default function NotFound() {
   return (
+    <>
+    <script dangerouslySetInnerHTML={{ __html: FORWARD_SCRIPT }} />
     <PageShell>
       <section className={statusPage}>
         <KanjiWatermark chars="迷子" side="right" />
@@ -55,12 +69,12 @@ export default function NotFound() {
             <PageLink href="/" className={ctaPrimary}>
               <Home size={16} /> Go to the home page
             </PageLink>
-            <PageLink href="/blog#cases" className={ctaSecondary}>
+            <PageLink href="/#cases" className={ctaSecondary}>
               <FolderSearch size={14} className="text-primary-ink" /> Browse the cases
             </PageLink>
-            <PageLink href="/cv" className={ctaSecondary}>
-              <FileText size={14} className="text-primary-ink" /> Read my CV
-            </PageLink>
+            <a href={normalizePublicHref(CV_PDF_HREF)} target="_blank" rel="noopener noreferrer" className={ctaSecondary}>
+              <FileText size={14} className="text-primary-ink" /> Read my CV (PDF)
+            </a>
           </nav>
 
           {SUGGESTIONS.length > 0 && (
@@ -97,5 +111,6 @@ export default function NotFound() {
         </div>
       </section>
     </PageShell>
+    </>
   );
 }

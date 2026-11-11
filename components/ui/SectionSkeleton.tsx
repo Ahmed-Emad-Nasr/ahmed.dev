@@ -11,7 +11,7 @@ export default function SectionSkeleton({
 }) {
   /* data-lazy-pending: a section whose code is still on its way. A jump to an
      anchor (lib/perf/jump.ts → revealAll) waits for these to go, so a
-     navbar link from /blog or /gallery to /#work lands on the section, not
+     navbar link from a case page to /#work lands on the section, not
      on a skeleton that is about to change height. */
   return (
     <section

@@ -5,7 +5,7 @@
  * (SOC336), three decisions, then the answer key and the full report.
  * Every fact on the alert card comes from the report.
  *
- * ═══ components/blog/TriageChallenge.tsx (#triage on /blog) ═══
+ * ═══ components/blog/TriageChallenge.tsx (#triage, blog part of the home page) ═══
  * A small quiz. Everything is in this file:
  *   ALERT     → the rows of the fake SIEM alert card ([label, value] pairs)
  *   QUESTIONS → each question: q = the question, options = answers; mark the

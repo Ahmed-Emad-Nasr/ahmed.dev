@@ -175,7 +175,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         author: AUTHOR,
         publisher: AUTHOR,
         copyrightHolder: AUTHOR,
-        isPartOf: { "@id": `${absoluteUrl("/blog")}#cases` },
+        isPartOf: { "@id": `${absoluteUrl("/")}#cases` },
         mainEntityOfPage: { "@type": "WebPage", "@id": caseUrl(item.id) },
         about: [
           ...[...new Set([item.category, ...item.tags])].map((name) => ({ "@type": "Thing", name })),
@@ -208,7 +208,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
-          { "@type": "ListItem", position: 2, name: "Case library", item: `${absoluteUrl("/blog")}#cases` },
+          { "@type": "ListItem", position: 2, name: "Case library", item: `${absoluteUrl("/")}#cases` },
           { "@type": "ListItem", position: 3, name: item.title, item: caseUrl(item.id) },
         ],
       },
@@ -233,6 +233,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
           detail: caseDetails[item.id],
           techniques: techniquesForCase(item.id),
           screenshots: screenshots.length,
+          tools: item.tools,
         })}
         related={relatedTo(item)}
         relatedVideos={relatedVideos}
@@ -240,7 +241,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         kindLabel={CASE_KINDS.find((k) => k.id === caseKindOf(item))?.short ?? "Case"}
         kind={caseKindOf(item)}
         /* Cases that belong to a series get a "part of …" link back to the filtered library */
-        collection={item.platform === "PortSwigger" ? { href: "/blog?q=PortSwigger#cases", title: "Web Security Academy Track" } : undefined}
+        collection={item.platform === "PortSwigger" ? { href: "/?q=PortSwigger#cases", title: "Web Security Academy Track" } : undefined}
         />
       </PageShell>
     </>

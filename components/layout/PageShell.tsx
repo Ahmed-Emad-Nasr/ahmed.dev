@@ -1,24 +1,22 @@
 /*
  * ═══ components/layout/PageShell.tsx — the FRAME of every page except home ═══
  *
- * The floating navbar, an optional intro loader, <main>, and the footer bar.
- *   <PageShell showLoader> …page content… </PageShell>
+ * The floating navbar, <main>, and the footer bar. (The intro loader is on
+ * the home page only — app/page.tsx.)
+ *   <PageShell> …page content… </PageShell>
  */
 
 import type { ReactNode } from "react";
 import SiteNav from "@/components/layout/SiteNav";
 import FooterBar from "@/components/layout/FooterBar";
-import AppLoader from "@/components/layout/AppLoader";
 
 /* Page frame for every route except the home page: the floating nav, the
    page itself, and the footer bar.
-   Usage:  <PageShell showLoader> …page content… </PageShell>
-   showLoader → also play the intro boot screen (AppLoader) on this page. */
-export default function PageShell({ children, className = "", showLoader = false }: { children: ReactNode; className?: string; showLoader?: boolean }) {
+   Usage:  <PageShell> …page content… </PageShell> */
+export default function PageShell({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <>
       <SiteNav />
-      {showLoader && <AppLoader />}
       <main id="main-content" className={`relative w-full bg-background text-foreground overflow-x-clip ${className}`}>
         <div className="site-texture fixed inset-0 pointer-events-none z-0" aria-hidden="true" />
         {children}

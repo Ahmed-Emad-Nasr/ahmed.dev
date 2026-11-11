@@ -1,15 +1,15 @@
 "use client";
 
 /*
- * ═══ components/gallery/ArtGallery.tsx — the whole /gallery page body ═══
+ * ═══ components/gallery/ArtGallery.tsx — the GALLERY, the end of the home page (#gallery) ═══
  *
  * Top to bottom:
  *   #art                 → title "Proof gallery" + counters
- *   #gallery-start-here  → 3 "start here" cards (START_HERE_CARDS) that filter
- *                          and scroll to the part below
  *   #all-certificates    → certificate cards with filter buttons (CERT_FILTERS)
- *   #visual-archive      → every image (certificates + photos), 12 at a time,
- *                          with "show more"; clicking opens the Lightbox
+ *   #visual-archive      → the PHOTOS (classrooms, events), 12 at a time, with
+ *                          "show more"; clicking opens the Lightbox. Certificate
+ *                          scans are not repeated here — each certificate card
+ *                          above opens its own scan.
  *
  * WHERE THE CONTENT COMES FROM
  *   • The images are NUMBERED files:
@@ -28,7 +28,7 @@
  *   • Rename / add a filter group → CERT_FILTERS (and GalleryCertGroup in
  *     data/certifications.ts).
  *   • How many images load at first / per "show more" → FIRST and PAGE.
- *   • Link straight to a scan: /gallery?cert=14 opens image 14 in the lightbox.
+ *   • Link straight to a scan: /?cert=14#gallery opens image 14 in the lightbox.
  */
 
 import Image from "next/image";
@@ -46,7 +46,6 @@ import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
 import { preloadable } from "@/lib/perf/lazy";
 import FadeIn from "@/components/ui/FadeIn";
 import OrgLogo from "@/components/ui/OrgLogo";
-import { scrollToHash } from "@/lib/perf/jump";
 
 /* preloadable = fetched in idle time and then rendered without a suspended
    frame: React holds back a suspended→ready swap for ~300ms, which is what
@@ -56,33 +55,6 @@ const Lightbox = preloadable(() => import("@/components/ui/Lightbox"));
 /* Images shown at first, and added by each "show more" click */
 const FIRST = 12;
 const PAGE = 12;
-
-const START_HERE_CARDS = [
-  {
-    n: "01",
-    meta: "01 • CERTIFICATIONS",
-    title: "Information Security Officer",
-    why: "Professional certifications passed by exam: INE eJPT v2, Cisco CCNA, CCEP and Huawei HCIA.",
-    action: "certifications" as const,
-    targetId: "all-certificates",
-  },
-  {
-    n: "02",
-    meta: "02 • HANDS-ON TRAINING",
-    title: "Hands-On Training & Labs",
-    why: "Over 79 documented cases, CTFs, TryHackMe SOC Level 1 & 2, DEPI Incident Response & Forensics tracks, and ITI Pentesting Bootcamp.",
-    action: "courses" as const,
-    targetId: "all-certificates",
-  },
-  {
-    n: "03",
-    meta: "03 • PHOTOS & EVENTS",
-    title: "Classrooms, Events & Recommendations",
-    why: "Photos from classrooms, 300+ students taught at AMIT & NTI, hackathons, cybersecurity events and peer endorsements.",
-    action: "photos" as const,
-    targetId: "visual-archive",
-  },
-] as const;
 
 /* The certificate filter buttons (id must be a GalleryCertGroup or "all") */
 const CERT_FILTERS: { id: GalleryCertGroup | "all"; label: string }[] = [
@@ -94,10 +66,13 @@ const CERT_FILTERS: { id: GalleryCertGroup | "all"; label: string }[] = [
   { id: "badges", label: "Verified Badges" },
 ];
 
-/* Which gallery images are certificates (vs photos) — used by the archive filter */
-const CERT_INDICES = new Set(
-  ALL_GALLERY_CERTIFICATES.map((c) => c.galleryIndex),
-);
+/* The visual archive shows photos only: every numbered image that is not a
+   certificate scan (those open from their card in #all-certificates).
+   slideIndex = its position in the lightbox, which still holds every image. */
+const CERT_INDICES = new Set(ALL_GALLERY_CERTIFICATES.map((c) => c.galleryIndex));
+const PHOTOS = PORTFOLIO_DATA.artGallery
+  .map((img, i) => ({ ...img, slideIndex: i }))
+  .filter((img) => !CERT_INDICES.has(img.slideIndex + 1));
 
 export default function ArtGallery() {
   const [open, setOpen] = useState(false);
@@ -119,9 +94,6 @@ export default function ArtGallery() {
     }
   }
   const [certFilter, setCertFilter] = useState<GalleryCertGroup | "all">("all");
-  const [archiveFilter, setArchiveFilter] = useState<
-    "all" | "certs" | "photos"
-  >("all");
   const [visible, setVisible] = useState(FIRST);
 
   const filteredCerts = useMemo(
@@ -132,18 +104,7 @@ export default function ArtGallery() {
     [certFilter],
   );
 
-  const archiveItems = useMemo(() => {
-    const all = PORTFOLIO_DATA.artGallery.map((img, i) => ({
-      ...img,
-      slideIndex: i,
-      isCert: CERT_INDICES.has(i + 1),
-    }));
-    if (archiveFilter === "certs") return all.filter((x) => x.isCert);
-    if (archiveFilter === "photos") return all.filter((x) => !x.isCert);
-    return all;
-  }, [archiveFilter]);
-
-  const shownArchive = archiveItems.slice(0, visible);
+  const shownArchive = PHOTOS.slice(0, visible);
 
   const lightboxSlides = useMemo(
     () =>
@@ -160,42 +121,29 @@ export default function ArtGallery() {
     setOpen(true);
   };
 
-  const handleStartHereClick = (
-    action: "certifications" | "courses" | "photos",
-    targetId: string,
-  ) => {
-    if (action === "photos") {
-      setArchiveFilter("photos");
-      setVisible(FIRST);
-    } else {
-      setCertFilter(action);
-    }
-    /* The site's one jump: instant, under the fixed header (lib/perf/jump.ts) */
-    void scrollToHash(`#${targetId}`);
-  };
 
   return (
     <section
       id="art"
       aria-labelledby="art-title"
-      className="relative pt-36 md:pt-44 pb-24 md:pb-32 px-6 md:px-20 bg-background overflow-hidden"
+      className="relative pt-24 md:pt-32 pb-24 md:pb-32 px-6 md:px-20 bg-background overflow-hidden"
     >
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── 01 · Main Header ─── */}
         <div className="mb-16 md:mb-20 flex flex-col md:flex-row justify-between items-end gap-8">
           <FadeIn x={-40} y={0} duration={0.8} className="max-w-3xl">
-            <h1
+            <h2
               id="art-title"
               className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]"
             >
               <span className="text-foreground">Proof</span> <br />
               <span className="text-primary italic">Gallery.</span>
-            </h1>
+            </h2>
             <p className="mt-6 max-w-2xl text-base md:text-lg font-light leading-relaxed text-foreground/65 [text-wrap:pretty]">
-              The proof behind everything on this site:{" "}
-              {PORTFOLIO_DATA.artGallery.length} images — my degree, my
-              certificates, and photos from classrooms and events. Click any
-              image to see it full size.
+              The proof behind everything on this site: my degree and{" "}
+              {ALL_GALLERY_CERTIFICATES.length} certificates, courses and
+              records, then {PHOTOS.length} photos from classrooms and events.
+              Click any of them to see it full size.
             </p>
           </FadeIn>
 
@@ -229,14 +177,14 @@ export default function ArtGallery() {
               <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary" />
               <div className="flex items-center gap-3">
                 <span className="font-mono text-primary-ink text-2xl font-black tabular-nums">
-                  {String(PORTFOLIO_DATA.artGallery.length).padStart(2, "0")}
+                  {String(PHOTOS.length).padStart(2, "0")}
                 </span>
                 <div className="flex flex-col">
                   <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    Total Items
+                    Photos
                   </span>
                   <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    Indexed
+                    Classes &amp; events
                   </span>
                 </div>
               </div>
@@ -244,59 +192,7 @@ export default function ArtGallery() {
           </FadeIn>
         </div>
 
-        {/* ─── 02 · Start Here (Fast Track // Quick Access) ─── */}
-        <section
-          id="gallery-start-here"
-          className="relative mb-24"
-          aria-labelledby="gallery-start-here-title"
-        >
-          <Eyebrow japanese="入門">Quick access</Eyebrow>
-          <h2
-            id="gallery-start-here-title"
-            className="font-display text-3xl md:text-4xl font-black uppercase tracking-tight text-foreground mb-3"
-          >
-            Start <span className="text-primary italic">Here.</span>
-          </h2>
-          <p className="mb-10 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Short on time? These three shortcuts take you straight to the
-            main certificates, the hands-on training, or the photos. The full
-            list is further down.
-          </p>
-          <ol className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {START_HERE_CARDS.map((card) => (
-              <FadeIn
-                as="li"
-                y={24}
-                duration={0.7}
-                delay={(Number(card.n) - 1) * 0.1}
-                key={card.n}
-              >
-                <TiltCard className="spotlight group relative h-full bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300">
-                  <CardEffects index={Number(card.n)} />
-                  <button
-                    type="button"
-                    onClick={() =>
-                      handleStartHereClick(card.action, card.targetId)
-                    }
-                    className="relative z-20 block w-full h-full text-left p-7 cursor-pointer"
-                  >
-                    <div className="font-mono text-[0.625rem] text-primary-ink tracking-[0.3em] uppercase mb-3">
-                      {card.meta}
-                    </div>
-                    <h3 className="font-display text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-180 leading-tight">
-                      {card.title}
-                    </h3>
-                    <p className="text-sm text-foreground/60 font-light leading-relaxed">
-                      {card.why}
-                    </p>
-                  </button>
-                </TiltCard>
-              </FadeIn>
-            ))}
-          </ol>
-        </section>
-
-        {/* ─── 03 · All Certificates Directory (Literally every certificate) ─── */}
+        {/* ─── 02 · All Certificates Directory (Literally every certificate) ─── */}
         <section
           id="all-certificates"
           className="relative mb-28 scroll-mt-28"
@@ -399,66 +295,24 @@ export default function ArtGallery() {
           </ol>
         </section>
 
-        {/* ─── 04 · Visual Archive (Masonry Grid of Scans & Event Photos) ─── */}
+        {/* ─── 03 · Visual Archive (masonry grid of classroom & event photos) ─── */}
         <section
           id="visual-archive"
           className="relative scroll-mt-28"
           aria-labelledby="visual-archive-title"
         >
-          <Eyebrow japanese="証拠">Certificates &amp; photos</Eyebrow>
+          <Eyebrow japanese="証拠">Classes &amp; events</Eyebrow>
           <h2
             id="visual-archive-title"
             className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"
           >
             Visual <span className="text-primary italic">Archive.</span>
           </h2>
-          <p className="mb-8 max-w-2xl text-foreground/60 font-light leading-relaxed">
-            Everything in one grid: the original certificates, plus photos
-            from the classes I taught, competitions and community events.
+          <p className="mb-10 max-w-2xl text-foreground/60 font-light leading-relaxed">
+            Photos from the classes I taught, competitions and community
+            events ({PHOTOS.length}). The certificate scans open from their
+            cards above.
           </p>
-
-          <div
-            className="flex flex-wrap gap-2.5 mb-10"
-            role="tablist"
-            aria-label="Filter visual archive"
-          >
-            {[
-              {
-                id: "all" as const,
-                label: "All Visuals",
-                count: PORTFOLIO_DATA.artGallery.length,
-              },
-              {
-                id: "certs" as const,
-                label: "Certificate Scans",
-                count: ALL_GALLERY_CERTIFICATES.length,
-              },
-              {
-                id: "photos" as const,
-                label: "Events & Classroom",
-                count:
-                  PORTFOLIO_DATA.artGallery.length -
-                  ALL_GALLERY_CERTIFICATES.length,
-              },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={archiveFilter === tab.id}
-                onClick={() => {
-                  setArchiveFilter(tab.id);
-                  setVisible(FIRST);
-                }}
-                className={filterTab(archiveFilter === tab.id)}
-              >
-                {tab.label}{" "}
-                <span className="ml-1.5 font-mono text-[0.625rem] tabular-nums">
-                  ({tab.count})
-                </span>
-              </button>
-            ))}
-          </div>
 
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {shownArchive.map((img, idx) => (
@@ -548,12 +402,12 @@ export default function ArtGallery() {
             ))}
           </div>
 
-          {visible < archiveItems.length && (
+          {visible < PHOTOS.length && (
             <div className="mt-14 flex justify-center">
               <button
                 type="button"
                 onClick={() =>
-                  setVisible((n) => Math.min(archiveItems.length, n + PAGE))
+                  setVisible((n) => Math.min(PHOTOS.length, n + PAGE))
                 }
                 className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0"
               >
@@ -563,7 +417,7 @@ export default function ArtGallery() {
                 />
                 Show more
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
-                  {visible}/{archiveItems.length}
+                  {visible}/{PHOTOS.length}
                 </span>
               </button>
             </div>

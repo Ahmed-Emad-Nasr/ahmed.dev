@@ -10,12 +10,12 @@ import FadeIn from "@/components/ui/FadeIn";
 /* Open-source contributions to other projects, plus the GitHub contribution
    graph
 
-   ═══ components/home/ContributionsGrid.tsx — the CONTRIBUTIONS section (on /blog) ═══
+   ═══ components/home/ContributionsGrid.tsx — the CONTRIBUTIONS section (#contributions) ═══
    • The contribution cards (rule merged upstream, …) → PORTFOLIO_DATA.contributions
      in data/portfolio-data.ts.
    • The green-squares year graph → components/home/ContributionGraph.tsx; its
      data (`stats`) is read at build time by lib/api/contributions.ts in
-     app/blog/page.tsx (GitHub username = PROFILE.contact.github). */
+     app/page.tsx (GitHub username = PROFILE.contact.github). */
 export default function ContributionsGrid({ stats }: { stats: ContributionStats }) {
   return (
     <section id="contributions" aria-label="Open-source contributions" className="relative py-16 md:py-20 px-6 md:px-20 bg-background overflow-hidden">

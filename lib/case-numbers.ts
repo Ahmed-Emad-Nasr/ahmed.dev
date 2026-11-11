@@ -15,6 +15,9 @@
  *                                      rules in data/detection-rules.ts that
  *                                      cover the same techniques
  *   indicators / response / evidence → its IOCs, response list, screenshots
+ *   when there is room left           → the case's "Result" fact, the report's
+ *                                       page count, the tools it used and the
+ *                                       team size (so EVERY case has a strip)
  * — and a figure with nothing behind it is simply not shown. At most four
  * appear, in the order below.
  */
@@ -69,10 +72,13 @@ export function caseNumbers({
   detail,
   techniques,
   screenshots,
+  tools = [],
 }: {
   detail: CaseDetail | undefined;
   techniques: readonly { id: string }[];
   screenshots: number;
+  /** The tools listed on the case (data/cases.ts) */
+  tools?: readonly string[];
 }): CaseNumber[] {
   const out: CaseNumber[] = [];
   if (!detail) return out;
@@ -122,7 +128,7 @@ export function caseNumbers({
         value: String(covering.length),
         label: plural(covering.length, "of my Wazuh rules covers this", "of my Wazuh rules cover this"),
         note: "same ATT&CK techniques — see the detection library",
-        href: "/blog#detections",
+        href: "/#detections",
       });
     }
   }
@@ -152,6 +158,24 @@ export function caseNumbers({
       note: detail.pages ? `from a ${detail.pages}-page report` : undefined,
     });
   }
+
+  /* 8. Room left (projects, labs, briefs): what the case itself states */
+  /* A "Result" fact that starts with a number: "40,884 deleted file-system entries" */
+  for (const f of detail.facts ?? []) {
+    const m = /^result/i.test(f.label) ? f.value.match(/^([\d][\d,.]*\+?)\s+(.+)$/) : null;
+    if (m) out.push({ value: m[1]!, label: m[2]!, note: f.label });
+  }
+  if (detail.pages) out.push({ value: String(detail.pages), label: "pages in the full report" });
+  if (tools.length) {
+    out.push({
+      value: String(tools.length),
+      label: plural(tools.length, "tool used", "tools used"),
+      note: tools.slice(0, 3).join(" · "),
+    });
+  }
+  /* "Team RootedAF at ITI: A, B, C and D." → 4 */
+  const members = detail.team?.split(":")[1]?.split(/,|\band\b/).map((x) => x.trim()).filter(Boolean).length ?? 0;
+  if (members >= 2) out.push({ value: String(members), label: "people on the team", note: detail.team?.split(":")[0] });
 
   return out.slice(0, MAX);
 }

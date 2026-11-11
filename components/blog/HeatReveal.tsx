@@ -13,7 +13,7 @@
  *
  * Why not a CSS scroll-driven animation (it used to be one): that redrew
  * every tile on every scrolled frame — two thirds of the drawing work of
- * the whole /blog page. This way a tile is drawn once, when it arrives.
+ * the whole blog part of the page. This way a tile is drawn once, when it arrives.
  * Without JavaScript, or with reduced motion, the tiles are simply filled.
  */
 

@@ -24,9 +24,9 @@
  *                                     .jp-eyebrow (Japanese labels), .site-texture,
  *                                     .spotlight cards, chapter slash
  *   Contribution cells / theme morph / loader → animations for those parts
- *   @media print                   → how /cv looks when printed
+ *   @media print                   → how a page looks when printed
  *   @utility title-fit             → big headings that shrink to fit
- *   .attack-*                      → the ATT&CK coverage section on /blog
+ *   .attack-*                      → the ATT&CK coverage section (#attack)
  *   Security motion … Triage … Home lab → animations for the blog sections
  *   Typography / forms / hover captions → small global fixes
  *   forced-colors / Large text / Reduced motion → accessibility modes
@@ -136,8 +136,8 @@
   }
 
   /* ── .tone-blue: a section in the blue of the role cards ──
-     The site's accent is red; a section wrapped in .tone-blue (app/page.tsx,
-     app/blog/page.tsx) uses the blue instead, for everything in it — lines,
+     The site's accent is red; a section wrapped in .tone-blue (app/page.tsx)
+     uses the blue instead, for everything in it — lines,
      labels, card borders, glows, buttons — with no change to the components:
      inside the wrapper the "primary" colour simply IS the blue.
      To switch a section: add or remove the wrapper around it in the page.
@@ -643,6 +643,10 @@
 [data-app-loader] {
   animation: app-loader-out 0.5s cubic-bezier(0.76, 0, 0.24, 1) 6s forwards;
 }
+/* Intro already played in this visit (lib/intro.ts) → never painted */
+html[data-intro-seen] [data-app-loader] {
+  display: none;
+}
 @keyframes app-loader-out {
   to {
     transform: translateY(-100%);
@@ -655,7 +659,7 @@
   border-color: var(--primary) !important;
 }
 
-/* The CV prints as a plain one-column page */
+/* Any page (a case report, …) prints black on white, without the navbar */
 @media print {
   @page {
     margin: 14mm;
@@ -1031,13 +1035,10 @@
   }
 }
 
-/* ─── Security motion (process packets and case-briefing steps).
+/* ─── Security motion (the case-briefing steps).
        Everything here is decoration: with reduced
        motion none of it runs and nothing is hidden. ─────────────────── */
 @media (prefers-reduced-motion: no-preference) {
-  .process-packet {
-    animation: process-packet 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-  }
   /* The pulse is a pseudo-element scaling out (transform + opacity only,
      no repaint every frame) */
   .brief-node::after {
@@ -1047,22 +1048,6 @@
     border: 1px solid var(--primary);
     animation: brief-node 2.4s ease-out infinite;
     animation-delay: inherit;
-  }
-}
-@keyframes process-packet {
-  0% {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(26px);
-    opacity: 0;
   }
 }
 @keyframes brief-node {
@@ -1481,9 +1466,6 @@ html[data-nav-pending]::after {
 .lazy-h-lab {
   --lazy-h: 960px;
 }
-.lazy-h-process {
-  --lazy-h: 1350px;
-}
 .lazy-h-gallery {
   --lazy-h: 21900px;
 }
@@ -1514,9 +1496,6 @@ html[data-nav-pending]::after {
   }
   .lazy-h-lab {
     --lazy-h: 1030px;
-  }
-  .lazy-h-process {
-    --lazy-h: 980px;
   }
   .lazy-h-gallery {
     --lazy-h: 12400px;
@@ -1549,9 +1528,6 @@ html[data-nav-pending]::after {
   }
   .lazy-h-lab {
     --lazy-h: 1220px;
-  }
-  .lazy-h-process {
-    --lazy-h: 760px;
   }
   .lazy-h-gallery {
     --lazy-h: 8350px;

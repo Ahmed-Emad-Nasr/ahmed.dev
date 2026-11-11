@@ -4,7 +4,7 @@
  * ═══ components/layout/CommandPalette.tsx — the Ctrl/⌘+K COMMAND PALETTE ═══
  *
  * A search box + list of commands: jump to sections, open pages, switch
- * theme, copy e-mail, download CV, social links, the terminal, plus every
+ * theme, copy e-mail, download CV (PDF), social links, the terminal, plus every
  * case report and certificate once you start typing. Arrow keys move,
  * Enter runs, Esc closes. Loaded only on first use (PaletteMount.tsx).
  *
@@ -56,7 +56,6 @@ import { ALL_GALLERY_CERTIFICATES } from "@/data/certifications";
 import { normalizePublicHref } from "@/lib/shared";
 import { scrollToHash } from "@/lib/perf/jump";
 import { lockScroll } from "@/lib/scroll";
-import { pageOf } from "@/lib/routes";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import { useThemeFx } from "@/components/layout/ThemeFxProvider";
 import { FX_DURATIONS, getFxDuration, setFxDuration } from "@/lib/fx";
@@ -149,14 +148,13 @@ export default function CommandPalette() {
     return () => window.removeEventListener("sensei-fx-duration", onFx);
   }, []);
 
-  /* A section lives on the home page, blog, or gallery (lib/routes.ts):
-     jump to it on this page, or open its page at the anchor. */
+  /* Every section is on the home page: jump to it there, or open it from
+     a case page. Library filters ride along: go("?q=x#cases"). */
   const go = useCallback(
     (hash: string) => {
       setOpen(false);
-      const page = pageOf(hash.slice(1));
-      if (pathname !== page) {
-        router.push(`${page}${hash}`);
+      if (pathname !== "/" || hash.startsWith("?")) {
+        router.push(`/${hash}`);
         return;
       }
       requestAnimationFrame(() => {
@@ -186,18 +184,16 @@ export default function CommandPalette() {
       { id: "teaching", group: "Go to", label: "Teaching", icon: GraduationCap, run: () => go("#teaching") },
       { id: "testimonials", group: "Go to", label: "Testimonials & recommendations", icon: MessageSquareQuote, run: () => go("#testimonials") },
       { id: "platforms", group: "Go to", label: "Practice platforms (THM, HTB …)", icon: Trophy, run: () => go("#platforms") },
-      { id: "gallery", group: "Pages", label: "Proof gallery", icon: Palette, run: () => visit("/gallery") },
+      { id: "gallery", group: "Go to", label: "Proof gallery", icon: Palette, run: () => go("#gallery") },
       { id: "all-certs", group: "Go to", label: `Certifications, courses & records (${ALL_GALLERY_CERTIFICATES.length})`, icon: Award, run: () => go("#all-certificates") },
       { id: "attack", group: "Go to", label: "MITRE ATT&CK coverage", icon: Crosshair, run: () => go("#attack") },
       { id: "detections", group: "Go to", label: "Detection library (Wazuh rules)", icon: Crosshair, run: () => go("#detections") },
       { id: "triage", group: "Go to", label: "Triage challenge", icon: Crosshair, run: () => go("#triage") },
-      { id: "wsa", group: "Go to", label: "PortSwigger Web Security Academy labs (29)", icon: FolderSearch, run: () => visit("/blog?q=PortSwigger#cases") },
+      { id: "wsa", group: "Go to", label: "PortSwigger Web Security Academy labs (29)", icon: FolderSearch, run: () => go("?q=PortSwigger#cases") },
       { id: "contact", group: "Go to", label: "Contact", icon: Mail, run: () => go("#contact") },
-      { id: "blog-page", group: "Pages", label: "Blog — cases, ATT&CK, videos", icon: FileText, run: () => visit("/blog") },
+      { id: "blog-page", group: "Go to", label: "Blog — cases, ATT&CK, videos", icon: FileText, run: () => go("#blog") },
       { id: "blog", group: "Go to", label: "Case library", icon: FolderSearch, run: () => go("#cases") },
-      { id: "process", group: "Go to", label: "How I work (process)", icon: Briefcase, run: () => go("#process") },
       { id: "videos", group: "Go to", label: "Videos", icon: PlayCircle, run: () => go("#videos") },
-      { id: "cv-page", group: "Pages", label: "CV", icon: FileText, run: () => visit("/cv") },
       {
         id: "theme", group: "Appearance", label: isDark ? "Switch to light mode" : "Switch to dark mode",
         icon: isDark ? Sun : Moon,
@@ -252,7 +248,7 @@ export default function CommandPalette() {
         run: () => { setOpen(false); window.dispatchEvent(new Event("sensei:open-shortcuts")); },
       },
     ];
-  }, [go, visit, resolvedTheme, transitionTo, copied, fxDuration]);
+  }, [go, resolvedTheme, transitionTo, copied, fxDuration]);
 
   /* Cases and certificates join the list once you type */
   const caseCommands: Command[] = useMemo(
@@ -276,9 +272,9 @@ export default function CommandPalette() {
         label: cert.title,
         hint: `${cert.issuer} · ${cert.kind}`,
         icon: Award,
-        run: () => visit(`/gallery?cert=${cert.galleryIndex}#all-certificates`),
+        run: () => go(`?cert=${cert.galleryIndex}#all-certificates`),
       })),
-    [visit]
+    [go]
   );
 
   /* What the search box matches → the visible list */

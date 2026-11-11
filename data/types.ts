@@ -6,8 +6,7 @@
  *   ContactInfo / HeroInfo / Profile → PROFILE (data/profile.ts)
  *   Experience                       → one card of the Experience section
  *   WorkType / WorkItem              → one project card (#work)
- *   ProcessStep / ArtGalleryItem / Contribution → process cards, gallery
- *                                      images, contribution cards
+ *   ArtGalleryItem / Contribution    → gallery images, contribution cards
  *   Stat                             → one StatsBar tile
  *   Language                         → one spoken language
  *   PortfolioData                    → the whole PORTFOLIO_DATA object
@@ -97,14 +96,6 @@ export interface WorkItem {
   featured?: boolean;
 }
 
-interface ProcessStep {
-  id: string;
-  index: string;
-  title: string;
-  japanese: string;
-  description: string;
-}
-
 interface ArtGalleryItem {
   src: string;
   thumb: string;
@@ -141,7 +132,6 @@ export interface PortfolioData {
   profile: Profile;
   experience: Experience[];
   work: WorkItem[];
-  process: ProcessStep[];
   contributions: Contribution[];
   languages: Language[];
   artGallery: ArtGalleryItem[];

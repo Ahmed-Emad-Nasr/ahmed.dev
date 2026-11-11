@@ -14,9 +14,10 @@ import { GALLERY_IMAGE_COUNT, galleryImagePath } from "@/data/certifications";
 import { blogYoutubeVideos } from "@/data/youtube";
 import { PERSON_IMAGE, SITE_URL, youtubeEmbed, youtubeThumb } from "@/lib/seo";
 
-/* The home page: the portrait and share image */
+/* The home page (the whole portfolio): the portrait, the share image and
+   every gallery image */
 const galleryImages = Array.from({ length: GALLERY_IMAGE_COUNT }, (_, i) => absoluteUrl(galleryImagePath(i + 1)));
-const homeImages = [PERSON_IMAGE, OG_IMAGE.url];
+const homeImages = [PERSON_IMAGE, OG_IMAGE.url, ...galleryImages];
 
 /* Google allows 2,048 characters of description; keep well under */
 const clip = (text: string, max = 1000) => (text.length > max ? `${text.slice(0, max - 1)}…` : text);
@@ -25,7 +26,7 @@ const clip = (text: string, max = 1000) => (text.length > max ? `${text.slice(0,
 const xml = (text: string) =>
   text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 
-/* The videos are on the blog page */
+/* The videos (in the blog part of the home page) */
 const blogVideos = blogYoutubeVideos.map((video) => ({
   title: xml(video.title),
   thumbnail_loc: youtubeThumb(video.videoId),
@@ -49,7 +50,7 @@ const parseDate = (value?: string): Date => {
 };
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // The most recent date in the library = the blog's real last update
+  // The most recent date in the library = the site's real last update
   const latestCaseDate = caseEvidenceLibrary.reduce<Date>((latest, item) => {
     const date = parseDate(item.date);
     return date > latest ? date : latest;
@@ -63,27 +64,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
       images: homeImages,
-    },
-    {
-      url: absoluteUrl("/blog"),
-      lastModified: latestCaseDate,
-      changeFrequency: "weekly",
-      priority: 0.95,
       videos: blogVideos,
-    },
-    {
-      url: absoluteUrl("/gallery"),
-      lastModified: latestCaseDate,
-      changeFrequency: "monthly",
-      priority: 0.85,
-      images: galleryImages,
-    },
-    {
-      url: absoluteUrl("/cv"),
-      lastModified: latestCaseDate,
-      changeFrequency: "monthly",
-      priority: 0.9,
-      images: [PERSON_IMAGE],
     },
     {
       url: absoluteUrl("/Assets/cv/AhmedEmadNasr_CV.pdf"),

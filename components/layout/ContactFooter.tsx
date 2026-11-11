@@ -1,12 +1,11 @@
 "use client";
 
 /*
- * ═══ components/layout/ContactFooter.tsx — the CONTACT section + FOOTER ═══
+ * ═══ components/layout/ContactFooter.tsx — the CONTACT section ═══
  *
- * The CONTACT section at the bottom of the HOME page (#contact): big
- * heading, e-mail with copy button, social icons, the contact form — and it
- * ends with FooterBar (components/layout/FooterBar.tsx — its own file, so
- * the other pages can show the footer line without downloading this form).
+ * The CONTACT section of the home page (#contact): big heading, e-mail with
+ * copy button, social icons and the contact form. The blog and the gallery
+ * follow it; the page's last line is FooterBar (app/page.tsx).
  *
  * HOW THE FORM SENDS (no server — GitHub Pages is static, and no
  * third-party form service): it opens the visitor's own mail app with the
@@ -27,7 +26,6 @@ import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { PROFILE } from "@/data/profile";
 import { useCopyLink } from "@/lib/use-copy-link";
 import FadeIn from "@/components/ui/FadeIn";
-import FooterBar from "@/components/layout/FooterBar";
 
 type Draft = { subject: string; body: string };
 
@@ -56,7 +54,7 @@ export default function ContactFooter() {
   ];
 
   return (
-    <footer className="relative bg-background pt-24 md:pt-32 pb-12 px-6 md:px-20 overflow-hidden border-t border-foreground/5">
+    <section aria-label="Contact" className="relative bg-background pt-24 md:pt-32 pb-12 px-6 md:px-20 overflow-hidden border-t border-foreground/5">
       {/* Background Torii Silhouette */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[140vw] h-[70vh] opacity-[0.02] pointer-events-none select-none z-0" aria-hidden="true">
         <svg viewBox="0 0 100 100" className="w-full h-full fill-foreground">
@@ -314,10 +312,7 @@ export default function ContactFooter() {
             </form>
           </FadeIn>
         </div>
-
-        {/* Bottom bar */}
-        <FooterBar className="mt-32" />
       </div>
-    </footer>
+    </section>
   );
 }

@@ -1,8 +1,8 @@
 /*
  * ═══ app/layout.tsx — the ROOT LAYOUT (wraps every page of the site) ═══
  *
- * Next.js renders this once around every page: home (app/page.tsx), /blog,
- * /blog/<case>, /gallery, /cv and the 404 page. Whatever is here appears on
+ * Next.js renders this once around every page: home (app/page.tsx — the
+ * whole portfolio), /blog/<case> and the 404 page. Whatever is here appears on
  * ALL pages; whatever belongs to one page lives in that page's file.
  *
  * What it does, top to bottom:

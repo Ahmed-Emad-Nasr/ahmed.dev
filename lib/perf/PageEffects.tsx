@@ -28,8 +28,8 @@ const isLibraryParam = (k: string) => (LIBRARY_PARAMS as readonly string[]).incl
 /* ── 1. Jumps ── */
 function useHashJumps() {
   useEffect(() => {
-    /* Arriving with an anchor (/blog#case-…) or a filtered library
-       link (/blog?q=wazuh#cases): mount everything, then go there. */
+    /* Arriving with an anchor (/#case-…) or a filtered library
+       link (/?q=wazuh#cases): mount everything, then go there. */
     const params = new URLSearchParams(window.location.search);
     const filtered = LIBRARY_PARAMS.some((k) => params.has(k));
     if (window.location.hash.length > 1) {

@@ -10,11 +10,8 @@
  *
  * HOW TO EDIT
  *   • Add / change a project → the `work` array in data/portfolio-data.ts
- *     (fields = the WorkItem type in data/types.ts). At build time
- *     lib/api/github-repos.ts adds live GitHub star counts to those cards and
- *     appends any NEW public repo that has a description (bullets for those
- *     come from projectBullets in data/projects.ts). app/page.tsx passes the
- *     merged list in as `items`.
+ *     (fields = the WorkItem type in data/types.ts). Only those curated
+ *     projects are shown; app/page.tsx passes them in as `items`.
  *   • The heading text → the <SectionHeader> props below.
  *   • A new filter type → add it to WorkType in data/types.ts, then to
  *     FILTERS (button) and TYPE_ICON (icon) below.

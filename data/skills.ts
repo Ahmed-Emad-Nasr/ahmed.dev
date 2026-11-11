@@ -4,7 +4,7 @@
  *
  * ═══ data/skills.ts ═══
  * skillGroups → used for the JSON-LD (knowsAbout / skills) in app/layout.tsx.
- * languages   → spoken languages: /cv, the hero's "Languages" row and the
+ * languages   → spoken languages: the hero's "Languages" row and the
  *               contact section (via PORTFOLIO_DATA.languages).
  * Add a skill → add it to `items` of the right group.
  */
@@ -144,8 +144,8 @@ export const skillGroups: readonly SkillGroup[] = [
   },
 ];
 
-/* One list for the CV page (full level) and the home page (code + short level) */
+/* Spoken languages: code + level as shown on the home page */
 export const languages = [
-  { code: "AR", name: "Arabic", level: "Native", short: "Native" },
-  { code: "EN", name: "English", level: "Professional Working Proficiency", short: "Professional" },
+  { code: "AR", name: "Arabic", short: "Native" },
+  { code: "EN", name: "English", short: "Professional" },
 ] as const;
