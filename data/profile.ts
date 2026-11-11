@@ -47,6 +47,11 @@ export const PROFILE: Profile = {
     youtube: YOUTUBE_CHANNEL_URL,
     instagram: "https://www.instagram.com/ahmed_emad_nasr/",
     x: "https://x.com/0x3omda",
+    /* PGP key fingerprint, e.g. "ABCD 1234 …". Empty = no key published yet.
+       Filling it in (with the public key saved as public/pgp-key.asc) adds
+       the "PGP" link to the footer and the Encryption line to
+       /.well-known/security.txt. Steps: SECURITY.md. */
+    pgpFingerprint: "",
   },
   hero: {
     tagline: "From the risk register to the root cause.",

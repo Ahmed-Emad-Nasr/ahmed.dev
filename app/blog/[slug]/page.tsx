@@ -36,6 +36,7 @@ import PageShell from "@/components/layout/PageShell";
 import { absoluteUrl, caseUrl, summarize } from "@/lib/site";
 import { caseAttackMapping, parentTechnique, techniquesForCase } from "@/data/attack";
 import { caseDetails } from "@/data/case-details";
+import { caseNumbers } from "@/lib/case-numbers";
 import { caseKindOf, CASE_KINDS } from "@/lib/shared";
 import { jsonLd, PERSON_ID, PERSON_NAME, SITE_URL } from "@/lib/seo";
 import { blogYoutubeVideos } from "@/data/youtube";
@@ -228,6 +229,11 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         previous={previous ? { id: previous.id, title: previous.title } : null}
         next={next ? { id: next.id, title: next.title } : null}
         techniques={techniquesForCase(item.id)}
+        numbers={caseNumbers({
+          detail: caseDetails[item.id],
+          techniques: techniquesForCase(item.id),
+          screenshots: screenshots.length,
+        })}
         related={relatedTo(item)}
         relatedVideos={relatedVideos}
         detail={caseDetails[item.id]}

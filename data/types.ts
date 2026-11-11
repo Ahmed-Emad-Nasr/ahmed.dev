@@ -23,6 +23,8 @@ interface ContactInfo {
   youtube: string;
   instagram: string;
   x: string;
+  /** "" until a PGP key is published (see data/profile.ts) */
+  pgpFingerprint: string;
 }
 
 interface HeroSpec {

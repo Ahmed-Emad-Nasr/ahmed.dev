@@ -42,6 +42,8 @@ import {
 } from "lucide-react";
 import { normalizePublicHref, getThumbnail, formatDate, type CaseKind } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
+import type { CaseNumber } from "@/lib/case-numbers";
+import CaseNumbers from "@/components/blog/CaseNumbers";
 import CaseSummary from "@/components/blog/CaseSummary";
 import { parseCaseSummary } from "@/lib/case-summary";
 import CaseFile, { VerdictBar, caseFileHas } from "@/components/blog/CaseFile";
@@ -205,6 +207,7 @@ export default function CaseArticle({
   previous,
   next,
   techniques = [],
+  numbers = [],
   related = [],
   relatedVideos = [],
   detail,
@@ -217,6 +220,8 @@ export default function CaseArticle({
   previous: Sibling;
   next: Sibling;
   techniques?: readonly Technique[];
+  /** The "By the numbers" strip, computed on the server (lib/case-numbers.ts) */
+  numbers?: readonly CaseNumber[];
   related?: readonly Related[];
   relatedVideos?: readonly RelatedVideo[];
   detail?: CaseDetail;
@@ -337,6 +342,9 @@ export default function CaseArticle({
         </FadeIn>
 
         <VerdictBar verdict={detail?.verdict} severity={detail?.severity} />
+
+        {/* The case in figures, counted from its own data (lib/case-numbers.ts) */}
+        <CaseNumbers numbers={numbers} prevented={detail?.outcome?.prevented} />
 
         {/* ═══ The case in plain-language chapters ═══
             Goal → What happened → What I did → How to stop it happening

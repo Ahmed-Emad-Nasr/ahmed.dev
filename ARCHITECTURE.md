@@ -40,7 +40,7 @@ server. A client component pulls everything it imports into the browser, so:
 
 Libraries that are not needed to paint stay out of the first download too:
 `focus-trap` (fetched in idle time / when a dialog opens —
-`lib/use-focus-trap.ts`), GSAP (hero entrance), Lenis (smooth scrolling), the
+`lib/use-focus-trap.ts`), GSAP (hero entrance), the
 lightbox, the command palette and the terminal.
 
 ## How a page loads
@@ -83,19 +83,14 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
 
 ## Motion
 
-- Scrolling: the mouse wheel / trackpad glides (Lenis, `lib/smooth-scroll.ts`,
-  same settings as Sensei-Dev: lerp 0.1, duration 1.2). It is fetched in idle
-  time, only on devices with a mouse, never under reduced motion
-  (`components/layout/SmoothScroll.tsx`), and its animation loop runs only
-  while a glide is in progress. Touch, keyboard and scrollbar stay native.
-  In-page jumps stay **instant** and go through `lib/scroll.ts`, which also
-  cancels a glide in progress; `lockScroll()` there holds the page (and
-  Lenis) still behind every dialog and the lightbox.
+- Scrolling: native browser scrolling, with instant in-page jumps handled by
+  `lib/scroll.ts`; `lockScroll()` there holds the page still behind the
+  dialogs.
 - Smooth while scrolling: above a certain speed an invisible sheet
-  (`.scroll-shield`, shown by `lib/smooth-scroll.ts`) sits between the cursor
-  and the content, so cards sliding under a still cursor do not each start a
-  hover (measured: half the work of a scrolled frame). It lifts as the glide
-  slows, so clicks on the settling page land.
+  (`.scroll-shield`, `lib/perf/ScrollShield.tsx`) sits between the cursor and
+  the content, so cards sliding under a still cursor do not each start a
+  hover (measured: half the work of a scrolled frame). It lifts as soon as
+  the scroll slows.
 - Intro: `components/layout/AppLoader.tsx` (about 2 s, once per visit). Its
   bar is a compositor animation, so it stays smooth while the page wakes up
   underneath. Entrances wait for it through `lib/intro.ts`, and the idle
@@ -158,8 +153,9 @@ The common edits:
 | I want to change… | Edit |
 |---|---|
 | Name, title, roles (typing line), contact links, hero tagline/specs | `data/profile.ts` → `PROFILE` |
-| Smooth scrolling speed / what it skips | `lib/smooth-scroll.ts` |
 | Footer links | `components/layout/FooterBar.tsx` |
+| Security contact / PGP key | `SECURITY.md` (steps), `data/profile.ts` → `contact.pgpFingerprint`, `app/.well-known/security.txt/route.ts` |
+| The RSS feed | nothing — `app/blog/feed.xml/route.ts` follows `data/cases.ts` |
 | The hero summary paragraph / the 4 numbers under the roles | `data/cv.ts` (`CV_SUMMARY`), `data/live-copy.ts` (`stats`) |
 | The "roles I fit" cards | `components/home/RolesCards.tsx` → `ROLES` |
 | A project card | `data/portfolio-data.ts` → `work` |
@@ -167,6 +163,7 @@ The common edits:
 | Teaching numbers, diploma modules | `data/teaching.ts` |
 | Training platforms | `data/platforms.ts` |
 | A case report | `data/cases.ts` (+ `data/case-details.ts`, `data/attack.ts`) — steps in the header of `data/cases.ts` |
+| The figures at the top of a case ("By the numbers") | counted automatically — `lib/case-numbers.ts`; measured results go in `outcome` in `data/case-details.ts` |
 | A video | `data/youtube.ts` |
 | A Wazuh rule in the detection library | `data/detection-rules.ts` |
 | A gallery photo / certificate | numbered image + `GALLERY_IMAGE_COUNT` / `ALL_GALLERY_CERTIFICATES` in `data/certifications.ts` |

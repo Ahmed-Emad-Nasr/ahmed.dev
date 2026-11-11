@@ -1,0 +1,20 @@
+# Dependabot: weekly pull requests for outdated or vulnerable packages.
+# Security updates are opened as soon as an advisory is published; the
+# Verify workflow runs on each pull request before anything is merged.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 5
+    groups:
+      # One pull request for the routine minor / patch bumps instead of ten
+      minor-and-patch:
+        update-types: ["minor", "patch"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"

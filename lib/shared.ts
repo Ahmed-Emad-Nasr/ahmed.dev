@@ -135,6 +135,12 @@ export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AhmedEmad-0x3omda";
    lib/api/github-repos.ts reads at build time */
 export const GITHUB_USERNAME = "Ahmed-Emad-Nasr";
 
+/* This site's own repository (the security policy link in security.txt) */
+export const REPO_URL = `https://github.com/${GITHUB_USERNAME}/ahmed.dev`;
+
+/* The PGP public key, in public/ — see SECURITY.md for how to add it */
+export const PGP_KEY_FILE = "pgp-key.asc";
+
 /* ── Case kinds ──────────────────────────────────────────────────────────
    The library mixes four different things, and a reviewer reads them very
    differently: an incident report is evidence of the job, a capstone or rule

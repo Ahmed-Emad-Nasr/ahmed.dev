@@ -153,22 +153,17 @@
     scroll-behavior: auto;
   }
 
-  /* Smooth wheel scrolling (lib/smooth-scroll.ts): while the page glides, an
-     embedded video must not swallow the wheel and stop the glide half-way. */
-  .lenis.lenis-smooth iframe {
-    pointer-events: none;
-  }
-
   /* An invisible sheet over the content while the page scrolls fast, so the
      cards sliding under a still cursor do not each start a hover
-     (lib/smooth-scroll.ts shows and hides it). Below the navbar (z 100), the
-     toasts (z 80+) and every dialog, so those keep answering. */
+     (lib/perf/ScrollShield.tsx shows and hides it). Below the navbar (z 100),
+     the toasts (z 80+) and every dialog, so those keep answering. */
   .scroll-shield {
     position: fixed;
     inset: 0;
     z-index: 70;
     display: none;
   }
+
   @media (min-width: 1800px) {
     html {
       font-size: 112.5%;

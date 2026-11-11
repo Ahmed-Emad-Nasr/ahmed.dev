@@ -19,7 +19,10 @@
  *     iocs: [{ type: "ip", value: "1.2.3.4", note: "C2" }],   // shown defanged
  *     response: ["Isolated the host", "Blocked the domain"],
  *     detection: [{ title: "YARA rule", lang: "yara", code: "rule x { … }" }],
+ *     outcome: { detectedIn: "4 min", containedIn: "22 min", prevented: "…" },
  *   },
+ * The figures at the top of the case ("By the numbers") are counted from
+ * these fields automatically — lib/case-numbers.ts.
  * The allowed fields are the CaseDetail type right below.
  */
 
@@ -47,6 +50,12 @@ export type CaseDetail = {
   attachments?: readonly { label: string; href: string }[];
   /** "What I'd do differently" — written by the author */
   lessons?: string;
+  /** MEASURED results, shown first in the "By the numbers" strip. Fill these
+   *  in only for a case where they were really measured — never an estimate:
+   *    detectedIn:  "4 min"    alert → confirmed
+   *    containedIn: "22 min"   confirmed → host isolated / account disabled
+   *    prevented:   one sentence on what did not happen because of it */
+  outcome?: { detectedIn?: string; containedIn?: string; prevented?: string };
 };
 
 /* Re-used text, so many entries can share it */

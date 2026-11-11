@@ -4,6 +4,10 @@ name: Deploy to Pages
 on:
   push:
     branches: ["master"]
+  # Monthly rebuild: keeps the "Expires" date of /.well-known/security.txt
+  # ahead (RFC 9116 wants it under a year) and refreshes the GitHub projects.
+  schedule:
+    - cron: "17 3 1 * *"
   workflow_dispatch:
 
 permissions:

@@ -2,12 +2,14 @@
 
 /*
  * ═══ components/layout/DeferredGlobalEffects.tsx ═══
- * Two site-wide helpers that load only once the browser is idle (after the
+ * Three site-wide helpers that load only once the browser is idle (after the
  * page is shown), so they never slow down the first paint:
  *   • SpotlightHost        (components/ui/Motion.tsx) → makes the glow follow
  *                          the mouse on every `.spotlight` card.
  *   • OffscreenAnimations  (lib/perf/OffscreenAnimations.tsx) → pauses CSS
  *                          animations that are off-screen, to save CPU/battery.
+ *   • ScrollShield         (lib/perf/ScrollShield.tsx) → no hover effects
+ *                          while the page scrolls fast (the main scroll stutter).
  * No visible UI of its own.
  */
 
@@ -18,6 +20,7 @@ const SpotlightHost = dynamic(() => import("@/components/ui/Motion").then((mod) 
   ssr: false,
 });
 const OffscreenAnimations = dynamic(() => import("@/lib/perf/OffscreenAnimations"), { ssr: false });
+const ScrollShield = dynamic(() => import("@/lib/perf/ScrollShield"), { ssr: false });
 
 export default function DeferredGlobalEffects() {
   const [ready, setReady] = useState(false);
@@ -35,6 +38,7 @@ export default function DeferredGlobalEffects() {
     <>
       <SpotlightHost />
       <OffscreenAnimations />
+      <ScrollShield />
     </>
   ) : null;
 }

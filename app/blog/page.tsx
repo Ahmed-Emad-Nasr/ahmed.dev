@@ -61,6 +61,7 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   alternates: {
     canonical: "/blog",
+    types: { "application/rss+xml": [{ url: "/blog/feed.xml", title: "Ahmed Emad Nasr — Case Library" }] },
   },
   openGraph: {
     title: "Blog — Ahmed Emad Nasr",

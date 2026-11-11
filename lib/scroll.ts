@@ -16,36 +16,10 @@ function getHeaderOffset(): number {
   return (header?.offsetHeight ?? 0) + 15;
 }
 
-/* ── Smooth wheel scrolling (lib/smooth-scroll.ts, Lenis) plugs in here ──
-   It is loaded lazily and only on devices with a mouse / trackpad, so this
-   file must work with or without it. It hands over three controls:
-     cancel → drop the glide in progress and adopt the page's real position
-     pause  → stand still (a dialog is open)
-     resume → carry on */
-type SmoothScrollControl = { cancel: () => void; pause: () => void; resume: () => void };
-let smooth: SmoothScrollControl | null = null;
-let locks = 0;
-
-export function registerSmoothScroll(control: SmoothScrollControl | null): void {
-  smooth = control;
-  if (control && locks > 0) control.pause();
-}
-
-/* True while a dialog holds the page still (see lockScroll) */
-export const isScrollLocked = (): boolean => locks > 0;
-
-/* Stop a wheel glide right now — called before the router changes page */
-export function cancelSmoothScroll(): void {
-  smooth?.cancel();
-}
-
-/* Every programmatic scroll goes through here: jumps are INSTANT, and a
-   wheel glide that is still running is dropped so it cannot pull the page
-   back to where it was heading. */
+/* Every programmatic scroll goes through here: jumps are INSTANT */
 function scrollToY(top: number): void {
   const target = Math.max(0, top);
   window.scrollTo({ top: target, behavior: "auto" });
-  smooth?.cancel();
 }
 
 /** The scroll position that puts an element just under the fixed header */
@@ -68,14 +42,13 @@ export function isTypingTarget(target: EventTarget | null): boolean {
 }
 
 /* Hold the page still while a dialog is open (mobile menu, command palette,
-   shortcuts, terminal, lightbox). Calls are counted, so a dialog opened from
-   another dialog cannot unlock the page under the one that is still open:
-   every lockScroll(true) needs its own lockScroll(false). */
+   shortcuts, terminal). Calls are counted, so a dialog opened from another
+   dialog cannot unlock the page under the one that is still open: every
+   lockScroll(true) needs its own lockScroll(false). */
+let locks = 0;
 export function lockScroll(locked: boolean): void {
   locks = Math.max(0, locks + (locked ? 1 : -1));
   const on = locks > 0;
   document.documentElement.style.overflow = on ? "hidden" : "";
   document.body.style.overflow = on ? "hidden" : "";
-  if (on) smooth?.pause();
-  else smooth?.resume();
 }

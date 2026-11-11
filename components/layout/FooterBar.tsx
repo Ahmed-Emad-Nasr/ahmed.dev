@@ -11,12 +11,15 @@
  * home page, so the other pages must not download it just to draw this line.
  *
  * HOW TO EDIT
- *   • Footer links → the <nav> below.
+ *   • Footer links → the <nav> below. "Security" opens
+ *     /.well-known/security.txt; "PGP" appears once a key is published
+ *     (PROFILE.contact.pgpFingerprint in data/profile.ts).
  *   • The name / GitHub link → PROFILE in data/profile.ts.
  */
 
 import PageLink from "@/components/ui/PageLink";
 import { PROFILE } from "@/data/profile";
+import { PGP_KEY_FILE, normalizePublicHref } from "@/lib/shared";
 
 /* The last line of every page: the mark, the copyright, the legal pages and
    the design credit. On the home page it closes the contact section; the
@@ -41,6 +44,23 @@ export default function FooterBar({ className = "" }: { className?: string }) {
         <PageLink href="/gallery" className="hover:text-primary-ink transition-colors">Gallery</PageLink>
         <span className="text-primary-ink" aria-hidden="true">•</span>
         <PageLink href="/cv" className="hover:text-primary-ink transition-colors">CV</PageLink>
+        <span className="text-primary-ink" aria-hidden="true">•</span>
+        {/* Files, not pages: plain links (how to report a security issue) */}
+        <a href={normalizePublicHref(".well-known/security.txt")} className="hover:text-primary-ink transition-colors">
+          Security
+        </a>
+        {PROFILE.contact.pgpFingerprint && (
+          <>
+            <span className="text-primary-ink" aria-hidden="true">•</span>
+            <a
+              href={normalizePublicHref(PGP_KEY_FILE)}
+              title={`PGP fingerprint: ${PROFILE.contact.pgpFingerprint}`}
+              className="hover:text-primary-ink transition-colors"
+            >
+              PGP
+            </a>
+          </>
+        )}
       </nav>
       <div className="flex items-center gap-2 text-on-surface-variant">
         <span>
