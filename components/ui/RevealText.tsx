@@ -1,6 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { m as motion } from "framer-motion";
+import { whenIntroDone } from "@/lib/intro";
 import { MOTION_EASE } from "@/lib/motion";
 
 /**
@@ -12,6 +14,7 @@ import { MOTION_EASE } from "@/lib/motion";
  * Reduced motion: MotionConfig reducedMotion="user" (MotionProvider) drops
  * the slide, so the words simply show. (Branching on the setting here
  * rendered different markup than the server and broke hydration.)
+ * It waits for the intro screen to lift (lib/intro.ts) before it plays.
  */
 export function RevealText({
   text,
@@ -26,13 +29,14 @@ export function RevealText({
 }) {
   const isLatin = /^[\x00-\x7F\s]*$/.test(text);
   const units = isLatin ? text.split(" ") : [text];
+  const [ready, setReady] = useState(false);
+  useEffect(() => whenIntroDone(() => setReady(true)), []);
   return (
     <motion.span
       className={className}
       style={style}
       initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-60px" }}
+      animate={ready ? "show" : "hidden"}
       transition={{ staggerChildren: 0.07, delayChildren: delay }}
     >
       {/* What assistive tech reads; the moving words are hidden from it */}

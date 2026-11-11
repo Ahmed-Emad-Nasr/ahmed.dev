@@ -32,6 +32,10 @@ let running = false;
 
 const SCROLL_QUIET_MS = 300;
 const START_AFTER_LOAD_MS = 1500;
+/* …but while the intro screen (AppLoader) covers the page, the wait is
+   pointless: nobody can see or scroll yet, so that time is used to get the
+   sections below ready before the screen lifts. */
+const START_UNDER_INTRO_MS = 300;
 
 const isScrolling = (): boolean => performance.now() - lastScroll < SCROLL_QUIET_MS;
 
@@ -74,10 +78,13 @@ function start(): void {
     window.addEventListener(t, () => (lastScroll = performance.now()), { passive: true, capture: true });
   }
   const go = () =>
-    window.setTimeout(() => {
-      started = true;
-      pump();
-    }, START_AFTER_LOAD_MS);
+    window.setTimeout(
+      () => {
+        started = true;
+        pump();
+      },
+      document.querySelector("[data-app-loader]") ? START_UNDER_INTRO_MS : START_AFTER_LOAD_MS,
+    );
   if (document.readyState === "complete") go();
   else window.addEventListener("load", go, { once: true });
 }

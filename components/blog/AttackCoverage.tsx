@@ -1,8 +1,9 @@
 /*
  * AttackCoverage — the case library on MITRE ATT&CK: a kill-chain strip,
  * then one row per tactic with its techniques as heat-tinted tiles. Each
- * tile opens its evidence in a native popover, so the section ships no
- * JavaScript of its own (Server Component; styles in globals.css, .attack-*).
+ * tile opens its evidence in a native popover, so the section ships almost
+ * no JavaScript of its own (styles in globals.css, .attack-*; the heat
+ * filling in on arrival is HeatReveal.tsx).
  *
  * ═══ components/blog/AttackCoverage.tsx — the MITRE ATT&CK section (#attack on /blog) ═══
  * Nothing to type in here: the numbers are computed from which ATT&CK
@@ -17,6 +18,7 @@
 import PageLink from "@/components/ui/PageLink";
 import type { CSSProperties } from "react";
 import FadeIn from "@/components/ui/FadeIn";
+import HeatReveal from "@/components/blog/HeatReveal";
 import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
 import type { AttackCoverageData } from "@/lib/library-data";
 
@@ -179,6 +181,8 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
       aria-labelledby="attack-title"
       className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-clip"
     >
+      {/* Tiles fill with their heat as they scroll into view (once) */}
+      <HeatReveal />
       <KanjiWatermark chars="網羅" side="left" />
 
       <div className="max-w-7xl mx-auto relative z-10">

@@ -158,6 +158,17 @@
   .lenis.lenis-smooth iframe {
     pointer-events: none;
   }
+
+  /* An invisible sheet over the content while the page scrolls fast, so the
+     cards sliding under a still cursor do not each start a hover
+     (lib/smooth-scroll.ts shows and hides it). Below the navbar (z 100), the
+     toasts (z 80+) and every dialog, so those keep answering. */
+  .scroll-shield {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: none;
+  }
   @media (min-width: 1800px) {
     html {
       font-size: 112.5%;
@@ -410,12 +421,29 @@
 }
 
 /* ─── Mouse spotlight cards  radial highlight follows the cursor.
-   TiltCard sets --mx/--my. Zero JS cost beyond the tilt handler. */
+   SpotlightHost (components/ui/Motion.tsx) sets --mx/--my on the hovered
+   card, once per frame.
+   The two are registered as NOT inherited: an ordinary custom property is
+   handed down to every element inside the card, so each mouse move restyled
+   the whole card — text, icons, images. Now only the glow layer (::before,
+   which asks for them with `inherit`) is touched. */
+@property --mx {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --my {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
 .spotlight {
   position: relative;
 }
 
 .spotlight::before {
+  --mx: inherit;
+  --my: inherit;
   content: "";
   position: absolute;
   inset: 0;
@@ -601,10 +629,10 @@
    (case library, case pages, CV, legal pages). Same tokens. ─── */
 
 /* The intro screen (AppLoader.tsx). Without JavaScript it would never
-   leave, so it slides away on its own at 4 s — after the script has
-   normally removed it. */
+   leave, so it slides away on its own at 6 s — after the script has
+   normally removed it (about 2.6 s). */
 [data-app-loader] {
-  animation: app-loader-out 0.5s cubic-bezier(0.76, 0, 0.24, 1) 4s forwards;
+  animation: app-loader-out 0.5s cubic-bezier(0.76, 0, 0.24, 1) 6s forwards;
 }
 @keyframes app-loader-out {
   to {
@@ -696,7 +724,8 @@
   );
   transition:
     border-color 0.3s,
-    transform 0.3s;
+    transform 0.3s,
+    background-color 0.8s ease-out;
 }
 .attack-seg::before {
   content: "";
@@ -790,7 +819,8 @@
   );
   transition:
     border-color 0.3s,
-    transform 0.3s;
+    transform 0.3s,
+    background-color 0.8s ease-out;
 }
 .attack-tile:hover,
 .attack-tile:focus-visible {
@@ -1056,7 +1086,8 @@
   );
   transition:
     transform 0.3s,
-    border-color 0.3s;
+    border-color 0.3s,
+    background-color 0.8s ease-out;
 }
 .attack-cell:hover,
 .attack-cell:focus-visible {
@@ -1254,24 +1285,14 @@ html[data-nav-pending]::after {
 
 /* ─── ATT&CK: the heat fills in as the tiles scroll into view ──────────
    Each tile starts as a plain surface and reaches its own heat (more
-   reports = deeper red) as it crosses the lower part of the screen. Pure
-   CSS; without scroll timelines the tiles are simply already filled. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .attack-seg,
-    .attack-tile,
-    .attack-cell {
-      animation: attack-heat linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 35%;
-    }
-  }
-}
-@keyframes attack-heat {
-  from {
-    background-color: var(--surface);
-    border-color: color-mix(in srgb, var(--foreground) 6%, transparent);
-  }
+   reports = deeper red) when it arrives on screen — once.
+   components/blog/HeatReveal.tsx marks the tiles `data-cold` and lifts the
+   mark as each one arrives; the fade is the background-color transition on
+   the tiles. (Not a scroll-driven animation: that redrew every tile on
+   every scrolled frame.) Without JavaScript the tiles are simply filled. */
+:is(.attack-seg, .attack-tile, .attack-cell)[data-cold] {
+  --heat: 0% !important;
+  border-color: color-mix(in srgb, var(--foreground) 6%, transparent);
 }
 
 /* ─── backdrop-filter only where something moves behind it ─────────────

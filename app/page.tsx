@@ -206,7 +206,7 @@ export default async function Home() {
       <div className="site-texture fixed inset-0 pointer-events-none z-0" aria-hidden="true" />
       <script dangerouslySetInnerHTML={{ __html: FORWARD_SCRIPT }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData() }} />
-      {/* Intro boot screen (covers the page for ~1s, then slides away) */}
+      {/* Intro boot screen (covers the page for ~2s, then slides away) */}
       <AppLoader />
       {/* No UI: handles #anchor arrivals, ?filter links, pre-rendering (lib/perf/PageEffects.tsx) */}
       <PageEffects />

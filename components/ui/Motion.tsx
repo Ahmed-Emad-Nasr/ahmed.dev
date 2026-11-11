@@ -6,7 +6,7 @@
  *                               a big faded number in the corner + the red
  *                               top line that grows on hover.
  *   <TiltCard>               → a card that tilts in 3D toward the mouse
- *                               (max = tilt in degrees, default 7).
+ *                               (max = tilt in degrees, default 5).
  *   <SpotlightHost />        → mounted once (DeferredGlobalEffects); makes the
  *                               soft glow follow the mouse on `.spotlight` cards
  *                               by setting --mx / --my (glow CSS in globals.css).
@@ -44,27 +44,49 @@ export function CardEffects({ index, tone = "red", topLine = false }: { index?: 
   );
 }
 
+/* Card geometry for the hover effects. Asking the browser where a card is
+   (getBoundingClientRect) forces it to finish its layout work on the spot,
+   and a mouse reports its position up to 1000 times a second — so the
+   answer is kept for RECT_MS and shared by the glow and the tilt. */
+const RECT_MS = 120;
+const rects = new WeakMap<Element, { at: number; rect: DOMRect }>();
+function rectOf(el: Element, now: number): DOMRect {
+  const kept = rects.get(el);
+  if (kept && now - kept.at < RECT_MS) return kept.rect;
+  const rect = el.getBoundingClientRect();
+  rects.set(el, { at: now, rect });
+  return rect;
+}
+
 /** One global listener: feeds --mx/--my to any hovered .spotlight card. */
 export function SpotlightHost() {
   useEffect(() => {
     if (prefersReducedMotion()) return;
+    /* The newest mouse position is written once per frame, however many
+       mouse events arrived in between. */
+    let el: HTMLElement | null = null;
+    let x = 0;
+    let y = 0;
+    let frame = 0;
+    const paint = (now: number) => {
+      frame = 0;
+      if (!el || !el.isConnected) return;
+      const r = rectOf(el, now);
+      el.style.setProperty("--mx", `${((x - r.left) / r.width) * 100}%`);
+      el.style.setProperty("--my", `${((y - r.top) / r.height) * 100}%`);
+    };
     const onMove = (e: globalThis.MouseEvent) => {
-      const el = (e.target as HTMLElement).closest?.(
-        ".spotlight",
-      ) as HTMLElement | null;
+      el = (e.target as HTMLElement).closest?.(".spotlight") as HTMLElement | null;
       if (!el) return;
-      const r = el.getBoundingClientRect();
-      el.style.setProperty(
-        "--mx",
-        `${((e.clientX - r.left) / r.width) * 100}%`,
-      );
-      el.style.setProperty(
-        "--my",
-        `${((e.clientY - r.top) / r.height) * 100}%`,
-      );
+      x = e.clientX;
+      y = e.clientY;
+      frame ||= requestAnimationFrame(paint);
     };
     document.addEventListener("mousemove", onMove, { passive: true });
-    return () => document.removeEventListener("mousemove", onMove);
+    return () => {
+      document.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(frame);
+    };
   }, []);
   return null;
 }
@@ -90,13 +112,12 @@ export function TiltCard({
     if (prefersReducedMotion()) return;
     const el = ref.current;
     if (!el) return;
-    const r = el.getBoundingClientRect();
+    /* (The glow position, --mx / --my, is SpotlightHost's job.) */
+    const r = rectOf(el, e.timeStamp);
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
     rx.set(-py * max);
     ry.set(px * max);
-    el.style.setProperty("--mx", `${(px + 0.5) * 100}%`);
-    el.style.setProperty("--my", `${(py + 0.5) * 100}%`);
   };
 
   const reset = () => {

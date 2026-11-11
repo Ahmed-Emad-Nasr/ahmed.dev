@@ -41,6 +41,7 @@ import { HeroMascot } from "@/components/home/HeroMascot";
 import { RoleTicker } from "@/components/home/RoleTicker";
 import { MessageCircle, Download, ArrowDown } from "lucide-react";
 import { prefersReducedMotion } from "@/lib/fx";
+import { whenIntroDone } from "@/lib/intro";
 import { Github, Linkedin, Youtube } from "@/components/ui/BrandIcons";
 
 /* One line of the "field record" panel (label on the left, value on the
@@ -133,71 +134,78 @@ export default function HeroSection({
     if (prefersReducedMotion()) return; // final state is the natural layout
     let ctx: { revert: () => void } | undefined;
     let cancelled = false;
+    let stopWaiting = () => {};
+    /* GSAP downloads under the intro screen; the timeline starts when the
+       screen begins to slide away (lib/intro.ts), so it is actually seen. */
     void import("gsap").then(({ gsap }) => {
       if (cancelled) return;
-      ctx = gsap.context(() => {
-        /* Entrance: content stack */
-        gsap.from(".hero-content > *", {
-          y: 43.4,
-          opacity: 0,
-          duration: 1.32,
-          stagger: 0.172,
-          ease: "power4.out",
-          delay: 0.4,
-        });
+      stopWaiting = whenIntroDone(() => {
+        if (cancelled) return;
+        ctx = gsap.context(() => {
+          /* Entrance: content stack */
+          gsap.from(".hero-content > *", {
+            y: 43.4,
+            opacity: 0,
+            duration: 1.32,
+            stagger: 0.172,
+            ease: "power4.out",
+            delay: 0.4,
+          });
 
-        /* Entrance: portrait */
-        gsap.from(".hero-image", {
-          scale: 1.072,
-          opacity: 0,
-          duration: 1.72,
-          ease: "power2.out",
-          delay: 0.15,
-        });
+          /* Entrance: portrait */
+          gsap.from(".hero-image", {
+            scale: 1.072,
+            opacity: 0,
+            duration: 1.72,
+            ease: "power2.out",
+            delay: 0.15,
+          });
 
-        /* Entrance: background kanji */
-        gsap.from(".japanese-bg", {
-          x: 72.2,
-          opacity: 0,
-          duration: 1.72,
-          ease: "expo.out",
-          delay: 0.8,
-        });
+          /* Entrance: background kanji */
+          gsap.from(".japanese-bg", {
+            x: 72.2,
+            opacity: 0,
+            duration: 1.72,
+            ease: "expo.out",
+            delay: 0.8,
+          });
 
-        /* Entrance: hinomaru sun */
-        gsap.from(".hinomaru-sun", {
-          scale: 0,
-          opacity: 0,
-          duration: 2.07,
-          ease: "expo.out",
-          delay: 0.25,
-        });
+          /* Entrance: hinomaru sun */
+          gsap.from(".hinomaru-sun", {
+            scale: 0,
+            opacity: 0,
+            duration: 2.07,
+            ease: "expo.out",
+            delay: 0.25,
+          });
 
-        /* Entrance: spec sheet */
-        gsap.from(".spec-item", {
-          x: -21.7,
-          opacity: 0,
-          duration: 0.75,
-          stagger: 0.115,
-          ease: "power3.out",
-          delay: 1,
-        });
+          /* Entrance: spec sheet */
+          gsap.from(".spec-item", {
+            x: -21.7,
+            opacity: 0,
+            duration: 0.75,
+            stagger: 0.115,
+            ease: "power3.out",
+            delay: 1,
+          });
 
-        /* Entrance: speed lines */
-        gsap.from(".speed-line", {
-          scaleX: 0,
-          opacity: 0,
-          duration: 1.32,
-          stagger: 0.057,
-          ease: "expo.out",
-          delay: 1.25,
-          transformOrigin: "left center",
-        });
-      }, containerRef);
+          /* Entrance: speed lines */
+          gsap.from(".speed-line", {
+            scaleX: 0,
+            opacity: 0,
+            duration: 1.32,
+            stagger: 0.057,
+            ease: "expo.out",
+            delay: 1.25,
+            transformOrigin: "left center",
+          });
+        }, containerRef);
+      });
     });
 
     return () => {
       cancelled = true;
+      stopWaiting();
       ctx?.revert();
     };
   }, []);

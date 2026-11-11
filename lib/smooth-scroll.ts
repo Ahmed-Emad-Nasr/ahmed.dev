@@ -11,6 +11,9 @@
  *   • Dialogs (menu, palette, terminal, shortcuts, lightbox) and any inner
  *     scrolling list keep native scrolling.
  *
+ * One more job: while the page moves fast, hover effects are switched off
+ * (see "Fast scroll" below) — the biggest single cause of a stuttering scroll.
+ *
  * Cost: this file and Lenis are one small chunk that is downloaded in idle
  * time, only on devices with a mouse or trackpad, and never when the visitor
  * asked for reduced motion (components/layout/SmoothScroll.tsx decides).
@@ -57,6 +60,48 @@ export function startSmoothScroll(): () => void {
   };
   window.addEventListener("wheel", wake, { capture: true, passive: true });
 
+  /* ── Fast scroll: the cards under the cursor do not react ──
+     While the page moves, the cursor stands still and every card slides
+     under it: each one would start (and at once drop) its hover — border,
+     glow, spotlight, colour image, tilt. Measured, that is HALF of all the
+     work of a scrolled frame, and the main cause of a stuttering scroll.
+     Above ENGAGE px/ms an invisible sheet (.scroll-shield, app/globals.css)
+     comes between the cursor and the content; it goes away as the glide
+     slows below RELEASE, so a click on the settling page still lands. The
+     navbar, toasts and dialogs sit above the sheet and always answer.
+     (A sheet, not `pointer-events: none` on the content: that property is
+     inherited, so switching it restyles every element on the page — a
+     stutter of its own.) */
+  const shield = document.createElement("div");
+  shield.className = "scroll-shield";
+  shield.setAttribute("aria-hidden", "true");
+  document.body.appendChild(shield);
+  const ENGAGE = 0.5;
+  const RELEASE = 0.2;
+  let fast = false;
+  let lastY = window.scrollY;
+  let lastT = 0;
+  let calm = 0;
+  const setFast = (on: boolean) => {
+    if (on === fast) return;
+    fast = on;
+    shield.style.display = on ? "block" : "";
+  };
+  lenis.on("scroll", () => {
+    const now = performance.now();
+    const y = window.scrollY;
+    const dt = now - lastT;
+    if (dt > 0 && dt < 100) {
+      const speed = Math.abs(y - lastY) / dt;
+      if (speed > ENGAGE) setFast(true);
+      else if (speed < RELEASE) setFast(false);
+    }
+    lastY = y;
+    lastT = now;
+    window.clearTimeout(calm);
+    calm = window.setTimeout(() => setFast(false), 120);
+  });
+
   let paused = false;
   registerSmoothScroll({
     /* stop() + start() is Lenis's public way to drop the animation and
@@ -77,6 +122,8 @@ export function startSmoothScroll(): () => void {
 
   return () => {
     registerSmoothScroll(null);
+    window.clearTimeout(calm);
+    shield.remove();
     window.removeEventListener("wheel", wake, { capture: true });
     cancelAnimationFrame(frame);
     lenis.destroy();

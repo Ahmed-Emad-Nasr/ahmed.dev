@@ -22,6 +22,7 @@
 
 import { m, useAnimationControls } from "framer-motion";
 import { useRef, type ComponentProps } from "react";
+import { whenIntroDone } from "@/lib/intro";
 import {
   MOTION_EASE,
   MOTION_ENTER_DURATION,
@@ -121,23 +122,27 @@ export default function FadeIn({
       animate={controls}
       viewport={{ once: true, margin: "0px 0px -15% 0px" }}
       onViewportEnter={() =>
-        enqueue(ref.current, (order) => {
-          const tempo = window.innerWidth < 768 ? 0.8 : 1;
-          void controls.start({
-            opacity: 1,
-            transform: "translate(0px, 0px) scale(1)",
-            transition: {
-              duration:
-                clamp(duration || MOTION_ENTER_DURATION, 0.6, 1.2) *
-                0.99 *
-                tempo,
-              delay:
-                (MOTION_STAGGER_STEP +
-                  Math.min(delay, 0.45) * 1.2 +
-                  Math.min(order, 7) * MOTION_STAGGER_STEP) *
-                tempo,
-              ease: MOTION_EASE,
-            },
+        /* Under the intro screen nothing plays: it starts as the screen lifts */
+        whenIntroDone(() => {
+          if (!ref.current) return; // left the page while waiting
+          enqueue(ref.current, (order) => {
+            const tempo = window.innerWidth < 768 ? 0.8 : 1;
+            void controls.start({
+              opacity: 1,
+              transform: "translate(0px, 0px) scale(1)",
+              transition: {
+                duration:
+                  clamp(duration || MOTION_ENTER_DURATION, 0.6, 1.2) *
+                  0.99 *
+                  tempo,
+                delay:
+                  (MOTION_STAGGER_STEP +
+                    Math.min(delay, 0.45) * 1.2 +
+                    Math.min(order, 7) * MOTION_STAGGER_STEP) *
+                  tempo,
+                ease: MOTION_EASE,
+              },
+            });
           });
         })
       }

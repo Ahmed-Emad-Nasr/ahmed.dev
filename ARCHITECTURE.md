@@ -91,6 +91,22 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
   In-page jumps stay **instant** and go through `lib/scroll.ts`, which also
   cancels a glide in progress; `lockScroll()` there holds the page (and
   Lenis) still behind every dialog and the lightbox.
+- Smooth while scrolling: above a certain speed an invisible sheet
+  (`.scroll-shield`, shown by `lib/smooth-scroll.ts`) sits between the cursor
+  and the content, so cards sliding under a still cursor do not each start a
+  hover (measured: half the work of a scrolled frame). It lifts as the glide
+  slows, so clicks on the settling page land.
+- Intro: `components/layout/AppLoader.tsx` (about 2 s, once per visit). Its
+  bar is a compositor animation, so it stays smooth while the page wakes up
+  underneath. Entrances wait for it through `lib/intro.ts`, and the idle
+  queue starts early under it (`lib/perf/schedule.ts`) so the sections are
+  ready when it lifts.
+- Card hover: `SpotlightHost` writes the glow position once per frame;
+  `--mx` / `--my` are registered as non-inherited so a mouse move restyles
+  the glow layer only, not the whole card. Card geometry is cached (`rectOf`
+  in `components/ui/Motion.tsx`).
+- ATT&CK tiles fill with their heat once, on arrival
+  (`components/blog/HeatReveal.tsx`) — not on every scrolled frame.
 - Calmness dials: `CALM` and the duration factor in `components/ui/FadeIn.tsx`,
   `MOTION_ENTER_DURATION` / `MOTION_STAGGER_STEP` in `lib/motion.ts`.
 - Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
