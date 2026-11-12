@@ -76,10 +76,10 @@ const Embed = memo(function Embed({
             unoptimized
             onLoad={markLoaded}
             onError={markLoaded}
-            className="img-fade object-cover grayscale group-hover/play:grayscale-0 group-hover/play:scale-[1.0425] transition-all duration-600"
+            className="img-fade object-cover grayscale group-hover/play:grayscale-0 group-hover/play:scale-105 transition-all duration-1000"
           />
-          <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover/play:bg-transparent transition-all duration-420" />
-          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-5 py-3 bg-primary text-white font-mono text-[0.625rem] font-black uppercase tracking-[0.2em] transition-transform duration-180 group-hover/play:scale-[1.0425]">
+          <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover/play:bg-transparent transition-all duration-700" />
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-5 py-3 bg-primary text-white font-mono text-[0.625rem] font-black uppercase tracking-[0.2em] transition-transform duration-300 group-hover/play:scale-105">
             <Play size={13} fill="currentColor" /> {label}
           </span>
         </button>
@@ -102,8 +102,8 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
       {/* Numbers strip */}
       <section aria-label="Library in numbers" className="relative">
         <div className="grid grid-cols-1 sm:grid-cols-3 border border-foreground/10 bg-surface/50 backdrop-blur-md divide-y sm:divide-y-0 sm:divide-x divide-foreground/5">
-          {stats.map((s, i) => (
-            <FadeIn y={16} duration={0.55} delay={i * 0.07} key={s.label} className="px-6 py-5 flex items-center gap-4">
+          {stats.map((s) => (
+            <FadeIn key={s.label} className="px-6 py-5 flex items-center gap-4">
               <span className="font-mono text-xl md:text-2xl font-black text-accent tabular-nums">
                 <CountUp target={s.value} />
               </span>
@@ -136,8 +136,8 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {videos.slice(0, visible).map((video, idx) => (
-                <FadeIn y={32} duration={0.7} delay={(idx % 3) * 0.1} key={video.videoId} className="flex">
-                  <TiltCard className="spotlight group relative w-full flex flex-col bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300 overflow-hidden">
+                <FadeIn key={video.videoId} className="flex">
+                  <TiltCard className="spotlight group relative w-full flex flex-col bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500 overflow-hidden">
                     <CardEffects index={idx + 1} />
                     <Embed
                       id={`video-${video.videoId}`}
@@ -192,9 +192,9 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
               <button
                 type="button"
                 onClick={() => setVisible((n) => Math.min(videos.length, n + VIDEO_PAGE))}
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5"
               >
-                <ChevronDown size={14} className="text-primary-ink transition-transform duration-180 group-hover:translate-y-[1.7px]" />
+                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5" />
                 Show more
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
                   {visible}/{videos.length}
@@ -213,13 +213,10 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                 <span className="brush-jp text-lg text-foreground/30" lang="ja" aria-hidden="true" data-jp="連続" />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {playlists.map((playlist, idx) => (
+                {playlists.map((playlist) => (
                   <FadeIn
-                    y={24}
-                    duration={0.65}
-                    delay={idx * 0.08}
                     key={playlist.playlistId}
-                    className="group spotlight spotlight-blue relative bg-surface/60 border border-foreground/5 hover:border-tertiary/50 transition-colors duration-300 flex flex-col overflow-hidden"
+                    className="group spotlight spotlight-blue relative bg-surface/60 border border-foreground/5 hover:border-tertiary/50 transition-colors duration-500 flex flex-col overflow-hidden"
                   >
                     <Embed
                       id={`playlist-${playlist.playlistId}`}
@@ -232,10 +229,10 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                     />
                     <div className="flex flex-col flex-1 p-6">
                       <div className="flex items-center justify-between gap-3 mb-3">
-                        <h4 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-180">
+                        <h4 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300">
                           {playlist.title}
                         </h4>
-                        <ListVideo size={14} className="shrink-0 text-foreground/25 group-hover:text-tertiary transition-colors duration-180" />
+                        <ListVideo size={14} className="shrink-0 text-foreground/25 group-hover:text-tertiary transition-colors duration-300" />
                       </div>
                       {playlist.description && (
                         <p className="text-sm text-foreground/60 font-light leading-relaxed mb-5 line-clamp-3">{playlist.description}</p>

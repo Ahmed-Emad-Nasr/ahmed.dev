@@ -8,7 +8,6 @@
  * Slides in from the left when it scrolls into view.
  */
 
-import FadeIn from "@/components/ui/FadeIn";
 
 interface SectionHeaderProps {
   titleA: string;
@@ -25,7 +24,7 @@ export default function SectionHeader({
   as: Heading = "h2",
 }: SectionHeaderProps) {
   return (
-    <FadeIn x={-32} y={0} duration={0.7} className="mb-16 md:mb-20 max-w-3xl">
+    <div className="mb-16 md:mb-20 max-w-3xl">
       <Heading className="font-display text-4xl md:text-6xl lg:text-7xl font-black tracking-tighter uppercase leading-[0.9]">
         <span className="text-foreground">{titleA}</span> <br />
         <span className="text-primary italic">{titleB}</span>
@@ -35,6 +34,6 @@ export default function SectionHeader({
           {description}
         </p>
       ) : null}
-    </FadeIn>
+    </div>
   );
 }

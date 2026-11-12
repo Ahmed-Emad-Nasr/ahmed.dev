@@ -68,11 +68,11 @@ export default function DetectionLibrary() {
                 type="button"
                 onClick={() => setGroup(g)}
                 aria-pressed={active}
-                className={`relative overflow-hidden px-3 py-1.5 border font-mono text-[0.5625rem] font-bold uppercase tracking-[0.18em] transition-colors duration-180 ${
+                className={`relative overflow-hidden px-3 py-1.5 border font-mono text-[0.5625rem] font-bold uppercase tracking-[0.18em] transition-colors duration-300 ${
                   active ? "border-primary text-white" : "border-foreground/10 text-foreground/60 hover:text-foreground hover:border-foreground/30"
                 }`}
               >
-                <span className={`absolute inset-0 bg-primary origin-left transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${active ? "scale-x-100" : "scale-x-0"}`} aria-hidden="true" />
+                <span className={`absolute inset-0 bg-primary origin-left transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${active ? "scale-x-100" : "scale-x-0"}`} aria-hidden="true" />
                 <span className="relative">
                   {g ? RULE_GROUP_LABEL[g] : "All rules"} <span className="tabular-nums">{n}</span>
                 </span>
@@ -100,7 +100,7 @@ export default function DetectionLibrary() {
               <li
                 key={r.id}
                 className="grid grid-cols-[5.5rem_1fr] md:grid-cols-[5.5rem_7rem_1fr_6.5rem] items-center gap-x-4 gap-y-1 px-5 py-3 hover:bg-foreground/[0.03] transition-colors rule-row"
-                style={{ animationDelay: `${Math.min(i, 14) * 24}ms` }}
+                style={{ animationDelay: `${Math.min(i, 14) * 40}ms` }}
               >
                 <span className="font-mono text-xs font-bold text-foreground/80 tabular-nums">{r.id}</span>
                 <span className="flex items-center gap-2 md:order-none order-3">
@@ -125,7 +125,7 @@ export default function DetectionLibrary() {
           </ul>
         </div>
 
-        <FadeIn y={12} duration={0.5} className="mt-6 flex flex-wrap items-center justify-between gap-4">
+        <FadeIn className="mt-6 flex flex-wrap items-center justify-between gap-4">
           <p className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
             Technical readers: the complete rule file is in the report
           </p>
@@ -133,7 +133,7 @@ export default function DetectionLibrary() {
             href="/blog/3omda-custom-detection-rules"
             className="group inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary-ink"
           >
-            View the full rule file <ArrowUpRight size={13} className="transition-transform duration-180 group-hover:translate-x-[1.7px] group-hover:-translate-y-[1.7px]" />
+            View the full rule file <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </PageLink>
         </FadeIn>
       </div>

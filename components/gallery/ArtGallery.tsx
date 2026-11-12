@@ -47,6 +47,7 @@ import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
 import { preloadable } from "@/lib/perf/lazy";
 import FadeIn from "@/components/ui/FadeIn";
 import OrgLogo from "@/components/ui/OrgLogo";
+import { MOTION_EASE } from "@/lib/motion";
 
 /* preloadable = fetched in idle time and then rendered without a suspended
    frame: React holds back a suspended→ready swap for ~300ms, which is what
@@ -132,7 +133,7 @@ export default function ArtGallery() {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── 01 · Main Header ─── */}
         <div className="mb-16 md:mb-20 flex flex-col md:flex-row justify-between items-end gap-8">
-          <FadeIn x={-40} y={0} duration={0.8} className="max-w-3xl">
+          <div className="max-w-3xl">
             <h2
               id="art-title"
               className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]"
@@ -146,13 +147,10 @@ export default function ArtGallery() {
               records, then {PHOTOS.length} photos from classrooms and events.
               Click any of them to see it full size.
             </p>
-          </FadeIn>
+          </div>
 
           {/* Counter Badges */}
-          <FadeIn
-            y={20}
-            duration={0.6}
-            delay={0.3}
+          <div
             className="flex flex-wrap gap-4"
           >
             <div className="relative px-6 py-3 border border-accent/40 bg-surface/60 backdrop-blur-sm">
@@ -190,7 +188,7 @@ export default function ArtGallery() {
                 </div>
               </div>
             </div>
-          </FadeIn>
+          </div>
         </div>
 
         {/* ─── 02 · All Certificates Directory (Literally every certificate) ─── */}
@@ -250,14 +248,11 @@ export default function ArtGallery() {
             {filteredCerts.map((cert, idx) => {
               const num = String(idx + 1).padStart(2, "0");
               return (
-                <FadeIn
+                <FadeIn delay={idx * 0.04} ease={MOTION_EASE} margin="-50px"
                   as="li"
-                  y={20}
-                  duration={0.5}
-                  delay={(idx % 6) * 0.05}
                   key={cert.galleryIndex}
                 >
-                  <TiltCard className="spotlight group relative h-full bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300">
+                  <TiltCard className="spotlight group relative h-full bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-500">
                     <CardEffects index={Number(num)} />
                     <button
                       type="button"
@@ -272,7 +267,7 @@ export default function ArtGallery() {
                             {num} • {cert.issuer}
                           </span>
                         </div>
-                        <h3 className="font-display text-lg md:text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-180 leading-tight">
+                        <h3 className="font-display text-lg md:text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
                           {cert.title}
                         </h3>
                         <p className="text-sm text-foreground/60 font-light leading-relaxed">
@@ -317,23 +312,19 @@ export default function ArtGallery() {
 
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {shownArchive.map((img, idx) => (
-              <FadeIn
-                y={0}
-                scale={0.95}
-                duration={0.8}
-                delay={(idx % 6) * 0.08}
+              <FadeIn delay={(idx % 3) * 0.04} ease={MOTION_EASE} margin="-50px"
                 key={img.slideIndex}
                 className="break-inside-avoid"
               >
                 <TiltCard
                   max={5}
-                  className="spotlight relative group overflow-hidden bg-surface border border-foreground/5 transition-all duration-420 hover:border-primary/40"
+                  className="spotlight relative group overflow-hidden bg-surface border border-foreground/5 transition-all duration-700 hover:border-primary/40"
                 >
                   <CardEffects index={idx + 1} />
-                  <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-                  <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-                  <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-                  <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
+                  <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
+                  <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
+                  <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
+                  <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
 
                   <button
                     type="button"
@@ -351,7 +342,7 @@ export default function ArtGallery() {
                     width={500}
                     height={500}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="img-fade w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-600 group-hover:scale-[1.0425]"
+                    className="img-fade w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                     onLoad={markLoaded}
                     onError={markLoaded}
                     loading="lazy"
@@ -361,11 +352,11 @@ export default function ArtGallery() {
                   />
 
                   <div
-                    className="gallery-halftone pointer-events-none absolute inset-0 z-[5] opacity-0 transition-[opacity,transform] duration-[540ms] ease-out group-hover:scale-[1.17] group-hover:opacity-100"
+                    className="gallery-halftone pointer-events-none absolute inset-0 z-[5] opacity-0 transition-[opacity,transform] duration-[900ms] ease-out group-hover:scale-[1.2] group-hover:opacity-100"
                     aria-hidden="true"
                   />
 
-                  <div className="hover-reveal absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 z-10">
+                  <div className="hover-reveal absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6 z-10">
                     <div
                       className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-20"
                       style={{
@@ -412,11 +403,11 @@ export default function ArtGallery() {
                 onClick={() =>
                   setVisible((n) => Math.min(PHOTOS.length, n + PAGE))
                 }
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5"
               >
                 <ChevronDown
                   size={14}
-                  className="text-primary-ink transition-transform duration-180 group-hover:translate-y-[1.7px]"
+                  className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5"
                 />
                 Show more
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">

@@ -53,7 +53,7 @@ export default function OrgLogo({
   const icon = file ? undefined : brandIconOf(name);
   if (strict && !file && !icon) return null;
 
-  const box = `grid place-items-center shrink-0 border border-primary/30 bg-primary/[0.06] text-primary-ink transition-colors duration-180 ${BOX[size]} ${className}`;
+  const box = `grid place-items-center shrink-0 border border-primary/30 bg-primary/[0.06] text-primary-ink transition-colors duration-300 ${BOX[size]} ${className}`;
 
   if (file) {
     return (

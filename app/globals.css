@@ -61,13 +61,11 @@
   --container-7xl: 80rem;
 
   /* Lighter effects: every blur radius is 15% under Tailwind's default
-     (8 / 12 / 24 / 40px); the pulse loops in 1.62s (default 2s).
-     To go back, delete these five lines. */
+     (8 / 12 / 24 / 40px). To go back, delete these four lines. */
   --blur-sm: 6.8px;
   --blur-md: 10.2px;
   --blur-xl: 20.4px;
   --blur-2xl: 34px;
-  --animate-pulse: pulse 1.62s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -174,6 +172,23 @@
     scroll-behavior: auto;
   }
 
+  /* Lenis (components/layout/SmoothScroll.tsx) — its stylesheet */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis:not(.lenis-autoToggle).lenis-stopped {
+    overflow: clip;
+  }
+  .lenis [data-lenis-prevent],
+  .lenis [data-lenis-prevent-wheel],
+  .lenis [data-lenis-prevent-touch] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
+  }
+
   /* An invisible sheet over the content while the page scrolls fast, so the
      cards sliding under a still cursor do not each start a hover
      (lib/perf/ScrollShield.tsx shows and hides it). Below the navbar (z 100),
@@ -209,26 +224,6 @@
     scroll-margin-top: 6rem;
   }
 
-  button:not(:disabled),
-  a[role="button"] {
-    transition:
-      transform 0.18s var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
-      border-color 0.18s ease,
-      background-color 0.18s ease,
-      color 0.18s ease;
-  }
-
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    button:not(:disabled):hover,
-    a[role="button"]:hover {
-      transform: translateY(-1.7px);
-    }
-
-    button:not(:disabled):active,
-    a[role="button"]:active {
-      transform: translateY(0);
-    }
-  }
 
   /* Custom cursor only on precise pointers; touch keeps native cursor */
   @media (pointer: fine) {
@@ -295,7 +290,7 @@
     font-family: var(--font-mono);
     font-size: 0.75rem;
     padding: 10px 16px;
-    transition: top 0.12s ease;
+    transition: top 0.2s ease;
   }
 
   .skip-link:focus {
@@ -342,8 +337,8 @@
 
   body {
     transition:
-      background-color 0.21s ease,
-      color 0.21s ease;
+      background-color 0.35s ease,
+      color 0.35s ease;
   }
 }
 
@@ -486,7 +481,7 @@
   inset: 0;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.21s ease;
+  transition: opacity 0.4s ease;
   background: radial-gradient(
     320px circle at var(--mx, 50%) var(--my, 50%),
     color-mix(in srgb, var(--primary) 14%, transparent),
@@ -501,8 +496,8 @@
 @media (hover: hover) {
   .spotlight {
     transition:
-      border-color 0.204s ease,
-      background-color 0.204s ease;
+      border-color 0.5s ease,
+      background-color 0.5s ease;
   }
 
   .spotlight:hover {
@@ -552,14 +547,14 @@
 /* ─── Contribution cells pop as Pac-Man passes ─── */
 
 .cell-pop {
-  animation: cell-pop 0.276s ease both;
-  animation-delay: calc(var(--i, 0) * 8ms);
+  animation: cell-pop 0.45s ease both;
+  animation-delay: calc(var(--i, 0) * 12ms);
 }
 
 @keyframes cell-pop {
   0% {
-    transform: scale(0.49);
-    filter: brightness(1.68);
+    transform: scale(0.4);
+    filter: brightness(1.8);
   }
 
   100% {
@@ -782,9 +777,9 @@ html[data-intro-seen] [data-app-loader] {
     var(--surface)
   );
   transition:
-    border-color 0.18s,
-    transform 0.18s,
-    background-color 0.48s ease-out;
+    border-color 0.3s,
+    transform 0.3s,
+    background-color 0.8s ease-out;
 }
 .attack-seg::before {
   content: "";
@@ -795,7 +790,7 @@ html[data-intro-seen] [data-app-loader] {
 }
 .attack-seg:hover {
   border-color: var(--primary);
-  transform: translateY(-1.7px);
+  transform: translateY(-2px);
 }
 .attack-seg-n {
   font-family: var(--font-mono);
@@ -877,14 +872,14 @@ html[data-intro-seen] [data-app-loader] {
     var(--surface)
   );
   transition:
-    border-color 0.18s,
-    transform 0.18s,
-    background-color 0.48s ease-out;
+    border-color 0.3s,
+    transform 0.3s,
+    background-color 0.8s ease-out;
 }
 .attack-tile:hover,
 .attack-tile:focus-visible {
   border-color: var(--primary);
-  transform: translateY(-1.7px);
+  transform: translateY(-2px);
 }
 .attack-tile-top {
   display: flex;
@@ -920,10 +915,10 @@ html[data-intro-seen] [data-app-loader] {
 }
 .attack-tile-foot > span {
   color: var(--primary-ink);
-  transition: transform 0.18s;
+  transition: transform 0.3s;
 }
 .attack-tile:hover .attack-tile-foot > span {
-  transform: translateX(2.55px);
+  transform: translateX(3px);
 }
 /* One element per pip row: --n of --max squares filled. A 5px square every
    7px is a mask over a two-tone bar — 1 node instead of 7 per tile. */
@@ -1000,8 +995,8 @@ html[data-intro-seen] [data-app-loader] {
   border: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
   color: color-mix(in srgb, var(--foreground) 70%, transparent);
   transition:
-    border-color 0.12s,
-    color 0.12s;
+    border-color 0.2s,
+    color 0.2s;
 }
 .attack-pop-close:hover {
   border-color: var(--primary);
@@ -1021,8 +1016,8 @@ html[data-intro-seen] [data-app-loader] {
   border-bottom: 1px solid
     color-mix(in srgb, var(--foreground) 10%, transparent);
   transition:
-    color 0.12s,
-    background-color 0.12s;
+    color 0.2s,
+    background-color 0.2s;
 }
 .attack-pop-cases a:hover,
 .attack-pop-cases a:focus-visible {
@@ -1036,10 +1031,10 @@ html[data-intro-seen] [data-app-loader] {
 }
 .attack-pop-go {
   color: var(--primary-ink);
-  transition: transform 0.12s;
+  transition: transform 0.2s;
 }
 .attack-pop-cases a:hover .attack-pop-go {
-  transform: translateX(2.55px);
+  transform: translateX(3px);
 }
 .attack-pop-ext {
   display: inline-block;
@@ -1125,14 +1120,14 @@ html[data-intro-seen] [data-app-loader] {
     var(--surface)
   );
   transition:
-    transform 0.18s,
-    border-color 0.18s,
-    background-color 0.48s ease-out;
+    transform 0.3s,
+    border-color 0.3s,
+    background-color 0.8s ease-out;
 }
 .attack-cell:hover,
 .attack-cell:focus-visible {
   border-color: var(--primary);
-  transform: translateY(-1.7px) scale(1.034);
+  transform: translateY(-2px) scale(1.04);
   z-index: 1;
   position: relative;
 }
@@ -1286,7 +1281,7 @@ html[data-nav-pending]::after {
   opacity: 0.55;
 }
 .lab-node rect:first-child {
-  transition: stroke-opacity 0.18s;
+  transition: stroke-opacity 0.3s;
 }
 .lab-node:hover rect:first-child {
   stroke-opacity: 1;
@@ -1503,6 +1498,27 @@ html[data-nav-pending]::after {
 .lazy-h-platforms {
   --lazy-h: 2150px;
 }
+.lazy-h-projects {
+  --lazy-h: 3660px;
+}
+.lazy-h-process {
+  --lazy-h: 1400px;
+}
+.lazy-h-tools {
+  --lazy-h: 3680px;
+}
+.lazy-h-uses {
+  --lazy-h: 1110px;
+}
+.lazy-h-path {
+  --lazy-h: 1420px;
+}
+.lazy-h-now {
+  --lazy-h: 1120px;
+}
+.lazy-h-faq {
+  --lazy-h: 1160px;
+}
 .lazy-h-contact {
   --lazy-h: 1780px;
 }
@@ -1533,6 +1549,27 @@ html[data-nav-pending]::after {
   }
   .lazy-h-platforms {
     --lazy-h: 2100px;
+  }
+  .lazy-h-projects {
+    --lazy-h: 2500px;
+  }
+  .lazy-h-process {
+    --lazy-h: 1010px;
+  }
+  .lazy-h-tools {
+    --lazy-h: 2600px;
+  }
+  .lazy-h-uses {
+    --lazy-h: 880px;
+  }
+  .lazy-h-path {
+    --lazy-h: 1240px;
+  }
+  .lazy-h-now {
+    --lazy-h: 940px;
+  }
+  .lazy-h-faq {
+    --lazy-h: 1170px;
   }
   .lazy-h-contact {
     --lazy-h: 1700px;
@@ -1565,6 +1602,27 @@ html[data-nav-pending]::after {
   }
   .lazy-h-platforms {
     --lazy-h: 1280px;
+  }
+  .lazy-h-projects {
+    --lazy-h: 1830px;
+  }
+  .lazy-h-process {
+    --lazy-h: 790px;
+  }
+  .lazy-h-tools {
+    --lazy-h: 1590px;
+  }
+  .lazy-h-uses {
+    --lazy-h: 600px;
+  }
+  .lazy-h-path {
+    --lazy-h: 1060px;
+  }
+  .lazy-h-now {
+    --lazy-h: 690px;
+  }
+  .lazy-h-faq {
+    --lazy-h: 1000px;
   }
   .lazy-h-contact {
     --lazy-h: 1100px;
@@ -1639,4 +1697,31 @@ html[data-nav-pending]::after {
 [data-offscreen] [data-loop-after]::after,
 [data-offscreen][data-loop-after]::after {
   animation-play-state: paused !important;
+}
+
+/* ── Ticker band (components/ui/TickerStrip.tsx) ──
+   The track holds the words twice; sliding it by half its width loops
+   seamlessly. Pauses on hover / keyboard focus; still with reduced motion. */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 56s linear infinite;
+  will-change: transform;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
 }

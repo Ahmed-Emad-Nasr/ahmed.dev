@@ -11,6 +11,7 @@ import {
 import CaseFilterLink from "@/components/blog/CaseFilterLink";
 import OrgLogo from "@/components/ui/OrgLogo";
 import FadeIn from "@/components/ui/FadeIn";
+import { EXPO_OUT } from "@/lib/motion";
 
 /*
  * ═══ components/home/ExperienceTimeline.tsx — the EXPERIENCE section (#experience) ═══
@@ -49,34 +50,24 @@ export default function ExperienceTimeline() {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Section Header ─── */}
         <div className="mb-16 md:mb-20">
-          <FadeIn
-            as="h2"
-            y={40}
-            duration={1}
-            delay={0.15}
+          <h2
             className="font-display title-fit [--title-n:12] font-black tracking-tighter uppercase leading-[0.85]"
           >
             <span className="text-foreground">Professional</span> <br />
             <span className="text-primary italic">Experience.</span>
-          </FadeIn>
-          <FadeIn
-            y={40}
-            duration={1}
-            delay={0.3}
+          </h2>
+          <div
             className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed"
           >
             A record of the roles, responsibilities and measurable work behind
             the security practice.
-          </FadeIn>
+          </div>
         </div>
 
         {/* ─── Experience Cards ─── */}
         <div className="flex flex-col gap-14 md:gap-20">
           {PORTFOLIO_DATA.experience.map((item, idx) => (
-            <FadeIn
-              x={idx % 2 === 0 ? -100 : 100}
-              y={0}
-              duration={1.2}
+            <FadeIn x={idx % 2 === 0 ? -100 : 100} y={0} duration={1.2} ease={EXPO_OUT} replay margin="0px 0px -100px 0px"
               key={idx}
               className="group relative grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-10 lg:gap-16 items-start"
             >
@@ -106,12 +97,12 @@ export default function ExperienceTimeline() {
                   rel="noopener noreferrer"
                   className="group/link flex items-center gap-3 w-fit"
                 >
-                  <h3 className="font-display text-3xl md:text-5xl font-black text-foreground group-hover/link:text-primary transition-colors duration-300">
+                  <h3 className="font-display text-3xl md:text-5xl font-black text-foreground group-hover/link:text-primary transition-colors duration-500">
                     {item.company}
                   </h3>
                   <ExternalLink
                     size={18}
-                    className="text-foreground/15 group-hover/link:text-primary-ink transition-colors duration-180"
+                    className="text-foreground/15 group-hover/link:text-primary-ink transition-colors duration-300"
                   />
                 </a>
 
@@ -131,14 +122,14 @@ export default function ExperienceTimeline() {
               </div>
 
               {/* Right Column: Service Record Panel */}
-              <TiltCard className="spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm group-hover:border-primary/20 transition-all duration-420 overflow-hidden">
+              <TiltCard className="spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm group-hover:border-primary/20 transition-all duration-700 overflow-hidden">
                 <CardEffects index={idx + 1} />
                 {/* Red left accent border */}
                 <div className="absolute top-0 left-0 w-[3px] h-full bg-primary" />
 
                 {/* Large Index Number */}
                 <div
-                  className="absolute top-6 right-6 font-mono text-7xl md:text-8xl font-black text-foreground/[0.04] leading-none select-none group-hover:text-primary/10 transition-colors duration-420"
+                  className="absolute top-6 right-6 font-mono text-7xl md:text-8xl font-black text-foreground/[0.04] leading-none select-none group-hover:text-primary/10 transition-colors duration-700"
                   aria-hidden="true"
                   data-deco={`0${idx + 1}`}
                 />
@@ -176,14 +167,14 @@ export default function ExperienceTimeline() {
                           <span className="font-mono text-[0.5625rem] text-foreground/60 tabular-nums w-4">
                             {String(i + 1).padStart(2, "0")}
                           </span>
-                          <div className="w-3 h-3 border border-accent/30 flex items-center justify-center group-hover/detail:border-accent transition-colors duration-180">
+                          <div className="w-3 h-3 border border-accent/30 flex items-center justify-center group-hover/detail:border-accent transition-colors duration-300">
                             <CheckCircle2
                               size={8}
-                              className="text-accent opacity-0 group-hover/detail:opacity-100 transition-opacity duration-180"
+                              className="text-accent opacity-0 group-hover/detail:opacity-100 transition-opacity duration-300"
                             />
                           </div>
                         </div>
-                        <span className="text-on-surface-variant group-hover/detail:text-foreground transition-colors duration-180 text-sm font-light leading-relaxed">
+                        <span className="text-on-surface-variant group-hover/detail:text-foreground transition-colors duration-300 text-sm font-light leading-relaxed">
                           {detail}
                         </span>
                       </div>
@@ -203,11 +194,11 @@ export default function ExperienceTimeline() {
                         href={item.proof.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group/proof inline-flex items-center gap-2 px-3 py-2 border border-accent/30 bg-accent/5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-accent hover:bg-accent hover:text-background transition-colors duration-180"
+                        className="group/proof inline-flex items-center gap-2 px-3 py-2 border border-accent/30 bg-accent/5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-accent hover:bg-accent hover:text-background transition-colors duration-300"
                       >
                         <Award
                           size={12}
-                          className="transition-transform duration-180 group-hover/proof:rotate-[10.2deg]"
+                          className="transition-transform duration-300 group-hover/proof:rotate-12"
                           aria-hidden="true"
                         />{" "}
                         {item.proof.label}
@@ -216,11 +207,11 @@ export default function ExperienceTimeline() {
                     {item.cases && (
                       <CaseFilterLink
                         params={item.cases.params}
-                        className="group/cases inline-flex items-center gap-2 px-3 py-2 border border-tertiary/30 bg-tertiary/5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-tertiary hover:bg-tertiary hover:text-background transition-colors duration-180"
+                        className="group/cases inline-flex items-center gap-2 px-3 py-2 border border-tertiary/30 bg-tertiary/5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.2em] text-tertiary hover:bg-tertiary hover:text-background transition-colors duration-300"
                       >
                         <FolderSearch
                           size={12}
-                          className="transition-transform duration-180 group-hover/cases:scale-[1.085]"
+                          className="transition-transform duration-300 group-hover/cases:scale-110"
                           aria-hidden="true"
                         />{" "}
                         {item.cases.label}

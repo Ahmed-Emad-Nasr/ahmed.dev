@@ -39,7 +39,7 @@ function ProfileLink({ label }: { label: string }) {
   return (
     <span className="flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-accent">
       <span aria-hidden="true">→</span> {label}
-      <ArrowUpRight size={12} className="transition-transform duration-180 group-hover:-translate-y-[1.7px] group-hover:translate-x-[1.7px]" aria-hidden="true" />
+      <ArrowUpRight size={12} className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
     </span>
   );
 }
@@ -99,7 +99,7 @@ function PlatformCard({ platform }: { platform: Platform }) {
         <Mark platform={platform} />
         <span className="jp-eyebrow text-[0.625rem] text-foreground/30" lang="ja" aria-hidden="true" data-jp={platform.japanese} />
       </div>
-      <h3 className="mt-6 font-display text-xl sm:text-2xl lg:text-lg xl:text-2xl font-black uppercase tracking-tight leading-none group-hover:text-primary transition-colors duration-180">
+      <h3 className="mt-6 font-display text-xl sm:text-2xl lg:text-lg xl:text-2xl font-black uppercase tracking-tight leading-none group-hover:text-primary transition-colors duration-300">
         {platform.name}
       </h3>
       <p className="mt-2 font-mono text-[0.6875rem] tracking-[0.15em] text-foreground/60">@{platform.handle}</p>
@@ -144,9 +144,6 @@ export default function PlatformsSection({
 
       <div className="max-w-7xl mx-auto relative z-10">
         <FadeIn
-          x={-32}
-          y={0}
-          duration={0.7}
           className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
         >
           <div className="min-w-0 flex-1">
@@ -169,8 +166,8 @@ export default function PlatformsSection({
         </FadeIn>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {others.map((p, i) => (
-            <FadeIn key={p.id} delay={i * 0.08} className="h-full">
+          {others.map((p) => (
+            <FadeIn key={p.id} className="h-full">
               <PlatformCard platform={p} />
             </FadeIn>
           ))}

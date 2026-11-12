@@ -17,9 +17,23 @@ function getHeaderOffset(): number {
 }
 
 /* Every programmatic scroll goes through here: jumps are INSTANT */
+/* Lenis (components/layout/SmoothScroll.tsx) when it runs: a jump has to go
+   through it, or its next wheel glide would start from the old position. */
+type SmoothScroller = {
+  scrollTo: (target: number, options?: { immediate?: boolean; force?: boolean }) => void;
+  stop: () => void;
+  start: () => void;
+};
+let smooth: SmoothScroller | null = null;
+export function setSmoothScroller(scroller: SmoothScroller | null): void {
+  smooth = scroller;
+  if (smooth && locks > 0) smooth.stop();
+}
+
 function scrollToY(top: number): void {
   const target = Math.max(0, top);
-  window.scrollTo({ top: target, behavior: "auto" });
+  if (smooth) smooth.scrollTo(target, { immediate: true, force: true });
+  else window.scrollTo({ top: target, behavior: "auto" });
 }
 
 /** The scroll position that puts an element just under the fixed header */
@@ -51,4 +65,6 @@ export function lockScroll(locked: boolean): void {
   const on = locks > 0;
   document.documentElement.style.overflow = on ? "hidden" : "";
   document.body.style.overflow = on ? "hidden" : "";
+  if (on) smooth?.stop();
+  else smooth?.start();
 }

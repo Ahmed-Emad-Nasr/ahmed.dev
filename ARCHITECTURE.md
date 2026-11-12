@@ -106,11 +106,13 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
   in `components/ui/Motion.tsx`).
 - ATT&CK tiles fill with their heat once, on arrival
   (`components/blog/HeatReveal.tsx`) — not on every scrolled frame.
-- Calmness dials: `CALM` and the duration factor in `components/ui/FadeIn.tsx`,
-  `MOTION_ENTER_DURATION` / `MOTION_STAGGER_STEP` in `lib/motion.ts`.
+- Motion values are Sensei-Dev's, one for one (`lib/motion.ts`): the
+  everyday entrance is `REVEAL` — fade + 8px rise in 0.4s, no stagger.
 - Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
-  only, staggered top to bottom). framer-motion loads lazily
-  (`LazyMotion` + `m`).
+  only). framer-motion loads lazily (`LazyMotion` + `m`).
+- Smooth wheel scrolling: Lenis (`components/layout/SmoothScroll.tsx`),
+  loaded after the page; jumps and dialog scroll locks go through it
+  (`lib/scroll.ts`).
 - Hero entrance: GSAP, imported on demand.
 - Section dividers drift with a CSS scroll timeline (framer fallback).
 - Reduced motion is respected everywhere (`MotionConfig reducedMotion="user"`

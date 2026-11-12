@@ -20,10 +20,9 @@ import { INTRO_SEEN_KEY, introSeen, markIntroDone } from "@/lib/intro";
  *   The slide-up exit animation is the `exit` prop on the motion.div below.
  * Click anywhere on it to skip.
  *
- * ONCE PER VISIT: it plays the first time the home page opens in a tab.
- * Coming back to the home page — from the blog, a case, a reload — does not
- * play it again (sessionStorage, see lib/intro.ts). A new tab or a new
- * browser session does.
+ * WHEN: on every full load of the home page, reloads included. Skipped when
+ * coming back with the browser's Back button or through the site's own links
+ * after it already played (see lib/intro.ts).
  *
  * SMOOTHNESS: the page is busiest exactly while this screen is up (React is
  * waking the page underneath). So the bar is a compositor animation
@@ -50,7 +49,7 @@ let introPlayed = false;
 const noSubscribe = () => () => {};
 
 export default function AppLoader() {
-  /* Played earlier in this visit (reload / coming back): the inline script
+  /* Played earlier in this tab and we came Back to it: the inline script
      already hid it with CSS; drop it right after hydration */
   const seen = useSyncExternalStore(noSubscribe, introSeen, () => false);
   /* Already played during this visit → start (and stay) hidden */

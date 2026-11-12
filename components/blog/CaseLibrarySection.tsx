@@ -300,17 +300,17 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
 
           {/* The 29 PortSwigger labs also read as one track */}
           {(activeKind === null || activeKind === "lab") && !deferredQuery && (
-            <FadeIn y={16} duration={0.6} className="mb-10">
+            <FadeIn className="mb-10">
               <button
                 type="button"
                 onClick={() => {
                   setQuery("PortSwigger");
                   setActiveKind(null);
                 }}
-                className="group relative w-full text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-tertiary/25 bg-tertiary/5 px-6 py-5 overflow-hidden hover:border-tertiary/60 transition-colors duration-300 cursor-pointer"
+                className="group relative w-full text-left flex flex-col sm:flex-row sm:items-center justify-between gap-4 border border-tertiary/25 bg-tertiary/5 px-6 py-5 overflow-hidden hover:border-tertiary/60 transition-colors duration-500 cursor-pointer"
               >
                 <span className="absolute inset-y-0 left-0 w-[3px] bg-tertiary" aria-hidden="true" />
-                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-tertiary/10 to-transparent transition-transform duration-600 group-hover:translate-x-full" aria-hidden="true" />
+                <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-tertiary/10 to-transparent transition-transform duration-1000 group-hover:translate-x-full" aria-hidden="true" />
                 <span>
                   <span className="block font-mono text-[0.5625rem] font-bold uppercase tracking-[0.3em] text-tertiary">Collection · PortSwigger</span>
                   <span className="block mt-1 font-display text-lg md:text-xl font-black uppercase tracking-tight text-foreground">
@@ -318,7 +318,7 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
                   </span>
                 </span>
                 <span className="flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-tertiary">
-                  Filter {WSA_LAB_COUNT} labs <ArrowUpRight size={14} className="transition-transform duration-180 group-hover:translate-x-[1.7px] group-hover:-translate-y-[1.7px]" />
+                  Filter {WSA_LAB_COUNT} labs <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
               </button>
             </FadeIn>
@@ -346,9 +346,9 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
               <button
                 type="button"
                 onClick={() => setVisible((n) => Math.min(visiblePdfs.length, (view === "list" ? Math.max(n, 24) : n) + (view === "list" ? 24 : PAGE)))}
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px] active:translate-y-0"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5"
               >
-                <ChevronDown size={14} className="text-primary-ink transition-transform duration-180 group-hover:translate-y-[1.7px]" />
+                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5" />
                 Show more cases
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
                   {Math.min(view === "list" ? Math.max(visible, 24) : visible, visiblePdfs.length)}/{visiblePdfs.length}

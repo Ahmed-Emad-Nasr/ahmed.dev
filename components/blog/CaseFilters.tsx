@@ -61,7 +61,7 @@ function CaseFilters({
 
   return (
     <div className="mb-12 flex flex-col gap-8">
-      <div className="relative flex items-center gap-3 border-b border-foreground/10 focus-within:border-primary transition-colors duration-180">
+      <div className="relative flex items-center gap-3 border-b border-foreground/10 focus-within:border-primary transition-colors duration-300">
         <Search size={18} className="shrink-0 text-foreground/30" aria-hidden="true" />
         <input
           type="search"
@@ -77,7 +77,7 @@ function CaseFilters({
           <button
             type="button"
             onClick={onReset}
-            className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 border border-primary/40 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary-ink hover:bg-primary hover:text-white transition-colors duration-180"
+            className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 border border-primary/40 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary-ink hover:bg-primary hover:text-white transition-colors duration-300"
           >
             <X size={12} /> Clear
           </button>
@@ -96,12 +96,12 @@ function CaseFilters({
                 type="button"
                 onClick={() => onKindChange(k.value as CaseKind | null)}
                 aria-pressed={active}
-                className={`relative px-4 py-2.5 font-mono text-[0.625rem] font-bold uppercase tracking-[0.18em] transition-colors duration-180 ${
+                className={`relative px-4 py-2.5 font-mono text-[0.625rem] font-bold uppercase tracking-[0.18em] transition-colors duration-300 ${
                   active ? "text-white" : "text-foreground/60 hover:text-foreground"
                 }`}
               >
                 <span
-                  className={`absolute inset-0 bg-primary origin-left transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)] ${active ? "scale-x-100" : "scale-x-0"}`}
+                  className={`absolute inset-0 bg-primary origin-left transition-transform duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${active ? "scale-x-100" : "scale-x-0"}`}
                   aria-hidden="true"
                 />
                 <span className="relative">
@@ -132,7 +132,7 @@ function CaseFilters({
                 onClick={() => onViewChange(v)}
                 aria-pressed={view === v}
                 aria-label={v === "cards" ? "Card view" : "List view"}
-                className={`p-2 transition-colors duration-180 ${view === v ? "bg-foreground/10 text-primary-ink" : "text-foreground/60 hover:text-foreground"}`}
+                className={`p-2 transition-colors duration-300 ${view === v ? "bg-foreground/10 text-primary-ink" : "text-foreground/60 hover:text-foreground"}`}
               >
                 {v === "cards" ? <LayoutGrid size={14} /> : <List size={14} />}
               </button>
@@ -173,7 +173,7 @@ function CaseFilters({
               type="button"
               onClick={() => onToolToggle(value)}
               aria-pressed={active}
-              className={`px-3 py-1.5 font-mono text-[0.625rem] font-bold uppercase tracking-[0.15em] border transition-colors duration-180 ${
+              className={`px-3 py-1.5 font-mono text-[0.625rem] font-bold uppercase tracking-[0.15em] border transition-colors duration-300 ${
                 active
                   ? "bg-tertiary text-background border-tertiary"
                   : "text-tertiary bg-tertiary/10 border-tertiary/25 hover:border-tertiary"

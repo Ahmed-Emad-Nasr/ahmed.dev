@@ -18,10 +18,19 @@
  *   Numbers strip          components/home/StatsBar         data/live-copy.ts (stats)
  *   Divider                components/ui/SlashDivider
  *   Projects     #work     components/home/WorkShowcase     data/portfolio-data.ts (`work`)
+ *   Open source  #projects components/home/ProjectsGrid     data/portfolio-data.ts + GitHub API (build time)
+ *   Ticker band            components/ui/TickerStrip        data/about.ts (TICKER)
+ *   Tools        #tools    components/home/ToolsSection     data/about.ts (from data/skills.ts)
+ *   Daily drivers #uses    components/home/UsesSection      data/about.ts
  *   Experience   #experience components/home/ExperienceTimeline  data/experience.ts
+ *   The path     #path     components/home/PathSection      data/about.ts
+ *   Right now    #now      components/home/NowSection       data/about.ts
  *   Teaching     #teaching components/home/TeachingSection  data/teaching.ts
  *   Testimonials #testimonials components/home/Testimonials  data/testimonials.ts
  *   Platforms    #platforms components/home/PlatformsSection data/platforms.ts (+ TryHackMe API)
+ *   Process      #process  components/home/ProcessSection   data/about.ts
+ *   FAQ          #faq      components/home/FaqSection       data/about.ts
+ *   Kanji banner           components/ui/SectionDivider     data/about.ts (DIVIDER)
  *   Contact      #contact  components/layout/ContactFooter
  *   ── Blog ──   #blog     components/ui/AreaIntro          BLOG_DESCRIPTION below
  *   Cases/Videos #cases    components/blog/CaseLibrarySection data/cases.ts, case-details.ts, youtube.ts
@@ -70,6 +79,14 @@ import {
   TeachingSection,
   Testimonials,
   PlatformsSection,
+  ToolsSection,
+  UsesSection,
+  PathSection,
+  NowSection,
+  FaqSection,
+  ProcessSection,
+  ProjectsGrid,
+  SectionDivider,
   ContactFooter,
   PaletteHint,
   SectionRail,
@@ -87,6 +104,7 @@ import { ArtGallery } from "@/components/gallery/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
 import { getTryHackMeStats } from "@/lib/api/tryhackme";
 import { getContributionStats } from "@/lib/api/contributions";
+import { getRepoCards } from "@/lib/api/github-repos";
 import { attackCoverage, libraryCounts } from "@/lib/library-data";
 import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
 import { PROFILE } from "@/data/profile";
@@ -100,6 +118,7 @@ import {
 } from "@/lib/seo";
 import LazySection from "@/lib/perf/lazy";
 import SlashDivider from "@/components/ui/SlashDivider";
+import TickerStrip from "@/components/ui/TickerStrip";
 
 /* The blog part's intro text (under "The Blog.") */
 const BLOG_DESCRIPTION =
@@ -292,7 +311,11 @@ function structuredData() {
    `npm run build` runs, and bakes them into the page (TryHackMe falls back
    to the saved snapshot in data/platforms.ts if offline). */
 export default async function Home() {
-  const [thm, contributions] = await Promise.all([getTryHackMeStats(), getContributionStats(PROFILE.contact.github)]);
+  const [thm, contributions, repos] = await Promise.all([
+    getTryHackMeStats(),
+    getContributionStats(PROFILE.contact.github),
+    getRepoCards(),
+  ]);
 
   return (
     <>
@@ -345,12 +368,39 @@ export default async function Home() {
       <LazySection id="work" size="lazy-h-work">
         <WorkShowcase items={PORTFOLIO_DATA.work} />
       </LazySection>
+
+      {/* The GitHub repositories behind the projects (lib/api/github-repos.ts) */}
+      <LazySection id="projects" size="lazy-h-projects">
+        <ProjectsGrid repos={repos} />
+      </LazySection>
+
+      {/* A band of words drifting past (data/about.ts → TICKER) */}
+      <TickerStrip />
+
+      {/* What the work is done with: skill groups, then the daily tools (data/about.ts) */}
+      <div className="tone-blue">
+        <LazySection id="tools" size="lazy-h-tools">
+          <ToolsSection />
+        </LazySection>
+        <LazySection id="uses" size="lazy-h-uses">
+          <UsesSection />
+        </LazySection>
+      </div>
+
       {/* The id is on this wrapper because ExperienceTimeline's own <section> has none */}
       <div id="experience">
         <LazySection size="lazy-h-experience">
           <ExperienceTimeline />
         </LazySection>
       </div>
+
+      {/* One line per year, then what's happening now (data/about.ts) */}
+      <LazySection id="path" size="lazy-h-path">
+        <PathSection />
+      </LazySection>
+      <LazySection id="now" size="lazy-h-now">
+        <NowSection />
+      </LazySection>
 
       <LazySection id="teaching" size="lazy-h-teaching">
         <TeachingSection />
@@ -369,6 +419,19 @@ export default async function Home() {
           <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
         </LazySection>
       </div>
+
+      {/* How a security job runs: govern → protect → detect → respond */}
+      <LazySection id="process" size="lazy-h-process">
+        <ProcessSection />
+      </LazySection>
+
+      {/* The questions recruiters ask first — an accordion (data/about.ts) */}
+      <LazySection id="faq" size="lazy-h-faq">
+        <FaqSection />
+      </LazySection>
+
+      {/* The slanted kanji banner, drifting with the scroll */}
+      <SectionDivider reverse angle={-1.5} />
 
       {/* Contact section + form */}
       <div id="contact" className="mt-20">

@@ -58,7 +58,6 @@ import {
   KanjiWatermark,
 } from "@/components/ui/kit";
 import { preloadable } from "@/lib/perf/lazy";
-import FadeIn from "@/components/ui/FadeIn";
 
 /* preloadable = fetched in idle time and then rendered without a suspended
    frame: React holds back a suspended→ready swap for ~300ms, which is what
@@ -176,7 +175,7 @@ function Shot({
       /* Starts with the visible caption ("Evidence 03") so voice control
          ("click evidence 03") and the name agree */
       aria-label={`Evidence ${String(index + 1).padStart(2, "0")} — open screenshot ${index + 1} of ${total}`}
-      className="spotlight group relative aspect-[16/10] overflow-hidden bg-surface border border-foreground/5 hover:border-primary/40 transition-all duration-420"
+      className="spotlight group relative aspect-[16/10] overflow-hidden bg-surface border border-foreground/5 hover:border-primary/40 transition-all duration-700"
     >
       <Image
         src={normalizePublicHref(thumbFailed ? shot : getThumbnail(shot))}
@@ -187,11 +186,11 @@ function Shot({
         decoding="async"
         fetchPriority="low"
         onError={() => setThumbFailed(true)}
-        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-[1.0425] transition-all duration-600"
+        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000"
       />
-      <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-      <div className="hover-reveal absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-3 z-10">
+      <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-500 z-20 pointer-events-none" />
+      <div className="hover-reveal absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-between p-3 z-10">
         <span className="font-mono text-[0.5625rem] font-bold tracking-[0.3em] uppercase text-white">
           Evidence {String(index + 1).padStart(2, "0")}
         </span>
@@ -275,7 +274,7 @@ export default function CaseArticle({
           >
             <ArrowLeft
               size={12}
-              className="transition-transform duration-180 group-hover:-translate-x-[3.4px]"
+              className="transition-transform duration-300 group-hover:-translate-x-1"
             />{" "}
             All cases
           </PageLink>
@@ -299,7 +298,7 @@ export default function CaseArticle({
         </nav>
 
         {/* Header */}
-        <FadeIn as="header" x={-32} y={0} duration={0.7} className="mb-12">
+        <header className="mb-12">
           <div className="flex items-center gap-4 mb-5">
             <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
             <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
@@ -342,7 +341,7 @@ export default function CaseArticle({
               {formatDate(item.date)}
             </span>
           </div>
-        </FadeIn>
+        </header>
 
         <VerdictBar verdict={detail?.verdict} severity={detail?.severity} />
 
@@ -361,7 +360,7 @@ export default function CaseArticle({
             needed.
           </Chapter>
           {/* No tilt: on a panel this tall the 3D lean read as the page wobbling */}
-          <div className="spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm hover:border-primary/20 transition-all duration-420 overflow-hidden">
+          <div className="spotlight relative bg-surface/60 border border-foreground/5 backdrop-blur-sm hover:border-primary/20 transition-all duration-700 overflow-hidden">
             <div className="absolute top-0 left-0 w-[3px] h-full bg-primary" />
             <div
               className="absolute top-6 right-6 font-mono text-7xl md:text-8xl font-black text-foreground/[0.04] leading-none select-none"
@@ -569,7 +568,7 @@ export default function CaseArticle({
                         href={`https://attack.mitre.org/techniques/${t.id.replace(".", "/")}/`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group spotlight relative flex h-full items-baseline gap-4 bg-surface/60 border border-foreground/5 px-5 py-4 hover:border-primary/40 transition-colors duration-300"
+                        className="group spotlight relative flex h-full items-baseline gap-4 bg-surface/60 border border-foreground/5 px-5 py-4 hover:border-primary/40 transition-colors duration-500"
                       >
                         <span className="font-mono text-xs font-black text-accent tabular-nums shrink-0">
                           {t.id}
@@ -652,9 +651,9 @@ export default function CaseArticle({
                 <li key={entry.id}>
                   <PageLink
                     href={`/blog/${entry.id}`}
-                    className="group spotlight spotlight-blue relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-300"
+                    className="group spotlight spotlight-blue relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-500"
                   >
-                    <span className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-180 mb-4">
+                    <span className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300 mb-4">
                       {entry.title}
                     </span>
                     <span className="mt-auto font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60">
@@ -677,12 +676,12 @@ export default function CaseArticle({
           {previous ? (
             <PageLink
               href={`/blog/${previous.id}`}
-              className="group spotlight relative flex flex-col gap-3 bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-300"
+              className="group spotlight relative flex flex-col gap-3 bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-500"
             >
               <span className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-primary-ink">
                 <ArrowLeft
                   size={12}
-                  className="transition-transform duration-180 group-hover:-translate-x-[3.4px]"
+                  className="transition-transform duration-300 group-hover:-translate-x-1"
                 />{" "}
                 Previous
               </span>
@@ -696,13 +695,13 @@ export default function CaseArticle({
           {next && (
             <PageLink
               href={`/blog/${next.id}`}
-              className="group spotlight relative flex flex-col items-end gap-3 text-right bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-300"
+              className="group spotlight relative flex flex-col items-end gap-3 text-right bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-500"
             >
               <span className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-primary-ink">
                 Next{" "}
                 <ArrowRight
                   size={12}
-                  className="transition-transform duration-180 group-hover:translate-x-[3.4px]"
+                  className="transition-transform duration-300 group-hover:translate-x-1"
                 />
               </span>
               <span className="font-display text-base font-black uppercase tracking-tight text-foreground/80 group-hover:text-foreground">

@@ -2,6 +2,7 @@ import { PROFILE } from "@/data/profile";
 import { CountUp } from "@/components/ui/CountUp";
 import type { ContributionStats } from "@/lib/api/contributions";
 import FadeIn from "@/components/ui/FadeIn";
+import { MOTION_EASE } from "@/lib/motion";
 
 /* ═══ components/home/ContributionGraph.tsx — the year of GitHub squares ═══
    Draws what lib/api/contributions.ts read at build time. Each day is a small square;
@@ -44,7 +45,7 @@ export function ContributionGraph({ stats }: { stats: ContributionStats }) {
   }
 
   return (
-    <FadeIn y={24} duration={0.65}
+    <FadeIn ease={MOTION_EASE}
       className="border border-foreground/10 bg-surface/60 p-6"
     >
       <div className="mb-4 flex flex-wrap items-baseline gap-x-4 gap-y-1">

@@ -63,39 +63,39 @@ export const STUDENT_FEEDBACK: readonly Testimonial[] = [
   },
   {
     author: "Mentee",
-    source: "Cybersecurity learning",
+    source: "Cybersecurity (SOC) course · AMIT",
     quote:
       "Despite his young age, he is exceptionally talented and highly skilled in his field. He has been one of the people who contributed the most to my learning and professional growth, always helping me understand new concepts and stay up to date through his extensive knowledge and expertise.",
   },
   {
     author: "Student",
-    source: "Cyber Security course",
+    source: "Cybersecurity (SOC) course · AMIT",
     lang: "ar",
     quote:
       "بجد حابب أشكر البشمهندس احمد على الفترة الجميلة اللي اتعلمنا فيها معاه في كورس الـ Cyber Security\nاستفدت منه كتير واتعلمت معاه حاجات مهمة في مجالات مختلفة زي الـ Network والـ Attacks والـ Linux والـ Windows والـ Security+\nكان دايمًا حريص إنه يوصل المعلومة لينا ويساعدنا نفهم ونربط المواضيع ببعضها وده فرق معايا جدًا خلال فترة الكورس\nبشكره على مجهوده وتعبه معانا وعلى كل المعلومات اللي شاركها معانا وإن شاء الله نقدر نستفيد بيها في حياتنا العملية ونكمل طريقنا في مجال الـ Cyber Security\nكل الشكر والتقدير ليه ❤️",
   },
   {
     author: "Student",
-    source: "Cybersecurity course",
+    source: "Cybersecurity (SOC) course · AMIT",
     lang: "ar",
     quote: "مشاء الله ممتاز في توصيل معلومات و اسلوب ممتاز جدا",
   },
   {
     author: "Student",
-    source: "Cybersecurity course",
+    source: "Cybersecurity (SOC) course · AMIT",
     lang: "ar",
     quote:
       "بشمهندس احمد بجد انا عايز اشكرك جدا علي مجهودك و علي كل حاجه عملتها معانا في الكورس بجد .. اد ايه انت شخص جميل و بتحب تساعد الناس و بتحب تعلمهم و اهم حاجه كانت فيك انك مش بخيل في معلوماتك معانا حتي لو اسألتنا برا نطاق الكورس كنت بتساعدنا .. بجد بجد انا مبسوط انك كنت الانستوكتور بتاعي في الكورس و بجد ربنا هيكرمك اوي علشان الي عملته معنا كلنا\nبجد شكرا ليك من كل قلبي ❤️❤️",
   },
   {
     author: "Student",
-    source: "Cybersecurity course",
+    source: "Cybersecurity (SOC) course · AMIT",
     lang: "ar",
     quote: "تسلم يابشمهندس علي شرحك الي فيحته تانيه وشغلك معانا بجد الواحد مستواه في السكيورتي فرق جدا",
   },
   {
     author: "Student",
-    source: "Cybersecurity course",
+    source: "Cybersecurity (SOC) course · AMIT",
     quote:
       "One of the best instructors ever as he breaks down complex topics into simple, manageable steps instead of overloading learners & use real-world examples to make lessons interesting , also Ahmed is So diligent & full of potential and the way he teaches is unique and always creative I wish him every success in his future career.",
   },
@@ -108,26 +108,32 @@ export const STUDENT_FEEDBACK: readonly Testimonial[] = [
   },
   {
     author: "Student",
-    source: "Cybersecurity course",
+    source: "Cybersecurity (SOC) course · AMIT",
     lang: "ar",
     quote:
       "بشمهندس احمد ممتاز جدا بيبسط المعلومه بطريقه لذيذه وتطبيق عملي معانا خطوه بخطوه غير طبعا حكاياته وخبراته والعقبات اللي قابلته بينصحنا ازاي نتجنبها غير اسأله انترفيوز والسيناريوهات اللي بيعودنا عليها\nفتقيمي 10/10 + نجمه",
   },
   {
     author: "Student",
-    source: "Cybersecurity course",
+    source: "Cybersecurity (SOC) course · AMIT",
     lang: "ar",
     quote: "وبفهم من حضرتك جدا وبستفاد من حضرتك جدا والسيشن نظامها كويس جدا احسن instractor",
   },
   {
     author: "Student",
-    source: "Cybersecurity course",
+    source: "Cybersecurity (SOC) course · AMIT",
     quote:
       "Its going well, its somewhat difficult to understand a few things, and some stuff makes the future feel bleak but its okay.",
   },
   {
     author: "Student",
-    source: "Cybersecurity course",
+    source: "Cybersecurity (SOC) course · AMIT",
+    quote:
+      "احسن instractor وبفهم من حضرتك جدا وبستفاد من حضرتك جدا والسيشن نظامها كويس جدا ",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
     quote: "10/10",
   },
 ];

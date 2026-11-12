@@ -39,9 +39,6 @@ export default function TeachingSection() {
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Header ─── */}
         <FadeIn
-          x={-32}
-          y={0}
-          duration={0.7}
           className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
         >
           <div className="min-w-0 flex-1">
@@ -161,8 +158,8 @@ export default function TeachingSection() {
 
           {/* ─── Where it was taught ─── */}
           <div className="border-t border-foreground/10">
-            {TEACHING_ROLES.map((r, i) => (
-              <FadeIn key={r.org} delay={i * 0.05} y={16} duration={0.5}>
+            {TEACHING_ROLES.map((r) => (
+              <FadeIn key={r.org}>
                 <article className="group py-6 border-b border-foreground/10">
                   <div className="flex items-start justify-between gap-4">
                     <OrgLogo name={r.org} className="group-hover:border-primary" />
@@ -173,7 +170,7 @@ export default function TeachingSection() {
                             href={r.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-start gap-1.5 hover:text-primary transition-colors duration-180"
+                            className="inline-flex items-start gap-1.5 hover:text-primary transition-colors duration-300"
                           >
                             {r.org}
                             <ArrowUpRight

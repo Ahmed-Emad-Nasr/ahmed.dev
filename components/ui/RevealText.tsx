@@ -37,7 +37,7 @@ export function RevealText({
       style={style}
       initial="hidden"
       animate={ready ? "show" : "hidden"}
-      transition={{ staggerChildren: 0.042, delayChildren: delay }}
+      transition={{ staggerChildren: 0.06, delayChildren: delay }}
     >
       {/* What assistive tech reads; the moving words are hidden from it */}
       <span className="sr-only">{text}</span>
@@ -53,7 +53,7 @@ export function RevealText({
             className="inline-block will-change-transform"
             variants={{
               hidden: { y: "110%" },
-              show: { y: "0%", transition: { duration: 0.36, ease: MOTION_EASE } },
+              show: { y: "0%", transition: { duration: 0.7, ease: MOTION_EASE } },
             }}
           >
             {u}

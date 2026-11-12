@@ -34,7 +34,7 @@ function MatrixView({ tactics, max }: { tactics: CoverageTactic[]; max: number }
         <span>Click a square for its cases</span>
       </div>
       <div className="grid gap-1.5" style={{ gridTemplateColumns: `repeat(${tactics.length}, minmax(0, 1fr))` }}>
-        {tactics.map((t, col) => (
+        {tactics.map((t) => (
           <div key={t.id} className="flex flex-col gap-1.5 min-w-0">
             <a
               href={`#tactic-${t.id}`}
@@ -43,8 +43,8 @@ function MatrixView({ tactics, max }: { tactics: CoverageTactic[]; max: number }
             >
               {t.short}
             </a>
-            {t.techniques.map((x, row) => (
-              <FadeIn as="button" y={-10} duration={0.45} delay={col * 0.06 + row * 0.04}
+            {t.techniques.map((x) => (
+              <FadeIn as="button"
                 key={x.id}
                 type="button"
                 popoverTarget={popId(x.id)}
@@ -188,9 +188,6 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Header: same layout as every other section ─── */}
         <FadeIn
-          x={-32}
-          y={0}
-          duration={0.7}
           className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
         >
           <div className="min-w-0 flex-1">
@@ -249,7 +246,7 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
           {tactics.map((t) => {
             const n = t.techniques.length;
             return (
-              <FadeIn key={t.id} y={16} duration={0.5}>
+              <FadeIn key={t.id}>
                 <div
                   id={`tactic-${t.id}`}
                   className={`grid grid-cols-1 md:grid-cols-[260px_minmax(0,1fr)] gap-4 md:gap-8 py-6 border-b border-foreground/10 scroll-mt-28`}
