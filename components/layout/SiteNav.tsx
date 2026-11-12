@@ -192,7 +192,7 @@ export default function SiteNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[95] xl:hidden bg-background/95 backdrop-blur-2xl flex flex-col overflow-y-auto"
+            className="fixed inset-0 z-[95] xl:hidden bg-background/95 flex flex-col overflow-y-auto"
             onClick={() => setIsOpen(false)}
           >
             {/* Background Decorative Kanji */}

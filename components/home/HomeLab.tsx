@@ -84,7 +84,7 @@ export default function HomeLab() {
 
         {/* Scrolls sideways on narrow screens — focusable so keyboard users can
             scroll it too (arrow keys), and named for screen readers */}
-        <FadeIn as="figure" className="relative border border-foreground/10 bg-surface/40 p-4 md:p-8 overflow-x-auto" tabIndex={0} aria-labelledby="lab-title">
+        <FadeIn as="figure" y={30} duration={0.8} className="relative border border-foreground/10 bg-surface/40 p-4 md:p-8 overflow-x-auto" tabIndex={0} aria-labelledby="lab-title">
           <svg viewBox="0 0 1040 440" className="min-w-[760px] w-full h-auto" role="img" aria-labelledby="lab-title lab-desc">
             <title id="lab-title">SOC home lab architecture</title>
             <desc id="lab-desc">

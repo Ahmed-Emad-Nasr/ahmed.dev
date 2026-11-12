@@ -20,7 +20,7 @@ export default function ContributionsGrid({ stats }: { stats: ContributionStats 
   return (
     <section id="contributions" aria-label="Open-source contributions" className="relative py-16 md:py-20 px-6 md:px-20 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div
+        <FadeIn x={-32} y={0} duration={0.7}
           className="mb-10 flex flex-wrap items-center gap-4"
         >
           {stats.status === "ready" && (
@@ -33,24 +33,24 @@ export default function ContributionsGrid({ stats }: { stats: ContributionStats 
               </span>
             </span>
           )}
-        </div>
+        </FadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {PORTFOLIO_DATA.contributions.map((c) => (
-            <FadeIn as="a"
+          {PORTFOLIO_DATA.contributions.map((c, idx) => (
+            <FadeIn as="a" y={24} duration={0.65} delay={idx * 0.08}
               key={c.name}
               href={c.link}
               target="_blank"
               rel="noopener noreferrer"
-              className="group spotlight relative bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-500 flex flex-col"
+              className="group spotlight relative bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-300 flex flex-col"
             >
               <div className="flex items-center justify-between gap-3 mb-3">
-                <h3 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300">
+                <h3 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-180">
                   {c.name}
                 </h3>
                 <ExternalLink
                   size={14}
-                  className="text-foreground/25 group-hover:text-tertiary transition-colors duration-300 shrink-0"
+                  className="text-foreground/25 group-hover:text-tertiary transition-colors duration-180 shrink-0"
                 />
               </div>
               <span className="mb-3 w-fit px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-tertiary bg-tertiary/10 border border-tertiary/25">

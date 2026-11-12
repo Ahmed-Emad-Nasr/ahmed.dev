@@ -6,7 +6,7 @@ import { useMediaQuery, useReducedMotion } from "@/lib/use-client";
 
 /**
  * Katana cursor  your blade for browsing the dojo.
- * States: gold blade (default) → red lock-on (interactive). No click effect.
+ * States: gold blade (default) → red lock-on (interactive).
  * Desktop fine-pointers only; touch keeps the native cursor.
  *
  * ═══ components/layout/CursorOverlay.tsx — the custom KATANA CURSOR ═══
@@ -30,7 +30,7 @@ export default function CursorOverlay() {
   const moveFrame = useRef<number | null>(null);
 
   /* How the cursor trails the real mouse position */
-  const springConfig = { damping: 25, stiffness: 400, mass: 0.5 };
+  const springConfig = { damping: 47, stiffness: 940, mass: 0.5 };
   const smoothX = useSpring(cursorX, springConfig);
   const smoothY = useSpring(cursorY, springConfig);
 
@@ -94,10 +94,10 @@ export default function CursorOverlay() {
           height: isHovering ? 64 : 40,
           rotate: isHovering ? 45 : 0,
         }}
-        transition={{ type: "spring", stiffness: 300, damping: 25 }}
+        transition={{ type: "spring", stiffness: 830, damping: 42 }}
       >
         <div
-          className={`relative w-full h-full transition-all duration-300 flex items-center justify-center
+          className={`relative w-full h-full transition-all duration-180 flex items-center justify-center
             ${isHovering ? "rounded-none" : "rounded-full border border-accent/60"}`}
         >
           {/* Red lock-on brackets */}
@@ -108,7 +108,7 @@ export default function CursorOverlay() {
               opacity: isHovering ? 1 : 0,
               scale: isHovering ? 1 : 0.8,
             }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.12 }}
           >
             <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-primary" />
             <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-primary" />
@@ -127,10 +127,10 @@ export default function CursorOverlay() {
         }}
       >
         <motion.div
-          className="ml-8 mt-6 flex flex-col gap-0.5 bg-background/80 backdrop-blur-md px-2 py-1 border-l-2 border-primary"
+          className="ml-8 mt-6 flex flex-col gap-0.5 bg-background/80 px-2 py-1 border-l-2 border-primary"
           initial={{ opacity: 0, x: -10 }}
           animate={{ opacity: isHovering ? 1 : 0, x: isHovering ? 0 : -10 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.12 }}
         >
           <span className="font-mono text-[0.5625rem] text-primary-ink tracking-widest font-black uppercase leading-none">
             Target
@@ -155,7 +155,7 @@ export default function CursorOverlay() {
         }}
       >
         <div
-          className={`transition-all duration-300 transform rotate-45
+          className={`transition-all duration-180 transform rotate-45
             ${
               isHovering
                 ? "w-2 h-2 bg-primary"
@@ -175,7 +175,7 @@ export default function CursorOverlay() {
         }}
       >
         <div
-          className={`transition-all duration-300 transform rotate-45 border border-accent/40
+          className={`transition-all duration-180 transform rotate-45 border border-accent/40
             ${isHovering ? "w-8 h-8 opacity-0 scale-150" : "w-4 h-4 opacity-100 scale-100"}`}
         />
       </motion.div>

@@ -43,7 +43,7 @@ server. A client component pulls everything it imports into the browser, so:
 
 Libraries that are not needed to paint stay out of the first download too:
 `focus-trap` (fetched in idle time / when a dialog opens —
-`lib/use-focus-trap.ts`), GSAP (hero entrance), the
+`lib/use-focus-trap.ts`), the
 lightbox, the command palette and the terminal.
 
 ## How a page loads
@@ -106,11 +106,15 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
   in `components/ui/Motion.tsx`).
 - ATT&CK tiles fill with their heat once, on arrival
   (`components/blog/HeatReveal.tsx`) — not on every scrolled frame.
-- Motion values are Sensei-Dev's, one for one (`lib/motion.ts`): the
-  everyday entrance is `REVEAL` — fade + 8px rise in 0.4s, no stagger.
+- Calmness dials: `CALM` and the duration factor in `components/ui/FadeIn.tsx`,
+  `MOTION_ENTER_DURATION` / `MOTION_STAGGER_STEP` in `lib/motion.ts`.
 - Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
-  only). framer-motion loads lazily (`LazyMotion` + `m`).
-- Hero entrance: GSAP, imported on demand.
+  only, staggered top to bottom). framer-motion loads lazily
+  (`LazyMotion` + `m`).
+- Hero entrance: Web Animations (`element.animate`), no library; the role
+  line's decrypt effect is a few lines in `components/home/RoleTicker.tsx`.
+- No `backdrop-filter` except on the navbar: it is re-computed every
+  scrolled frame, and a translucent background looks the same.
 - Section dividers drift with a CSS scroll timeline (framer fallback).
 - Reduced motion is respected everywhere (`MotionConfig reducedMotion="user"`
   and the CSS rules at the end of `globals.css`).

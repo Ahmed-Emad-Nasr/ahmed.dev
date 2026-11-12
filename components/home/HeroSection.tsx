@@ -21,17 +21,18 @@
  *                          (regenerate the sizes with `npm run hero:sizes`)
  *
  * ANIMATIONS
- *   • Entrance (fade/slide-in on load) → the GSAP block in useEffect below.
- *     Each gsap.from(selector, {...}) animates FROM those values TO the normal
- *     layout: change duration / delay / stagger to retime it.
+ *   • Entrance (fade/slide-in on load) → the from(...) lines in useEffect
+ *     below: change duration / stagger / delay to retime it.
+ *   • The watermark drifting while you scroll → bgY (framer-motion useScroll).
  *   • Everything is skipped when the visitor asked for reduced motion.
  *
  * Classes like "hero-content", "hero-image", "spec-item" are hooks for the
- * GSAP selectors — keep them if you restyle an element.
+ * entrance — keep them if you restyle an element.
  */
 
 import { preload } from "react-dom";
 import { useEffect, useRef } from "react";
+import { m as motion, useScroll, useTransform } from "framer-motion";
 import { PROFILE } from "@/data/profile";
 import { normalizePublicHref } from "@/lib/shared";
 import { RevealText } from "@/components/ui/RevealText";
@@ -117,45 +118,49 @@ export default function HeroSection({
     imageSizes: HERO_PHOTO.sizes,
     fetchPriority: "high",
   });
+  /* Scroll parallax: scrollYProgress goes 0→1 while the hero scrolls out;
+     bgY maps that to 0→140px of downward drift for the background kanji. */
   const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"],
+  });
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 119]);
 
-  /* Entrance — GSAP, as in Sensei-Dev. Loaded on demand (its own chunk,
-     fetched after the page is up, while the intro screen still covers it). */
+  /* Entrance — plain Web Animations (element.animate), no library. It
+     starts when the intro screen begins to slide away (lib/intro.ts), so it
+     is actually seen. Each entry: which elements, where they come FROM, how
+     long, the gap between them (stagger), the curve and the start delay. */
   useEffect(() => {
     if (prefersReducedMotion()) return; // final state is the natural layout
-    let ctx: { revert: () => void } | undefined;
-    let cancelled = false;
-    let stopWaiting = () => {};
-    /* GSAP downloads under the intro screen; the timeline starts when the
-       screen begins to slide away (lib/intro.ts), so it is actually seen. */
-    void import("gsap").then(({ gsap }) => {
-      if (cancelled) return;
-      stopWaiting = whenIntroDone(() => {
-        if (cancelled) return;
-        ctx = gsap.context(() => {
-          /* Entrance (Sensei-Dev's): the text column rises 12px, the
-             portrait fades in — both in 0.55s */
-          gsap.from(".hero-content > *", {
-            y: 12,
-            opacity: 0,
-            duration: 0.55,
-            stagger: 0.05,
-            ease: "power2.out",
-          });
-
-          gsap.from(".hero-image", {
-            opacity: 0,
-            duration: 0.55,
-            ease: "power2.out",
-          });
-        }, containerRef);
+    const root = containerRef.current;
+    if (!root) return;
+    const running: Animation[] = [];
+    /* Animates FROM the given offset TO the element's own layout: the
+       transform is added on top of its own, the opacity rises to its own. */
+    const from = (selector: string, transform: string, duration: number, stagger: number, easing: string, delay: number, origin?: string) =>
+      root.querySelectorAll<HTMLElement>(selector).forEach((el, i) => {
+        const timing = { duration: duration * 1000, delay: (delay + i * stagger) * 1000, easing, fill: "backwards" as const };
+        if (origin) el.style.transformOrigin = origin;
+        const opacity = getComputedStyle(el).opacity;
+        running.push(el.animate([{ opacity: 0 }, { opacity }], timing));
+        running.push(el.animate([{ transform }, { transform: "none" }], { ...timing, composite: "add" }));
       });
+    const POWER4_OUT = "cubic-bezier(0.165, 0.84, 0.44, 1)";
+    const POWER3_OUT = "cubic-bezier(0.215, 0.61, 0.355, 1)";
+    const POWER2_OUT = "cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+    const EXPO_OUT = "cubic-bezier(0.19, 1, 0.22, 1)";
+    const stopWaiting = whenIntroDone(() => {
+      from(".hero-content > *", "translateY(43.4px)", 0.792, 0.103, POWER4_OUT, 0.24); // content stack
+      from(".hero-image", "scale(1.072)", 1.032, 0, POWER2_OUT, 0.09); // portrait
+      from(".japanese-bg", "translateX(72.2px)", 1.032, 0, EXPO_OUT, 0.48); // background kanji
+      from(".hinomaru-sun", "scale(0)", 1.242, 0, EXPO_OUT, 0.15); // hinomaru sun
+      from(".spec-item", "translateX(-21.7px)", 0.45, 0.069, POWER3_OUT, 0.6); // spec sheet
+      from(".speed-line", "scaleX(0)", 0.792, 0.034, EXPO_OUT, 0.75, "left center"); // speed lines
     });
-
     return () => {
-      cancelled = true;
       stopWaiting();
-      ctx?.revert();
+      running.forEach((a) => a.cancel());
     };
   }, []);
 
@@ -215,8 +220,9 @@ export default function HeroSection({
         ))}
       </div>
 
-      {/* ─── Background Japanese Watermark ─── */}
-      <div
+      {/* ─── Background Japanese Watermark (parallax) ─── */}
+      <motion.div
+        style={{ y: bgY }}
         className="absolute inset-0 pointer-events-none"
         aria-hidden="true"
       >
@@ -236,7 +242,7 @@ export default function HeroSection({
             <span>長</span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* ─── Flow ─── */}
       <div className="hero-content relative z-10 w-full max-w-[90rem] mx-auto flex flex-col items-start">
@@ -244,7 +250,7 @@ export default function HeroSection({
         {/* max-w-full + wrapping below sm: on the narrowest phones (280px)
             the one-line badge ran past the screen edge; where it fits it
             still sits on one line, exactly as before */}
-        <div className="flex max-w-full items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8 backdrop-blur-sm">
+        <div className="flex max-w-full items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8">
           <div className="w-2 h-2 shrink-0 bg-primary animate-pulse" />
           <span className="min-w-0 sm:whitespace-nowrap text-[0.5rem] font-mono font-bold uppercase tracking-[0.15em] text-on-surface-variant sm:text-xs sm:tracking-[0.3em]">
             {PROFILE.japaneseTitle}
@@ -345,7 +351,7 @@ export default function HeroSection({
               className="group/photo absolute inset-5 block rounded-full"
               aria-label="Watch the YouTube channel"
             >
-              <div className="absolute inset-0 rounded-full overflow-hidden border-2 border-foreground/10 group-hover/photo:border-primary/40 transition-colors duration-700">
+              <div className="absolute inset-0 rounded-full overflow-hidden border-2 border-foreground/10 group-hover/photo:border-primary/40 transition-colors duration-420">
                 {/* A plain <img> on purpose: with `images.unoptimized` (required
                     by the static export) next/image never writes a srcset, so
                     every phone downloaded the 2048px original (318 KB) for a
@@ -361,15 +367,15 @@ export default function HeroSection({
                   height={560}
                   fetchPriority="high"
                   decoding="async"
-                  className="w-full h-full object-cover object-top grayscale group-hover/photo:grayscale-0 group-hover/photo:scale-105 transition-all duration-1000"
+                  className="w-full h-full object-cover object-top grayscale group-hover/photo:grayscale-0 group-hover/photo:scale-[1.0425] transition-all duration-600"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/25 via-transparent to-transparent group-hover/photo:from-transparent transition-all duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/25 via-transparent to-transparent group-hover/photo:from-transparent transition-all duration-420" />
               </div>
             </a>
 
             {/* Hanko seal  the maker's stamp */}
             <div
-              className="absolute bottom-5 right-5 z-20 w-12 h-12 lg:w-14 lg:h-14 bg-primary rotate-6 hover:rotate-0 transition-transform duration-500 flex items-center justify-center"
+              className="absolute bottom-5 right-5 z-20 w-12 h-12 lg:w-14 lg:h-14 bg-primary rotate-6 hover:rotate-0 transition-transform duration-300 flex items-center justify-center"
               role="img"
               aria-label="Maker's seal"
             >
@@ -399,7 +405,7 @@ export default function HeroSection({
         <div className="mt-20 md:mt-24 grid grid-cols-1 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)] gap-10 items-start w-full">
           <div>
             {/* Tech Spec Sheet */}
-            <div className="mb-8 w-full border border-foreground/5 bg-foreground/[0.02] backdrop-blur-sm">
+            <div className="mb-8 w-full border border-foreground/5 bg-foreground/[0.02]">
               <div className="border-b border-foreground/5 px-4 py-2 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-primary" />
                 <span className="font-mono text-[0.625rem] text-foreground/60 uppercase tracking-[0.3em]">
@@ -443,7 +449,7 @@ export default function HeroSection({
                   target="_blank"
                   rel="noopener noreferrer"
                   download
-                  className="interactive btn-sheen group flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 bg-primary text-white font-mono font-black uppercase tracking-widest text-sm transition-all duration-300 hover:bg-[#d60030] hover:-translate-y-0.5"
+                  className="interactive btn-sheen group flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 bg-primary text-white font-mono font-black uppercase tracking-widest text-sm transition-all duration-180 hover:bg-[#d60030] hover:-translate-y-[1.7px]"
                   style={{
                     clipPath: "polygon(0 0, 100% 0, 96% 100%, 4% 100%)",
                   }}
@@ -453,7 +459,7 @@ export default function HeroSection({
                   <Download
                     size={16}
                     aria-hidden="true"
-                    className="transition-transform duration-300 group-hover:translate-y-0.5"
+                    className="transition-transform duration-180 group-hover:translate-y-[1.7px]"
                   />
                   Download CV
                   <span className="sr-only"> (download)</span>
@@ -466,11 +472,11 @@ export default function HeroSection({
                 </a>
                 <a
                   href="#work"
-                  className="interactive group flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] backdrop-blur-md text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-0.5"
+                  className="interactive group flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
                 >
                   <ArrowDown
                     size={14}
-                    className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5"
+                    className="text-primary-ink transition-transform duration-180 group-hover:translate-y-[1.7px]"
                   />
                   View Work
                   <span
@@ -490,16 +496,16 @@ export default function HeroSection({
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group/social relative w-11 h-11 flex items-center justify-center border border-foreground/10 bg-foreground/[0.02] text-foreground/60 transition-all duration-300 hover:border-primary hover:text-primary-ink hover:-translate-y-1"
+                    className="group/social relative w-11 h-11 flex items-center justify-center border border-foreground/10 bg-foreground/[0.02] text-foreground/60 transition-all duration-180 hover:border-primary hover:text-primary-ink hover:-translate-y-[3.4px]"
                     aria-label={s.name}
                   >
                     <span
-                      className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-primary/0 group-hover/social:border-primary transition-colors duration-300"
+                      className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-primary/0 group-hover/social:border-primary transition-colors duration-180"
                       aria-hidden="true"
                     />
                     <s.icon size={18} strokeWidth={1.5} />
                     <span
-                      className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 bg-background border border-primary/40 font-mono text-[0.5625rem] font-bold tracking-[0.25em] uppercase text-primary-ink opacity-0 group-hover/social:opacity-100 transition-opacity duration-300"
+                      className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 bg-background border border-primary/40 font-mono text-[0.5625rem] font-bold tracking-[0.25em] uppercase text-primary-ink opacity-0 group-hover/social:opacity-100 transition-opacity duration-180"
                       aria-hidden="true"
                     >
                       {s.name}
@@ -512,7 +518,7 @@ export default function HeroSection({
 
           {/* Field record  live portfolio data, zero hardcodes */}
           <aside
-            className="relative border border-foreground/10 bg-foreground/[0.02] backdrop-blur-sm p-5 md:p-6"
+            className="relative border border-foreground/10 bg-foreground/[0.02] p-5 md:p-6"
             aria-label="Field record"
           >
             <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/50 pointer-events-none" />

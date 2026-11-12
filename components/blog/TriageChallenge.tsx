@@ -115,7 +115,7 @@ export default function TriageChallenge() {
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] gap-8 items-start">
           {/* The alert, as a SIEM event drawer */}
-          <div ref={cardRef} className="relative border border-primary/30 bg-surface/70 backdrop-blur-sm overflow-hidden">
+          <div ref={cardRef} className="relative border border-primary/30 bg-surface/70 overflow-hidden">
             <div className="absolute inset-y-0 left-0 w-[3px] bg-primary" aria-hidden="true" />
             <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-foreground/10">
               <span className="flex items-center gap-3">
@@ -128,7 +128,7 @@ export default function TriageChallenge() {
               {ALERT.map(([k, v], i) => (
                 <div
                   key={k}
-                  className={`grid grid-cols-[5.5rem_1fr] gap-3 transition-all duration-500 ${i < streamed ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`}
+                  className={`grid grid-cols-[5.5rem_1fr] gap-3 transition-all duration-300 ${i < streamed ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`}
                 >
                   <dt className="uppercase tracking-[0.2em] text-foreground/60 text-[0.5625rem] pt-0.5">{k}</dt>
                   <dd className={`[overflow-wrap:anywhere] ${k === "cmdline" ? "text-accent" : k === "severity" ? "text-primary-ink font-bold" : "text-foreground/80"}`}>{v}</dd>
@@ -164,7 +164,7 @@ export default function TriageChallenge() {
                           type="button"
                           disabled={reveal}
                           onClick={() => setAnswers((a) => a.map((x, i) => (i === qi ? oi : x)))}
-                          className={`flex items-center justify-between gap-3 border px-4 py-2.5 text-left text-sm transition-all duration-300 disabled:cursor-default ${tone}`}
+                          className={`flex items-center justify-between gap-3 border px-4 py-2.5 text-left text-sm transition-all duration-180 disabled:cursor-default ${tone}`}
                         >
                           <span>{o.label}</span>
                           {reveal && o.correct && <Check size={14} className="text-tertiary shrink-0" aria-label="correct" />}
@@ -190,7 +190,7 @@ export default function TriageChallenge() {
                 </span>
                 <span className="flex flex-wrap gap-3">
                   <Link prefetch={false} href="/blog/soc336-report" className="group inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] hover:bg-foreground hover:text-background transition-colors">
-                    The investigation <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-1" />
+                    The investigation <ArrowRight size={12} className="transition-transform duration-180 group-hover:translate-x-[3.4px]" />
                   </Link>
                   <button
                     type="button"

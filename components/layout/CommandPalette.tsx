@@ -333,8 +333,8 @@ export default function CommandPalette() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[300] flex items-start justify-center bg-background/70 px-4 pt-[14vh] backdrop-blur-sm"
+          transition={{ duration: 0.12 }}
+          className="fixed inset-0 z-[300] flex items-start justify-center bg-background/85 px-4 pt-[14vh]"
           onClick={() => setOpen(false)}
           ref={dialogRef}
           role="dialog"
@@ -342,10 +342,10 @@ export default function CommandPalette() {
           aria-label="Command palette"
         >
           <motion.div
-            initial={{ opacity: 0, y: -12, scale: 0.98 }}
+            initial={{ opacity: 0, y: -10, scale: 0.983 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.98 }}
-            transition={{ duration: 0.22 }}
+            exit={{ opacity: 0, y: -7, scale: 0.983 }}
+            transition={{ duration: 0.132 }}
             className="w-full max-w-xl overflow-hidden border border-foreground/10 bg-surface"
             onClick={(e) => e.stopPropagation()}
           >

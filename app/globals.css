@@ -61,11 +61,13 @@
   --container-7xl: 80rem;
 
   /* Lighter effects: every blur radius is 15% under Tailwind's default
-     (8 / 12 / 24 / 40px). To go back, delete these four lines. */
+     (8 / 12 / 24 / 40px); the pulse loops in 1.62s (default 2s).
+     To go back, delete these five lines. */
   --blur-sm: 6.8px;
   --blur-md: 10.2px;
   --blur-xl: 20.4px;
   --blur-2xl: 34px;
+  --animate-pulse: pulse 1.62s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -207,6 +209,21 @@
     scroll-margin-top: 6rem;
   }
 
+  button:not(:disabled),
+  a[role="button"] {
+    transition:
+      transform 0.18s var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+      border-color 0.18s ease,
+      background-color 0.18s ease,
+      color 0.18s ease;
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    button:not(:disabled):hover,
+    a[role="button"]:hover {
+      transform: translateY(-1.7px);
+    }
+  }
 
   /* Custom cursor only on precise pointers; touch keeps native cursor */
   @media (pointer: fine) {
@@ -273,7 +290,7 @@
     font-family: var(--font-mono);
     font-size: 0.75rem;
     padding: 10px 16px;
-    transition: top 0.2s ease;
+    transition: top 0.12s ease;
   }
 
   .skip-link:focus {
@@ -320,8 +337,8 @@
 
   body {
     transition:
-      background-color 0.35s ease,
-      color 0.35s ease;
+      background-color 0.21s ease,
+      color 0.21s ease;
   }
 }
 
@@ -464,7 +481,7 @@
   inset: 0;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.21s ease;
   background: radial-gradient(
     320px circle at var(--mx, 50%) var(--my, 50%),
     color-mix(in srgb, var(--primary) 14%, transparent),
@@ -479,8 +496,8 @@
 @media (hover: hover) {
   .spotlight {
     transition:
-      border-color 0.5s ease,
-      background-color 0.5s ease;
+      border-color 0.204s ease,
+      background-color 0.204s ease;
   }
 
   .spotlight:hover {
@@ -530,14 +547,14 @@
 /* ─── Contribution cells pop as Pac-Man passes ─── */
 
 .cell-pop {
-  animation: cell-pop 0.45s ease both;
-  animation-delay: calc(var(--i, 0) * 12ms);
+  animation: cell-pop 0.276s ease both;
+  animation-delay: calc(var(--i, 0) * 8ms);
 }
 
 @keyframes cell-pop {
   0% {
-    transform: scale(0.4);
-    filter: brightness(1.8);
+    transform: scale(0.49);
+    filter: brightness(1.68);
   }
 
   100% {
@@ -760,9 +777,9 @@ html[data-intro-seen] [data-app-loader] {
     var(--surface)
   );
   transition:
-    border-color 0.3s,
-    transform 0.3s,
-    background-color 0.8s ease-out;
+    border-color 0.18s,
+    transform 0.18s,
+    background-color 0.48s ease-out;
 }
 .attack-seg::before {
   content: "";
@@ -773,7 +790,7 @@ html[data-intro-seen] [data-app-loader] {
 }
 .attack-seg:hover {
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(-1.7px);
 }
 .attack-seg-n {
   font-family: var(--font-mono);
@@ -855,14 +872,14 @@ html[data-intro-seen] [data-app-loader] {
     var(--surface)
   );
   transition:
-    border-color 0.3s,
-    transform 0.3s,
-    background-color 0.8s ease-out;
+    border-color 0.18s,
+    transform 0.18s,
+    background-color 0.48s ease-out;
 }
 .attack-tile:hover,
 .attack-tile:focus-visible {
   border-color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(-1.7px);
 }
 .attack-tile-top {
   display: flex;
@@ -898,10 +915,10 @@ html[data-intro-seen] [data-app-loader] {
 }
 .attack-tile-foot > span {
   color: var(--primary-ink);
-  transition: transform 0.3s;
+  transition: transform 0.18s;
 }
 .attack-tile:hover .attack-tile-foot > span {
-  transform: translateX(3px);
+  transform: translateX(2.55px);
 }
 /* One element per pip row: --n of --max squares filled. A 5px square every
    7px is a mask over a two-tone bar — 1 node instead of 7 per tile. */
@@ -978,8 +995,8 @@ html[data-intro-seen] [data-app-loader] {
   border: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
   color: color-mix(in srgb, var(--foreground) 70%, transparent);
   transition:
-    border-color 0.2s,
-    color 0.2s;
+    border-color 0.12s,
+    color 0.12s;
 }
 .attack-pop-close:hover {
   border-color: var(--primary);
@@ -999,8 +1016,8 @@ html[data-intro-seen] [data-app-loader] {
   border-bottom: 1px solid
     color-mix(in srgb, var(--foreground) 10%, transparent);
   transition:
-    color 0.2s,
-    background-color 0.2s;
+    color 0.12s,
+    background-color 0.12s;
 }
 .attack-pop-cases a:hover,
 .attack-pop-cases a:focus-visible {
@@ -1014,10 +1031,10 @@ html[data-intro-seen] [data-app-loader] {
 }
 .attack-pop-go {
   color: var(--primary-ink);
-  transition: transform 0.2s;
+  transition: transform 0.12s;
 }
 .attack-pop-cases a:hover .attack-pop-go {
-  transform: translateX(3px);
+  transform: translateX(2.55px);
 }
 .attack-pop-ext {
   display: inline-block;
@@ -1103,14 +1120,14 @@ html[data-intro-seen] [data-app-loader] {
     var(--surface)
   );
   transition:
-    transform 0.3s,
-    border-color 0.3s,
-    background-color 0.8s ease-out;
+    transform 0.18s,
+    border-color 0.18s,
+    background-color 0.48s ease-out;
 }
 .attack-cell:hover,
 .attack-cell:focus-visible {
   border-color: var(--primary);
-  transform: translateY(-2px) scale(1.04);
+  transform: translateY(-1.7px) scale(1.034);
   z-index: 1;
   position: relative;
 }
@@ -1232,7 +1249,7 @@ html[data-intro-seen] [data-app-loader] {
   opacity: 0.55;
 }
 .lab-node rect:first-child {
-  transition: stroke-opacity 0.3s;
+  transition: stroke-opacity 0.18s;
 }
 .lab-node:hover rect:first-child {
   stroke-opacity: 1;
@@ -1279,20 +1296,6 @@ html[data-intro-seen] [data-app-loader] {
 :is(.attack-seg, .attack-tile, .attack-cell)[data-cold] {
   --heat: 0% !important;
   border-color: color-mix(in srgb, var(--foreground) 6%, transparent);
-}
-
-/* ─── backdrop-filter only where something moves behind it ─────────────
-   52 elements carried backdrop-blur. On a fixed bar or an overlay it is
-   the design (the page slides under it). On a card or a section sitting on
-   the flat page background there is nothing to blur — but the browser
-   still re-blurs the backdrop of every one on screen, every scrolled
-   frame (the largest compositing cost in a throttled scroll trace). In-flow
-   elements drop it; their translucent background looks the same over a
-   flat page. Fixed, sticky and absolutely placed elements (nav, menus,
-   badges over images) keep it. */
-:where(main, footer) [class*="backdrop-blur"]:not(.fixed, .sticky, .absolute) {
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
 }
 
 /* ─── Browsers without [popover] (Safari < 17, Firefox < 125) ignore the

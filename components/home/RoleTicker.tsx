@@ -5,7 +5,7 @@
  *
  * Shows a role, holds it, then DECRYPTS into the next one: the letters
  * scramble through random characters and settle into the new word
- * (GSAP's ScrambleTextPlugin — loaded only when the first change is due).
+ * (scramble() below — a few lines, no library).
  * The list of roles is PROFILE.roles in data/profile.ts.
  * Screen readers get the whole list at once (the sr-only span); visitors who
  * prefer reduced motion see all roles joined with " · " instead.
@@ -21,13 +21,30 @@ const DECRYPT = 0.75; // seconds the scramble into the next role takes
 /* The characters the letters flicker through */
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&/<>";
 
-/* GSAP + the plugin, fetched once, after the hero is already on screen */
-let gsapReady: Promise<typeof import("gsap").gsap> | null = null;
-const loadGsap = () =>
-  (gsapReady ??= Promise.all([import("gsap"), import("gsap/ScrambleTextPlugin")]).then(([{ gsap }, { ScrambleTextPlugin }]) => {
-    gsap.registerPlugin(ScrambleTextPlugin);
-    return gsap;
-  }));
+/* Decrypt `el` from its current text into `to` over DECRYPT seconds: the
+   letters settle left to right, the ones not settled yet flicker through
+   CHARS. Returns a function that stops it. */
+function scramble(el: HTMLElement, to: string, onDone: () => void): () => void {
+  const from = el.textContent ?? "";
+  const start = performance.now();
+  let frame = 0;
+  let last = 0;
+  const tick = (now: number) => {
+    const t = Math.min(1, (now - start) / (DECRYPT * 1000));
+    if (now - last > 45 || t === 1) {
+      last = now;
+      const settled = Math.floor(Math.max(0, (t - 0.12) / 0.88) * to.length);
+      const length = Math.round(from.length + (to.length - from.length) * t);
+      let text = to.slice(0, settled);
+      for (let i = settled; i < length; i++) text += to[i] === " " ? " " : CHARS[Math.floor(Math.random() * CHARS.length)];
+      el.textContent = t === 1 ? to : text;
+    }
+    if (t < 1) frame = requestAnimationFrame(tick);
+    else onDone();
+  };
+  frame = requestAnimationFrame(tick);
+  return () => cancelAnimationFrame(frame);
+}
 
 export function RoleTicker({ roles, className = "" }: { roles: string[]; className?: string }) {
   const reduced = useReducedMotion();
@@ -48,26 +65,18 @@ export function RoleTicker({ roles, className = "" }: { roles: string[]; classNa
     let role = 0;
     let stopped = false;
     let timer: ReturnType<typeof setTimeout>;
-    let tween: { kill: () => void } | undefined;
+    let stopScramble = () => {};
 
-    /* hold → decrypt into the next role → hold … (GSAP writes the text) */
+    /* hold → decrypt into the next role → hold … */
     const next = () => {
       if (stopped) return;
       if (!visible || document.hidden) {
         timer = setTimeout(next, 400);
         return;
       }
-      void loadGsap().then((gsap) => {
-        if (stopped) return;
-        role = (role + 1) % roles.length;
-        tween = gsap.to(el, {
-          duration: DECRYPT,
-          ease: "none",
-          scrambleText: { text: roles[role], chars: CHARS, speed: 0.7, revealDelay: 0.12 },
-          onComplete: () => {
-            timer = setTimeout(next, HOLD);
-          },
-        });
+      role = (role + 1) % roles.length;
+      stopScramble = scramble(el, roles[role]!, () => {
+        timer = setTimeout(next, HOLD);
       });
     };
     timer = setTimeout(next, HOLD + 1200);
@@ -75,7 +84,7 @@ export function RoleTicker({ roles, className = "" }: { roles: string[]; classNa
     return () => {
       stopped = true;
       clearTimeout(timer);
-      tween?.kill();
+      stopScramble();
       observer.disconnect();
     };
   }, [roles, reduced]);

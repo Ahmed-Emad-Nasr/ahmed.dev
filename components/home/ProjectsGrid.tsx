@@ -7,7 +7,6 @@
 
 import { ExternalLink, Star } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
-import { MOTION_EASE } from "@/lib/motion";
 import { TiltCard } from "@/components/ui/Motion";
 import { Github } from "@/components/ui/BrandIcons";
 import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
@@ -28,7 +27,7 @@ export default function ProjectsGrid({ repos }: { repos: RepoCard[] }) {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <div className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           <div className="min-w-0 flex-1">
             <h2 id="projects-title" className="font-display title-fit [--title-n:7] font-black tracking-tighter uppercase leading-[0.85]">
               <span className="text-foreground">Open</span> <br />
@@ -42,11 +41,11 @@ export default function ProjectsGrid({ repos }: { repos: RepoCard[] }) {
             <CounterBadge value={String(repos.length).padStart(2, "0")} top="Repos" bottom="Public" />
             {stars > 0 && <CounterBadge value={stars} top="Stars" bottom="Earned" tone="accent" />}
           </div>
-        </div>
+        </FadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {repos.map((repo, idx) => (
-            <FadeIn key={repo.name} y={40} duration={0.7} delay={(idx % 3) * 0.1} ease={MOTION_EASE} margin="-60px" className="flex">
+            <FadeIn key={repo.name} y={40} duration={0.7} delay={(idx % 3) * 0.1} className="flex">
               <TiltCard className="spotlight group relative w-full min-h-[340px] flex flex-col bg-surface/60 border border-foreground/5 p-8 hover:border-primary/40 transition-colors duration-500">
                 <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-primary via-primary/40 to-transparent opacity-70 group-hover:opacity-100 transition-opacity duration-500" aria-hidden="true" />
                 <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/50 transition-colors duration-500 pointer-events-none" aria-hidden="true" />

@@ -15,7 +15,7 @@ import { useMounted, useReducedMotion } from "@/lib/use-client";
 function useCountUp(
   target: number,
   ref: React.RefObject<HTMLSpanElement | null>,
-  duration = 1400,
+  duration = 860,
 ): number {
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const [value, setValue] = useState(0);
@@ -63,7 +63,7 @@ const parseFigure = (text: string): [number, string] | null => {
   return m ? [Number(m[1]!.replace(/,/g, "")), m[2]!] : null;
 };
 
-export function CountUpText({ text, duration = 1400 }: { text: string; duration?: number }) {
+export function CountUpText({ text, duration = 860 }: { text: string; duration?: number }) {
   const ref = useRef<HTMLSpanElement>(null);
   const figure = parseFigure(text);
   const reduced = useReducedMotion();

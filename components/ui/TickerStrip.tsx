@@ -15,7 +15,7 @@ export default function TickerStrip({ items = TICKER, duration = 56 }: { items?:
   const loop = [...items, ...items];
   return (
     <div
-      className="marquee relative z-20 my-6 flex h-14 w-full items-center overflow-hidden border-y border-foreground/10 bg-background/70 backdrop-blur-sm md:h-16"
+      className="marquee relative z-20 my-6 flex h-14 w-full items-center overflow-hidden border-y border-foreground/10 bg-background/70 md:h-16"
       aria-hidden="true"
     >
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-background to-transparent" />

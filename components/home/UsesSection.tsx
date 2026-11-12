@@ -5,7 +5,6 @@
  */
 
 import FadeIn from "@/components/ui/FadeIn";
-import { MOTION_EASE } from "@/lib/motion";
 import { TiltCard } from "@/components/ui/Motion";
 import { CounterBadge, KanjiWatermark, chipTertiary } from "@/components/ui/kit";
 import { USES as GROUPS } from "@/data/about";
@@ -18,7 +17,7 @@ export default function UsesSection() {
       <KanjiWatermark chars="毎日" side="left" />
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Header ─── */}
-        <div className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           <div className="min-w-0 flex-1">
             <h2 id="uses-title" className="font-display title-fit [--title-n:7] font-black tracking-tighter uppercase leading-[0.85]">
               <span className="text-foreground">Daily</span> <br />
@@ -29,11 +28,11 @@ export default function UsesSection() {
             </p>
           </div>
           <CounterBadge value={String(toolCount).padStart(2, "0")} top="Tools" bottom="Loaded" />
-        </div>
+        </FadeIn>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {GROUPS.map((g, idx) => (
-            <FadeIn key={g.id} y={28} duration={0.65} delay={idx * 0.08} ease={MOTION_EASE}>
+          {GROUPS.map((g) => (
+            <FadeIn key={g.id}>
               <TiltCard className="group spotlight spotlight-blue relative bg-surface/60 border border-foreground/5 p-7 h-full hover:border-tertiary/50 transition-colors duration-500">
                 <div className="absolute top-0 left-0 w-full h-[2px] bg-tertiary/0 group-hover:bg-tertiary transition-colors duration-500" aria-hidden="true" />
                 <div className="flex items-baseline justify-between gap-3 mb-1">

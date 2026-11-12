@@ -2,8 +2,8 @@
  * ═══ lib/intro.ts — "has the intro screen lifted yet?" ═══
  *
  * The boot screen (components/layout/AppLoader.tsx) covers the page for about
- * two seconds. Entrances that would play underneath it — the hero's GSAP
- * timeline, the hero name, the first FadeIn blocks — wait for it here, so
+ * two seconds. Entrances that would play underneath it — the hero's
+ * entrance, the hero name, the first FadeIn blocks — wait for it here, so
  * they start as the screen slides away instead of finishing unseen.
  *
  *   whenIntroDone(cb)  → run cb once the intro lifts. Runs at once when there

@@ -5,7 +5,6 @@
  */
 
 import FadeIn from "@/components/ui/FadeIn";
-import { MOTION_EASE } from "@/lib/motion";
 import { KanjiWatermark } from "@/components/ui/kit";
 import { NOW } from "@/data/about";
 
@@ -15,7 +14,7 @@ export default function NowSection() {
       <KanjiWatermark chars="現在" side="left" />
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Header ─── */}
-        <div className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           <div className="min-w-0 flex-1">
             <h2 id="now-title" className="font-display title-fit [--title-n:5] font-black tracking-tighter uppercase leading-[0.85]">
               <span className="text-foreground">Right</span> <br />
@@ -25,7 +24,7 @@ export default function NowSection() {
               A snapshot, not a promise. Updated as the work shifts.
             </p>
           </div>
-          <div className="relative flex items-center gap-3 px-6 py-3 border border-primary/40 bg-surface/60 backdrop-blur-sm shrink-0">
+          <div className="relative flex items-center gap-3 px-6 py-3 border border-primary/40 bg-surface/60 shrink-0">
             <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary" aria-hidden="true" />
             <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary" aria-hidden="true" />
             <span className="relative flex h-2.5 w-2.5" aria-hidden="true">
@@ -34,16 +33,12 @@ export default function NowSection() {
             </span>
             <span className="font-mono text-[0.6875rem] font-bold uppercase tracking-[0.3em] text-primary-ink">Current</span>
           </div>
-        </div>
+        </FadeIn>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {NOW.map((n, idx) => (
+          {NOW.map((n) => (
             <FadeIn
               key={n.label}
-              y={28}
-              duration={0.65}
-              delay={idx * 0.08}
-              ease={MOTION_EASE}
               className="spotlight spotlight-blue relative bg-background/60 border border-foreground/5 p-7 hover:border-primary/50 transition-colors duration-500"
             >
               <div className="flex items-center gap-2 mb-3">

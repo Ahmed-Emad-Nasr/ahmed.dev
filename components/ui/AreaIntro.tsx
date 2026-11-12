@@ -33,12 +33,12 @@ export default function AreaIntro({
     <header id={id} className="relative pt-8 md:pt-12 pb-4 px-6 md:px-20 bg-background scroll-mt-24">
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader titleA={titleA} titleB={titleB} description={description} />
-        <FadeIn as="nav" aria-label={`${titleA} ${titleB}`.replace(/\.$/, "") + " — sections"} className="-mt-8 md:-mt-10 flex flex-wrap items-center gap-2">
+        <FadeIn as="nav" y={16} duration={0.6} delay={0.1} aria-label={`${titleA} ${titleB}`.replace(/\.$/, "") + " — sections"} className="-mt-8 md:-mt-10 flex flex-wrap items-center gap-2">
           {links.map((j) => (
             <a
               key={j.href}
               href={j.href}
-              className="group inline-flex items-center gap-2 border border-foreground/10 bg-foreground/[0.03] px-3.5 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-300 hover:border-primary hover:text-foreground"
+              className="group inline-flex items-center gap-2 border border-foreground/10 bg-foreground/[0.03] px-3.5 py-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-foreground/70 transition-colors duration-180 hover:border-primary hover:text-foreground"
             >
               {j.label}
               {j.n !== undefined && <span className="text-accent tabular-nums">{j.n}</span>}

@@ -1,29 +1,33 @@
 "use client";
 
 /*
+ * FadeIn — the site's entrance: fade + slide, once, when the element is ~15%
+ * into the screen. `as` keeps the real tag (li, nav, figure …).
+ *
+ *  · Elements entering in the same frame start top to bottom, 110 ms apart.
+ *  · opacity + transform (not framer's x/y) so the browser runs them off the
+ *    main thread (WAAPI) and a cascade never stutters the scroll.
+ *
  * ═══ components/ui/FadeIn.tsx — the entrance animation used everywhere ═══
- *
- * Default = Sensei-Dev's Reveal (lib/motion.ts → REVEAL): fade + 8px rise
- * in 0.4s, once, when the element is 40px into the screen. No stagger.
- * `as` keeps the real tag (li, nav, figure …).
- *
- *   <FadeIn> … </FadeIn>                                  the default
- *   <FadeIn y={30} duration={0.8} ease={MOTION_EASE}>     a bigger one
- *   <FadeIn x={-100} y={0} duration={1.2} replay>         slides in from the
- *        left, and back out when scrolled up past it again (experience cards)
- * Props: as · x / y (px it starts from) · duration / delay (s) · ease ·
- *   margin (the viewport margin that counts as "in view") · replay ·
- *   + any normal HTML props.
- *
- * opacity + transform (not framer's x/y) so the browser runs it off the main
- * thread (WAAPI). Under the intro screen nothing plays: an element already in
- * view starts as the screen lifts (lib/intro.ts).
+ * Wrap anything:
+ *   <FadeIn y={24} duration={0.65} delay={0.1}> … </FadeIn>
+ *   <FadeIn as="li" x={-32} y={0}> … </FadeIn>      (slides in from the left)
+ * Props:
+ *   as        → the HTML tag to render (default div)
+ *   x / y     → where it starts, in px (negative x = from the left)
+ *   duration  → seconds;  delay → extra seconds before it starts
+ *   + any normal HTML props (className, href, aria-*…)
+ * Global feel (ease curve, stagger gap) → lib/motion.ts.
  */
 
 import { m, useAnimationControls } from "framer-motion";
 import { useRef, type ComponentProps } from "react";
 import { whenIntroDone } from "@/lib/intro";
-import { REVEAL } from "@/lib/motion";
+import {
+  MOTION_EASE,
+  MOTION_ENTER_DURATION,
+  MOTION_STAGGER_STEP,
+} from "@/lib/motion";
 
 type Tag =
   | "div"
@@ -54,12 +58,9 @@ type FadeInProps = Omit<
   as?: Tag;
   x?: number;
   y?: number;
+  scale?: number;
   duration?: number;
   delay?: number;
-  ease?: readonly [number, number, number, number];
-  margin?: string;
-  /** Play backwards when it leaves through the bottom (scrolling back up) */
-  replay?: boolean;
   /* attributes some tags take (a, button) */
   href?: string;
   target?: string;
@@ -68,45 +69,82 @@ type FadeInProps = Omit<
   popoverTarget?: string;
 };
 
-const shown = { opacity: 1, transform: "translate(0px, 0px)" };
+const clamp = (v: number, lo: number, hi: number) =>
+  Math.min(hi, Math.max(lo, v));
+/* CALM = 0.72: every entrance travels (and scales) 28% less than the
+   numbers its caller passes. One dial for the whole site — lower = calmer.
+   (Speed is the other dial: the 0.6 factor on `duration` below, and
+   MOTION_ENTER_DURATION / MOTION_STAGGER_STEP in lib/motion.ts.) */
+const CALM = 0.72;
+const travel = (v: number, k: number) =>
+  v ? Math.sign(v) * Math.min(Math.abs(v) * k * 0.9, 50) * CALM : 0;
+const calmScale = (s: number) => 1 - (1 - s) * CALM;
+
+/* Entrances that start in the same frame, played top to bottom */
+let batch: { el: Element; play: (order: number) => void }[] = [];
+function enqueue(el: Element | null, play: (order: number) => void) {
+  if (!el) return play(0);
+  if (!batch.length) {
+    requestAnimationFrame(() => {
+      const now = batch;
+      batch = [];
+      now.sort((a, b) =>
+        a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING
+          ? -1
+          : 1,
+      );
+      now.forEach((item, order) => item.play(order));
+    });
+  }
+  batch.push({ el, play });
+}
 
 export default function FadeIn({
   as = "div",
   x = 0,
-  y = REVEAL.y,
-  duration = REVEAL.duration,
+  y = 24,
+  scale = 1,
+  duration = 0.65,
   delay = 0,
-  ease = REVEAL.ease,
-  margin = REVEAL.margin,
-  replay = false,
   ...rest
 }: FadeInProps) {
   const Element = m[as] as typeof m.div;
   const ref = useRef<HTMLDivElement>(null);
   const controls = useAnimationControls();
-  const hidden = { opacity: 0, transform: `translate(${x}px, ${y}px)` };
 
   return (
     <Element
       ref={ref}
-      initial={hidden}
+      initial={{
+        opacity: 0,
+        transform: `translate(${travel(x, 1.4)}px, ${travel(y, 1.8)}px) scale(${calmScale(scale)})`,
+      }}
       animate={controls}
-      viewport={{ once: !replay, margin }}
+      viewport={{ once: true, margin: "0px 0px -15% 0px" }}
       onViewportEnter={() =>
+        /* Under the intro screen nothing plays: it starts as the screen lifts */
         whenIntroDone(() => {
           if (!ref.current) return; // left the page while waiting
-          void controls.start({ ...shown, transition: { duration, delay, ease: [...ease] as [number, number, number, number] } });
+          enqueue(ref.current, (order) => {
+            const tempo = window.innerWidth < 768 ? 0.8 : 1;
+            void controls.start({
+              opacity: 1,
+              transform: "translate(0px, 0px) scale(1)",
+              transition: {
+                duration:
+                  clamp(duration || MOTION_ENTER_DURATION, 0.6, 1.2) *
+                  0.6 *
+                  tempo,
+                delay:
+                  (MOTION_STAGGER_STEP +
+                    Math.min(delay, 0.45) * 0.72 +
+                    Math.min(order, 7) * MOTION_STAGGER_STEP) *
+                  tempo,
+                ease: MOTION_EASE,
+              },
+            });
+          });
         })
-      }
-      onViewportLeave={
-        replay
-          ? (entry) => {
-              /* Only back out when it drops below the screen (scrolling up) */
-              if (entry && entry.boundingClientRect.top > 0) {
-                void controls.start({ ...hidden, transition: { duration, ease: [...ease] as [number, number, number, number] } });
-              }
-            }
-          : undefined
       }
       {...rest}
     />

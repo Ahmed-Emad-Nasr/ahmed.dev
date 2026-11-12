@@ -6,7 +6,7 @@
  *                               a big faded number in the corner + the red
  *                               top line that grows on hover.
  *   <TiltCard>               → a card that tilts in 3D toward the mouse
- *                               (max = tilt in degrees, default 2).
+ *                               (max = tilt in degrees, default 5).
  *   <SpotlightHost />        → mounted once (DeferredGlobalEffects); makes the
  *                               soft glow follow the mouse on `.spotlight` cards
  *                               by setting --mx / --my (glow CSS in globals.css).
@@ -29,14 +29,14 @@ export function CardEffects({ index, tone = "red", topLine = false }: { index?: 
     <>
       {index !== undefined && (
         <span
-          className={`pointer-events-none absolute -right-2 -bottom-6 font-display text-[7rem] font-black leading-none text-foreground/[0.03] transition-all duration-700 group-hover:-translate-y-3 select-none ${blue ? "group-hover:text-tertiary/10" : "group-hover:text-primary/10"}`}
+          className={`pointer-events-none absolute -right-2 -bottom-6 font-display text-[7rem] font-black leading-none text-foreground/[0.03] transition-all duration-420 group-hover:-translate-y-[10.2px] select-none ${blue ? "group-hover:text-tertiary/10" : "group-hover:text-primary/10"}`}
           aria-hidden="true"
           data-deco={String(index).padStart(2, "0")}
         />
       )}
       {topLine && (
         <div
-          className={`pointer-events-none absolute top-0 left-0 z-10 h-[2px] w-full origin-left scale-x-0 transition-transform duration-700 group-hover:scale-x-100 ${blue ? "bg-tertiary" : "bg-primary"}`}
+          className={`pointer-events-none absolute top-0 left-0 z-10 h-[2px] w-full origin-left scale-x-0 transition-transform duration-420 group-hover:scale-x-100 ${blue ? "bg-tertiary" : "bg-primary"}`}
           aria-hidden="true"
         />
       )}
@@ -96,7 +96,7 @@ export function SpotlightHost() {
 export function TiltCard({
   children,
   className,
-  max = 2,
+  max = 5,
 }: {
   children: ReactNode;
   className?: string;
@@ -105,8 +105,8 @@ export function TiltCard({
   const ref = useRef<HTMLDivElement>(null);
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
-  const srx = useSpring(rx, { stiffness: 180, damping: 18 });
-  const sry = useSpring(ry, { stiffness: 180, damping: 18 });
+  const srx = useSpring(rx, { stiffness: 500, damping: 37 });
+  const sry = useSpring(ry, { stiffness: 500, damping: 37 });
 
   const onMove = (e: MouseEvent) => {
     if (prefersReducedMotion()) return;

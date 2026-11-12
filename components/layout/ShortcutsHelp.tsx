@@ -67,8 +67,8 @@ export default function ShortcutsHelp({ onClose }: { onClose: () => void }) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[300] flex items-start justify-center bg-background/70 px-4 pt-[14vh] backdrop-blur-sm"
+      transition={{ duration: 0.12 }}
+      className="fixed inset-0 z-[300] flex items-start justify-center bg-background/85 px-4 pt-[14vh]"
       ref={dialogRef}
       role="dialog"
       aria-modal="true"
@@ -78,9 +78,9 @@ export default function ShortcutsHelp({ onClose }: { onClose: () => void }) {
       }}
     >
       <motion.div
-        initial={{ opacity: 0, y: -12, scale: 0.98 }}
+        initial={{ opacity: 0, y: -10, scale: 0.983 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.22 }}
+        transition={{ duration: 0.132 }}
         className="w-full max-w-xl max-h-[72vh] overflow-y-auto border border-foreground/10 bg-surface"
       >
         <div className="flex items-center gap-3 border-b border-foreground/10 px-4 py-4">

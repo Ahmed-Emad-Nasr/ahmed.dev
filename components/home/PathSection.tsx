@@ -5,7 +5,6 @@
  */
 
 import FadeIn from "@/components/ui/FadeIn";
-import { MOTION_EASE } from "@/lib/motion";
 import { CounterBadge } from "@/components/ui/kit";
 import { PATH } from "@/data/about";
 
@@ -14,7 +13,7 @@ export default function PathSection() {
     <section id="path" aria-labelledby="path-title" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Header ─── */}
-        <div className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           <div className="min-w-0 flex-1">
             <h2 id="path-title" className="font-display title-fit [--title-n:5] font-black tracking-tighter uppercase leading-[0.85]">
               <span className="text-foreground">The</span> <br />
@@ -25,7 +24,7 @@ export default function PathSection() {
             </p>
           </div>
           <CounterBadge value={String(PATH.length).padStart(2, "0")} top="Stops" bottom="So far" />
-        </div>
+        </FadeIn>
 
         <div className="relative max-w-4xl">
           <div className="absolute left-[7px] top-2 bottom-2 w-px bg-foreground/10" aria-hidden="true" />
@@ -33,7 +32,7 @@ export default function PathSection() {
             {PATH.map((m, idx) => {
               const showYear = idx === 0 || PATH[idx - 1]!.year !== m.year;
               return (
-                <FadeIn as="li" key={`${m.year}-${m.title}`} x={-24} y={0} duration={0.6} delay={idx * 0.06} ease={MOTION_EASE} className="relative flex gap-6 pb-10 last:pb-0">
+                <FadeIn as="li" key={`${m.year}-${m.title}`} className="relative flex gap-6 pb-10 last:pb-0">
                   <span
                     className={`relative z-10 mt-1.5 h-[15px] w-[15px] shrink-0 rotate-45 border-2 ${
                       idx === PATH.length - 1 ? "border-primary bg-primary" : "border-primary/60 bg-background"

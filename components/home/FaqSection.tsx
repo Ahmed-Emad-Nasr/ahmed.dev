@@ -22,7 +22,7 @@ export default function FaqSection() {
       <KanjiWatermark chars="質問" side="left" />
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Header ─── */}
-        <div className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
+        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
           <div className="min-w-0 flex-1">
             <h2 id="faq-title" className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]">
               <span className="text-foreground">Fair</span> <br />
@@ -33,13 +33,13 @@ export default function FaqSection() {
             </p>
           </div>
           <CounterBadge value={String(FAQ.length).padStart(2, "0")} top="Answers" bottom="Ready" />
-        </div>
+        </FadeIn>
 
         <div className="max-w-4xl flex flex-col border-t border-foreground/10">
           {FAQ.map((f, i) => {
             const isOpen = open === i;
             return (
-              <FadeIn key={f.q} delay={i * 0.04} ease={MOTION_EASE} className="border-b border-foreground/10">
+              <FadeIn key={f.q} className="border-b border-foreground/10">
                 <h3>
                   <button
                     type="button"

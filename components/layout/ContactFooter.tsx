@@ -26,7 +26,6 @@ import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { PROFILE } from "@/data/profile";
 import { useCopyLink } from "@/lib/use-copy-link";
 import FadeIn from "@/components/ui/FadeIn";
-import { MOTION_EASE } from "@/lib/motion";
 
 type Draft = { subject: string; body: string };
 
@@ -90,7 +89,8 @@ export default function ContactFooter() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
           {/* Brand Column */}
           <div className="flex flex-col">
-            <FadeIn y={30} duration={0.8} ease={MOTION_EASE} margin="0px">
+            <FadeIn y={30} duration={0.8}
+>
 
               {/* Sized to its column: the fixed text-9xl ran past the half-width
                   column into the form on every desktop width */}
@@ -106,7 +106,7 @@ export default function ContactFooter() {
               <div className="mb-6 flex flex-wrap items-stretch gap-3">
                 <a
                   href={`mailto:${EMAIL}`}
-                  className="group flex min-w-0 items-center gap-3 px-5 py-3 border border-primary/30 bg-primary/[0.06] hover:border-primary transition-colors duration-300"
+                  className="group flex min-w-0 items-center gap-3 px-5 py-3 border border-primary/30 bg-primary/[0.06] hover:border-primary transition-colors duration-180"
                 >
                   <Mail size={18} className="shrink-0 text-primary-ink" aria-hidden="true" />
                   <span className="truncate font-mono text-sm text-foreground">{EMAIL}</span>
@@ -114,7 +114,7 @@ export default function ContactFooter() {
                 <button
                   type="button"
                   onClick={() => void copyEmail(EMAIL)}
-                  className="flex items-center gap-2 px-4 py-3 border border-foreground/10 bg-foreground/5 hover:border-primary/40 font-mono text-[0.625rem] font-bold uppercase tracking-[0.15em] text-foreground/80 transition-colors duration-300"
+                  className="flex items-center gap-2 px-4 py-3 border border-foreground/10 bg-foreground/5 hover:border-primary/40 font-mono text-[0.625rem] font-bold uppercase tracking-[0.15em] text-foreground/80 transition-colors duration-180"
                   aria-label={emailCopy === "done" ? "Email address copied" : "Copy email address"}
                 >
                   {emailCopy === "done" ? <Check size={14} className="text-tertiary" aria-hidden="true" /> : <Copy size={14} aria-hidden="true" />}
@@ -130,7 +130,7 @@ export default function ContactFooter() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-3 px-5 py-3 bg-foreground/5 border border-foreground/10 hover:border-primary/40 transition-all duration-300 text-foreground/80 hover:text-foreground"
+                    className="group flex items-center gap-3 px-5 py-3 bg-foreground/5 border border-foreground/10 hover:border-primary/40 transition-all duration-180 text-foreground/80 hover:text-foreground"
                   >
                     {/* Brand colour on the icon only: LinkedIn blue or YouTube
                         red as 10px text fell below 4.5:1 on the dark theme. */}
@@ -165,13 +165,8 @@ export default function ContactFooter() {
           </div>
 
           {/* Form Column  Mission Briefing style */}
-          <FadeIn
-            y={40}
-            duration={0.8}
-            delay={0.2}
-            ease={MOTION_EASE}
-            margin="0px"
-            className="relative bg-surface/60 backdrop-blur-xl border border-foreground/5 p-8 md:p-12 group"
+          <FadeIn y={40} duration={0.8} delay={0.2}
+            className="relative bg-surface/60 border border-foreground/5 p-8 md:p-12 group"
           >
             {/* Corner bracket accents */}
             <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary/40" />
@@ -189,7 +184,7 @@ export default function ContactFooter() {
                   initial={{ opacity: 0, scale: 1.6, rotate: -16 }}
                   animate={{ opacity: 1, scale: 1, rotate: -8 }}
                   exit={{ opacity: 0, scale: 0.96 }}
-                  transition={{ duration: 0.53, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                   className="pointer-events-none absolute right-6 top-6 z-20 border-2 border-primary px-4 py-2 font-mono text-[0.6875rem] font-black uppercase tracking-[0.35em] text-primary-ink bg-background/80"
                 >
                   Ready to send <span className="brush-jp ml-2 text-base tracking-normal" lang="ja">送信</span>
@@ -250,7 +245,7 @@ export default function ContactFooter() {
                   type="text"
                   name="name"
                   required
-                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light placeholder:text-foreground/60 font-mono"
+                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-180 text-lg font-light placeholder:text-foreground/60 font-mono"
                   placeholder="Your name or company"
                 />
               </div>
@@ -263,7 +258,7 @@ export default function ContactFooter() {
                   type="email"
                   name="email"
                   required
-                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light placeholder:text-foreground/60 font-mono"
+                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-180 text-lg font-light placeholder:text-foreground/60 font-mono"
                   placeholder="Email"
                 />
               </div>
@@ -274,7 +269,7 @@ export default function ContactFooter() {
                 <select
                   id="type"
                   name="type"
-                  className="mt-2 w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-base font-mono text-foreground/80 [&>option]:bg-surface"
+                  className="mt-2 w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-180 text-base font-mono text-foreground/80 [&>option]:bg-surface"
                   defaultValue="Job opportunity"
                 >
                   <option>Job opportunity</option>
@@ -293,13 +288,13 @@ export default function ContactFooter() {
                   name="message"
                   required
                   rows={3}
-                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-300 text-lg font-light resize-none placeholder:text-foreground/60 font-mono"
+                  className="w-full bg-transparent border-b border-foreground/10 py-4 focus:outline-none focus:border-primary transition-all duration-180 text-lg font-light resize-none placeholder:text-foreground/60 font-mono"
                   placeholder="What do you need? The role or the project, the timeline, any links"
                 />
               </div>
               <button
                 type="submit"
-                className="btn-sheen relative overflow-hidden mt-4 w-full py-5 bg-primary text-white font-mono font-black uppercase tracking-[0.3em] text-sm hover:bg-foreground hover:text-background transition-all duration-300"
+                className="btn-sheen relative overflow-hidden mt-4 w-full py-5 bg-primary text-white font-mono font-black uppercase tracking-[0.3em] text-sm hover:bg-foreground hover:text-background transition-all duration-180"
               >
                 <span className="relative">DISPATCH MESSAGE</span>
               </button>
@@ -324,14 +319,14 @@ export default function ContactFooter() {
                         href={gmailComposeUrl(draft)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-mono text-[0.625rem] font-bold uppercase tracking-[0.15em] hover:bg-foreground hover:text-background transition-colors duration-300"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-mono text-[0.625rem] font-bold uppercase tracking-[0.15em] hover:bg-foreground hover:text-background transition-colors duration-180"
                       >
                         Open in Gmail <ArrowUpRight size={12} aria-hidden="true" />
                       </a>
                       <button
                         type="button"
                         onClick={() => void copyDraft(`To: ${EMAIL}\nSubject: ${draft.subject}\n\n${draft.body}`)}
-                        className="flex items-center gap-2 px-4 py-2.5 border border-foreground/15 font-mono text-[0.625rem] font-bold uppercase tracking-[0.15em] text-foreground/80 hover:border-primary/40 transition-colors duration-300"
+                        className="flex items-center gap-2 px-4 py-2.5 border border-foreground/15 font-mono text-[0.625rem] font-bold uppercase tracking-[0.15em] text-foreground/80 hover:border-primary/40 transition-colors duration-180"
                       >
                         {draftCopy === "done" ? <Check size={12} className="text-tertiary" aria-hidden="true" /> : <Copy size={12} aria-hidden="true" />}
                         {draftCopy === "done" ? "Copied" : "Copy message"}

@@ -91,16 +91,16 @@ export default function SectionRail() {
               className="group flex items-center gap-2 py-0.5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.25em]"
             >
               <span
-                className={`whitespace-nowrap bg-background/80 px-1.5 py-0.5 text-foreground/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100`}
+                className={`whitespace-nowrap bg-background/80 px-1.5 py-0.5 text-foreground/80 opacity-0 transition-opacity duration-180 group-hover:opacity-100 group-focus-visible:opacity-100`}
               >
                 {c.label}
               </span>
-              <span className={`tabular-nums transition-colors duration-300 ${on ? "text-primary-ink" : "text-foreground/60 group-hover:text-foreground/80"}`}>
+              <span className={`tabular-nums transition-colors duration-180 ${on ? "text-primary-ink" : "text-foreground/60 group-hover:text-foreground/80"}`}>
                 {c.n}
               </span>
               <span
                 aria-hidden="true"
-                className={`h-[2px] transition-[width,background-color] duration-500 ${on ? "w-6 bg-gradient-to-r from-primary to-tertiary" : "w-3 bg-foreground/25 group-hover:w-5 group-hover:bg-foreground/60"}`}
+                className={`h-[2px] transition-[width,background-color] duration-300 ${on ? "w-6 bg-gradient-to-r from-primary to-tertiary" : "w-3 bg-foreground/25 group-hover:w-5 group-hover:bg-foreground/60"}`}
               />
             </a>
           );
@@ -113,7 +113,7 @@ export default function SectionRail() {
         aria-label="Back to top"
         tabIndex={showTop ? 0 : -1}
         aria-hidden={!showTop}
-        className={`fixed bottom-4 right-4 z-[85] grid h-11 w-11 place-items-center border border-foreground/15 bg-background/80 text-foreground/80 backdrop-blur-md transition-[opacity,transform,border-color,color] duration-500 hover:border-primary hover:text-primary-ink md:bottom-6 md:right-6 ${
+        className={`fixed bottom-4 right-4 z-[85] grid h-11 w-11 place-items-center border border-foreground/15 bg-background/80 text-foreground/80 transition-[opacity,transform,border-color,color] duration-300 hover:border-primary hover:text-primary-ink md:bottom-6 md:right-6 ${
           showTop ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
         }`}
       >

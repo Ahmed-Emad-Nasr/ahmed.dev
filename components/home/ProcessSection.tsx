@@ -5,7 +5,6 @@
  */
 
 import FadeIn from "@/components/ui/FadeIn";
-import { MOTION_EASE } from "@/lib/motion";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { KanjiWatermark } from "@/components/ui/kit";
 import { PROCESS } from "@/data/about";
@@ -26,7 +25,6 @@ export default function ProcessSection() {
               y={28}
               duration={0.65}
               delay={idx * 0.08}
-              ease={MOTION_EASE}
               key={p.id}
               className="relative spotlight bg-surface/60 border border-foreground/5 p-7 hover:border-primary/40 transition-colors duration-500"
             >

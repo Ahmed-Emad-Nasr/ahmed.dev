@@ -15,8 +15,8 @@
  */
 
 const DURATION_KEY = "sensei-fx-duration";
-const DEFAULT_FX_DURATION = 900;
-export const FX_DURATIONS = [450, 900, 1400] as const;
+const DEFAULT_FX_DURATION = 800;
+export const FX_DURATIONS = [400, 800, 1250] as const;
 
 /* The last choice made this visit — used when storage is blocked */
 let chosenThisVisit: string | null = null;

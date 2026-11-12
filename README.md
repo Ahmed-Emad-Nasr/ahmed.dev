@@ -89,7 +89,7 @@ rules, ATT&CK coverage, videos, a proof gallery, and a printable CV.
 ```text
 Next.js 16       App Router + static export
 React 19         TypeScript
-Tailwind CSS v4  Framer Motion + GSAP
+Tailwind CSS v4  Framer Motion
 next-themes      Lucide React
 Yet Another React Lightbox
 ```
