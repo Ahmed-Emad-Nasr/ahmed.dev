@@ -21,7 +21,7 @@ import { normalizePublicHref } from "@/lib/shared";
     computed from the data) */
 const CV_SUMMARY =
   "Information security officer working across GRC and compliance, security operations, DFIR, IAM and data security. " +
-  `The record so far: ${investigationReportCount} hands-on investigation reports (labs & simulations) across ${publishedCaseCount} documented cases, ` +
+  `The record so far: ${investigationReportCount} hands-on investigation reports from labs and simulations, across ${publishedCaseCount} documented cases, ` +
   `${coveredTechniqueCount()} MITRE ATT&CK techniques mapped, a detection rule merged into SOC Fortress, ` +
   "GRC gap assessments at Banque Misr, and 300+ students taught at AMIT & NTI.";
 

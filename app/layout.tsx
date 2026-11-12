@@ -69,6 +69,9 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: "#080808",
+  /* Dark first (the default theme), light supported: native form controls
+     and scrollbars match before the CSS loads */
+  colorScheme: "dark light",
   /* No maximumScale / userScalable: pinch-zoom stays available (WCAG 1.4.4) */
 };
 
@@ -139,8 +142,11 @@ export const metadata: Metadata = {
     description: "GRC & compliance, SOC, incident response & DFIR, IAM and data security — and the security training behind them.",
     creator: "@0x3omda",
     site: "@0x3omda",
-    images: [OG_IMAGE.url],
+    images: [{ url: OG_IMAGE.url, alt: OG_IMAGE.alt }],
   },
+  /* iOS / Safari: no automatic phone / address / email links — case pages
+     are full of IPs, hashes and timestamps that look like phone numbers */
+  formatDetection: { telephone: false, address: false, email: false },
   /* Google Search Console. Both stay: removing a token un-verifies the
      property it belongs to. The first is the URL-prefix property
      https://ahmed-emad-nasr.github.io/ahmed.dev/ (added Nov 2026). */
@@ -209,6 +215,10 @@ const STRUCTURED_DATA_JSON = jsonLd({
         { "@type": "Language", name: "English", alternateName: "en" },
       ],
       hasCredential: certificationsJsonLd(PERSON_ID),
+      award: [
+        "B.Sc. Computer Science, Benha University — Distinction with Honor, ranked 8th of 900",
+        "Google Developer Groups — ranked 1st of 250 instructors",
+      ],
       description: "Information security officer working across governance, risk and compliance, security operations, incident response and DFIR, malware analysis, identity and access management, and data security.",
       /* Where he works and studied, as organisations rather than strings — the
          current roles are the ones without an endDate. */

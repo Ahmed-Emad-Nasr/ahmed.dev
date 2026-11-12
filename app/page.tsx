@@ -102,7 +102,8 @@ import { ArtGallery } from "@/components/gallery/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
 import { getTryHackMeStats } from "@/lib/api/tryhackme";
 import { getContributionStats } from "@/lib/api/contributions";
-import { getRepoCards } from "@/lib/api/github-repos";
+import { getRepoCards, type RepoCard } from "@/lib/api/github-repos";
+import { FAQ } from "@/data/about";
 import { attackCoverage, libraryCounts } from "@/lib/library-data";
 import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
 import { PROFILE } from "@/data/profile";
@@ -169,7 +170,7 @@ export const metadata: Metadata = {
     title: "Ahmed Emad Nasr | Information Security Officer",
     description:
       "GRC assessments, SOC investigations, DFIR and malware analysis, IAM and data security — the work and the reports.",
-    images: [OG_IMAGE.url],
+    images: [{ url: OG_IMAGE.url, alt: OG_IMAGE.alt }],
   },
 };
 
@@ -181,7 +182,7 @@ export const metadata: Metadata = {
    paid for twice on the first visit. The case pages and the images are
    already in sitemap.xml (with image and video entries), and each case page
    carries its own full TechArticle JSON-LD. */
-function structuredData() {
+function structuredData(repos: RepoCard[]) {
   return jsonLd({
     "@context": "https://schema.org",
     "@graph": [
@@ -201,10 +202,50 @@ function structuredData() {
         image: [PERSON_IMAGE, OG_IMAGE.url],
         hasPart: [
           { "@id": `${SITE_URL}#experience-list` },
+          ...(repos.length ? [{ "@id": `${SITE_URL}#projects` }] : []),
           { "@id": `${SITE_URL}#blog` },
+          { "@id": `${SITE_URL}#faq` },
           { "@id": `${SITE_URL}#gallery` },
         ],
       },
+      /* ── The questions section (data/about.ts → FAQ) ── */
+      {
+        "@type": "FAQPage",
+        "@id": `${SITE_URL}#faq`,
+        url: `${SITE_URL}#faq`,
+        name: "Fair questions — Ahmed Emad Nasr",
+        inLanguage: "en",
+        about: PERSON_REF,
+        mainEntity: FAQ.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+      /* ── The open-source repositories (lib/api/github-repos.ts) ── */
+      ...(repos.length
+        ? [
+            {
+              "@type": "ItemList",
+              "@id": `${SITE_URL}#projects`,
+              name: "Open-source repositories by Ahmed Emad Nasr",
+              itemListElement: repos.map((repo, index) => ({
+                "@type": "ListItem",
+                position: index + 1,
+                item: {
+                  "@type": "SoftwareSourceCode",
+                  name: repo.title,
+                  description: repo.description,
+                  codeRepository: repo.url,
+                  ...(repo.homepage ? { url: repo.homepage } : {}),
+                  ...(repo.language ? { programmingLanguage: repo.language } : {}),
+                  ...(repo.license ? { license: `https://spdx.org/licenses/${repo.license}.html` } : {}),
+                  author: PERSON_REF,
+                },
+              })),
+            },
+          ]
+        : []),
       {
         "@type": "ItemList",
         "@id": `${SITE_URL}#experience-list`,
@@ -320,10 +361,10 @@ export default async function Home() {
     <main id="main-content" className="relative w-full bg-background text-foreground overflow-x-clip">
       {/* The subtle background texture behind the whole page (globals.css .site-texture) */}
       <div className="site-texture fixed inset-0 pointer-events-none z-0" aria-hidden="true" />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData() }} />
-      {/* Intro boot screen (covers the page for ~2s, then slides away) — once
-          per visit: the script before it hides it on a reload or on coming
-          back, before the first paint (lib/intro.ts) */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData(repos) }} />
+      {/* Intro boot screen (covers the page for ~2s, then slides away) — on
+          every full load; the script before it hides it when coming Back,
+          before the first paint (lib/intro.ts) */}
       <script dangerouslySetInnerHTML={{ __html: INTRO_SEEN_SCRIPT }} />
       <AppLoader />
       {/* No UI: handles #anchor arrivals, ?filter links, pre-rendering (lib/perf/PageEffects.tsx) */}
