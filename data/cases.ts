@@ -54,6 +54,7 @@ const buildScreenshotRange = (
 /* case id → its screenshot paths (under public/). Shown in the case page's
    evidence grid and the library's lightbox. */
 export const caseScreenshotsByEvidenceId: Record<string, string[]> = {
+  "soc-l1-alert-triage": Array.from({ length: 26 }, (_, i) => `Assets/Cases/SOC L1 Alert Triage/Screenshot (${607 + i}).webp`),
   "ir-timeline-analysis": Array.from({ length: 32 }, (_, i) => `Assets/Cases/IR Timeline/Screenshot (${555 + i}).webp`),
   "threat-intelligence-for-soc": Array.from({ length: 20 }, (_, i) => `Assets/Cases/Threat Inteligence For SOC/Screenshot (${531 + i}).webp`),
   "vulnerability-scanning-tools": Array.from({ length: 25 }, (_, i) => `Assets/Cases/Vulnerability Scanning Tools/Screenshot (${418 + i}).webp`),
@@ -1467,6 +1468,21 @@ export const caseEvidenceLibrary: CaseEvidence[] = [
     readTime: 18,
     date: "2026-11-06",
     image: "Assets/Cases/IR Timeline/Screenshot (586).webp",
+  },
+{
+    id: "soc-l1-alert-triage",
+    title: "SOC L1 Alert Triage Walkthrough (SIEM Prioritization, VirusTotal OSINT & LummaStealer Detection)",
+    description: "Completed an end-to-end Tier 1 SOC alert triage investigation across all 6 tasks of TryHackMe's 'SOC L1 Alert Triage' room inside the TryHackMe SIEM simulator (`https://static-labs.tryhackme.cloud/apps/socl1-alerttriage/`). Phase 1 — SOC Team Roles & Dashboard Queue Analysis: Reviewed the operational responsibilities of SOC L1 Analysts (first line of defence triaging and escalating real threats), SOC L2 Analysts (deep-dive investigation and remediation), SOC Engineers (maintaining detection rules and contextual telemetry), and SOC Managers (tracking triage speed and quality). Audited the initial SIEM queue of 5 alerts (`Double-Extension File Creation` as the most recent at `13:58`), confirming 2 pre-closed alerts: `Bruteforce Attack from External` (`11:53`, `Medium`, closed as `True Positive` by `J.Adams (L2)`) and `Unusual VPN Login Location` (`12:40`, `Medium`, user `M.Clark` logging in from `45.8.112.7` in `Japan` instead of `United States`, closed as `False Positive` by `T.Ross (L1)` after confirming the corporate CFO was on vacation). Phase 2 — Alert Prioritization Methodology: Applied systematic L1 sorting rules to the 3 unresolved (`Awaiting action`) alerts — filtering out assigned/closed alerts, prioritizing by severity (`Critical` -> `High` -> `Medium` -> `Low`, so Medium is prioritized over Low: `yea`), and ordering by timestamp from oldest to newest (`nay` to taking newest first) — establishing the triage queue: (1) `Potential Data Exfiltration` (`Critical`, `13:30`), (2) `Double-Extension File Creation` (`High`, `13:58`), and (3) `Download from GitHub Repository` (`Low`, `13:02`). Phase 3 — Deep-Dive Alert Triage & Threat Intelligence Enrichment: Triaged Priority 1 (`Potential Data Exfiltration`) triggered by `5.8 GB` sent and `5.2 GB` received to destination `zoom.us`; verified `zoom.us` on VirusTotal (`0/92 Clean`, `MarkMonitor, Inc.`, `Virtual Meetings`), documented the analyst comment confirming normal video conferencing bandwidth consumption, closed as `False Positive`, and captured `THM{looks_like_lots_of_zoom_meetings}`. Triaged Priority 2 (`Double-Extension File Creation`) on host `LPT-HR-009` where user `S.Conway` downloaded `C:\\Users\\S.Conway\\Downloads\\cats2025.mp4.exe` via `chrome.exe` from Mark-of-the-Web URL `https://freecatvideoshd.monster/cats2025.mp4.exe` (flagged `Suspicious` by `alphaMountain.ai` on VirusTotal); enriched file MD5 `14d8486f3f63875ef93cfd240c5dc10b` (SHA-256 `86d50a7fc8d245876b791efe85eb7f64cd48b9e9648b4bf8bee22dbae66fe3aa`) on VirusTotal revealing `51/71` malicious detections for `trojan.msil/lummastealer` (`h0t.exe`, `1.17 MB`), documented containment and URL-blocking recommendations, closed as `True Positive`, and captured `THM{how_could_this_user_fall_for_it?}`. Finally, triaged Priority 3 (`Download from GitHub Repository`) where developer `G.Chandler` on host `LPT-IT-063` (`VPN/DEVELOPERS` network) accessed `https://github.com/facebook/react` (`0/93 Clean` on VirusTotal, IP `140.82.114.3`), recommended tuning the noisy GitHub detection rule, closed as `False Positive`, and captured `THM{should_we_allow_github_for_devs?}`.",
+    platform: "TryHackMe",
+    type: "Walkthrough",
+    category: "SOC Analysis",
+    difficulty: "Easy",
+    tags: ["TryHackMe", "SOC", "Tier 1", "Alert Triage", "SIEM", "VirusTotal", "Threat Intelligence", "Lumma Stealer", "Rule Tuning"],
+    tools: ["TryHackMe SIEM", "VirusTotal", "Threat Intelligence"],
+    skillsGained: ["Alert Prioritization", "L1 Alert Triage", "OSINT Hash & URL Enrichment", "False Positive Filtering", "Detection Rule Tuning"],
+    readTime: 14,
+    date: "2026-11-12",
+    image: "Assets/Cases/SOC L1 Alert Triage/Screenshot (632).webp", // لو محولتش الصور لـ webp خليها Screenshot (632).jpg
   },
 ] as const;
 

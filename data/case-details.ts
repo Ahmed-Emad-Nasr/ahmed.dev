@@ -1869,4 +1869,71 @@ grep -a -i "sshd" challenge_events.csv | grep -a "1669"`,
       "Enforce SSH key-based authentication with fail2ban rate limiting and monitor /var/log/auth.log and systemd-journald in real time",
     ],
   },
+
+ "soc-l1-alert-triage": {
+    verdict: "Triaged 3 pending SIEM alerts (2 False Positives, 1 True Positive): isolated a masqueraded LummaStealer payload (cats2025.mp4.exe) on LPT-HR-009 while filtering benign Zoom (5.8 GB) and developer GitHub (facebook/react) traffic",
+    severity: "High",
+    facts: [
+      { label: "Platform", value: "TryHackMe · SOC Level 1 (SOC Team Internals)" },
+      { label: "SIEM Queue", value: "5 total alerts (2 pre-closed, 3 awaiting L1 triage)" },
+      { label: "Priority 1 (Critical)", value: "Potential Data Exfiltration (5.8 GB to zoom.us) → False Positive" },
+      { label: "Priority 2 (High)", value: "Double-Extension File Creation (cats2025.mp4.exe on LPT-HR-009) → True Positive (LummaStealer)" },
+      { label: "Priority 3 (Low)", value: "Download from GitHub Repository (facebook/react by G.Chandler on LPT-IT-063) → False Positive" },
+      { label: "Tools", value: "TryHackMe SIEM Simulator · VirusTotal OSINT" },
+    ],
+    chain: [
+      { step: "Reviewed the 5 alerts on the SOC dashboard and inspected the closed 'Unusual VPN Login Location' alert for CFO M.Clark (IP 45.8.112.7 in Japan, confirmed vacation login — False Positive by T.Ross L1)", technique: "T1078" },
+      { step: "Reviewed the pre-closed 'Bruteforce Attack from External' alert (Medium, confirmed True Positive by J.Adams L2)", technique: "T1110" },
+      { step: "Applied L1 prioritization methodology: filtered for unresolved alerts ('Awaiting action'), sorted by Severity (Critical → High → Medium → Low), and ordered by Time (Oldest → Newest)" },
+      { step: "Priority 1 — 'Potential Data Exfiltration' (Critical): Assigned to You (L1) & set to In Progress; checked destination zoom.us on VirusTotal (0/92 Clean, MarkMonitor Inc.); verified symmetric 5.8 GB sent / 5.2 GB received video meeting bandwidth; closed as False Positive (Flag: THM{looks_like_lots_of_zoom_meetings})" },
+      { step: "Priority 2 — 'Double-Extension File Creation' (High): User S.Conway on LPT-HR-009 downloaded cats2025.mp4.exe via chrome.exe from https://freecatvideoshd.monster/cats2025.mp4.exe (flagged Suspicious by alphaMountain.ai on VirusTotal)", technique: "T1566.002" },
+      { step: "Masqueraded double-extension binary C:\\Users\\S.Conway\\Downloads\\cats2025.mp4.exe (MD5: 14d8486f3f63875ef93cfd240c5dc10b) flagged 51/71 on VirusTotal as trojan.msil/lummastealer (h0t.exe, 1.17 MB); closed as True Positive (Flag: THM{how_could_this_user_fall_for_it?})", technique: "T1036.007" },
+      { step: "Evaluated user execution risk of the downloaded LummaStealer info-stealer executable on HR endpoint LPT-HR-009", technique: "T1204.002" },
+      { step: "Priority 3 — 'Download from GitHub Repository' (Low): Developer G.Chandler on LPT-IT-063 (VPN/DEVELOPERS) accessed https://github.com/facebook/react (0/93 Clean on VirusTotal); closed as False Positive with detection rule-tuning recommendation (Flag: THM{should_we_allow_github_for_devs?})" },
+    ],
+    timeline: [
+      { time: "2025-03-21 11:53", event: "Bruteforce Attack from External (Medium) — Closed as True Positive by J.Adams (L2)" },
+      { time: "2025-03-21 12:40", event: "Unusual VPN Login Location (Medium) — User M.Clark from 45.8.112.7 (Japan vs. United States); closed as False Positive by T.Ross (L1)" },
+      { time: "2025-03-21 13:02", event: "Download from GitHub Repository (Low) — G.Chandler on LPT-IT-063 (VPN/DEVELOPERS) accesses https://github.com/facebook/react; triaged as Priority 3 (False Positive)" },
+      { time: "2025-03-21 13:30", event: "Potential Data Exfiltration (Critical) — 5.8 GB sent and 5.2 GB received to zoom.us; triaged as Priority 1 (False Positive)" },
+      { time: "2025-03-21 13:58", event: "Double-Extension File Creation (High) — chrome.exe under S.Conway on LPT-HR-009 creates C:\\Users\\S.Conway\\Downloads\\cats2025.mp4.exe; triaged as Priority 2 (True Positive — LummaStealer)" },
+    ],
+    iocs: [
+      { type: "hash", value: "14d8486f3f63875ef93cfd240c5dc10b", note: "cats2025.mp4.exe (MD5) — 51/71 Malicious on VirusTotal (trojan.msil/lummastealer)" },
+      { type: "hash", value: "86d50a7fc8d245876b791efe85eb7f64cd48b9e9648b4bf8bee22dbae66fe3aa", note: "cats2025.mp4.exe / h0t.exe (SHA-256, 1.17 MB)" },
+      { type: "url", value: "https://freecatvideoshd.monster/cats2025.mp4.exe", note: "Mark-of-the-Web (MotW) payload delivery URL (flagged Suspicious by alphaMountain.ai)" },
+      { type: "domain", value: "freecatvideoshd.monster", note: "Malicious payload delivery domain" },
+      { type: "file", value: "C:\\Users\\S.Conway\\Downloads\\cats2025.mp4.exe", note: "Masqueraded double-extension executable on LPT-HR-009" },
+      { type: "account", value: "S.Conway", note: "Targeted HR user on host LPT-HR-009" },
+      { type: "ip", value: "45.8.112.7", note: "Benign VPN login IP in Japan (CFO M.Clark on vacation)" },
+      { type: "domain", value: "zoom.us", note: "Benign video conferencing domain (0/92 Clean on VirusTotal)" },
+      { type: "url", value: "https://github.com/facebook/react", note: "Official React repository accessed by G.Chandler on LPT-IT-063 (0/93 Clean)" },
+    ],
+    detection: [
+      {
+        title: "SIEM Analyst Comments & Captured Triage Flags",
+        lang: "text",
+        code: `# Priority 1: Potential Data Exfiltration (Critical -> False Positive)
+Comment: false positive due to domain not malicious to virustotal and its meeting room so meetings and videos consume bandwidth
+Flag 1:  THM{looks_like_lots_of_zoom_meetings}
+
+# Priority 2: Double-Extension File Creation (High -> True Positive)
+Comment: hash is confirmed malicious according to virustotal threat intel
+         recommendation: add the url to threat intel or filter conent from this website or block url to not be compromised after upcoming traffic and tune rules
+Flag 2:  THM{how_could_this_user_fall_for_it?}
+
+# Priority 3: Download from GitHub Repository (Low -> False Positive)
+Comment: url and domain confirmed clean according to virustotal
+         reccomend: tune github detection rule because its noise so tune it or remove it complelty or block github completly
+Flag 3:  THM{should_we_allow_github_for_devs?}`,
+      },
+    ],
+    response: [
+      "Escalate LPT-HR-009 (user S.Conway) to SOC L2 for immediate endpoint containment, removal of C:\\Users\\S.Conway\\Downloads\\cats2025.mp4.exe, and credential rotation for LummaStealer exposure",
+      "Block freecatvideoshd.monster on the web proxy/DNS filter and blacklist MD5 14d8486f3f63875ef93cfd240c5dc10b / SHA-256 86d50a7fc8d245876b791efe85eb7f64cd48b9e9648b4bf8bee22dbae66fe3aa in the EDR",
+      "Tune the 'Potential Data Exfiltration' SIEM rule to allowlist verified conferencing domains (zoom.us) and tune the 'Download from GitHub Repository' rule for developer subnets (VPN/DEVELOPERS) to reduce alert fatigue",
+    ],
+    lessons: "Systematic L1 triage requires strict queue ordering (unresolved alerts only → highest severity first → oldest timestamp first) paired with contextual OSINT verification: a Critical 5.8 GB data spike to zoom.us is benign conferencing traffic, whereas a High double-extension download (.mp4.exe) delivers a live LummaStealer infection.",
+  },
 };
+

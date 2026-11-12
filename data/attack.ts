@@ -132,6 +132,7 @@ const SUBTECHNIQUE_NAMES: Record<string, string> = {
   "T1547.001": "Registry Run Keys / Startup Folder",
   "T1548.002": "Bypass User Account Control",
   "T1027.003": "Steganography",
+  "T1036.007": "Double File Extension",
   "T1070.004": "File Deletion",
   "T1070.006": "Timestomp",
   "T1218.005": "Mshta",
@@ -187,6 +188,7 @@ export const caseAttackMapping: Record<string, readonly string[]> = {
   "email-analysis-room-report": ["T1566.001", "T1204.002"],
   "bruteforce-room-report": ["T1110.001", "T1078"],
   "malicious-web-traffic-room-report": ["T1190", "T1110", "T1083"],
+  "soc-l1-alert-triage": ["T1566.002", "T1204.002", "T1036.007", "T1078", "T1110"],
   // ── Network & social engineering labs ───────────────────────────────────
   "ettercap-case": ["T1557.002", "T1040"],
   "wifi-cracking-walkthrough": ["T1110.002"],
@@ -283,7 +285,7 @@ export const buildCoverage = (): TacticCoverage[] => {
 const techniqueName = (id: string): string => {
   const parent = TECHNIQUE_BY_ID.get(parentTechnique(id))?.name ?? id;
   const sub = SUBTECHNIQUE_NAMES[id];
-  return sub ? `${parent}: ${sub}` : parent;
+  return sub ? `${parent}:${sub}` : parent;
 };
 
 /** Every technique id a case uses, resolved to its name and tactic */
@@ -302,7 +304,7 @@ export const coveredTechniqueCount = (): number =>
 for (const [caseId, ids] of Object.entries(caseAttackMapping)) {
   for (const id of ids) {
     if (!TECHNIQUE_BY_ID.has(parentTechnique(id))) {
-      throw new Error(`[attack.ts] ${caseId}: technique ${id} is not in TECHNIQUES`);
+      throw new Error(`[attack.ts] ${caseId}: technique${id} is not in TECHNIQUES`);
     }
   }
 }
