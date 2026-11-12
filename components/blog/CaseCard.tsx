@@ -11,7 +11,7 @@
 
 import { memo, useCallback, useState, ViewTransition } from "react";
 import Image from "next/image";
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import {
   Check,
   Copy,
@@ -153,7 +153,8 @@ function CaseCard({
           </div>
 
           <h3 className="font-display text-xl md:text-lg lg:text-2xl font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
-            <PageLink
+            <Link
+              prefetch={false}
               href={detailPath}
               className="hover:text-primary-ink transition-colors duration-300"
             >
@@ -162,7 +163,7 @@ function CaseCard({
               <ViewTransition name={`case-title-${id}`}>
                 <span>{title}</span>
               </ViewTransition>
-            </PageLink>
+            </Link>
           </h3>
           {verdict && (
             <p className="mb-3 flex items-start gap-2 font-mono text-[0.625rem] uppercase tracking-[0.15em] text-primary-ink">
@@ -202,9 +203,9 @@ function CaseCard({
           )}
 
           <div className="flex flex-wrap gap-3 mt-auto pt-5 border-t border-foreground/5">
-            <PageLink href={detailPath} className={btnPrimary}>
+            <Link prefetch={false} href={detailPath} className={btnPrimary}>
               Read the case <ArrowRight size={13} />
-            </PageLink>
+            </Link>
             {href && (
               <>
                 <a

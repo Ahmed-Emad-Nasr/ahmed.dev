@@ -11,7 +11,7 @@
    page) are sent to the same place on the home page before this paints
    (legacyPageForwardScript, lib/routes.ts). */
 
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import type { Metadata } from "next";
 import { libraryData } from "@/lib/library-data";
 import { summarize } from "@/lib/site";
@@ -66,12 +66,12 @@ export default function NotFound() {
           </p>
 
           <nav className={statusActions} aria-label="Main destinations">
-            <PageLink href="/" className={ctaPrimary}>
+            <Link prefetch={false} href="/" className={ctaPrimary}>
               <Home size={16} /> Go to the home page
-            </PageLink>
-            <PageLink href="/#cases" className={ctaSecondary}>
+            </Link>
+            <Link prefetch={false} href="/#cases" className={ctaSecondary}>
               <FolderSearch size={14} className="text-primary-ink" /> Browse the cases
-            </PageLink>
+            </Link>
             <a href={normalizePublicHref(CV_PDF_HREF)} target="_blank" rel="noopener noreferrer" className={ctaSecondary}>
               <FileText size={14} className="text-primary-ink" /> Read my CV (PDF)
             </a>
@@ -88,7 +88,8 @@ export default function NotFound() {
               <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {SUGGESTIONS.map((entry) => (
                   <li key={entry.id}>
-                    <PageLink
+                    <Link
+                      prefetch={false}
                       href={`/blog/${entry.id}`}
                       className="group spotlight relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-500"
                     >
@@ -96,7 +97,7 @@ export default function NotFound() {
                         {entry.label}
                       </span>
                       <span className="text-sm text-foreground/60 font-light leading-relaxed">{entry.why}</span>
-                    </PageLink>
+                    </Link>
                   </li>
                 ))}
               </ul>

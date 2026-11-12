@@ -23,7 +23,7 @@
  * sent to the browser.
  */
 
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import {
   ArrowUpRight,
   ClipboardCheck,
@@ -314,9 +314,9 @@ export function RolesCards() {
                             {inner}
                           </a>
                         ) : (
-                          <PageLink href={p.href ?? "/"} className={cls}>
+                          <Link prefetch={false} href={p.href ?? "/"} className={cls}>
                             {inner}
-                          </PageLink>
+                          </Link>
                         )}
                       </li>
                     );

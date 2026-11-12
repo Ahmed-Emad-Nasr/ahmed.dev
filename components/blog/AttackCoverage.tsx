@@ -15,7 +15,7 @@
  *                   how many reports cover it (`max` = the highest count)
  */
 
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import type { CSSProperties } from "react";
 import FadeIn from "@/components/ui/FadeIn";
 import HeatReveal from "@/components/blog/HeatReveal";
@@ -149,11 +149,11 @@ function TechniqueTile({ technique, tactic, max }: { technique: CoverageTechniqu
         <ol className="attack-pop-cases">
           {technique.cases.map((c, i) => (
             <li key={c.id}>
-              <PageLink href={`/blog/${c.id}`}>
+              <Link prefetch={false} href={`/blog/${c.id}`}>
                 <span className="attack-pop-n">{pad(i + 1)}</span>
                 <span className="flex-1">{c.title}</span>
                 <span className="attack-pop-go" aria-hidden="true">→</span>
-              </PageLink>
+              </Link>
             </li>
           ))}
         </ol>

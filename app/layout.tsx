@@ -53,7 +53,6 @@ import { CONTENT_SECURITY_POLICY } from "@/lib/security";
 import KeyboardShortcuts from "@/components/layout/KeyboardShortcuts";
 import DeferredGlobalEffects from "@/components/layout/DeferredGlobalEffects";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
-import SmoothScroll from "@/components/layout/SmoothScroll";
 import { HOME_LOCATION, normalizePublicHref, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { OG_IMAGE } from "@/lib/site";
 import { homeDataFixScript } from "@/lib/routes";
@@ -313,8 +312,6 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <KeyboardShortcuts />
             <DeferredGlobalEffects />
             <CursorMount />
-            {/* Smooth mouse-wheel scrolling (Lenis), loaded after the page */}
-            <SmoothScroll />
             {children}
             {/* Registers public/sw.js (offline cache) in production */}
             <ServiceWorkerRegister />

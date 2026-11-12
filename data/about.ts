@@ -11,7 +11,6 @@
  *   NOW         → "Right Now." — update when a role starts or ends
  *   FAQ         → "Fair Questions." (#faq) — the accordion before Contact
  *   PROCESS     → "Risk to Response." (#process) — how a security job runs
- *   DIVIDER     → the slanted banner of kanji that drifts while you scroll
  *   TICKER      → the drifting band of words between sections
  */
 
@@ -76,7 +75,5 @@ export const PROCESS = [
   { id: "detect", index: "03", title: "Detect", japanese: "検知", description: "Baselines, logs and alerts. Know what normal looks like, then map what isn't to ATT&CK." },
   { id: "respond", index: "04", title: "Respond", japanese: "対応", description: "Contain, eradicate, recover — NIST 800-61, not instinct — then a report with the root cause and the fix." },
 ] as const;
-
-export const DIVIDER = "統治 • 防御 • 検知 • 対応 • 復旧";
 
 export const TICKER = ["統治", "防御", "検知", "対応", "調査", "FROM THE RISK REGISTER TO THE ROOT CAUSE"];

@@ -12,7 +12,7 @@
  */
 
 import FadeIn from "@/components/ui/FadeIn";
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import type { CaseNumber } from "@/lib/case-numbers";
 import { CountUpText } from "@/components/ui/CountUp";
 
@@ -36,9 +36,9 @@ export default function CaseNumbers({ numbers, prevented }: { numbers: readonly 
             <div key={n.label} className={`${TILE} ${n.href ? "relative transition-colors hover:bg-surface focus-within:bg-surface" : ""}`}>
               <dt className="text-sm leading-snug text-foreground/75">
                 {n.href ? (
-                  <PageLink href={n.href} className="after:absolute after:inset-0">
+                  <Link prefetch={false} href={n.href} className="after:absolute after:inset-0">
                     {n.label}
-                  </PageLink>
+                  </Link>
                 ) : (
                   n.label
                 )}

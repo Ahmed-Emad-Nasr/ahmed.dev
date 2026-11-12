@@ -7,7 +7,7 @@
    header row and each data row must use the same template. KIND_TONE and
    SEVERITY_DOT pick the colours per case kind / severity. */
 
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { CASE_KINDS, formatDate, type PdfResource } from "@/lib/shared";
 import FadeIn from "@/components/ui/FadeIn";
@@ -40,7 +40,8 @@ export default function CaseList({ items }: { items: readonly PdfResource[] }) {
       <ul className="divide-y divide-foreground/5">
         {items.map((item) => (
           <FadeIn as="li" key={item.id} id={`case-${item.id}`} className="scroll-mt-28">
-            <PageLink
+            <Link
+              prefetch={false}
               href={`/blog/${item.id}`}
               className="group relative grid grid-cols-1 md:grid-cols-[1fr_7rem_10rem_9rem_6.5rem_1.5rem] items-center gap-x-4 gap-y-1.5 px-5 py-4 hover:bg-foreground/[0.03] transition-colors"
             >
@@ -61,7 +62,7 @@ export default function CaseList({ items }: { items: readonly PdfResource[] }) {
               <span className="font-mono text-[0.625rem] text-foreground/60 truncate">{item.platform}</span>
               <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">{item.date ? formatDate(item.date) : ""}</span>
               <ArrowUpRight size={14} className="hidden md:block text-foreground/30 group-hover:text-primary-ink transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" aria-hidden="true" />
-            </PageLink>
+            </Link>
           </FadeIn>
         ))}
       </ul>

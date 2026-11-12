@@ -11,7 +11,7 @@
  */
 
 import { useMemo, useState } from "react";
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import { ArrowUpRight, Radar } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { KanjiWatermark, CounterBadge, PlainNotes } from "@/components/ui/kit";
@@ -129,12 +129,13 @@ export default function DetectionLibrary() {
           <p className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
             Technical readers: the complete rule file is in the report
           </p>
-          <PageLink
+          <Link
+            prefetch={false}
             href="/blog/3omda-custom-detection-rules"
             className="group inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary-ink"
           >
             View the full rule file <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </PageLink>
+          </Link>
         </FadeIn>
       </div>
     </section>

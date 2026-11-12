@@ -41,7 +41,6 @@ export const PathSection = dynamic(() => import("@/components/home/PathSection")
 export const NowSection = dynamic(() => import("@/components/home/NowSection"), { loading: () => <SectionSkeleton lines={1} /> });
 export const ProcessSection = dynamic(() => import("@/components/home/ProcessSection"), { loading: () => <SectionSkeleton lines={2} /> });
 export const ProjectsGrid = dynamic(() => import("@/components/home/ProjectsGrid"), { loading: () => <SectionSkeleton lines={3} /> });
-export const SectionDivider = dynamic(() => import("@/components/ui/SectionDivider"));
 export const FaqSection = dynamic(() => import("@/components/home/FaqSection"), { loading: () => <SectionSkeleton lines={2} /> });
 export const ContactFooter = dynamic(() => import("@/components/layout/ContactFooter"), { loading: () => <SectionSkeleton lines={2} /> });
 /* Overlays: client only */

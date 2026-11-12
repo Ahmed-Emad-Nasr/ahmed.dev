@@ -31,7 +31,7 @@ import {
   PlayCircle,
   FileText,
 } from "lucide-react";
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import { Github } from "@/components/ui/BrandIcons";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import FadeIn from "@/components/ui/FadeIn";
@@ -209,7 +209,8 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
                       </a>
                     )}
                     {w.links.caseStudy && (
-                      <PageLink
+                      <Link
+                        prefetch={false}
                         href={w.links.caseStudy}
                         className="group/cs flex items-center gap-2 px-4 py-2.5 border border-tertiary/30 text-tertiary font-mono text-[0.625rem] uppercase tracking-[0.2em] hover:border-tertiary hover:bg-tertiary/10 transition-colors"
                       >
@@ -218,7 +219,7 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
                           className="transition-transform duration-300 group-hover/cs:-translate-y-0.5"
                         />{" "}
                         Case study
-                      </PageLink>
+                      </Link>
                     )}
                     {!w.links.github &&
                       !w.links.live &&

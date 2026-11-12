@@ -72,8 +72,8 @@ lightbox, the command palette and the terminal.
    while their section is off screen; framer-motion loops are paused through
    the Animation API.
 
-Links to other pages use `PageLink`, which prefetches on hover/focus/touch
-instead of on sight.
+Links to other pages are plain `next/link` with `prefetch={false}`: nothing
+is downloaded until a link is clicked.
 
 ## Jumps
 
@@ -110,9 +110,6 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
   everyday entrance is `REVEAL` — fade + 8px rise in 0.4s, no stagger.
 - Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
   only). framer-motion loads lazily (`LazyMotion` + `m`).
-- Smooth wheel scrolling: Lenis (`components/layout/SmoothScroll.tsx`),
-  loaded after the page; jumps and dialog scroll locks go through it
-  (`lib/scroll.ts`).
 - Hero entrance: GSAP, imported on demand.
 - Section dividers drift with a CSS scroll timeline (framer fallback).
 - Reduced motion is respected everywhere (`MotionConfig reducedMotion="user"`

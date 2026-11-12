@@ -172,23 +172,6 @@
     scroll-behavior: auto;
   }
 
-  /* Lenis (components/layout/SmoothScroll.tsx) — its stylesheet */
-  html.lenis,
-  html.lenis body {
-    height: auto;
-  }
-  .lenis:not(.lenis-autoToggle).lenis-stopped {
-    overflow: clip;
-  }
-  .lenis [data-lenis-prevent],
-  .lenis [data-lenis-prevent-wheel],
-  .lenis [data-lenis-prevent-touch] {
-    overscroll-behavior: contain;
-  }
-  .lenis.lenis-smooth iframe {
-    pointer-events: none;
-  }
-
   /* An invisible sheet over the content while the page scrolls fast, so the
      cards sliding under a still cursor do not each start a hover
      (lib/perf/ScrollShield.tsx shows and hides it). Below the navbar (z 100),
@@ -1130,38 +1113,6 @@ html[data-intro-seen] [data-app-loader] {
   transform: translateY(-2px) scale(1.04);
   z-index: 1;
   position: relative;
-}
-
-/* ── Page navigation: a bar across the top from the press until the new
-   page is shown (components/ui/PageLink.tsx sets data-nav-pending) ── */
-html[data-nav-pending]::after {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 10000;
-  width: 100%;
-  height: 2px;
-  background: var(--primary);
-  transform-origin: left;
-  animation: nav-pending 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-  pointer-events: none;
-}
-
-@keyframes nav-pending {
-  from {
-    transform: scaleX(0.08);
-  }
-
-  to {
-    transform: scaleX(0.9);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html[data-nav-pending]::after {
-    animation: none;
-  }
 }
 
 /* ── Palette hint: the top line runs down like a timer while it is open ── */

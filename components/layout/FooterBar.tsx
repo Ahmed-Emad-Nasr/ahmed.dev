@@ -13,7 +13,7 @@
  *   • The name / GitHub link → PROFILE in data/profile.ts.
  */
 
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import { PROFILE } from "@/data/profile";
 import { CV_PDF_HREF, PGP_KEY_FILE, REPO_URL, normalizePublicHref } from "@/lib/shared";
 
@@ -34,9 +34,9 @@ export default function FooterBar({ className = "" }: { className?: string }) {
         </span>
       </div>
       <nav aria-label="Site information" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <PageLink href="/#blog" className="hover:text-primary-ink transition-colors">Blog</PageLink>
+        <Link prefetch={false} href="/#blog" className="hover:text-primary-ink transition-colors">Blog</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>
-        <PageLink href="/#gallery" className="hover:text-primary-ink transition-colors">Gallery</PageLink>
+        <Link prefetch={false} href="/#gallery" className="hover:text-primary-ink transition-colors">Gallery</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>
         {/* Files, not pages: plain links (the CV, how to report a security issue) */}
         <a href={normalizePublicHref(CV_PDF_HREF)} target="_blank" rel="noopener noreferrer" className="hover:text-primary-ink transition-colors">

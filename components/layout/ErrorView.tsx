@@ -10,7 +10,7 @@
    app/layout.tsx crashes. */
 
 import { useEffect } from "react";
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import { RotateCcw } from "lucide-react";
 import PageShell from "@/components/layout/PageShell";
 import {
@@ -60,8 +60,8 @@ export default function ErrorView({
             <button type="button" className={ctaPrimary} onClick={reset}>
               <RotateCcw size={16} /> Try again
             </button>
-            <PageLink href="/" className={ctaSecondary}>Go to the home page</PageLink>
-            <PageLink href="/#cases" className={ctaSecondary}>Browse the cases</PageLink>
+            <Link prefetch={false} href="/" className={ctaSecondary}>Go to the home page</Link>
+            <Link prefetch={false} href="/#cases" className={ctaSecondary}>Browse the cases</Link>
           </nav>
 
           {/* digest is the hash Next generates for the error. It's shown so that if someone

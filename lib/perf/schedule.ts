@@ -89,19 +89,6 @@ function start(): void {
   else window.addEventListener("load", go, { once: true });
 }
 
-/** Run once, as soon as the page has loaded and the browser has a free
-    moment (at most ~2 s later) — NOT behind the queue above. For network-only
-    work that should start early: prefetching the navbar's pages. */
-export function soonAfterLoad(task: Task): void {
-  if (typeof window === "undefined") return;
-  const run = () =>
-    typeof window.requestIdleCallback === "function"
-      ? window.requestIdleCallback(() => void task(), { timeout: 2000 })
-      : window.setTimeout(() => void task(), 200);
-  if (document.readyState === "complete") run();
-  else window.addEventListener("load", run, { once: true });
-}
-
 /** Queue a small piece of background work (client only). */
 export function whenIdle(task: Task): void {
   if (typeof window === "undefined") return;

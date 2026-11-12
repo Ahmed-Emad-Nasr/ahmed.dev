@@ -30,7 +30,6 @@
  *   Platforms    #platforms components/home/PlatformsSection data/platforms.ts (+ TryHackMe API)
  *   Process      #process  components/home/ProcessSection   data/about.ts
  *   FAQ          #faq      components/home/FaqSection       data/about.ts
- *   Kanji banner           components/ui/SectionDivider     data/about.ts (DIVIDER)
  *   Contact      #contact  components/layout/ContactFooter
  *   ── Blog ──   #blog     components/ui/AreaIntro          BLOG_DESCRIPTION below
  *   Cases/Videos #cases    components/blog/CaseLibrarySection data/cases.ts, case-details.ts, youtube.ts
@@ -86,7 +85,6 @@ import {
   FaqSection,
   ProcessSection,
   ProjectsGrid,
-  SectionDivider,
   ContactFooter,
   PaletteHint,
   SectionRail,
@@ -429,9 +427,6 @@ export default async function Home() {
       <LazySection id="faq" size="lazy-h-faq">
         <FaqSection />
       </LazySection>
-
-      {/* The slanted kanji banner, drifting with the scroll */}
-      <SectionDivider reverse angle={-1.5} />
 
       {/* Contact section + form */}
       <div id="contact" className="mt-20">

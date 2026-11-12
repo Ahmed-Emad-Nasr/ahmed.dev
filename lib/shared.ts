@@ -6,7 +6,7 @@
  *   normalizePublicHref("Assets/x.pdf") → "/ahmed.dev/Assets/x.pdf" in production.
  *     ALWAYS wrap paths to files in public/ with it (images, PDFs) when you
  *     write a plain <a>/<img> — otherwise they break on GitHub Pages, where
- *     the site lives under /ahmed.dev. (next/link and PageLink add it for you.)
+ *     the site lives under /ahmed.dev. (next/link adds it for you.)
  *   CV_PDF_HREF → the CV file. Replace the PDF in public/Assets/cv/ with the
  *     same name, or change this path.
  *   CASE_KINDS / caseKindOf → how a case's `type` becomes its kind filter.

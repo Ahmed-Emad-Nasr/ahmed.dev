@@ -24,7 +24,7 @@
  */
 
 import Image from "next/image";
-import PageLink from "@/components/ui/PageLink";
+import Link from "next/link";
 import { Suspense, useCallback, useMemo, useState, ViewTransition, type ReactNode } from "react";
 import {
   ArrowLeft,
@@ -268,7 +268,8 @@ export default function CaseArticle({
           className="mb-10 flex flex-wrap items-center gap-3 font-mono text-[0.625rem] uppercase tracking-[0.3em]"
           aria-label="Breadcrumb"
         >
-          <PageLink
+          <Link
+            prefetch={false}
             href="/#cases"
             className="group flex items-center gap-2 text-primary-ink hover:text-foreground transition-colors"
           >
@@ -277,7 +278,7 @@ export default function CaseArticle({
               className="transition-transform duration-300 group-hover:-translate-x-1"
             />{" "}
             All cases
-          </PageLink>
+          </Link>
           <span className="text-foreground/20" aria-hidden="true">
             /
           </span>
@@ -287,12 +288,13 @@ export default function CaseArticle({
               <span className="text-foreground/20" aria-hidden="true">
                 /
               </span>
-              <PageLink
+              <Link
+                prefetch={false}
                 href={collection.href}
                 className="text-tertiary hover:text-foreground transition-colors"
               >
                 {collection.title}
-              </PageLink>
+              </Link>
             </>
           )}
         </nav>
@@ -590,13 +592,14 @@ export default function CaseArticle({
               <BlockTitle japanese="標識" hint="Click a topic to see every other case about it.">Topics</BlockTitle>
               <div className="flex flex-wrap gap-2">
                 {item.tags.map((tag) => (
-                  <PageLink
+                  <Link
+                    prefetch={false}
                     key={tag}
                     href={`/?q=${encodeURIComponent(tag)}#cases`}
                     className="px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-foreground/60 bg-foreground/[0.04] border border-foreground/10 hover:border-primary hover:text-primary-ink transition-colors"
                   >
                     #{tag}
-                  </PageLink>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -649,7 +652,8 @@ export default function CaseArticle({
             <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {related.map((entry) => (
                 <li key={entry.id}>
-                  <PageLink
+                  <Link
+                    prefetch={false}
                     href={`/blog/${entry.id}`}
                     className="group spotlight spotlight-blue relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-500"
                   >
@@ -661,7 +665,7 @@ export default function CaseArticle({
                       {entry.sharedTechniques > 0 &&
                         ` • ${entry.sharedTechniques} shared technique(s)`}
                     </span>
-                  </PageLink>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -674,7 +678,8 @@ export default function CaseArticle({
           aria-label="Other cases"
         >
           {previous ? (
-            <PageLink
+            <Link
+              prefetch={false}
               href={`/blog/${previous.id}`}
               className="group spotlight relative flex flex-col gap-3 bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-500"
             >
@@ -688,12 +693,13 @@ export default function CaseArticle({
               <span className="font-display text-base font-black uppercase tracking-tight text-foreground/80 group-hover:text-foreground">
                 {previous.title}
               </span>
-            </PageLink>
+            </Link>
           ) : (
             <span />
           )}
           {next && (
-            <PageLink
+            <Link
+              prefetch={false}
               href={`/blog/${next.id}`}
               className="group spotlight relative flex flex-col items-end gap-3 text-right bg-surface/60 border border-foreground/5 p-6 hover:border-primary/40 transition-colors duration-500"
             >
@@ -707,14 +713,14 @@ export default function CaseArticle({
               <span className="font-display text-base font-black uppercase tracking-tight text-foreground/80 group-hover:text-foreground">
                 {next.title}
               </span>
-            </PageLink>
+            </Link>
           )}
         </nav>
 
         <div className="mt-10 flex justify-center">
-          <PageLink href="/#cases" className={btnOutline}>
+          <Link prefetch={false} href="/#cases" className={btnOutline}>
             <ArrowLeft size={13} /> Back to the library
-          </PageLink>
+          </Link>
         </div>
       </div>
 
