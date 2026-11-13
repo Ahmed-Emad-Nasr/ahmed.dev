@@ -218,13 +218,6 @@
       color 0.18s ease;
   }
 
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    button:not(:disabled):hover,
-    a[role="button"]:hover {
-      transform: translateY(-1.7px);
-    }
-  }
-
   /* Custom cursor only on precise pointers; touch keeps native cursor */
   @media (pointer: fine) {
     body.custom-cursor-on,
