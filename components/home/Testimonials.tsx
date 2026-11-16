@@ -104,7 +104,7 @@ export default function Testimonials() {
             href={LINKEDIN_RECOMMENDATIONS_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-foreground/70 hover:text-primary-ink transition-colors duration-180"
+            className="group inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-foreground/70 hover:text-primary-ink transition-colors duration-300"
           >
             Read them on LinkedIn
             <ArrowUpRight size={14} className="opacity-60 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
@@ -112,7 +112,7 @@ export default function Testimonials() {
           <Link
             href="/teaching#student-feedback"
             prefetch={false}
-            className="group inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-foreground/70 hover:text-primary-ink transition-colors duration-180"
+            className="group inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-foreground/70 hover:text-primary-ink transition-colors duration-300"
           >
             {STUDENT_FEEDBACK.length} notes from my students
             <ArrowUpRight size={14} className="opacity-60 group-hover:opacity-100 transition-opacity" aria-hidden="true" />

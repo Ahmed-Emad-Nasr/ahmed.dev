@@ -86,11 +86,11 @@ export default function SectionRail() {
               className="group flex items-center gap-2 py-0.5 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.25em]"
             >
               <span
-                className={`whitespace-nowrap bg-background/80 px-1.5 py-0.5 text-foreground/80 opacity-0 transition-opacity duration-180 group-hover:opacity-100 group-focus-visible:opacity-100`}
+                className={`whitespace-nowrap bg-background/80 px-1.5 py-0.5 text-foreground/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100`}
               >
                 {c.label}
               </span>
-              <span className={`tabular-nums transition-colors duration-180 ${on ? "text-primary-ink" : "text-foreground/60 group-hover:text-foreground/80"}`}>
+              <span className={`tabular-nums transition-colors duration-300 ${on ? "text-primary-ink" : "text-foreground/60 group-hover:text-foreground/80"}`}>
                 {c.n}
               </span>
               <span

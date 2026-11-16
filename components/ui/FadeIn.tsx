@@ -73,9 +73,13 @@ const clamp = (v: number, lo: number, hi: number) =>
   Math.min(hi, Math.max(lo, v));
 /* CALM = 0.72: every entrance travels (and scales) 28% less than the
    numbers its caller passes. One dial for the whole site — lower = calmer.
-   (Speed is the other dial: the 0.6 factor on `duration` below, and
-   MOTION_ENTER_DURATION / MOTION_STAGGER_STEP in lib/motion.ts.) */
+   (Speed is the other dial: SLOW below, and MOTION_ENTER_DURATION /
+   MOTION_STAGGER_STEP in lib/motion.ts.) */
 const CALM = 0.72;
+/* SLOW = 0.9: entrances take 90% of the duration their caller passes
+   (0.54–1.08 s). Higher = slower. Was 0.6. Only opacity + transform move,
+   so a slower entrance costs nothing on the main thread. */
+const SLOW = 0.9;
 const travel = (v: number, k: number) =>
   v ? Math.sign(v) * Math.min(Math.abs(v) * k * 0.9, 50) * CALM : 0;
 const calmScale = (s: number) => 1 - (1 - s) * CALM;
@@ -126,18 +130,18 @@ export default function FadeIn({
         whenIntroDone(() => {
           if (!ref.current) return; // left the page while waiting
           enqueue(ref.current, (order) => {
-            const tempo = window.innerWidth < 768 ? 0.8 : 1;
+            const tempo = window.innerWidth < 768 ? 0.9 : 1;
             void controls.start({
               opacity: 1,
               transform: "translate(0px, 0px) scale(1)",
               transition: {
                 duration:
                   clamp(duration || MOTION_ENTER_DURATION, 0.6, 1.2) *
-                  0.6 *
+                  SLOW *
                   tempo,
                 delay:
                   (MOTION_STAGGER_STEP +
-                    Math.min(delay, 0.45) * 0.72 +
+                    Math.min(delay, 0.5) +
                     Math.min(order, 7) * MOTION_STAGGER_STEP) *
                   tempo,
                 ease: MOTION_EASE,

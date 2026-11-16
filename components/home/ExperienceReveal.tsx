@@ -28,7 +28,7 @@ export default function ExperienceReveal({ className, children }: { className?: 
         gsap.from(card, {
           x: i % 2 === 0 ? -100 : 100,
           opacity: 0,
-          duration: 1.2,
+          duration: 1.5,
           ease: "expo.out",
           scrollTrigger: {
             trigger: card,

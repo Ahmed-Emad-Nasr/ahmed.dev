@@ -319,7 +319,7 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
                   </span>
                 </span>
                 <span className="flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-tertiary">
-                  Filter {WSA_LAB_COUNT} labs <ArrowUpRight size={14} className="transition-transform duration-180 group-hover:translate-x-[1.7px] group-hover:-translate-y-[1.7px]" />
+                  Filter {WSA_LAB_COUNT} labs <ArrowUpRight size={14} className="transition-transform duration-300 group-hover:translate-x-[1.7px] group-hover:-translate-y-[1.7px]" />
                 </span>
               </button>
             </FadeIn>
@@ -347,9 +347,9 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
               <button
                 type="button"
                 onClick={() => setVisible((n) => Math.min(visiblePdfs.length, (view === "list" ? Math.max(n, 24) : n) + (view === "list" ? 24 : PAGE)))}
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
               >
-                <ChevronDown size={14} className="text-primary-ink transition-transform duration-180 group-hover:translate-y-[1.7px]" />
+                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-[1.7px]" />
                 Show more cases
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
                   {Math.min(view === "list" ? Math.max(visible, 24) : visible, visiblePdfs.length)}/{visiblePdfs.length}

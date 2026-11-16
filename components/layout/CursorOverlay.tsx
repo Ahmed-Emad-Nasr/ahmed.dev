@@ -97,7 +97,7 @@ export default function CursorOverlay() {
         transition={{ type: "spring", stiffness: 830, damping: 42 }}
       >
         <div
-          className={`relative w-full h-full transition-all duration-180 flex items-center justify-center
+          className={`relative w-full h-full transition-all duration-300 flex items-center justify-center
             ${isHovering ? "rounded-none" : "rounded-full border border-accent/60"}`}
         >
           {/* Red lock-on brackets */}
@@ -155,7 +155,7 @@ export default function CursorOverlay() {
         }}
       >
         <div
-          className={`transition-all duration-180 transform rotate-45
+          className={`transition-all duration-300 transform rotate-45
             ${
               isHovering
                 ? "w-2 h-2 bg-primary"
@@ -175,7 +175,7 @@ export default function CursorOverlay() {
         }}
       >
         <div
-          className={`transition-all duration-180 transform rotate-45 border border-accent/40
+          className={`transition-all duration-300 transform rotate-45 border border-accent/40
             ${isHovering ? "w-8 h-8 opacity-0 scale-150" : "w-4 h-4 opacity-100 scale-100"}`}
         />
       </motion.div>

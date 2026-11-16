@@ -49,6 +49,11 @@
 @source "../components";
 @source "../lib";
 @source "../data";
+/* The site has no shadows: the words "shadow" and "ring" in comments or
+   in text (an email address, "what makes it ring") must not create the
+   .shadow / .ring classes, which draw box-shadows */
+@source not inline("shadow");
+@source not inline("ring");
 
 /* `dark:` classes (dark:bg-black …) apply when <html> has class="dark"
    (next-themes sets it — components/layout/ThemeProvider.tsx) */
@@ -210,10 +215,10 @@
   button:not(:disabled),
   a[role="button"] {
     transition:
-      transform 0.18s var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
-      border-color 0.18s ease,
-      background-color 0.18s ease,
-      color 0.18s ease;
+      transform 0.3s var(--ease-out, cubic-bezier(0.23, 1, 0.32, 1)),
+      border-color 0.3s ease,
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   /* Custom cursor only on precise pointers; touch keeps native cursor */
@@ -328,8 +333,8 @@
 
   body {
     transition:
-      background-color 0.21s ease,
-      color 0.21s ease;
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 }
 
@@ -502,10 +507,11 @@
   inset: 0;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.21s ease;
+  transition: opacity 0.4s ease;
+  /* As Sensei-Dev: a quiet, neutral light that follows the cursor */
   background: radial-gradient(
     320px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in srgb, var(--primary) 14%, transparent),
+    color-mix(in srgb, var(--foreground) 6%, transparent),
     transparent 70%
   );
 }
@@ -517,8 +523,8 @@
 @media (hover: hover) {
   .spotlight {
     transition:
-      border-color 0.204s ease,
-      background-color 0.204s ease;
+      border-color 0.3s ease,
+      background-color 0.3s ease;
   }
 
   .spotlight:hover {
@@ -534,7 +540,7 @@
 .spotlight-blue::before {
   background: radial-gradient(
     320px circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in srgb, var(--tertiary) 16%, transparent),
+    color-mix(in srgb, var(--foreground) 6%, transparent),
     transparent 70%
   );
 }
@@ -798,8 +804,8 @@ html[data-intro-seen] [data-app-loader] {
     var(--surface)
   );
   transition:
-    border-color 0.18s,
-    transform 0.18s,
+    border-color 0.3s,
+    transform 0.3s,
     background-color 0.48s ease-out;
 }
 .attack-seg::before {
@@ -893,8 +899,8 @@ html[data-intro-seen] [data-app-loader] {
     var(--surface)
   );
   transition:
-    border-color 0.18s,
-    transform 0.18s,
+    border-color 0.3s,
+    transform 0.3s,
     background-color 0.48s ease-out;
 }
 .attack-tile:hover,
@@ -936,7 +942,7 @@ html[data-intro-seen] [data-app-loader] {
 }
 .attack-tile-foot > span {
   color: var(--primary-ink);
-  transition: transform 0.18s;
+  transition: transform 0.3s;
 }
 .attack-tile:hover .attack-tile-foot > span {
   transform: translateX(2.55px);
@@ -1141,8 +1147,8 @@ html[data-intro-seen] [data-app-loader] {
     var(--surface)
   );
   transition:
-    transform 0.18s,
-    border-color 0.18s,
+    transform 0.3s,
+    border-color 0.3s,
     background-color 0.48s ease-out;
 }
 .attack-cell:hover,
@@ -1270,7 +1276,7 @@ html[data-intro-seen] [data-app-loader] {
   opacity: 0.55;
 }
 .lab-node rect:first-child {
-  transition: stroke-opacity 0.18s;
+  transition: stroke-opacity 0.3s;
 }
 .lab-node:hover rect:first-child {
   stroke-opacity: 1;

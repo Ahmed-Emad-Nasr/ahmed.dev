@@ -165,7 +165,7 @@ export default function TriageChallenge() {
                           type="button"
                           disabled={reveal}
                           onClick={() => setAnswers((a) => a.map((x, i) => (i === qi ? oi : x)))}
-                          className={`flex items-center justify-between gap-3 border px-4 py-2.5 text-left text-sm transition-all duration-180 disabled:cursor-default ${tone}`}
+                          className={`flex items-center justify-between gap-3 border px-4 py-2.5 text-left text-sm transition-all duration-300 disabled:cursor-default ${tone}`}
                         >
                           <span>{o.label}</span>
                           {reveal && o.correct && <Check size={14} className="text-tertiary shrink-0" aria-label="correct" />}
@@ -191,7 +191,7 @@ export default function TriageChallenge() {
                 </span>
                 <span className="flex flex-wrap gap-3">
                   <Link prefetch={false} href="/blog/soc336-report" className="group inline-flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] hover:bg-foreground hover:text-background transition-colors">
-                    The investigation <ArrowRight size={12} className="transition-transform duration-180 group-hover:translate-x-[3.4px]" />
+                    The investigation <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-[3.4px]" />
                   </Link>
                   <button
                     type="button"

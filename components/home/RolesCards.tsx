@@ -253,7 +253,7 @@ export function RolesCards() {
                   <div className="p-2.5 bg-tertiary/10 border border-tertiary/30">
                     <Icon
                       size={18}
-                      className="text-tertiary transition-transform duration-300 group-hover:scale-[1.085]"
+                      className="text-tertiary transition-transform duration-300 group-hover:scale-110"
                     />
                   </div>
                 </div>
@@ -297,7 +297,7 @@ export function RolesCards() {
                         <span className="flex-1">{p.label}</span>
                         <ArrowUpRight
                           size={13}
-                          className="mt-0.5 shrink-0 opacity-40 transition-all duration-180 group-hover/p:opacity-100 group-hover/p:translate-x-[1.7px] group-hover/p:-translate-y-[1.7px]"
+                          className="mt-0.5 shrink-0 opacity-40 transition-all duration-300 group-hover/p:opacity-100 group-hover/p:translate-x-[1.7px] group-hover/p:-translate-y-[1.7px]"
                           aria-hidden="true"
                         />
                       </>

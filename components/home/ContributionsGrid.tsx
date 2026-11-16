@@ -50,12 +50,12 @@ export default function ContributionsGrid({ stats }: { stats: ContributionStats 
               className="group spotlight relative bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-300 flex flex-col"
             >
               <div className="flex items-center justify-between gap-3 mb-3">
-                <h3 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-180">
+                <h3 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300">
                   {c.name}
                 </h3>
                 <ExternalLink
                   size={14}
-                  className="text-foreground/25 group-hover:text-tertiary transition-colors duration-180 shrink-0"
+                  className="text-foreground/25 group-hover:text-tertiary transition-colors duration-300 shrink-0"
                 />
               </div>
               <span className="mb-3 w-fit px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-tertiary bg-tertiary/10 border border-tertiary/25">

@@ -132,7 +132,7 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
               href="/videos"
               className="group flex items-center gap-2 text-primary-ink hover:text-foreground transition-colors"
             >
-              <ArrowLeft size={12} className="transition-transform duration-180 group-hover:-translate-x-[3.4px]" aria-hidden="true" />
+              <ArrowLeft size={12} className="transition-transform duration-300 group-hover:-translate-x-[3.4px]" aria-hidden="true" />
               All videos
             </Link>
             <span className="text-foreground/20" aria-hidden="true">/</span>
@@ -225,7 +225,7 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
                           fill
                           unoptimized
                           sizes="(max-width: 768px) 100vw, 33vw"
-                          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-600"
+                          className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                         />
                         <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid place-items-center w-11 h-11 bg-primary text-white" aria-hidden="true">
                           <PlayCircle size={20} />

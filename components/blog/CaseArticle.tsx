@@ -178,7 +178,7 @@ function Shot({
       /* Starts with the visible caption ("Evidence 03") so voice control
          ("click evidence 03") and the name agree */
       aria-label={`Evidence ${String(index + 1).padStart(2, "0")} — open screenshot ${index + 1} of ${total}`}
-      className="spotlight group relative aspect-[16/10] overflow-hidden bg-surface border border-foreground/5 hover:border-primary/40 transition-all duration-420"
+      className="spotlight group relative aspect-[16/10] overflow-hidden bg-surface border border-foreground/5 hover:border-primary/40 transition-all duration-300"
     >
       <Image
         src={normalizePublicHref(thumbFailed ? shot : getThumbnail(shot))}
@@ -189,7 +189,7 @@ function Shot({
         decoding="async"
         fetchPriority="low"
         onError={() => setThumbFailed(true)}
-        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-[1.0425] transition-all duration-600"
+        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
       />
       <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
@@ -278,7 +278,7 @@ export default function CaseArticle({
           >
             <ArrowLeft
               size={12}
-              className="transition-transform duration-180 group-hover:-translate-x-[3.4px]"
+              className="transition-transform duration-300 group-hover:-translate-x-[3.4px]"
             />{" "}
             All cases
           </Link>
@@ -365,7 +365,7 @@ export default function CaseArticle({
             needed.
           </Chapter>
           {/* No tilt: on a panel this tall the 3D lean read as the page wobbling */}
-          <div className="spotlight relative bg-surface/60 border border-foreground/5 hover:border-primary/20 transition-all duration-420 overflow-hidden">
+          <div className="spotlight relative bg-surface/60 border border-foreground/5 hover:border-primary/20 transition-all duration-300 overflow-hidden">
             <div className="absolute top-0 left-0 w-[3px] h-full bg-primary" />
             <div
               className="absolute top-6 right-6 font-mono text-7xl md:text-8xl font-black text-foreground/[0.04] leading-none select-none"
@@ -659,7 +659,7 @@ export default function CaseArticle({
                     href={`/blog/${entry.id}`}
                     className="group spotlight spotlight-blue relative flex h-full flex-col bg-surface/60 border border-foreground/5 p-6 hover:border-tertiary/50 transition-colors duration-300"
                   >
-                    <span className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-180 mb-4">
+                    <span className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300 mb-4">
                       {entry.title}
                     </span>
                     <span className="mt-auto font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60">
@@ -688,7 +688,7 @@ export default function CaseArticle({
               <span className="flex items-center gap-2 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-primary-ink">
                 <ArrowLeft
                   size={12}
-                  className="transition-transform duration-180 group-hover:-translate-x-[3.4px]"
+                  className="transition-transform duration-300 group-hover:-translate-x-[3.4px]"
                 />{" "}
                 Previous
               </span>
@@ -709,7 +709,7 @@ export default function CaseArticle({
                 Next{" "}
                 <ArrowRight
                   size={12}
-                  className="transition-transform duration-180 group-hover:translate-x-[3.4px]"
+                  className="transition-transform duration-300 group-hover:translate-x-[3.4px]"
                 />
               </span>
               <span className="font-display text-base font-black uppercase tracking-tight text-foreground/80 group-hover:text-foreground">

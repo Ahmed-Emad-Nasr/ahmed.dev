@@ -241,7 +241,7 @@ export default function ArtGallery() {
                             {num} • {cert.issuer}
                           </span>
                         </div>
-                        <h3 className="font-display text-lg md:text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-180 leading-tight">
+                        <h3 className="font-display text-lg md:text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
                           {cert.title}
                         </h3>
                         <p className="text-sm text-foreground/60 font-light leading-relaxed">
@@ -311,7 +311,7 @@ export default function ArtGallery() {
               >
                 <TiltCard
                   max={5}
-                  className="spotlight relative group overflow-hidden bg-surface border border-foreground/5 transition-all duration-420 hover:border-primary/40"
+                  className="spotlight relative group overflow-hidden bg-surface border border-foreground/5 transition-all duration-300 hover:border-primary/40"
                 >
                   <CardEffects index={idx + 1} />
                   <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
@@ -335,7 +335,7 @@ export default function ArtGallery() {
                     width={500}
                     height={500}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                    className="img-fade w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-600 group-hover:scale-[1.0425]"
+                    className="img-fade w-full h-auto object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-110"
                     onLoad={markLoaded}
                     onError={markLoaded}
                     loading="lazy"
@@ -396,11 +396,11 @@ export default function ArtGallery() {
                 onClick={() =>
                   setVisible((n) => Math.min(PHOTOS.length, n + PAGE))
                 }
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
               >
                 <ChevronDown
                   size={14}
-                  className="text-primary-ink transition-transform duration-180 group-hover:translate-y-[1.7px]"
+                  className="text-primary-ink transition-transform duration-300 group-hover:translate-y-[1.7px]"
                 />
                 Show more
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">

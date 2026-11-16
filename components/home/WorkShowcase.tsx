@@ -88,7 +88,7 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
               type="button"
               aria-pressed={filter === f.id}
               onClick={() => setFilter(f.id)}
-              className={`min-h-11 inline-flex items-center px-5 py-2.5 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] border transition-all duration-180 ${
+              className={`min-h-11 inline-flex items-center px-5 py-2.5 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] border transition-all duration-300 ${
                 filter === f.id
                   ? "bg-primary text-white border-primary"
                   : "bg-foreground/[0.03] text-foreground/70 border-foreground/10 hover:border-primary/50 hover:text-foreground"
@@ -215,7 +215,7 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
                       >
                         <FileText
                           size={13}
-                          className="transition-transform duration-180 group-hover/cs:-translate-y-[1.7px]"
+                          className="transition-transform duration-300 group-hover/cs:-translate-y-[1.7px]"
                         />{" "}
                         Case study
                       </Link>

@@ -68,9 +68,9 @@ export default function ShowMore({
           <button
             type="button"
             onClick={more}
-            className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
+            className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
           >
-            <ChevronDown size={14} aria-hidden="true" className="text-primary-ink transition-transform duration-180 group-hover:translate-y-[1.7px]" />
+            <ChevronDown size={14} aria-hidden="true" className="text-primary-ink transition-transform duration-300 group-hover:translate-y-[1.7px]" />
             {label}
             <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
               {shown}/{items.length}

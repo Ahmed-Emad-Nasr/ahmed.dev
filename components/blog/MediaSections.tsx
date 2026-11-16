@@ -79,10 +79,10 @@ const Embed = memo(function Embed({
             unoptimized
             onLoad={markLoaded}
             onError={markLoaded}
-            className="img-fade object-cover grayscale group-hover/play:grayscale-0 group-hover/play:scale-[1.0425] transition-all duration-600"
+            className="img-fade object-cover grayscale group-hover/play:grayscale-0 group-hover/play:scale-105 transition-all duration-600"
           />
-          <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover/play:bg-transparent transition-all duration-420" />
-          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-5 py-3 bg-primary text-white font-mono text-[0.625rem] font-black uppercase tracking-[0.2em] transition-transform duration-180 group-hover/play:scale-[1.0425]">
+          <div className="absolute inset-0 bg-primary/10 mix-blend-multiply group-hover/play:bg-transparent transition-all duration-300" />
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 px-5 py-3 bg-primary text-white font-mono text-[0.625rem] font-black uppercase tracking-[0.2em] transition-transform duration-300 group-hover/play:scale-105">
             <Play size={13} fill="currentColor" /> {label}
           </span>
         </button>
@@ -169,7 +169,7 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                       </span>
                       <h3 className="font-display text-lg font-black uppercase tracking-tight text-foreground leading-tight mb-5">
                         {/* The video's own page (app/videos/[slug]) */}
-                        <Link prefetch={false} href={videoPath(videoById(video.videoId) ?? { slug: "" })} className="hover:text-primary-ink transition-colors duration-180">
+                        <Link prefetch={false} href={videoPath(videoById(video.videoId) ?? { slug: "" })} className="hover:text-primary-ink transition-colors duration-300">
                           {video.title}
                         </Link>
                       </h3>
@@ -209,9 +209,9 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
               <button
                 type="button"
                 onClick={() => setVisible((n) => Math.min(videos.length, n + VIDEO_PAGE))}
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-180 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
               >
-                <ChevronDown size={14} className="text-primary-ink transition-transform duration-180 group-hover:translate-y-[1.7px]" />
+                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-[1.7px]" />
                 Show more
                 <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
                   {visible}/{videos.length}
@@ -249,10 +249,10 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                     />
                     <div className="flex flex-col flex-1 p-6">
                       <div className="flex items-center justify-between gap-3 mb-3">
-                        <h4 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-180">
+                        <h4 className="font-display text-lg font-black uppercase tracking-tight text-foreground group-hover:text-tertiary transition-colors duration-300">
                           {playlist.title}
                         </h4>
-                        <ListVideo size={14} className="shrink-0 text-foreground/25 group-hover:text-tertiary transition-colors duration-180" />
+                        <ListVideo size={14} className="shrink-0 text-foreground/25 group-hover:text-tertiary transition-colors duration-300" />
                       </div>
                       {playlist.description && (
                         <p className="text-sm text-foreground/60 font-light leading-relaxed mb-5 line-clamp-3">{playlist.description}</p>

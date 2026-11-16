@@ -72,7 +72,7 @@ export default function DetectionLibrary() {
                 type="button"
                 onClick={() => setGroup(g)}
                 aria-pressed={active}
-                className={`relative overflow-hidden px-3 py-1.5 border font-mono text-[0.5625rem] font-bold uppercase tracking-[0.18em] transition-colors duration-180 ${
+                className={`relative overflow-hidden px-3 py-1.5 border font-mono text-[0.5625rem] font-bold uppercase tracking-[0.18em] transition-colors duration-300 ${
                   active ? "border-primary text-white" : "border-foreground/10 text-foreground/60 hover:text-foreground hover:border-foreground/30"
                 }`}
               >
@@ -139,7 +139,7 @@ export default function DetectionLibrary() {
             href="/blog/3omda-custom-detection-rules"
             className="group inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] text-primary-ink"
           >
-            View the full rule file <ArrowUpRight size={13} className="transition-transform duration-180 group-hover:translate-x-[1.7px] group-hover:-translate-y-[1.7px]" />
+            View the full rule file <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-[1.7px] group-hover:-translate-y-[1.7px]" />
           </Link>
         </FadeIn>
       </div>

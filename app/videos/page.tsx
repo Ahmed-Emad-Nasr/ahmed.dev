@@ -133,7 +133,7 @@ export default function VideosPage() {
                       fill
                       unoptimized
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover grayscale group-hover:grayscale-0 transition-all duration-600"
+                      className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                     />
                     <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid place-items-center w-12 h-12 bg-primary text-white" aria-hidden="true">
                       <Play size={18} />

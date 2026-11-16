@@ -64,14 +64,14 @@ export default function HeroSection({
         gsap.from(".hero-content > *", {
           y: 12,
           opacity: 0,
-          duration: 0.55,
-          stagger: 0.05,
+          duration: 0.9,
+          stagger: 0.08,
           ease: "power2.out",
         });
 
         gsap.from(".hero-image", {
           opacity: 0,
-          duration: 0.55,
+          duration: 1.1,
           ease: "power2.out",
         });
       }, containerRef);
