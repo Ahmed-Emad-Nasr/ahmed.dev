@@ -10,7 +10,9 @@ import { useState } from "react";
 import { AnimatePresence, m as motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
-import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CounterChip from "@/components/ui/CounterChip";
+import { KanjiWatermark } from "@/components/ui/kit";
 import { MOTION_EASE } from "@/lib/motion";
 import { FAQ } from "@/data/about";
 
@@ -21,19 +23,16 @@ export default function FaqSection() {
     <section id="faq" aria-labelledby="faq-title" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
       <KanjiWatermark chars="質問" side="left" />
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* ─── Header ─── */}
-        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="min-w-0 flex-1">
-            <h2 id="faq-title" className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]">
-              <span className="text-foreground">Fair</span> <br />
-              <span className="text-primary italic">Questions.</span>
-            </h2>
-            <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              The answers recruiters usually need before the first call.
-            </p>
-          </div>
-          <CounterBadge value={String(FAQ.length).padStart(2, "0")} top="Answers" bottom="Ready" />
-        </FadeIn>
+        <SectionHeader
+          id="faq-title"
+          eyebrow="FAQ // Before you ask"
+          japanese="質問"
+          titleA="Fair"
+          titleB="Questions."
+          size="lg"
+          description="The answers recruiters usually need before the first call."
+          aside={<CounterChip stats={[{ value: String(FAQ.length).padStart(2, "0"), label: "Answers ready" }]} />}
+        />
 
         <div className="max-w-4xl flex flex-col border-t border-foreground/10">
           {FAQ.map((f, i) => {

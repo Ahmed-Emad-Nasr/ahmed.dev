@@ -32,7 +32,7 @@
  */
 
 import Image from "next/image";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { markLoaded } from "@/lib/shared";
 import {
@@ -41,7 +41,9 @@ import {
   type GalleryCertGroup,
 } from "@/data/certifications";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
-import { Eyebrow, filterTab } from "@/components/ui/kit";
+import { Eyebrow, KanjiWatermark, filterTab } from "@/components/ui/kit";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CounterChip from "@/components/ui/CounterChip";
 import { useSearchParams } from "next/navigation";
 import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
 import { preloadable } from "@/lib/perf/lazy";
@@ -75,25 +77,28 @@ const PHOTOS = PORTFOLIO_DATA.artGallery
   .map((img, i) => ({ ...img, slideIndex: i }))
   .filter((img) => !CERT_INDICES.has(img.slideIndex + 1));
 
+/* ?cert=N in the URL → open image N in the lightbox — on arrival, and again
+   when the palette links to another scan while the gallery is open. Its own
+   tiny component: useSearchParams makes everything up to the nearest
+   Suspense render in the browser only, so only this renders there. */
+function CertParam({ onOpen }: { onOpen: (index: number) => void }) {
+  const certParam = useSearchParams().get("cert");
+  useEffect(() => {
+    const idx = Number(certParam) - 1;
+    if (certParam && Number.isInteger(idx) && idx >= 0 && idx < PORTFOLIO_DATA.artGallery.length) onOpen(idx);
+  }, [certParam, onOpen]);
+  return null;
+}
+
 export default function ArtGallery() {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
 
-  /* ?cert=N in the URL → open image N in the lightbox — on arrival, and
-     again when the palette links to another scan while the gallery is open.
-     (Never prerendered: LazySection mounts the gallery in the browser.) */
-  const certParam = useSearchParams().get("cert");
-  /* React's "adjust state when an input changes" pattern: compared while
-     rendering, so the lightbox opens in the same pass (no effect + setState) */
-  const [seenCertParam, setSeenCertParam] = useState<string | null>(null);
-  if (certParam !== seenCertParam) {
-    setSeenCertParam(certParam);
-    const idx = Number(certParam) - 1;
-    if (certParam && Number.isInteger(idx) && idx >= 0 && idx < PORTFOLIO_DATA.artGallery.length) {
-      setIndex(idx);
-      setOpen(true);
-    }
-  }
+  /* ?cert=N in the URL → open image N in the lightbox (CertParam below) */
+  const openFromUrl = useCallback((idx: number) => {
+    setIndex(idx);
+    setOpen(true);
+  }, []);
   const [certFilter, setCertFilter] = useState<GalleryCertGroup | "all">("all");
   const [visible, setVisible] = useState(FIRST);
 
@@ -129,69 +134,32 @@ export default function ArtGallery() {
       aria-labelledby="art-title"
       className="relative pt-8 md:pt-12 pb-24 md:pb-32 px-6 md:px-20 bg-background overflow-hidden"
     >
+      <KanjiWatermark chars="芸術創造" side="left" />
+      {/* Reads ?cert= — in its own Suspense so the gallery itself stays in the page's HTML */}
+      <Suspense fallback={null}>
+        <CertParam onOpen={openFromUrl} />
+      </Suspense>
+
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── 01 · Main Header ─── */}
-        <div className="mb-16 md:mb-20 flex flex-col md:flex-row justify-between items-end gap-8">
-          <FadeIn x={-40} y={0} duration={0.8} className="max-w-3xl">
-            <h2
-              id="art-title"
-              className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]"
-            >
-              <span className="text-foreground">Proof</span> <br />
-              <span className="text-primary italic">Gallery.</span>
-            </h2>
-            <p className="mt-6 max-w-2xl text-base md:text-lg font-light leading-relaxed text-foreground/65 [text-wrap:pretty]">
-              The proof behind everything on this site: my degree and{" "}
-              {ALL_GALLERY_CERTIFICATES.length} certificates, courses and
-              records, then {PHOTOS.length} photos from classrooms and events.
-              Click any of them to see it full size.
-            </p>
-          </FadeIn>
-
-          {/* Counter Badges */}
-          <FadeIn
-            y={20}
-            duration={0.6}
-            delay={0.3}
-            className="flex flex-wrap gap-4"
-          >
-            <div className="relative px-6 py-3 border border-accent/40 bg-surface/60">
-              <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-accent" />
-              <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-accent" />
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-accent text-2xl font-black tabular-nums">
-                  {String(galleryGroupCount("certifications")).padStart(2, "0")}
-                </span>
-                <div className="flex flex-col">
-                  <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    Certifications
-                  </span>
-                  <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    + {ALL_GALLERY_CERTIFICATES.length - galleryGroupCount("certifications")} courses &amp; records
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="relative px-6 py-3 border border-foreground/10 bg-surface/60">
-              <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-primary" />
-              <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-primary" />
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-primary-ink text-2xl font-black tabular-nums">
-                  {String(PHOTOS.length).padStart(2, "0")}
-                </span>
-                <div className="flex flex-col">
-                  <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    Photos
-                  </span>
-                  <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">
-                    Classes &amp; events
-                  </span>
-                </div>
-              </div>
-            </div>
-          </FadeIn>
-        </div>
+        <SectionHeader
+          id="art-title"
+          eyebrow="Visual Archive // Proof"
+          japanese="証明"
+          titleA="Proof"
+          titleB="Gallery."
+          size="lg"
+          description={`The proof behind everything on this site: my degree and ${ALL_GALLERY_CERTIFICATES.length} certificates, courses and records, then ${PHOTOS.length} photos from classrooms and events. Click any of them to see it full size.`}
+          aside={
+            <CounterChip
+              tone="accent"
+              stats={[
+                { value: String(galleryGroupCount("certifications")).padStart(2, "0"), label: "Certifications passed" },
+                { value: String(PHOTOS.length).padStart(2, "0"), label: "Photos indexed" },
+              ]}
+            />
+          }
+        />
 
         {/* ─── 02 · All Certificates Directory (Literally every certificate) ─── */}
         <section

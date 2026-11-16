@@ -26,6 +26,7 @@ import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { PROFILE } from "@/data/profile";
 import { useCopyLink } from "@/lib/use-copy-link";
 import FadeIn from "@/components/ui/FadeIn";
+import { KanjiWatermark } from "@/components/ui/kit";
 
 type Draft = { subject: string; body: string };
 
@@ -69,13 +70,7 @@ export default function ContactFooter() {
         </svg>
       </div>
 
-      {/* Background 終わり in massive faded text */}
-      <div
-        className="absolute right-0 bottom-10 vertical-text font-black text-[20vw] opacity-[0.03] pointer-events-none select-none z-0"
-        aria-hidden="true"
-      >
-        終わり
-      </div>
+      <KanjiWatermark chars="終わり" side="edge" size="large" />
 
       {/* Decorative speed lines */}
       <div className="absolute inset-0 pointer-events-none z-0">
@@ -89,8 +84,13 @@ export default function ContactFooter() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
           {/* Brand Column */}
           <div className="flex flex-col">
-            <FadeIn y={30} duration={0.8}
->
+            <FadeIn y={30} duration={0.8}>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
+                <span className="text-primary-ink font-mono text-[0.6875rem] tracking-[0.16em] uppercase font-bold">
+                  The End of the Path
+                </span>
+              </div>
 
               {/* Sized to its column: the fixed text-9xl ran past the half-width
                   column into the form on every desktop width */}
@@ -199,7 +199,8 @@ export default function ContactFooter() {
 
             {/* Briefing header */}
             <div className="flex items-center gap-3 mb-2">
-              <span className="font-mono text-[0.5625rem] text-primary-ink tracking-[0.4em] uppercase font-bold">
+              <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
+              <span className="font-mono text-[0.6875rem] text-primary-ink tracking-[0.16em] uppercase font-bold">
                 Send a message // 依頼
               </span>
             </div>

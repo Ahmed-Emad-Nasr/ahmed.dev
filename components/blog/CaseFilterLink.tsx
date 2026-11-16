@@ -13,7 +13,6 @@
 
 import type { ReactNode } from "react";
 import { normalizePublicHref } from "@/lib/shared";
-import { revealAll } from "@/lib/perf/schedule";
 import { scrollToHash } from "@/lib/perf/jump";
 
 type Props = {
@@ -37,11 +36,10 @@ export default function CaseFilterLink({ params, className, children, ...rest }:
         if (!document.getElementById("cases")) return; // on a case page: follow the link
         e.preventDefault();
         window.history.pushState(null, "", `${window.location.pathname}?${search}#cases`);
-        /* The library may not be loaded yet (lib/perf/lazy.tsx) */
-        revealAll().then(() => {
-          window.dispatchEvent(new PopStateEvent("popstate"));
-          scrollToHash("#cases");
-        });
+        /* The library applies the filter now — or, if its data is still on
+           its way, reads it from the URL when it arrives */
+        window.dispatchEvent(new PopStateEvent("popstate"));
+        void scrollToHash("#cases");
       }}
       {...rest}
     >

@@ -66,6 +66,8 @@ export default function HomeLab() {
       <KanjiWatermark chars="道場" side="right" />
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
+          eyebrow="Home Lab // Where it is tested"
+          japanese="道場"
           titleA="The"
           titleB="Home Lab."
           description="A small private network I built at home to practise on safely. I attack my own machines the way a real attacker would, then check that my defences notice it, stop it and write it up. Most of the projects on this site were tested here."

@@ -37,7 +37,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { LAZY_MOUNTED, whenIdle } from "@/lib/perf/schedule";
+import { SECTION_ADDED, whenIdle } from "@/lib/perf/schedule";
 
 const OFF = "data-offscreen";
 const LOOP = { "": "data-loop", "::before": "data-loop-before", "::after": "data-loop-after" } as const;
@@ -140,10 +140,10 @@ export default function OffscreenAnimations() {
     document.addEventListener("animationstart", onStart, true);
     scan();
     whenIdle(sweep);
-    window.addEventListener(LAZY_MOUNTED, onMounted);
+    window.addEventListener(SECTION_ADDED, onMounted);
     return () => {
       document.removeEventListener("animationstart", onStart, true);
-      window.removeEventListener(LAZY_MOUNTED, onMounted);
+      window.removeEventListener(SECTION_ADDED, onMounted);
       io.disconnect();
       observed.forEach((u) => setOff(u, false));
     };

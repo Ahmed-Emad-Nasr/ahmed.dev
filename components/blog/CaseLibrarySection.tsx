@@ -43,7 +43,8 @@ import type { LibraryData } from "@/lib/library-data";
 import { scrollToHash } from "@/lib/perf/jump";
 import CaseCard from "@/components/blog/CaseCard";
 import CaseList from "@/components/blog/CaseList";
-import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
+import { KanjiWatermark } from "@/components/ui/kit";
+import CounterChip from "@/components/ui/CounterChip";
 
 const MediaSections = dynamic(() => import("@/components/blog/MediaSections"));
 /* preloadable = fetched in idle time and then rendered without a suspended
@@ -91,7 +92,8 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
   const [sort, setSort] = useState<"recommended" | "newest">("recommended");
   const [view, setView] = useState<"cards" | "list">("cards");
   /* A #case-… deep link past the first page opens the pages up to it from
-     the start (this section only mounts in the browser — LazySection) */
+     the start (this section only renders in the browser: its data is
+     fetched — components/blog/dynamic.tsx) */
   const [visible, setVisible] = useState(() => {
     if (typeof window === "undefined") return PAGE;
     const hash = window.location.hash;
@@ -258,16 +260,15 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
       <section id="cases" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden" aria-label="Case library">
         <KanjiWatermark chars="事件簿" side="right" />
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="flex flex-col md:flex-row justify-between md:items-end gap-8">
-            <SectionHeader
-              titleA="Case"
-              titleB="Library."
-              description={`${libraryCounts.total} pieces of security work, each written as a story: the goal, what happened, what I did and how to prevent it. ${libraryCounts.reports} are full investigations of real-style incidents; the rest are projects, practice labs and study notes. Search by a word, or pick a kind of work below.`}
-            />
-            <div className="mb-16 md:mb-20">
-              <CounterBadge value={libraryCounts.total} top="Cases" bottom="Indexed" tone="accent" />
-            </div>
-          </div>
+          <SectionHeader
+            eyebrow="Case Library // The evidence"
+            japanese="事件簿"
+            titleA="Case"
+            titleB="Library."
+            size="lg"
+            description={`${libraryCounts.total} pieces of security work, each written as a story: the goal, what happened, what I did and how to prevent it. ${libraryCounts.reports} are full investigations of real-style incidents; the rest are projects, practice labs and study notes. Search by a word, or pick a kind of work below.`}
+            aside={<CounterChip tone="accent" stats={[{ value: String(libraryCounts.total), label: "Cases indexed" }]} />}
+          />
 
           <div className="flex items-center gap-4 mb-10">
             <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />

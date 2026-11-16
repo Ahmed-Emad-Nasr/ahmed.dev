@@ -14,7 +14,9 @@
 
 import { ArrowUpRight, Quote } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
-import { CounterBadge, KanjiWatermark, cardSurface, chipNeutral } from "@/components/ui/kit";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CounterChip from "@/components/ui/CounterChip";
+import { KanjiWatermark, cardSurface, chipNeutral } from "@/components/ui/kit";
 import { Linkedin } from "@/components/ui/BrandIcons";
 import {
   LINKEDIN_RECOMMENDATIONS_URL,
@@ -56,28 +58,16 @@ export default function Testimonials() {
       <KanjiWatermark chars="推薦" side="right" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* ─── Header ─── */}
-        <FadeIn
-          x={-32}
-          y={0}
-          duration={0.7}
-          className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
-        >
-          <div className="min-w-0 flex-1">
-            <h2
-              id="testimonials-title"
-              className="font-display title-fit [--title-n:8] font-black tracking-tighter uppercase leading-[0.85]"
-            >
-              <span className="text-foreground">In Their</span> <br />
-              <span className="text-primary italic">Words.</span>
-            </h2>
-            <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              Recommendations from people I worked with, and feedback my students wrote after
-              the course — quoted exactly as they wrote it.
-            </p>
-          </div>
-          <CounterBadge value={TESTIMONIALS.length} top="Testimonials" bottom="Quoted" />
-        </FadeIn>
+        <SectionHeader
+          id="testimonials-title"
+          eyebrow="Testimonials // In their words"
+          japanese="推薦"
+          titleA="In Their"
+          titleB="Words."
+          size="lg"
+          description="Recommendations from people I worked with, and feedback my students wrote after the course — quoted exactly as they wrote it."
+          aside={<CounterChip stats={[{ value: String(TESTIMONIALS.length).padStart(2, "0"), label: "Testimonials quoted" }]} />}
+        />
 
         {/* ─── Named recommendations (LinkedIn) ─── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">

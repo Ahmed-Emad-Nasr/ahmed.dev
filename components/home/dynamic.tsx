@@ -4,10 +4,8 @@
  * The home page's dynamic imports (next/dynamic only code-splits when called
  * from a Client Component, not from app/page.tsx).
  *
- *   Every section is its own chunk. app/page.tsx wraps each one below the
- *   hero in <LazySection> (lib/perf/lazy.tsx): not in the HTML, mounted in
- *   idle time or when the reader gets near, sized by .lazy-h-* in
- *   globals.css — so a section's code downloads only when it mounts.
+ *   Every section is its own chunk (JS file) and is rendered into the
+ *   page's HTML, as on Sensei-Dev — the whole page is there from the start.
  *
  * `dynamic(() => import(path), { loading })`:
  *   • import(path)  → that component becomes a separate JS file (chunk).
@@ -21,7 +19,7 @@
  *   export const MySection = dynamic(() => import("@/components/home/MySection"),
  *     { loading: () => <SectionSkeleton lines={3} /> });
  * then import { MySection } from "@/components/home/dynamic" in app/page.tsx
- * and wrap it in <LazySection> (recipe in app/page.tsx's header).
+ * and put <MySection /> where it should appear.
  */
 
 import dynamic from "next/dynamic";

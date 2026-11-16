@@ -15,7 +15,7 @@
  *   • TryHackMe numbers → fetched at build time by lib/api/tryhackme.ts;
  *     the fallback values (used offline) are THM_SNAPSHOT in data/platforms.ts,
  *     and the card's text is tryHackMePlatform() in the same file.
- *   • The heading text → the <h2 id="platforms-title"> below.
+ *   • The heading text → the <SectionHeader> below.
  *
  * Small building blocks in this file:
  *   Mark         → the square badge with the platform's initials
@@ -26,8 +26,10 @@
 
 import { ArrowUpRight } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CounterChip from "@/components/ui/CounterChip";
 import OrgLogo from "@/components/ui/OrgLogo";
-import { CounterBadge, KanjiWatermark, cardSurface } from "@/components/ui/kit";
+import { KanjiWatermark, cardSurface } from "@/components/ui/kit";
 import type { Platform, TryHackMeStats } from "@/data/platforms";
 
 /* The platform's logo; its short monogram (platform.mark) when it has none */
@@ -143,26 +145,16 @@ export default function PlatformsSection({
       <KanjiWatermark chars="修練" side="right" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <FadeIn
-          x={-32}
-          y={0}
-          duration={0.7}
-          className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
-        >
-          <div className="min-w-0 flex-1">
-            <h2
-              id="platforms-title"
-              className="font-display title-fit [--title-n:8] font-black tracking-tighter uppercase leading-[0.85]"
-            >
-              <span className="text-foreground">Proving</span> <br />
-              <span className="text-primary italic">Grounds.</span>
-            </h2>
-            <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              The training platforms where I practise: each one sets hands-on security challenges and scores them. Every profile is public — open it and check the numbers yourself.
-            </p>
-          </div>
-          <CounterBadge value={`Top ${thm.topPercentage}%`} top="TryHackMe" bottom="Worldwide" tone="accent" />
-        </FadeIn>
+        <SectionHeader
+          id="platforms-title"
+          eyebrow="Platforms // Where I train"
+          japanese="修練"
+          titleA="Proving"
+          titleB="Grounds."
+          size="lg"
+          description="The training platforms where I practise: each one sets hands-on security challenges and scores them. Every profile is public — open it and check the numbers yourself."
+          aside={<CounterChip tone="accent" stats={[{ value: `Top ${thm.topPercentage}%`, label: "TryHackMe worldwide" }]} />}
+        />
 
         <FadeIn className="mb-6">
           <FeaturedCard platform={featured} stats={thm} />

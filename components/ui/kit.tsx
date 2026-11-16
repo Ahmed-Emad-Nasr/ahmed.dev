@@ -24,7 +24,6 @@
  *                                             words, before the technical part
  *   <Chapter n title japanese>              → a numbered plain-language part of a
  *                                             case page ("02 — What happened?")
- *   <CounterBadge>                          → number box with corner brackets
  *   <KanjiWatermark>                        → huge faded kanji behind a section
  *
  * Only strings and tiny markup live here — nothing with behaviour — so a
@@ -78,7 +77,6 @@ export function Eyebrow({ children, japanese }: { children: ReactNode; japanese?
   );
 }
 
-/* Counter box with corner brackets — used by section cards and the art gallery */
 /* A strip of short numbered notes: what a technical section is about, said
    plainly, before the section itself. Same surface, borders and labels as
    the site's other panels. */
@@ -148,47 +146,26 @@ export function Chapter({
   );
 }
 
-export function CounterBadge({
-  value,
-  top,
-  bottom,
-  tone = "primary",
+/* Faded vertical kanji behind a section — Sensei-Dev's SectionWatermark:
+   3% foreground, vertical, in one of three corners (left / right top, or
+   "edge" = bottom right, for the footer) */
+export function KanjiWatermark({
+  chars,
+  side = "right",
+  size = "default",
 }: {
-  value: string | number;
-  top: string;
-  bottom: string;
-  tone?: "primary" | "accent";
+  chars: string;
+  side?: "left" | "right" | "edge";
+  size?: "default" | "large";
 }) {
-  const border = tone === "accent" ? "border-accent" : "border-primary";
-  const text = tone === "accent" ? "text-accent" : "text-primary-ink";
+  const corner = side === "left" ? "left-0 top-24" : side === "edge" ? "right-0 bottom-10" : "right-0 top-24";
   return (
-    <div className="relative px-6 py-3 border border-foreground/10 bg-surface/60 w-fit">
-      <div className={`absolute top-0 left-0 w-3 h-3 border-t border-l ${border}`} />
-      <div className={`absolute bottom-0 right-0 w-3 h-3 border-b border-r ${border}`} />
-      <div className="flex items-center gap-3">
-        <span className={`font-mono ${text} text-2xl font-black tabular-nums`}>
-          {typeof value === "number" ? String(value).padStart(2, "0") : value}
-        </span>
-        <div className="flex flex-col">
-          <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">{top}</span>
-          <span className="font-mono text-[0.5625rem] text-on-surface-variant tracking-[0.3em] uppercase">{bottom}</span>
-        </div>
+    <div className={`pointer-events-none absolute z-0 select-none ${corner}`} aria-hidden="true" lang="ja">
+      <div className={`font-black text-foreground/[0.03] vertical-text ${size === "large" ? "text-[20vw]" : "text-[13vw]"}`}>
+        {[...chars].map((c, i) => (
+          <span key={`${c}-${i}`}>{c}</span>
+        ))}
       </div>
-    </div>
-  );
-}
-
-/* Faded vertical kanji behind a section — every section of the original */
-export function KanjiWatermark({ chars, side = "right" }: { chars: string; side?: "left" | "right" }) {
-  return (
-    <div
-      className={`absolute ${side === "right" ? "right-8" : "left-8"} top-16 pointer-events-none select-none text-foreground/[0.03] text-[13vw] font-black z-0 vertical-text`}
-      aria-hidden="true"
-      lang="ja"
-    >
-      {[...chars].map((c, i) => (
-        <span key={i}>{c}</span>
-      ))}
     </div>
   );
 }

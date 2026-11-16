@@ -3,8 +3,8 @@
 
    ═══ app/library.json/route.ts → the file out/library.json ═══
    Written at build time; fetched together with the library's code by
-   components/blog/dynamic.tsx (LazyCaseLibrary) — in idle time after the
-   page is up, or as the reader nears the library. About 100 KB of the home
+   components/blog/dynamic.tsx (CaseLibrary) — right after the page loads
+   (under the intro screen on a first visit). About 100 KB of the home
    page's first download used to be this data.
    Its content (libraryData) is built in lib/library-data.ts from data/*. */
 

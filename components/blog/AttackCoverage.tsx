@@ -19,7 +19,9 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import FadeIn from "@/components/ui/FadeIn";
 import HeatReveal from "@/components/blog/HeatReveal";
-import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
+import { KanjiWatermark } from "@/components/ui/kit";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CounterChip from "@/components/ui/CounterChip";
 import type { AttackCoverageData } from "@/lib/library-data";
 
 /* The whole matrix in one screen: a column per tactic, a cell per covered
@@ -187,32 +189,24 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
 
       <div className="max-w-7xl mx-auto relative z-10">
         {/* ─── Header: same layout as every other section ─── */}
-        <FadeIn
-          x={-32}
-          y={0}
-          duration={0.7}
-          className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
-        >
-          <div className="min-w-0 flex-1">
-            <h2
-              id="attack-title"
-              className="font-display title-fit [--title-n:9] font-black tracking-tighter uppercase leading-[0.85]"
-            >
-              <span className="text-foreground">Mapped to</span> <br />
-              <span className="text-primary italic">ATT&amp;CK.</span>
-            </h2>
-            <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              MITRE ATT&amp;CK is the public catalogue of the methods attackers use, grouped by the stage of an
-              attack — from getting in to stealing data. Every tile below is one method I have handled in at least
-              one case; open it to read that case.
-            </p>
-          </div>
-          <div className="flex flex-wrap lg:flex-col lg:items-end gap-3 shrink-0">
-            <CounterBadge value={techniqueCount} top="Techniques" bottom="Mapped" />
-            <CounterBadge value={`${covered.length}/${tactics.length}`} top="Tactics" bottom="Covered" />
-            <CounterBadge value={mappedCaseCount} top="Reports" bottom="As evidence" tone="accent" />
-          </div>
-        </FadeIn>
+        <SectionHeader
+          id="attack-title"
+          eyebrow="ATT&CK // Methods handled"
+          japanese="網羅"
+          titleA="Mapped to"
+          titleB="ATT&CK."
+          size="lg"
+          description="MITRE ATT&CK is the public catalogue of the methods attackers use, grouped by the stage of an attack — from getting in to stealing data. Every tile below is one method I have handled in at least one case; open it to read that case."
+          aside={
+            <CounterChip
+              stats={[
+                { value: String(techniqueCount), label: "Techniques mapped" },
+                { value: `${covered.length}/${tactics.length}`, label: "Tactics covered" },
+                { value: String(mappedCaseCount), label: "Reports cited" },
+              ]}
+            />
+          }
+        />
 
         {/* ─── Kill-chain strip: the whole matrix at a glance ─── */}
         <FadeIn className="mb-14 md:mb-16">

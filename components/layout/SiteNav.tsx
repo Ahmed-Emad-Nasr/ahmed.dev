@@ -21,7 +21,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type ComponentProps } from "react";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
-import { LAZY_MOUNTED } from "@/lib/perf/schedule";
+import { SECTION_ADDED } from "@/lib/perf/schedule";
 import {
   Menu,
   X,
@@ -81,10 +81,10 @@ export default function SiteNav() {
         if (el) observer.observe(el);
       });
     watch();
-    window.addEventListener(LAZY_MOUNTED, watch);
+    window.addEventListener(SECTION_ADDED, watch);
     return () => {
       observer.disconnect();
-      window.removeEventListener(LAZY_MOUNTED, watch);
+      window.removeEventListener(SECTION_ADDED, watch);
     };
   }, [onHome]);
 

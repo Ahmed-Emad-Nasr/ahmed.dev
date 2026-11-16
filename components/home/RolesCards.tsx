@@ -38,6 +38,8 @@ import CaseFilterLink from "@/components/blog/CaseFilterLink";
 import { caseEvidenceLibrary } from "@/data/cases";
 import { CV_PDF_HREF, caseKindOf, normalizePublicHref } from "@/lib/shared";
 import FadeIn from "@/components/ui/FadeIn";
+import SectionHeader from "@/components/ui/SectionHeader";
+import { KanjiWatermark } from "@/components/ui/kit";
 
 /* Case id → case title, so proof links show the real title from data/cases.ts */
 const TITLE = new Map(caseEvidenceLibrary.map((c) => [c.id, c.title]));
@@ -224,22 +226,20 @@ const ROLES: Role[] = [
 
 export function RolesCards() {
   return (
-    <div
+    <section
       id="roles"
-      aria-labelledby="roles-title"
-      className="relative mt-20 md:mt-28 w-full overflow-hidden"
+      className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden"
     >
-      {/* Screen-reader-only heading: the cards below are h3, and the page
-          title is h1 — without an h2 here the outline skipped a level */}
-      <h2 id="roles-title" className="sr-only">
-        Services and roles I fit
-      </h2>
-      {/* Intro sentence above the cards */}
-      <p className="mx-auto mb-10 max-w-3xl text-center text-lg text-on-surface-variant font-light leading-relaxed">
-        These are the roles I fit and can work in, combining governance,
-        security operations, incident response, data security and hands-on
-        training.
-      </p>
+      <KanjiWatermark chars="役務" side="left" />
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <SectionHeader
+          eyebrow="Services // What I do"
+          japanese="役務"
+          titleA="What I"
+          titleB="Do."
+          description="These are the roles I fit and can work in, combining governance, security operations, incident response, data security and hands-on training."
+        />
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {ROLES.map((r, idx) => {
           const Icon = r.icon;
@@ -342,6 +342,7 @@ export function RolesCards() {
           );
         })}
       </div>
-    </div>
+      </div>
+    </section>
   );
 }

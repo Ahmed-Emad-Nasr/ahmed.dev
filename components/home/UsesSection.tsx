@@ -5,8 +5,10 @@
  */
 
 import FadeIn from "@/components/ui/FadeIn";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CounterChip from "@/components/ui/CounterChip";
 import { TiltCard } from "@/components/ui/Motion";
-import { CounterBadge, KanjiWatermark, chipTertiary } from "@/components/ui/kit";
+import { KanjiWatermark, chipTertiary } from "@/components/ui/kit";
 import { USES as GROUPS } from "@/data/about";
 
 const toolCount = GROUPS.reduce((n, g) => n + g.items.length, 0);
@@ -16,19 +18,16 @@ export default function UsesSection() {
     <section id="uses" aria-labelledby="uses-title" className="relative pt-4 md:pt-8 pb-24 md:pb-32 px-6 md:px-20 bg-background overflow-hidden">
       <KanjiWatermark chars="毎日" side="left" />
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* ─── Header ─── */}
-        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="min-w-0 flex-1">
-            <h2 id="uses-title" className="font-display title-fit [--title-n:7] font-black tracking-tighter uppercase leading-[0.85]">
-              <span className="text-foreground">Daily</span> <br />
-              <span className="text-primary italic">Drivers.</span>
-            </h2>
-            <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              The tools behind the work above: detect, investigate, govern and automate.
-            </p>
-          </div>
-          <CounterBadge value={String(toolCount).padStart(2, "0")} top="Tools" bottom="Loaded" />
-        </FadeIn>
+        <SectionHeader
+          id="uses-title"
+          eyebrow="Uses // Daily drivers"
+          japanese="道具"
+          titleA="Daily"
+          titleB="Drivers."
+          size="lg"
+          description="The tools behind the work above: detect, investigate, govern and automate."
+          aside={<CounterChip stats={[{ value: String(toolCount).padStart(2, "0"), label: "Tools loaded" }]} />}
+        />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {GROUPS.map((g) => (

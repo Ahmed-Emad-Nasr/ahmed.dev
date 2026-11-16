@@ -3,7 +3,7 @@
  *
  * THE WHOLE SITE IS THIS ONE PAGE: the pitch (who, roles, proof,
  * experience), contact, then the blog (case library, videos, ATT&CK, rules,
- * triage, home lab, contributions) and the gallery at the very end. Only the
+ * triage, home lab) and the gallery at the very end. Only the
  * single case pages (/blog/<id>, app/blog/[slug]/page.tsx) are separate.
  * Section order follows the Sensei-Dev portfolio
  * (github.com/MostafaSensei106/Sensei-Dev, GPL-3.0).
@@ -14,11 +14,12 @@
  *   Section on screen      Component                        Content / data
  *   ─────────────────────  ───────────────────────────────  ──────────────────────────
  *   Hero (top)             components/home/HeroSection      data/portfolio-data.ts, data/live-copy.ts
- *   Roles cards  #roles    components/home/RolesCards       inside the component (ROLES)
  *   Numbers strip          components/home/StatsBar         data/live-copy.ts (stats)
+ *   Roles cards  #roles    components/home/RolesCards       inside the component (ROLES)
  *   Divider                components/ui/SlashDivider
  *   Projects     #work     components/home/WorkShowcase     data/portfolio-data.ts (`work`)
  *   Open source  #projects components/home/ProjectsGrid     data/portfolio-data.ts + GitHub API (build time)
+ *   Contributions #contributions components/home/ContributionsGrid GitHub calendar (build time)
  *   Ticker band            components/ui/TickerStrip        data/about.ts (TICKER)
  *   Tools        #tools    components/home/ToolsSection     data/about.ts (from data/skills.ts)
  *   Daily drivers #uses    components/home/UsesSection      data/about.ts
@@ -37,14 +38,14 @@
  *   Rules        #detections components/blog/DetectionLibrary data/detection-rules.ts
  *   Triage       #triage   components/blog/TriageChallenge  inside the component
  *   Home lab     #lab      components/home/HomeLab          inside the component
- *   Contributions #contributions components/home/ContributionsGrid GitHub calendar (build time)
  *   ── Gallery ── #gallery components/gallery/ArtGallery    data/certifications.ts, portfolio-data.ts
  *   Footer line            components/layout/FooterBar
  *
- * LOADING: the hero is its own chunk and is in the HTML. Every section after
- * it is wrapped in <LazySection>: NOT in the HTML; its code is fetched and the
- * section mounted in idle time or when the reader scrolls near it
- * (lib/perf/lazy.tsx). Off-screen animation loops pause (lib/perf/).
+ * LOADING (as on Sensei-Dev): every section is a next/dynamic import — its
+ * own JS file — and is rendered into the page's HTML, so the whole page is
+ * there from the start and every #anchor works. Only the case library's data
+ * (/library.json) is fetched in the browser, right after the page loads.
+ * Off-screen animation loops pause (lib/perf/OffscreenAnimations.tsx).
  *
  * HOW TO EDIT
  *   • Reorder sections → move the blocks inside <main> below.
@@ -52,13 +53,8 @@
  *       1. create components/home/MySection.tsx (give its <section> an id),
  *       2. export it from components/home/dynamic.tsx (or blog/dynamic.tsx)
  *          with next/dynamic,
- *       3. add it here:  <LazySection id="my-id" size="lazy-h-my">
- *                          <MySection />
- *                        </LazySection>
- *       4. add `.lazy-h-my { --lazy-h: <height>px; }` in app/globals.css
- *          (its rough height on phone / 48rem / 64rem — keeps scrolling and
- *          #anchor links accurate before it loads),
- *       5. optional: a navbar link → NAV_ITEMS in components/layout/SiteNav.tsx,
+ *       3. add it here:  <MySection />
+ *       4. optional: a navbar link → NAV_ITEMS in components/layout/SiteNav.tsx,
  *          and a command palette entry → lib/library-data.ts.
  *   • Remove a section → delete its block here (and its navbar link).
  *   • Page title / description for this page → `metadata` below.
@@ -92,11 +88,11 @@ import {
 import {
   AreaIntro,
   HomeLab,
-  LazyCaseLibrary,
-  LazyAttackCoverage,
-  LazyContributions,
-  LazyDetectionLibrary,
-  LazyTriage,
+  CaseLibrary,
+  AttackCoverage,
+  ContributionsGrid,
+  DetectionLibrary,
+  TriageChallenge,
 } from "@/components/blog/dynamic";
 import { ArtGallery } from "@/components/gallery/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
@@ -115,7 +111,6 @@ import { OG_IMAGE, summarize } from "@/lib/site";
 import {
   CHANNEL_ID, KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd, youtubeEmbed, youtubeThumb, youtubeWatch,
 } from "@/lib/seo";
-import LazySection from "@/lib/perf/lazy";
 import SlashDivider from "@/components/ui/SlashDivider";
 import TickerStrip from "@/components/ui/TickerStrip";
 
@@ -377,103 +372,75 @@ export default async function Home() {
       <SectionRail />
 
       {/* ═══ 01 · The pitch: who → roles → proof → experience ═══ */}
-      {/* Hero: name, title, CTA buttons, mascot. Text comes from data/live-copy.ts */}
+      {/* Hero: name, title, CTA buttons (Sensei-Dev's hero, GSAP entrance). Text comes from data/profile.ts + data/live-copy.ts */}
       <HeroSection
         description={LIVE_COPY.heroDescription}
         evidenceLabel={LIVE_COPY.heroEvidence}
         projectCount={PORTFOLIO_DATA.work.length}
         languageCodes={PORTFOLIO_DATA.languages.map((l) => l.code).join(" · ")}
       />
-      {/* LazySection props:
-            id   → the #anchor (kept on the placeholder, so /#roles works before it loads)
-            size → the placeholder's height class from app/globals.css (.lazy-h-*) */}
-      <LazySection id="roles" size="lazy-h-roles">
-        <RolesCards />
-      </LazySection>
       {/* .tone-blue = this section uses the blue of the role cards instead of
           the red (app/globals.css). Red and blue sections alternate down the
           page; add or remove the wrapper to switch one. */}
       <div className="tone-blue">
-        <LazySection size="lazy-h-stats">
-          <StatsBar stats={LIVE_COPY.stats} />
-        </LazySection>
+        <StatsBar stats={LIVE_COPY.stats} />
       </div>
+      <RolesCards />
 
       {/* Decorative divider with a label */}
       <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
 
       {/* Projects grid — the curated list in data/portfolio-data.ts (`work`).
           Passed as a prop so the list travels in the page data, not in JS. */}
-      <LazySection id="work" size="lazy-h-work">
-        <WorkShowcase items={PORTFOLIO_DATA.work} />
-      </LazySection>
+      <WorkShowcase items={PORTFOLIO_DATA.work} />
 
       {/* The GitHub repositories behind the projects (lib/api/github-repos.ts) */}
-      <LazySection id="projects" size="lazy-h-projects">
-        <ProjectsGrid repos={repos} />
-      </LazySection>
+      <ProjectsGrid repos={repos} />
+
+      {/* Upstream contributions + the GitHub year graph (right after the repos, as in Sensei-Dev) */}
+      <div className="tone-blue">
+        <ContributionsGrid stats={contributions} />
+      </div>
 
       {/* A band of words drifting past (data/about.ts → TICKER) */}
       <TickerStrip />
 
       {/* What the work is done with: skill groups, then the daily tools (data/about.ts) */}
       <div className="tone-blue">
-        <LazySection id="tools" size="lazy-h-tools">
-          <ToolsSection />
-        </LazySection>
-        <LazySection id="uses" size="lazy-h-uses">
-          <UsesSection />
-        </LazySection>
+        <ToolsSection />
+        <UsesSection />
       </div>
 
       {/* The id is on this wrapper because ExperienceTimeline's own <section> has none */}
       <div id="experience">
-        <LazySection size="lazy-h-experience">
-          <ExperienceTimeline />
-        </LazySection>
+        <ExperienceTimeline />
       </div>
 
       {/* One line per year, then what's happening now (data/about.ts) */}
-      <LazySection id="path" size="lazy-h-path">
-        <PathSection />
-      </LazySection>
-      <LazySection id="now" size="lazy-h-now">
-        <NowSection />
-      </LazySection>
+      <PathSection />
+      <NowSection />
 
-      <LazySection id="teaching" size="lazy-h-teaching">
-        <TeachingSection />
-      </LazySection>
+      <TeachingSection />
 
       {/* What others wrote: LinkedIn recommendations + student feedback (data/testimonials.ts) */}
       <div className="tone-blue">
-        <LazySection id="testimonials" size="lazy-h-testimonials">
-          <Testimonials />
-        </LazySection>
+        <Testimonials />
       </div>
 
       {/* Training platforms: TryHackMe as the big card (live stats), others from data/platforms.ts */}
       <div className="tone-blue">
-        <LazySection id="platforms" size="lazy-h-platforms">
-          <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
-        </LazySection>
+        <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
       </div>
 
       {/* How a security job runs: govern → protect → detect → respond */}
-      <LazySection id="process" size="lazy-h-process">
-        <ProcessSection />
-      </LazySection>
+      <ProcessSection />
 
       {/* The questions recruiters ask first — an accordion (data/about.ts) */}
-      <LazySection id="faq" size="lazy-h-faq">
-        <FaqSection />
-      </LazySection>
+      <FaqSection />
 
       {/* Contact section + form */}
       <div id="contact" className="mt-20">
-        <LazySection size="lazy-h-contact">
-          <ContactFooter />
-        </LazySection>
+        <ContactFooter />
       </div>
 
       {/* ═══ 02 · The blog: the evidence behind everything above ═══ */}
@@ -495,37 +462,30 @@ export default async function Home() {
 
       {/* The case library (filters, cards) and the videos. Its data is
           computed at build time into /library.json (app/library.json) and
-          fetched with the section's code — not part of this page's HTML */}
-      <LazyCaseLibrary />
+          fetched in the browser with the section's code — not part of this
+          page's HTML (a skeleton holds #cases until it arrives) */}
+      <CaseLibrary />
 
       <SlashDivider label="03 // Detection" japanese="検知" origin="left" />
 
-      {/* These "Lazy*" components wrap themselves in a LazySection
-          (components/blog/dynamic.tsx). ATT&CK and the alert stay red on
-          purpose: there the red means heat and severity. */}
-      <LazyAttackCoverage coverage={attackCoverage} />
+      {/* ATT&CK and the alert stay red on purpose: there the red means
+          heat and severity. */}
+      <AttackCoverage coverage={attackCoverage} />
       <div className="tone-blue">
-        <LazyDetectionLibrary />
+        <DetectionLibrary />
       </div>
-      <LazyTriage />
+      <TriageChallenge />
 
       <SlashDivider label="04 // Operating model" japanese="実務" origin="right" />
       <div className="tone-blue">
-        <LazySection id="lab" size="lazy-h-lab">
-          <HomeLab />
-        </LazySection>
-      </div>
-      <div className="tone-blue">
-        <LazyContributions stats={contributions} />
+        <HomeLab />
       </div>
 
       {/* ═══ 03 · The gallery: certificates, records and photos — the very end ═══
           The id is on this wrapper: the gallery's own <section> is #art */}
       <SlashDivider label="05 // Gallery" japanese="証明" origin="left" />
       <div id="gallery">
-        <LazySection id="art" size="lazy-h-gallery">
-          <ArtGallery />
-        </LazySection>
+        <ArtGallery />
       </div>
     </main>
     {/* The last line of the page: ©, CV, security, license */}

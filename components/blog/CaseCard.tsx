@@ -12,6 +12,7 @@
 import { memo, useCallback, useState, ViewTransition } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   Check,
   Copy,
@@ -65,6 +66,12 @@ function CaseCard({
   onOpenGallery,
 }: CaseCardProps) {
   const detailPath = `/blog/${id}`;
+  const router = useRouter();
+  /* Fetch this one case page the moment the visitor reaches for it (mouse
+     over, finger down, keyboard focus), so it opens at once — instead of
+     downloading every case on every visit */
+  const warm = useCallback(() => router.prefetch(detailPath), [router, detailPath]);
+  const warmProps = { onMouseEnter: warm, onTouchStart: warm, onFocus: warm };
   const [coverFailed, setCoverFailed] = useState(false);
   const { state: copyState, copy } = useCopyLink();
 
@@ -159,6 +166,7 @@ function CaseCard({
             <Link
               prefetch={false}
               href={detailPath}
+              {...warmProps}
               className="hover:text-primary-ink transition-colors duration-180"
             >
               {/* Same name as the case page's title: opening the case, this
@@ -206,7 +214,7 @@ function CaseCard({
           )}
 
           <div className="flex flex-wrap gap-3 mt-auto pt-5 border-t border-foreground/5">
-            <Link prefetch={false} href={detailPath} className={btnPrimary}>
+            <Link prefetch={false} href={detailPath} {...warmProps} className={btnPrimary}>
               Read the case <ArrowRight size={13} />
             </Link>
             {href && (

@@ -5,26 +5,24 @@
  */
 
 import FadeIn from "@/components/ui/FadeIn";
-import { CounterBadge } from "@/components/ui/kit";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CounterChip from "@/components/ui/CounterChip";
 import { PATH } from "@/data/about";
 
 export default function PathSection() {
   return (
     <section id="path" aria-labelledby="path-title" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* ─── Header ─── */}
-        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="min-w-0 flex-1">
-            <h2 id="path-title" className="font-display title-fit [--title-n:5] font-black tracking-tighter uppercase leading-[0.85]">
-              <span className="text-foreground">The</span> <br />
-              <span className="text-primary italic">Path.</span>
-            </h2>
-            <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              Every step below is documented on this page: experience, cases or credentials.
-            </p>
-          </div>
-          <CounterBadge value={String(PATH.length).padStart(2, "0")} top="Stops" bottom="So far" />
-        </FadeIn>
+        <SectionHeader
+          id="path-title"
+          eyebrow="Milestones // How it compounded"
+          japanese="歩み"
+          titleA="The"
+          titleB="Path."
+          size="lg"
+          description="Every step below is documented on this page: experience, cases or credentials."
+          aside={<CounterChip stats={[{ value: String(PATH.length).padStart(2, "0"), label: "Stops so far" }]} />}
+        />
 
         <div className="relative max-w-4xl">
           <div className="absolute left-[7px] top-2 bottom-2 w-px bg-foreground/10" aria-hidden="true" />

@@ -62,22 +62,21 @@ const QUESTIONS: Q[] = [
 
 export default function TriageChallenge() {
   const [answers, setAnswers] = useState<(number | null)[]>(QUESTIONS.map(() => null));
-  /* This section only mounts in the browser (LazySection). With motion
-     allowed it starts empty and streams in line by line when it scrolls into
-     view; with reduced motion (or no IntersectionObserver) it is shown whole. */
-  const [canStream] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      "IntersectionObserver" in window &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
-  const [streamed, setStreamed] = useState<number>(canStream ? 0 : ALERT.length);
+  /* The alert is in the page's HTML whole (server and first browser render
+     agree). In the browser, with motion allowed and the card still below the
+     screen, it is emptied — unseen — and streams in line by line when it
+     scrolls into view. With reduced motion, no IntersectionObserver, or the
+     card already on screen, it simply stays whole. */
+  const [streamed, setStreamed] = useState<number>(ALERT.length);
   const cardRef = useRef<HTMLDivElement>(null);
 
   /* Stream the alert in, line by line, when it scrolls into view */
   useEffect(() => {
     const el = cardRef.current;
-    if (!el || !canStream) return;
+    const canStream =
+      "IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!el || !canStream || el.getBoundingClientRect().top < window.innerHeight) return;
+    setStreamed(0);
     let timer: number | undefined;
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -98,7 +97,7 @@ export default function TriageChallenge() {
       io.disconnect();
       if (timer) window.clearTimeout(timer);
     };
-  }, [canStream]);
+  }, []);
 
   const done = answers.every((a) => a !== null);
   const score = answers.filter((a, i) => a !== null && QUESTIONS[i].options[a].correct).length;
@@ -108,6 +107,8 @@ export default function TriageChallenge() {
       <KanjiWatermark chars="当番" side="left" />
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
+          eyebrow="Triage // Try a real alert"
+          japanese="当番"
           titleA="Triage"
           titleB="This Alert."
           description="Try the job yourself. This is a real alarm from one of my cases. A security analyst has to make three decisions in the first minutes — make them, then see what the investigation found. No experience needed: every answer is explained."

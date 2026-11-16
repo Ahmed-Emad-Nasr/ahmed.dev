@@ -2,46 +2,33 @@
 
 /*
  * PageEffects — mounted once on each long page (home, blog, gallery). Renders
- * nothing; it does two jobs (just include <PageEffects /> on a new long page):
+ * nothing. Its one job (just include <PageEffects /> on a new long page):
  *
- *   1. Jumps. Takes over in-page #links, filtered-library links and
- *      arrivals with a hash, so every jump goes through lib/perf/jump.ts
- *      (lazy sections mounted, heights known, then an instant jump).
+ *   Jumps. Takes over in-page #links, filtered-library links and arrivals
+ *   with a hash, so every jump goes through lib/perf/jump.ts — instant,
+ *   under the fixed header, then focus moves to the target as with a native
+ *   anchor.
  *
- *   2. Pre-rendering. Sections below the fold carry content-visibility:
- *      auto (.cv-defer): the browser skips their style, layout and paint
- *      until they near the screen. The first time each one did, all that
- *      work landed in a frame while the reader was scrolling — and until
- *      then its height was a guess. So, in idle time and while nobody
- *      scrolls (lib/perf/schedule.ts), each deferred section renders once,
- *      off screen; the browser keeps its real height. Sections already
- *      above the screen are left alone, so nothing moves under the reader.
+ * Nothing is pre-loaded here any more: every section is already in the
+ * page's HTML (app/page.tsx), and a case page is fetched only when the
+ * visitor reaches for its card (components/blog/CaseCard.tsx).
  */
 
 import { useEffect } from "react";
-import { LAZY_MOUNTED, measureDeferred, revealAll, whenIdle } from "@/lib/perf/schedule";
 import { scrollToHash } from "@/lib/perf/jump";
 import { LIBRARY_PARAMS } from "@/lib/routes";
 
 const isLibraryParam = (k: string) => (LIBRARY_PARAMS as readonly string[]).includes(k);
 
-/* ── 1. Jumps ── */
-function useHashJumps() {
+export default function PageEffects() {
   useEffect(() => {
-    /* Arriving with an anchor (/#case-…) or a filtered library
-       link (/?q=wazuh#cases): mount everything, then go there. */
+    /* Arriving with an anchor (/#faq). A filtered library link
+       (/?q=wazuh#cases) or a #case-… card is scrolled to by the library
+       itself, once its data has arrived. */
     const params = new URLSearchParams(window.location.search);
     const filtered = LIBRARY_PARAMS.some((k) => params.has(k));
-    if (window.location.hash.length > 1) {
-      const hash = window.location.hash;
-      revealAll().then(() => {
-        /* The library scrolls itself to a filtered view or a #case-… card
-           (it first has to open the page of cards the case is on) */
-        if (!filtered && !hash.startsWith("#case-")) scrollToHash(hash);
-      });
-    } else if (filtered) {
-      revealAll();
-    }
+    const hash = window.location.hash;
+    if (hash.length > 1 && !filtered && !hash.startsWith("#case-")) void scrollToHash(hash);
 
     const onClick = (e: MouseEvent) => {
       if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -56,10 +43,8 @@ function useHashJumps() {
         if (![...url.searchParams.keys()].every(isLibraryParam)) return;
         e.preventDefault();
         history.pushState(null, "", `${url.search}${url.hash}`);
-        revealAll().then(() => {
-          window.dispatchEvent(new PopStateEvent("popstate"));
-          scrollToHash(url.hash);
-        });
+        window.dispatchEvent(new PopStateEvent("popstate"));
+        void scrollToHash(url.hash);
         return;
       }
 
@@ -81,37 +66,6 @@ function useHashJumps() {
     document.addEventListener("click", onClick);
     return () => document.removeEventListener("click", onClick);
   }, []);
-}
 
-/* ── 2. Pre-rendering ── */
-function usePrerender() {
-  useEffect(() => {
-    const queued = new WeakSet<Element>();
-    const queueAll = () => {
-      document.querySelectorAll(".cv-defer:not([data-cv-measured])").forEach((el) => {
-        if (queued.has(el)) return;
-        queued.add(el);
-        whenIdle(() => {
-          if (!el.isConnected) return;
-          /* Never above the screen: a section the reader is past changing
-             height would move the page under them (a jump measures those
-             itself, before it moves) */
-          if (el.getBoundingClientRect().bottom <= 0) {
-            queued.delete(el);
-            return;
-          }
-          return measureDeferred([el]);
-        });
-      });
-    };
-    queueAll();
-    window.addEventListener(LAZY_MOUNTED, queueAll);
-    return () => window.removeEventListener(LAZY_MOUNTED, queueAll);
-  }, []);
-}
-
-export default function PageEffects() {
-  useHashJumps();
-  usePrerender();
   return null;
 }

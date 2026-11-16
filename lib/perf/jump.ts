@@ -3,41 +3,20 @@
  *
  * Used by every in-page #link (lib/perf/PageEffects.tsx), the command palette,
  * the g-shortcuts, the case library's deep links and arrivals with a hash.
- * The jump is instant — straight to the section, no smooth glide.
- *
- * Two things can make a jump land in the wrong place, and both are dealt
- * with before it happens:
- *
- *   · a lazy section above the target that has not mounted yet (its real
- *     height is unknown) → mount them (revealAll);
- *   · a deferred section above the target that has never rendered
- *     (content-visibility: auto still has its 1200px guess) → render just
- *     those, for one frame, so the browser learns and keeps their real
- *     heights. Usually there are none left: lib/perf/PageEffects.tsx does
- *     this in idle time.
+ * The jump is instant — straight to the section, under the fixed header, no
+ * smooth glide. Every section is in the page's HTML, so the target is
+ * always there; only late images or fonts above it can still nudge it,
+ * which settle() below corrects.
  */
 
 import { scrollTargetOf, scrollToElement } from "@/lib/scroll";
-import { PENDING, measureDeferred, revealAll } from "@/lib/perf/schedule";
-
-const precedes = (a: Element, b: Element) => !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
 
 /** Go to an in-page anchor, instantly, under the fixed header. */
 export async function scrollToHash(hash: string): Promise<void> {
   const id = decodeURIComponent(hash.replace(/^#/, ""));
   if (!id) return;
-
-  /* Only what lies ABOVE the target can move it: a jump to #services does
-     not need the case library */
-  const before = document.getElementById(id);
-  const needReveal =
-    !before || before.matches(PENDING) || [...document.querySelectorAll(PENDING)].some((p) => precedes(p, before));
-  if (needReveal) await revealAll();
-
   const el = document.getElementById(id);
   if (!el) return;
-  await measureDeferred([...document.querySelectorAll(".cv-defer")].filter((d) => precedes(d, el) && !d.contains(el)));
-
   scrollToElement(el);
   void settle(id);
 }

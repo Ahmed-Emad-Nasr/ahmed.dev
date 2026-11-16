@@ -23,6 +23,11 @@ export default function ContributionsGrid({ stats }: { stats: ContributionStats 
         <FadeIn x={-32} y={0} duration={0.7}
           className="mb-10 flex flex-wrap items-center gap-4"
         >
+          <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
+          <h2 className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.16em] uppercase">
+            Upstream // Contributed
+          </h2>
+          <span className="brush-jp text-lg text-foreground/30" lang="ja" aria-hidden="true" data-jp="貢献" />
           {stats.status === "ready" && (
             <span className="ml-auto flex items-center gap-3 border border-foreground/10 bg-surface/60 px-4 py-2">
               <span className="font-mono text-lg font-black text-accent tabular-nums">

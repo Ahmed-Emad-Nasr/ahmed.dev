@@ -35,6 +35,7 @@ import Link from "next/link";
 import { Github } from "@/components/ui/BrandIcons";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import FadeIn from "@/components/ui/FadeIn";
+import { KanjiWatermark } from "@/components/ui/kit";
 import { BrandGlyph } from "@/components/ui/OrgLogo";
 
 /* The filter buttons, in order. id must be a WorkType (or "all"). */
@@ -64,16 +65,12 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
       id="work"
       className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden"
     >
-      <div
-        className="absolute right-8 top-16 pointer-events-none select-none text-foreground/[0.03] text-[13vw] font-black z-0 vertical-text"
-        aria-hidden="true"
-      >
-        <span>仕</span>
-        <span>事</span>
-      </div>
+      <KanjiWatermark chars="仕事" side="right" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
+          eyebrow="Selected work // Projects & labs"
+          japanese="仕事"
           titleA="Built &"
           titleB="Tested."
           description="Things I built myself: a platform that checks a company against security standards, practice networks made to be attacked, malware research done in a sealed lab, and small tools I wrote while investigating. Each card says what problem it solves; the code is public on GitHub."
@@ -81,16 +78,16 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
 
         <div
           className="flex flex-wrap gap-3 mb-12"
-          role="tablist"
+          role="group"
           aria-label="Filter work by type"
         >
           {FILTERS.map((f) => (
             <button
               key={f.id}
-              role="tab"
-              aria-selected={filter === f.id}
+              type="button"
+              aria-pressed={filter === f.id}
               onClick={() => setFilter(f.id)}
-              className={`px-5 py-2.5 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] border transition-all duration-180 ${
+              className={`min-h-11 inline-flex items-center px-5 py-2.5 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] border transition-all duration-180 ${
                 filter === f.id
                   ? "bg-primary text-white border-primary"
                   : "bg-foreground/[0.03] text-foreground/70 border-foreground/10 hover:border-primary/50 hover:text-foreground"

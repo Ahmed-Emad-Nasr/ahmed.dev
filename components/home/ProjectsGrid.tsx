@@ -7,9 +7,11 @@
 
 import { ExternalLink, Star } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CounterChip from "@/components/ui/CounterChip";
 import { TiltCard } from "@/components/ui/Motion";
 import { Github } from "@/components/ui/BrandIcons";
-import { CounterBadge, KanjiWatermark } from "@/components/ui/kit";
+import { KanjiWatermark } from "@/components/ui/kit";
 import type { RepoCard } from "@/lib/api/github-repos";
 
 export default function ProjectsGrid({ repos }: { repos: RepoCard[] }) {
@@ -27,21 +29,25 @@ export default function ProjectsGrid({ repos }: { repos: RepoCard[] }) {
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
-        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="min-w-0 flex-1">
-            <h2 id="projects-title" className="font-display title-fit [--title-n:7] font-black tracking-tighter uppercase leading-[0.85]">
-              <span className="text-foreground">Open</span> <br />
-              <span className="text-primary italic">Source.</span>
-            </h2>
-            <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              The code behind the projects above. Every repository is public — read it, run it, fork it.
-            </p>
-          </div>
-          <div className="flex gap-4 shrink-0">
-            <CounterBadge value={String(repos.length).padStart(2, "0")} top="Repos" bottom="Public" />
-            {stars > 0 && <CounterBadge value={stars} top="Stars" bottom="Earned" tone="accent" />}
-          </div>
-        </FadeIn>
+        <SectionHeader
+          id="projects-title"
+          eyebrow="Open Source // ライブラリ"
+          japanese="開発"
+          titleA="Open"
+          titleB="Source."
+          size="lg"
+          description="The code behind the projects above. Every repository is public — read it, run it, fork it."
+          aside={(
+            <CounterChip
+              tone="accent"
+              icon={<Star size={26} className="text-accent" fill="var(--accent)" aria-hidden="true" />}
+              stats={[
+                { value: String(repos.length).padStart(2, "0"), label: "Projects indexed" },
+                ...(stars > 0 ? [{ value: String(stars), label: "Stars earned" }] : []),
+              ]}
+            />
+          )}
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {repos.map((repo, idx) => (

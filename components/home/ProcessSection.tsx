@@ -15,6 +15,8 @@ export default function ProcessSection() {
       <KanjiWatermark chars="手順" side="right" />
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
+          eyebrow="Process // How I work"
+          japanese="手順"
           titleA="Risk to"
           titleB="Response."
           description="How I work on any security job: govern, protect, detect, respond. It follows NIST CSF, the framework most security teams use — and nothing is closed without the reason written down."

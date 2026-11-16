@@ -1,24 +1,17 @@
 /*
- * lib/perf/schedule.ts — WHEN background work runs, and the page-wide
- * switches the rest of lib/perf/ shares. No React here.
+ * lib/perf/schedule.ts — WHEN background work runs. No React here.
  *
- *   whenIdle(task)     One queue for background work (preloading lazy
- *                      sections' code, pre-rendering deferred sections).
- *                      ONE task at a time, and only when the page has
+ *   whenIdle(task)     One queue for background work (fetching the code of
+ *                      the palette, lightboxes and other overlays ahead of
+ *                      time). ONE task at a time, and only when the page has
  *                      loaded, the browser reports idle time, nobody has
  *                      scrolled, wheeled or swiped for 300 ms, and the tab
  *                      is visible — so background work never lands in a
  *                      frame the reader is scrolling through.
  *
- *   revealAll()        "Mount every lazy section now": a jump to an anchor
- *                      cannot wait for sections above the target to mount
- *                      as the reader nears them. Resolves once no
- *                      placeholder is left on the page.
- *
- *   measureDeferred()  Render never-rendered deferred sections
- *                      (content-visibility: auto) for one frame, so their
- *                      real height replaces the 1200px guess and the
- *                      browser keeps it.
+ *   SECTION_ADDED      Fired on window when a section arrives after the page
+ *                      loaded (the case library, whose data is fetched), so
+ *                      the navbar and OffscreenAnimations look at it too.
  */
 
 /* ── The idle queue ── */
@@ -32,9 +25,8 @@ let running = false;
 
 const SCROLL_QUIET_MS = 300;
 const START_AFTER_LOAD_MS = 1500;
-/* …but while the intro screen (AppLoader) covers the page, the wait is
-   pointless: nobody can see or scroll yet, so that time is used to get the
-   sections below ready before the screen lifts. */
+/* …but while the intro screen (AppLoader) covers the page nobody can see
+   or scroll yet, so the small background fetches start sooner. */
 const START_UNDER_INTRO_MS = 300;
 
 const isScrolling = (): boolean => performance.now() - lastScroll < SCROLL_QUIET_MS;
@@ -97,52 +89,5 @@ export function whenIdle(task: Task): void {
   pump();
 }
 
-/* ── The reveal switch ── */
-
-let revealed = false;
-const listeners = new Set<() => void>();
-
-export const subscribeReveal = (cb: () => void) => {
-  listeners.add(cb);
-  return () => {
-    listeners.delete(cb);
-  };
-};
-export const getRevealed = () => revealed;
-export const getServerRevealed = () => false;
-
-/** Every placeholder carries this attribute until its section has rendered */
-export const PENDING = "[data-lazy-pending]";
-const hasPending = () => typeof document !== "undefined" && !!document.querySelector(PENDING);
-
-/** Fired on window each time a placeholder gives way to its section */
-export const LAZY_MOUNTED = "sensei:lazy-mounted";
-
-export const nextFrame = () => new Promise<void>((r) => requestAnimationFrame(() => r()));
-
-/** Mount every lazy section; resolves once none is still loading (max 4 s). */
-export async function revealAll(): Promise<void> {
-  if (!revealed) {
-    revealed = true;
-    listeners.forEach((l) => l());
-  }
-  const start = performance.now();
-  while (hasPending() && performance.now() - start < 4000) await nextFrame();
-  await nextFrame();
-}
-
-/* ── Measuring deferred sections ── */
-
-/** Render never-rendered deferred sections for one frame, so their real
- *  height replaces the guess (`contain-intrinsic-size: auto` keeps it). */
-export async function measureDeferred(els: Element[]): Promise<void> {
-  const todo = els.filter((el) => !el.hasAttribute("data-cv-measured"));
-  if (!todo.length) return;
-  todo.forEach((el) => el.setAttribute("data-cv-measure", ""));
-  await nextFrame();
-  await nextFrame();
-  todo.forEach((el) => {
-    el.removeAttribute("data-cv-measure");
-    el.setAttribute("data-cv-measured", "");
-  });
-}
+/** Fired on window when a section arrives after the page loaded */
+export const SECTION_ADDED = "sensei:section-added";

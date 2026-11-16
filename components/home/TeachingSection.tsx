@@ -17,14 +17,10 @@
 
 import { ArrowUpRight } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
+import SectionHeader from "@/components/ui/SectionHeader";
+import CounterChip from "@/components/ui/CounterChip";
 import OrgLogo from "@/components/ui/OrgLogo";
-import {
-  CounterBadge,
-  KanjiWatermark,
-  cardSurface,
-  chipNeutral,
-  chipTertiary,
-} from "@/components/ui/kit";
+import { KanjiWatermark, cardSurface, chipNeutral, chipTertiary } from "@/components/ui/kit";
 import { DIPLOMA, TEACHING_ROLES, TEACHING_STATS } from "@/data/teaching";
 
 export default function TeachingSection() {
@@ -37,33 +33,16 @@ export default function TeachingSection() {
       <KanjiWatermark chars="指導" side="left" />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* ─── Header ─── */}
-        <FadeIn
-          x={-32}
-          y={0}
-          duration={0.7}
-          className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8"
-        >
-          <div className="min-w-0 flex-1">
-            <h2
-              id="teaching-title"
-              className="font-display title-fit [--title-n:8] font-black tracking-tighter uppercase leading-[0.85]"
-            >
-              <span className="text-foreground">Pass it</span> <br />
-              <span className="text-primary italic">Forward.</span>
-            </h2>
-            <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              I teach security as well as practise it. Below: the full
-              course I wrote, what each module covers, and where I have
-              taught it — with the results.
-            </p>
-          </div>
-          <CounterBadge
-            value={`${DIPLOMA.hours}h`}
-            top="Curriculum"
-            bottom="Written"
-          />
-        </FadeIn>
+        <SectionHeader
+          id="teaching-title"
+          eyebrow="Teaching // Pass it on"
+          japanese="指導"
+          titleA="Pass it"
+          titleB="Forward."
+          size="lg"
+          description="I teach security as well as practise it. Below: the full course I wrote, what each module covers, and where I have taught it — with the results."
+          aside={<CounterChip stats={[{ value: `${DIPLOMA.hours}h`, label: "Curriculum written" }]} />}
+        />
 
         {/* ─── Headline numbers ─── */}
         <FadeIn className="mb-10 md:mb-12">

@@ -30,7 +30,6 @@
  *   Security motion … Triage … Home lab → animations for the blog sections
  *   Typography / forms / hover captions → small global fixes
  *   forced-colors / Large text / Reduced motion → accessibility modes
- *   ─── Loading the pages ───      → .lazy-* placeholder heights (lib/perf/lazy.tsx)
  *
  * COMMON EDITS
  *   • Change a colour      → edit it in BOTH :root (light) and .dark (dark).
@@ -40,7 +39,6 @@
  *                            you can now write text-mycolor / bg-mycolor.
  *   • New animation        → add an @keyframes here + a class that uses it, and
  *                            turn it off inside a prefers-reduced-motion block.
- *   • A section's lazy placeholder height → the .lazy-h-* blocks at the end.
  */
 /* Tailwind looks for class names in the site's code only — app/ (routes),
    components/, lib/ and data/. Left to itself it scans the whole repository,
@@ -412,7 +410,37 @@
 .jp-eyebrow {
   font-family: var(--font-jp);
   font-weight: 700;
-  letter-spacing: 0.35em;
+  letter-spacing: 0.1em;
+}
+
+/* Section eyebrow — the Latin/mono label above every section title.
+   Type only; leave color to the call site. (Sensei-Dev) */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Secondary/dense eyebrow — counters, chips, metadata rows. */
+.eyebrow-sm {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* The faint diagonal hatching behind a section's eyebrow */
+.speed-lines {
+  background-image: repeating-linear-gradient(45deg,
+      transparent,
+      transparent 10px,
+      color-mix(in srgb, var(--foreground) 3%, transparent) 10px,
+      color-mix(in srgb, var(--foreground) 3%, transparent) 11px);
 }
 
 .site-texture {
@@ -1394,243 +1422,6 @@ html[data-intro-seen] [data-app-loader] {
     transition-delay: 0s !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-  }
-}
-
-/* ─── Loading the pages (lib/perf/) ──────────────────────────────────────
-   Deferred sections (.cv-defer) skip style, layout and paint until they
-   near the screen. For one frame each — in idle time (PageEffects.tsx) or
-   before a jump (jump.ts) — a section renders anyway, so
-   `contain-intrinsic-size: auto` swaps its guessed height for the real
-   one and keeps it. */
-.cv-defer[data-cv-measure] {
-  content-visibility: visible !important;
-}
-
-/* Lazy sections (lazy.tsx): the placeholder and the box the section
-   mounts into share one expected height, so the swap moves nothing; once
-   the section has rendered, its real height takes over.
-
-   HOW TO SIZE A NEW LAZY SECTION: add `.lazy-h-<name> { --lazy-h: Npx; }`
-   (phone height) below, then the same class inside the
-   `@media (min-width: 48rem)` (tablet) and `@media (min-width: 64rem)`
-   (desktop) blocks. Use the section's real height: open the site, right-click
-   the section → Inspect, read its height. Approximate is fine — it only
-   affects the scrollbar and #anchor jumps before the section loads. */
-.lazy-pending {
-  min-height: var(--lazy-h, 100svh);
-}
-.lazy-box {
-  content-visibility: auto;
-  contain-intrinsic-size: auto var(--lazy-h, 100svh);
-}
-/* Expected heights, measured on the built site (phone / tablet / desktop) */
-/* Every lazy section's expected height (measured), so anchors and the
-   scrollbar are right before it mounts */
-.lazy-h-roles {
-  --lazy-h: 4300px;
-}
-.lazy-h-stats {
-  --lazy-h: 220px;
-}
-.lazy-h-work {
-  --lazy-h: 6550px;
-}
-.lazy-h-experience {
-  --lazy-h: 10300px;
-}
-.lazy-h-teaching {
-  --lazy-h: 3600px;
-}
-.lazy-h-platforms {
-  --lazy-h: 2150px;
-}
-.lazy-h-projects {
-  --lazy-h: 3660px;
-}
-.lazy-h-process {
-  --lazy-h: 1400px;
-}
-.lazy-h-tools {
-  --lazy-h: 3680px;
-}
-.lazy-h-uses {
-  --lazy-h: 1110px;
-}
-.lazy-h-path {
-  --lazy-h: 1420px;
-}
-.lazy-h-now {
-  --lazy-h: 1120px;
-}
-.lazy-h-faq {
-  --lazy-h: 1160px;
-}
-.lazy-h-contact {
-  --lazy-h: 1780px;
-}
-.lazy-h-cases {
-  --lazy-h: 8250px;
-}
-.lazy-h-lab {
-  --lazy-h: 960px;
-}
-.lazy-h-gallery {
-  --lazy-h: 21900px;
-}
-@media (min-width: 48rem) {
-  .lazy-h-roles {
-    --lazy-h: 2450px;
-  }
-  .lazy-h-stats {
-    --lazy-h: 230px;
-  }
-  .lazy-h-work {
-    --lazy-h: 4250px;
-  }
-  .lazy-h-experience {
-    --lazy-h: 9200px;
-  }
-  .lazy-h-teaching {
-    --lazy-h: 2850px;
-  }
-  .lazy-h-platforms {
-    --lazy-h: 2100px;
-  }
-  .lazy-h-projects {
-    --lazy-h: 2500px;
-  }
-  .lazy-h-process {
-    --lazy-h: 1010px;
-  }
-  .lazy-h-tools {
-    --lazy-h: 2600px;
-  }
-  .lazy-h-uses {
-    --lazy-h: 880px;
-  }
-  .lazy-h-path {
-    --lazy-h: 1240px;
-  }
-  .lazy-h-now {
-    --lazy-h: 940px;
-  }
-  .lazy-h-faq {
-    --lazy-h: 1170px;
-  }
-  .lazy-h-contact {
-    --lazy-h: 1700px;
-  }
-  .lazy-h-cases {
-    --lazy-h: 5100px;
-  }
-  .lazy-h-lab {
-    --lazy-h: 1030px;
-  }
-  .lazy-h-gallery {
-    --lazy-h: 12400px;
-  }
-}
-@media (min-width: 64rem) {
-  .lazy-h-roles {
-    --lazy-h: 1420px;
-  }
-  .lazy-h-stats {
-    --lazy-h: 155px;
-  }
-  .lazy-h-work {
-    --lazy-h: 3200px;
-  }
-  .lazy-h-experience {
-    --lazy-h: 6400px;
-  }
-  .lazy-h-teaching {
-    --lazy-h: 1850px;
-  }
-  .lazy-h-platforms {
-    --lazy-h: 1280px;
-  }
-  .lazy-h-projects {
-    --lazy-h: 1830px;
-  }
-  .lazy-h-process {
-    --lazy-h: 790px;
-  }
-  .lazy-h-tools {
-    --lazy-h: 1590px;
-  }
-  .lazy-h-uses {
-    --lazy-h: 600px;
-  }
-  .lazy-h-path {
-    --lazy-h: 1060px;
-  }
-  .lazy-h-now {
-    --lazy-h: 690px;
-  }
-  .lazy-h-faq {
-    --lazy-h: 1000px;
-  }
-  .lazy-h-contact {
-    --lazy-h: 1100px;
-  }
-  .lazy-h-cases {
-    --lazy-h: 3900px;
-  }
-  .lazy-h-lab {
-    --lazy-h: 1220px;
-  }
-  .lazy-h-gallery {
-    --lazy-h: 8350px;
-  }
-}
-.lazy-h-contributions {
-  --lazy-h: 1110px;
-}
-.lazy-h-testimonials {
-  --lazy-h: 6000px;
-}
-.lazy-h-triage {
-  --lazy-h: 1600px;
-}
-.lazy-h-attack {
-  --lazy-h: 1800px;
-}
-.lazy-h-detection {
-  --lazy-h: 1500px;
-}
-@media (min-width: 48rem) {
-  .lazy-h-contributions {
-    --lazy-h: 870px;
-  }
-  .lazy-h-testimonials {
-    --lazy-h: 4000px;
-  }
-  .lazy-h-triage {
-    --lazy-h: 1400px;
-  }
-  .lazy-h-attack {
-    --lazy-h: 1500px;
-  }
-  .lazy-h-detection {
-    --lazy-h: 1200px;
-  }
-}
-@media (min-width: 64rem) {
-  .lazy-h-contributions {
-    --lazy-h: 680px;
-  }
-  .lazy-h-testimonials {
-    --lazy-h: 2700px;
-  }
-  .lazy-h-triage {
-    --lazy-h: 1300px;
-  }
-  .lazy-h-attack {
-    --lazy-h: 1200px;
-  }
-  .lazy-h-detection {
-    --lazy-h: 1000px;
   }
 }
 

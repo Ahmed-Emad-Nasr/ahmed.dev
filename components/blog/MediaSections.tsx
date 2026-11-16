@@ -21,7 +21,8 @@ import { Youtube } from "@/components/ui/BrandIcons";
 import { formatDate, markLoaded, normalizePublicHref, YOUTUBE_CHANNEL_URL, type ChannelVideo } from "@/lib/shared";
 import { blogFeaturedYoutubeVideo, blogYoutubePlaylists as playlists, blogYoutubeVideos } from "@/data/youtube";
 import type { LibraryCounts } from "@/lib/library-data";
-import { CounterBadge, KanjiWatermark, btnOutline } from "@/components/ui/kit";
+import { KanjiWatermark, btnOutline } from "@/components/ui/kit";
+import CounterChip from "@/components/ui/CounterChip";
 import FadeIn from "@/components/ui/FadeIn";
 
 /* Videos shown at first and added per "show more" */
@@ -120,19 +121,21 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
       <section id="youtube" className="relative py-24 md:py-32 overflow-hidden" aria-label="YouTube hub">
         <KanjiWatermark chars="動画" side="right" />
         <div className="relative z-10">
-          <div className="flex flex-col md:flex-row justify-between md:items-end gap-8">
-            <SectionHeader
-              titleA="Watch &"
-              titleB="Learn."
-              description="Prefer watching to reading? The same topics explained on video, step by step: monitoring systems, malware analysis, web security and security-management basics."
-            />
-            <div className="mb-16 md:mb-20 flex flex-col items-start gap-4">
-              <CounterBadge value={videos.length} top="Videos" bottom="Indexed" />
-              <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className={btnOutline}>
-                <Youtube size={13} /> Open the channel
-              </a>
-            </div>
-          </div>
+          <SectionHeader
+            eyebrow="Videos // Watch & learn"
+            japanese="動画"
+            titleA="Watch &"
+            titleB="Learn."
+            description="Prefer watching to reading? The same topics explained on video, step by step: monitoring systems, malware analysis, web security and security-management basics."
+            aside={
+              <div className="flex flex-col items-start gap-4">
+                <CounterChip stats={[{ value: String(videos.length), label: "Videos indexed" }]} />
+                <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className={btnOutline}>
+                  <Youtube size={13} /> Open the channel
+                </a>
+              </div>
+            }
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {videos.slice(0, visible).map((video, idx) => (

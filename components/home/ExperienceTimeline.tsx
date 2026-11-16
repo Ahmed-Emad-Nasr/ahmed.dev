@@ -10,7 +10,9 @@ import {
 } from "lucide-react";
 import CaseFilterLink from "@/components/blog/CaseFilterLink";
 import OrgLogo from "@/components/ui/OrgLogo";
-import FadeIn from "@/components/ui/FadeIn";
+import SectionHeader from "@/components/ui/SectionHeader";
+import ExperienceReveal from "@/components/home/ExperienceReveal";
+import { KanjiWatermark } from "@/components/ui/kit";
 
 /*
  * ═══ components/home/ExperienceTimeline.tsx — the EXPERIENCE section (#experience) ═══
@@ -29,56 +31,39 @@ import FadeIn from "@/components/ui/FadeIn";
  *   (both keyed by the company name = `subTag` in data/experience.ts)
  *   • hide a job from here                  → `hidden: true` on it in data/experience.ts
  *
- * Cards slide in from alternating sides (FadeIn x = ±100).
+ * Cards slide in from alternating sides (GSAP ScrollTrigger, ExperienceReveal.tsx).
  */
 export default function ExperienceTimeline() {
   return (
     <section className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
-      {/* ─── Background Decorative Kanji ─── */}
+      <KanjiWatermark chars="職歴経験" side="right" />
+
+      {/* ─── Scanline Overlay ─── */}
       <div
-        className="absolute top-20 right-10 pointer-events-none select-none text-foreground/[0.03] text-[15vw] font-black z-0 vertical-text uppercase"
+        className="absolute inset-0 pointer-events-none z-0 opacity-[0.02]"
         aria-hidden="true"
-        role="img"
-      >
-        <span>職</span>
-        <span>歴</span>
-        <span>経</span>
-        <span>験</span>
-      </div>
+        style={{
+          backgroundImage:
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.04) 2px, rgba(255,255,255,0.04) 4px)",
+        }}
+      />
 
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* ─── Section Header ─── */}
-        <div className="mb-16 md:mb-20">
-          <FadeIn
-            as="h2"
-            y={40}
-            duration={1}
-            delay={0.15}
-            className="font-display title-fit [--title-n:12] font-black tracking-tighter uppercase leading-[0.85]"
-          >
-            <span className="text-foreground">Professional</span> <br />
-            <span className="text-primary italic">Experience.</span>
-          </FadeIn>
-          <FadeIn
-            y={40}
-            duration={1}
-            delay={0.3}
-            className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed"
-          >
-            A record of the roles, responsibilities and measurable work behind
-            the security practice.
-          </FadeIn>
-        </div>
+        <SectionHeader
+          eyebrow="Professional Path // 職歴"
+          titleA="Professional"
+          titleB="Experience."
+          size="lg"
+          subLabel="Service Record // Maintenance Log"
+          description="A record of the roles, responsibilities and measurable work behind the security practice."
+        />
 
         {/* ─── Experience Cards ─── */}
-        <div className="flex flex-col gap-14 md:gap-20">
+        <ExperienceReveal className="flex flex-col gap-14 md:gap-20">
           {PORTFOLIO_DATA.experience.map((item, idx) => (
-            <FadeIn
-              x={idx % 2 === 0 ? -100 : 100}
-              y={0}
-              duration={1.2}
+            <div
               key={idx}
-              className="group relative grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-10 lg:gap-16 items-start"
+              className="exp-item group relative grid grid-cols-1 lg:grid-cols-[1fr_1.7fr] gap-10 lg:gap-16 items-start"
             >
               {/* Left Column: Metadata */}
               <div className="flex flex-col gap-4">
@@ -242,9 +227,9 @@ export default function ExperienceTimeline() {
                   </div>
                 </div>
               </TiltCard>
-            </FadeIn>
+            </div>
           ))}
-        </div>
+        </ExperienceReveal>
       </div>
     </section>
   );

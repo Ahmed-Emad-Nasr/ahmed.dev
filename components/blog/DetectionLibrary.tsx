@@ -14,7 +14,8 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Radar } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { KanjiWatermark, CounterBadge, PlainNotes } from "@/components/ui/kit";
+import { KanjiWatermark, PlainNotes } from "@/components/ui/kit";
+import CounterChip from "@/components/ui/CounterChip";
 import { detectionRules, RULE_GROUP_LABEL } from "@/data/detection-rules";
 import FadeIn from "@/components/ui/FadeIn";
 
@@ -33,19 +34,21 @@ export default function DetectionLibrary() {
     <section id="detections" aria-label="Detection library" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
       <KanjiWatermark chars="検知" side="right" />
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* Side by side only from lg: at tablet widths the title and two
-            badges did not fit, and the second badge ran off the screen. */}
-        <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-8">
-          <SectionHeader
-            titleA="Detection"
-            titleB="Library."
-            description="A detection rule is an alarm: it watches the activity on computers and the network, and rings when it sees something an attacker would do. These are the alarms I wrote myself for Wazuh, an open-source security monitoring system."
-          />
-          <div className="mb-16 md:mb-20 flex flex-wrap gap-3 shrink-0">
-            <CounterBadge value={detectionRules.length} top="Custom" bottom="Rules" />
-            <CounterBadge value={techniques} top="Techniques" bottom="Watched" tone="accent" />
-          </div>
-        </div>
+        <SectionHeader
+          eyebrow="Detection // My alarm rules"
+          japanese="検知"
+          titleA="Detection"
+          titleB="Library."
+          description="A detection rule is an alarm: it watches the activity on computers and the network, and rings when it sees something an attacker would do. These are the alarms I wrote myself for Wazuh, an open-source security monitoring system."
+          aside={
+            <CounterChip
+              stats={[
+                { value: String(detectionRules.length), label: "Custom rules" },
+                { value: String(techniques), label: "Techniques watched" },
+              ]}
+            />
+          }
+        />
 
         <PlainNotes
           title="How to read the list"

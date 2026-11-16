@@ -26,9 +26,9 @@ server. A client component pulls everything it imports into the browser, so:
 - client components never import `data/cases.ts`, `data/case-details.ts` or
   `data/attack.ts` — the page computes what they need (`data/live-copy.ts`,
   `lib/library-data.ts`) at build time and passes it as props
-  (`LazyAttackCoverage coverage={attackCoverage}`) or, when it is large,
+  (`AttackCoverage coverage={attackCoverage}`) or, when it is large,
   writes it to a static JSON file the section fetches together with its
-  code (`app/library.json/route.ts` → `LazyCaseLibrary` in
+  code (`app/library.json/route.ts` → `CaseLibrary` in
   `components/blog/dynamic.tsx` — ~100 KB the home HTML no longer carries). Client files may only
   `import type` from `lib/library-data.ts`: a value import would bundle every
   case file, IOC and timeline into the browser. The one exception is the
@@ -48,8 +48,11 @@ lightbox, the command palette and the terminal.
 
 ## How a page loads
 
-1. **In the HTML:** the navbar, the intro loader, the hero (home), the blog's
-   intro, the case pages' content, and each page's metadata / JSON-LD.
+1. **In the HTML:** everything — the navbar, the intro loader, every section
+   of the home page (as on Sensei-Dev), the case pages' content, and each
+   page's metadata / JSON-LD. Only the case library's cards are filled in by
+   the browser, from `/library.json`, right after load (a skeleton holds
+   `#cases` until then).
 2. **Split per section:** every section is its own JavaScript chunk —
    `next/dynamic` imports in `components/home/dynamic.tsx`,
    `components/blog/dynamic.tsx` and `components/gallery/dynamic.tsx`.
@@ -57,13 +60,12 @@ lightbox, the command palette and the terminal.
    which is why those files exist.) Global visual effects that are not needed
    for first paint are deferred by `components/layout/DeferredGlobalEffects.tsx`
    until the browser is idle.
-3. **Lazy:** every section after the hero on `/` (the blog and the gallery
-   included) is wrapped in `LazySection` (`lib/perf/lazy.tsx`):
-   not in the HTML, a placeholder of the expected height (`.lazy-h-*` in
-   `app/globals.css`) holds its place, and it mounts in idle time or when the
-   reader gets within ~3 screens. A jump to its `#id` mounts it first.
-   While a section's chunk downloads, `SectionSkeleton` shows (it carries
-   `data-lazy-pending`, so jumps wait for it).
+3. **Ahead of time, only what is opened on demand:** the command palette,
+   shortcuts help and lightboxes are `preloadable()` (`lib/perf/lazy.tsx`):
+   their code downloads in idle time so they open at once. A case page is
+   fetched only when the visitor reaches for its card (mouse over, touch,
+   keyboard focus — `components/blog/CaseCard.tsx`), not all 82 on every
+   visit.
 4. **Idle queue:** all background work goes through `whenIdle()` in
    `lib/perf/schedule.ts` — one task at a time, only after load, in idle time,
    and never while the reader is scrolling.
@@ -78,9 +80,8 @@ is downloaded until a link is clicked.
 ## Jumps
 
 Every in-page jump (nav, palette, `g` shortcuts, `#hash` arrivals, filtered
-library links) goes through `scrollToHash()` in `lib/perf/jump.ts`: mount the
-lazy sections above the target, measure deferred sections above it, then jump
-**instantly** under the fixed header. For a few seconds after, it corrects
+library links) goes through `scrollToHash()` in `lib/perf/jump.ts`: it jumps
+**instantly** under the fixed header (every section is already in the page). For a few seconds after, it corrects
 the position if late images move the target — unless the reader has
 scrolled. `lib/routes.ts` knows which page each section id lives on.
 
@@ -111,8 +112,8 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
 - Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
   only, staggered top to bottom). framer-motion loads lazily
   (`LazyMotion` + `m`).
-- Hero entrance: Web Animations (`element.animate`), no library; the role
-  line's decrypt effect is a few lines in `components/home/RoleTicker.tsx`.
+- Hero entrance: GSAP (`gsap.from` in `components/home/HeroSection.tsx`),
+  the same code as Sensei-Dev's hero; it waits for the intro screen to lift.
 - No `backdrop-filter` except on the navbar: it is re-computed every
   scrolled frame, and a translucent background looks the same.
 - Section dividers drift with a CSS scroll timeline (framer fallback).

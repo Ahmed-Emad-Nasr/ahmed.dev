@@ -5,8 +5,9 @@
  */
 
 import FadeIn from "@/components/ui/FadeIn";
+import SectionHeader from "@/components/ui/SectionHeader";
 import { TiltCard } from "@/components/ui/Motion";
-import { CounterBadge, KanjiWatermark, chipTertiary } from "@/components/ui/kit";
+import { KanjiWatermark, chipTertiary } from "@/components/ui/kit";
 import { TOOL_GROUPS as GROUPS } from "@/data/about";
 
 const toolCount = GROUPS.reduce((n, g) => n + g.items.length, 0);
@@ -16,19 +17,14 @@ export default function ToolsSection() {
     <section id="tools" aria-labelledby="tools-title" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
       <KanjiWatermark chars="武器庫" side="right" />
       <div className="max-w-7xl mx-auto relative z-10">
-        {/* ─── Header ─── */}
-        <FadeIn className="mb-12 md:mb-16 flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-          <div className="min-w-0 flex-1">
-            <h2 id="tools-title" className="font-display title-fit [--title-n:8] font-black tracking-tighter uppercase leading-[0.85]">
-              <span className="text-foreground">Tools of</span> <br />
-              <span className="text-primary italic">The Trade.</span>
-            </h2>
-            <p className="mt-5 max-w-2xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-              No buzzword bingo. Every item below is used in the work and the cases on this page — the list is the same as on the CV.
-            </p>
-          </div>
-          <CounterBadge value={toolCount} top="Tools" bottom="In use" tone="accent" />
-        </FadeIn>
+        <SectionHeader
+          id="tools-title"
+          eyebrow="Arsenal // The exact tools"
+          japanese="武器庫"
+          titleA="Tools of"
+          titleB="The Trade."
+          description="No buzzword bingo. Every item below is used in the work and the cases on this page — the list is the same as on the CV."
+        />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 [@media(min-width:90rem)]:grid-cols-4 gap-6">
           {GROUPS.map((g) => (

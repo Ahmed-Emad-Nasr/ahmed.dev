@@ -1,5 +1,5 @@
 /*
- * Who the site is about: name, title, roles, contact links and the hero's
+ * Who the site is about: name, title, contact links and the hero's
  * tagline / spec strip.
  *
  * ═══ data/profile.ts — PROFILE ═══
@@ -10,7 +10,6 @@
  * with the sections that show them.
  *
  *   PROFILE.name / title …      hero name, title, badge, availability
- *   PROFILE.roles               the typing role line in the hero
  *   PROFILE.focus               the hero's "Focus" row
  *   PROFILE.contact             e-mail, phone, socials — used site-wide
  *   PROFILE.hero.tagline/specs  hero tagline + the spec strip
@@ -28,15 +27,6 @@ export const PROFILE: Profile = {
   availability: "Open to InfoSec roles: Officer, Engineer, GRC, SOC, IR/DFIR, IAM and Security Education",
   /* The areas shown on the hero's "Focus" row */
   focus: ["GRC", "SOC", "IR & DFIR", "Malware", "IAM", "Data Security"],
-  roles: [
-    "Information Security Officer",
-    "Information Security Engineer",
-    "GRC & Compliance Analyst",
-    "SOC Analyst (L1/L2)",
-    "DFIR & Malware Analyst",
-    "IAM & Data Security Analyst",
-    "Cybersecurity Instructor",
-  ],
   contact: {
     email: "ahmed.em.nasr@gmail.com",
     phone: "+201013972690",
