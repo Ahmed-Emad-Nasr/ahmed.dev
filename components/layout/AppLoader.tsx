@@ -13,7 +13,9 @@ import { INTRO_SEEN_KEY, introSeen, markIntroDone } from "@/lib/intro";
  * the home page only (app/page.tsx).
  *
  * TIMING (milliseconds):
- *   DURATION 1900 → how long the bar takes to fill (600 with reduced motion)
+ *   DURATION 1900 → how long the bar takes to fill (600 with reduced motion);
+ *                   shorter on a slow device, so it is done by 2.6 s after
+ *                   the page was requested (LATEST_END)
  *   + 200         → small pause at 100% before it leaves
  *   3500          → safety timeout: it always disappears by then
  *   (and a CSS-only safety net at 6 s for a browser without JavaScript)
@@ -71,10 +73,14 @@ export default function AppLoader() {
       /* Private mode / storage blocked: it simply plays again next time */
     }
     const start = performance.now();
-    /* On a slow device this code starts late. The CSS safety net (globals.css)
-       slides the screen away 6 s after the page appears, so the bar is
-       shortened to be done before that — never two exits fighting. */
-    const DURATION = Math.max(300, Math.min(prefersReducedMotion() ? 600 : 1900, 5200 - start));
+    /* On a slow device this code starts late (start = ms since the page was
+       requested), and the visitor has already been looking at the screen
+       for that long. So the bar ends by LATEST_END at the latest: a fast
+       device still gets the full 1.9 s, a slow phone a shorter bar instead
+       of a longer wait (it also keeps the Speed Index down). Never past the
+       CSS safety net (globals.css, 6 s) either — no two exits fighting. */
+    const LATEST_END = 2600;
+    const DURATION = Math.max(300, Math.min(prefersReducedMotion() ? 600 : 1900, LATEST_END - start));
     let raf = 0;
     let doneTimer: ReturnType<typeof setTimeout> | undefined;
     let shown = -1;

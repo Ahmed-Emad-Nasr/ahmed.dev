@@ -1,4 +1,4 @@
-/* /sitemap.xml with absolute URLs (the site lives under /ahmed.dev), plus
+/* /sitemap.xml with absolute URLs (SITE_BASE_URL in lib/site.ts), plus
    image and video extensions. Case PDFs are listed as documents of their own.
 
    ═══ app/sitemap.ts — the list of pages for search engines ═══
@@ -13,6 +13,7 @@ import { absoluteUrl, caseUrl, OG_IMAGE } from "@/lib/site";
 import { GALLERY_IMAGE_COUNT, galleryImagePath } from "@/data/certifications";
 import { blogYoutubeVideos } from "@/data/youtube";
 import { PERSON_IMAGE, SITE_URL, youtubeEmbed, youtubeThumb } from "@/lib/seo";
+import { TEACHING_LANGUAGES } from "@/lib/page-ids";
 
 /* A URL as a sitemap needs it: asset paths have spaces ("Assets/Cases/Depi
    R4 Project/…", "Screenshot (328).webp") and Next writes <loc> as given —
@@ -44,6 +45,10 @@ const blogVideos = blogYoutubeVideos.map((video) => ({
   uploader: { info: SITE_URL, content: "Ahmed Emad Nasr" },
   ...(video.tags?.[0] ? { tag: xml(video.tags[0]) } : {}),
 }));
+
+const teachingLanguages = Object.fromEntries(
+  Object.entries(TEACHING_LANGUAGES).map(([lang, path]) => [lang, absoluteUrl(path)]),
+);
 
 /* Required by the static export (see the same line in app/manifest.ts) */
 export const dynamic = "force-static";
@@ -78,11 +83,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
       videos: blogVideos,
     },
+    /* The teaching page in English and Arabic: each names the other (hreflang) */
     {
       url: absoluteUrl("/teaching"),
       lastModified: latestCaseDate,
       changeFrequency: "monthly",
       priority: 0.8,
+      alternates: { languages: teachingLanguages },
+    },
+    {
+      url: absoluteUrl("/ar/teaching"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.8,
+      alternates: { languages: teachingLanguages },
     },
     {
       url: absoluteUrl("/gallery"),

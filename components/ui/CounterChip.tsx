@@ -75,7 +75,8 @@ export default function CounterChip({
                 •
               </span>
             ) : null}
-            <span className={`font-mono text-2xl font-black tabular-nums ${t.value}`}>
+            {/* dir="ltr": the digits keep their order on a right-to-left page */}
+            <span dir="ltr" className={`font-mono text-2xl font-black tabular-nums ${t.value}`}>
               {typeof stat.value === "string" && /^[0-9]+$/.test(stat.value) ? (
                 <>
                   <span className="sr-only">{stat.value}</span>

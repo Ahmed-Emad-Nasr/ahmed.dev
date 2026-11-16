@@ -45,7 +45,7 @@ import { Eyebrow, KanjiWatermark, filterTab } from "@/components/ui/kit";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CounterChip from "@/components/ui/CounterChip";
 import { useSearchParams } from "next/navigation";
-import { Sparkles, Maximize2, ChevronDown } from "lucide-react";
+import { Sparkles, Maximize2, ChevronDown, ExternalLink, ShieldCheck } from "lucide-react";
 import { preloadable } from "@/lib/perf/lazy";
 import FadeIn from "@/components/ui/FadeIn";
 import OrgLogo from "@/components/ui/OrgLogo";
@@ -226,12 +226,12 @@ export default function ArtGallery() {
                   delay={(idx % 6) * 0.05}
                   key={cert.galleryIndex}
                 >
-                  <TiltCard className="spotlight group relative h-full bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300">
+                  <TiltCard className="spotlight group relative flex h-full flex-col bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300">
                     <CardEffects index={Number(num)} />
                     <button
                       type="button"
                       onClick={() => openCertificateScan(cert.galleryIndex)}
-                      className="relative z-20 flex flex-col justify-between w-full h-full text-left p-7 cursor-pointer"
+                      className="relative z-20 flex flex-1 flex-col justify-between w-full text-left p-7 cursor-pointer"
                     >
                       <div>
                         <div className="flex items-center gap-3 font-mono text-[0.625rem] text-primary-ink tracking-[0.25em] uppercase mb-3 pr-12">
@@ -258,6 +258,21 @@ export default function ArtGallery() {
                         </span>
                       </div>
                     </button>
+                    {/* The issuer's own verification page (verifyUrl in
+                        data/certifications.ts) — only where one exists */}
+                    {cert.verifyUrl && (
+                      <a
+                        href={cert.verifyUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative z-20 mx-7 mb-6 -mt-3 inline-flex min-h-6 items-center gap-1.5 self-start font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/70 hover:text-primary-ink transition-colors"
+                      >
+                        <ShieldCheck size={12} aria-hidden="true" />
+                        Verify with {cert.issuer}
+                        <ExternalLink size={11} aria-hidden="true" />
+                        <span className="sr-only">(opens the issuer&apos;s site)</span>
+                      </a>
+                    )}
                   </TiltCard>
                 </FadeIn>
               );

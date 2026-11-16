@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 
-/* The site lives under /ahmed.dev on GitHub Pages. basePath prefixes Next's
-   own files and links; normalizePublicHref() (lib/shared.ts) prefixes plain
-   asset paths with the same value. */
-const BASE_PATH =
-  process.env.NEXT_PUBLIC_BASE_PATH ??
-  (process.env.NODE_ENV === "production" ? "/ahmed.dev" : "");
+/* Where the site lives on GitHub Pages. The deploy workflow sets it from the
+   repository (actions/configure-pages): "" in Ahmed-Emad-Nasr.github.io (the
+   domain root), "/<repo>" in any other repo. basePath prefixes Next's own
+   files and links; normalizePublicHref() (lib/shared.ts) prefixes plain asset
+   paths with the same value. Unset (local builds) = the domain root. */
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 /* ═══ next.config.mjs — Next.js settings ═══
    output: "export"  → `npm run build` writes a plain static website to out/
@@ -23,7 +23,11 @@ const nextConfig = {
   /* A per-deploy id: the commit on GitHub Actions, the build time locally.
      public/sw.js is registered as sw.js?v=<this>, so each deploy renews the
      offline cache by itself (components/layout/ServiceWorkerRegister.tsx). */
-  env: { NEXT_PUBLIC_BUILD_ID: (process.env.GITHUB_SHA ?? Date.now().toString(36)).slice(0, 12) },
+  env: {
+    NEXT_PUBLIC_BUILD_ID: (process.env.GITHUB_SHA ?? Date.now().toString(36)).slice(0, 12),
+    /* "owner/repo" on GitHub Actions: REPO_URL in lib/shared.ts */
+    NEXT_PUBLIC_REPOSITORY: process.env.GITHUB_REPOSITORY ?? "",
+  },
   experimental: { optimizePackageImports: ["framer-motion", "lucide-react"] },
 };
 

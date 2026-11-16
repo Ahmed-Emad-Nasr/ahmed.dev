@@ -67,10 +67,11 @@ export default function SiteNav() {
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState("#home");
   /* On the home page: the section on screen. Elsewhere: the page's own link
-     (/blog/<case> counts as the blog) */
+     (/blog/<case> counts as the blog, /ar/teaching as teaching) */
+  const page = pathname.replace(/^\/ar(?=\/)/, "");
   const current = onHome
     ? active
-    : (navItems.find((i) => i.href.startsWith("/") && (pathname === i.href || pathname.startsWith(`${i.href}/`)))?.href ?? "");
+    : (navItems.find((i) => i.href.startsWith("/") && (page === i.href || page.startsWith(`${i.href}/`)))?.href ?? "");
 
   useEffect(() => {
     if (!onHome) return;

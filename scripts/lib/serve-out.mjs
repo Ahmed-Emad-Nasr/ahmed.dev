@@ -26,7 +26,7 @@ const TYPES = {
   ".webmanifest": "application/manifest+json",
 };
 
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 /** Starts the server on a free port; resolves { url, close } */
 export function serveOut(root = join(process.cwd(), "out")) {
@@ -62,7 +62,7 @@ export function serveOut(root = join(process.cwd(), "out")) {
 export function samplePages(root = join(process.cwd(), "out")) {
   const pages = ["/", "/this-page-does-not-exist"];
   /* The pages of their own (lib/routes.ts) */
-  for (const page of ["blog", "teaching", "gallery"]) if (existsSync(join(root, `${page}.html`))) pages.push(`/${page}`);
+  for (const page of ["blog", "teaching", "gallery", "ar/teaching"]) if (existsSync(join(root, `${page}.html`))) pages.push(`/${page}`);
   const blogDir = join(root, "blog");
   const html = (name) => existsSync(join(blogDir, `${name}.html`));
   /* A case with a full case file and ones without */

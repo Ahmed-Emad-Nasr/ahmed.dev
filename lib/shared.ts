@@ -3,10 +3,11 @@
  * the site (asset paths, dates, case kinds, defanging).
  *
  * Most used helpers:
- *   normalizePublicHref("Assets/x.pdf") → "/ahmed.dev/Assets/x.pdf" in production.
+ *   normalizePublicHref("Assets/x.pdf") → "/Assets/x.pdf" (with the basePath
+ *     in front when deployed from a project repo, e.g. "/ahmed.dev/Assets/x.pdf").
  *     ALWAYS wrap paths to files in public/ with it (images, PDFs) when you
- *     write a plain <a>/<img> — otherwise they break on GitHub Pages, where
- *     the site lives under /ahmed.dev. (next/link adds it for you.)
+ *     write a plain <a>/<img> — otherwise they break under a sub-path.
+ *     (next/link adds it for you.)
  *   CV_PDF_HREF → the CV file. Replace the PDF in public/Assets/cv/ with the
  *     same name, or change this path.
  *   CASE_KINDS / caseKindOf → how a case's `type` becomes its kind filter.
@@ -108,14 +109,12 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
 /** The CV PDF, in public/ */
 export const CV_PDF_HREF = "Assets/cv/AhmedEmadNasr_CV.pdf";
 
-/** A public/ asset path with the deploy prefix (/ahmed.dev in production).
-    If the repo is renamed, set NEXT_PUBLIC_BASE_PATH (see .env.example) and
-    basePath in next.config.mjs to the new name. */
+/** A public/ asset path with the deploy prefix (basePath in next.config.mjs:
+    "" at the domain root, "/<repo>" in a project repo — set by the deploy
+    workflow, nothing to edit on a rename). */
 export const normalizePublicHref = (href: string): string => {
   if (/^https?:\/\//i.test(href)) return href;
-  const basePath =
-    process.env.NEXT_PUBLIC_BASE_PATH ??
-    (process.env.NODE_ENV === "production" ? "/ahmed.dev" : "");
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
   const normalized = href.startsWith("/") ? href : `/${href}`;
   return `${basePath}${normalized}`.replace(/\/\//g, "/");
 };
@@ -154,8 +153,10 @@ export const HOME_LOCATION = {
 /* The GitHub account: profile links, project links and the contribution graph */
 export const GITHUB_USERNAME = "Ahmed-Emad-Nasr";
 
-/* This site's own repository (the security policy link in security.txt) */
-export const REPO_URL = `https://github.com/${GITHUB_USERNAME}/ahmed.dev`;
+/* This site's own repository (the security policy link in security.txt).
+   On GitHub Actions it is the repo being built (NEXT_PUBLIC_REPOSITORY, set
+   in next.config.mjs from GITHUB_REPOSITORY), so a rename needs no edit. */
+export const REPO_URL = `https://github.com/${process.env.NEXT_PUBLIC_REPOSITORY || `${GITHUB_USERNAME}/ahmed-emad-nasr.github.io`}`;
 
 /* The PGP public key, in public/ — see SECURITY.md for how to add it */
 export const PGP_KEY_FILE = "pgp-key.asc";

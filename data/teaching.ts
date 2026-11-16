@@ -3,12 +3,15 @@
    ═══ data/teaching.ts → components/home/TeachingSection.tsx (#teaching) ═══
    TEACHING_STATS → the big numbers;  DIPLOMA → the curriculum card
    (modules: n = number shown, title, detail);  TEACHING_ROLES → the
-   "where it was taught" cards. Add an item to any array and it appears. */
+   "where it was taught" cards. Add an item to any array and it appears.
+   TEACHING_EN bundles them with the section's own words; the Arabic page
+   (/ar/teaching) uses the same shape from data/teaching-ar.ts — a change
+   here (a new module, a new place) should be made there too. */
 
 import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { TESTIMONIALS } from "@/data/testimonials";
 
-type TeachingStat = { value: string; label: string; japanese: string };
+export type TeachingStat = { value: string; label: string; japanese: string };
 
 export const TEACHING_STATS: TeachingStat[] = [
   { value: "300+", label: "Students at AMIT & NTI (combined)", japanese: "受講生" },
@@ -37,8 +40,11 @@ export const DIPLOMA = {
   format: ["Structured slide deck & notes", "Key security terminology", "Guided hands-on lab", "Practical assessment & quiz"],
 };
 
-type TeachingRole = {
+export type TeachingRole = {
+  /** The organisation — also the key of its logo (data/logos.ts) */
   org: string;
+  /** Shown instead of `org` where the page is in another language */
+  orgLabel?: string;
   role: string;
   period: string;
   link?: string;
@@ -97,3 +103,66 @@ export const TEACHING_ROLES: TeachingRole[] = [
     results: ["500+ subscribers", "60,000+ views", "25+ indexed videos"],
   },
 ];
+
+/* ─── The section's own words, and the whole content in one object ─── */
+
+export type TeachingUi = {
+  eyebrow: string;
+  titleA: string;
+  titleB: string;
+  description: string;
+  /** The chip beside the title: value and label */
+  hoursChip: { value: string; label: string };
+  /** "Curriculum // 160 hours" */
+  curriculumLabel: string;
+  /** Screen-reader word before a module number: "Module" → "Module 01: " */
+  moduleLabel: string;
+  sessionEndsWith: string;
+  /** The period value that marks a current role (highlighted) */
+  now: string;
+  /** The "training for your team" box at the end */
+  cta: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    button: string;
+    /** The e-mail it opens: subject and the first lines of the body */
+    subject: string;
+    body: string;
+  };
+};
+
+export type TeachingContent = {
+  lang: "en" | "ar";
+  stats: TeachingStat[];
+  diploma: typeof DIPLOMA;
+  roles: TeachingRole[];
+  ui: TeachingUi;
+};
+
+export const TEACHING_EN: TeachingContent = {
+  lang: "en",
+  stats: TEACHING_STATS,
+  diploma: DIPLOMA,
+  roles: TEACHING_ROLES,
+  ui: {
+    eyebrow: "Ahmed Emad Nasr // Cybersecurity Instructor",
+    titleA: "Pass it",
+    titleB: "Forward.",
+    description:
+      "I teach security as well as practise it. Below: the full course I wrote, what each module covers, and where I have taught it — with the results.",
+    hoursChip: { value: `${DIPLOMA.hours}h`, label: "Curriculum written" },
+    curriculumLabel: `Curriculum // ${DIPLOMA.hours} hours`,
+    moduleLabel: "Module",
+    sessionEndsWith: "Every session ends with",
+    now: "Now",
+    cta: {
+      eyebrow: "Training // For your team",
+      title: "Need this training for your team?",
+      text: "The diploma, or any module of it — for a company SOC team, a university, or a training centre. In English or Arabic, on site or online.",
+      button: "Request a training",
+      subject: "Cybersecurity training request",
+      body: "Hi Ahmed,\n\nOrganisation:\nTopic / modules:\nNumber of trainees and their level:\nOn site or online:\nPreferred dates:\n",
+    },
+  },
+};

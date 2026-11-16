@@ -2,10 +2,10 @@
 
    ═══ app/robots.ts ═══
    Written at build time into out/robots.txt.
-   Note: crawlers only read robots.txt at the ROOT of a domain. While the site
-   lives under /ahmed.dev on github.io, the file is served at
-   /ahmed.dev/robots.txt and the sitemap is found through Search Console and
-   the <link rel="canonical"> tags instead; on a custom domain it works as is. */
+   Note: crawlers only read robots.txt at the ROOT of a domain — it works as
+   is when the site is deployed from Ahmed-Emad-Nasr.github.io or a custom
+   domain. From a project repo (a sub-path) it is ignored, and the sitemap is
+   found through Search Console instead. */
 
 import type { MetadataRoute } from "next";
 import { absoluteUrl } from "@/lib/site";

@@ -19,8 +19,8 @@ export default function manifest(): MetadataRoute.Manifest {
     lang: "en",
     dir: "ltr",
     categories: ["security", "education", "business"],
-    /* The site lives under /ahmed.dev on GitHub Pages: "/" would open the
-       github.io root from an installed app */
+    /* With the basePath: from a project repo "/" would open the github.io
+       root from an installed app */
     /* A stable app identity, so a future start_url change does not
        install as a second app */
     id: normalizePublicHref("/"),

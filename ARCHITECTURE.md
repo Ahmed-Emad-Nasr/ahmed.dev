@@ -1,8 +1,10 @@
 # Architecture
 
-A static Next.js 16 export (`output: "export"`) served by GitHub Pages under
-`/ahmed.dev`. Pages: the portfolio (`/`), the blog (`/blog`), teaching
-(`/teaching`), the gallery (`/gallery`), plus one static page per case
+A static Next.js 16 export (`output: "export"`) served by GitHub Pages at the
+root of `ahmed-emad-nasr.github.io` (the deploy workflow sets the base path
+from the repository: `""` in `Ahmed-Emad-Nasr.github.io`, `/<repo>` in any
+other). Pages: the portfolio (`/`), the blog (`/blog`), teaching
+(`/teaching`, and in Arabic `/ar/teaching` — data/teaching-ar.ts), the gallery (`/gallery`), plus one static page per case
 (`/blog/<id>`). Which section lives on which page is `SECTION_PAGE` in
 `lib/routes.ts` — the navbar, the command palette, the `g` shortcuts and old
 `/#cases`-style links all follow it.

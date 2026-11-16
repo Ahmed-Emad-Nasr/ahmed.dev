@@ -14,7 +14,8 @@ import type { Metadata } from "next";
 import PageShell from "@/components/layout/PageShell";
 import PageEffects from "@/lib/perf/PageEffects";
 import { ArtGallery } from "@/components/gallery/dynamic";
-import { OG_IMAGE, absoluteUrl } from "@/lib/site";
+import { absoluteUrl } from "@/lib/site";
+import { pageShareImage } from "@/lib/og";
 import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
 import { GALLERY_ID, GALLERY_URL } from "@/lib/page-ids";
 
@@ -23,6 +24,9 @@ import { GALLERY_ID, GALLERY_URL } from "@/lib/page-ids";
 const DESCRIPTION =
   "Ahmed Emad Nasr's certificates and proof: his degree, professional cybersecurity certifications (eJPT, CCNA …), courses and records, and photos from classrooms and security events.";
 const TITLE = "Ahmed Emad Nasr — Certificates & Gallery";
+
+/* This page's own share card (npm run og:cases), else the site card */
+const SHARE_IMAGE = pageShareImage("gallery", "Ahmed Emad Nasr — certificates and gallery");
 
 export const metadata: Metadata = {
   /* absolute: the name is already in it (no " | Ahmed Emad Nasr" template) */
@@ -37,7 +41,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "Ahmed Emad Nasr",
     locale: "en_US",
-    images: [OG_IMAGE],
+    images: [SHARE_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
@@ -45,7 +49,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     site: "@0x3omda",
     creator: "@0x3omda",
-    images: [{ url: OG_IMAGE.url, alt: OG_IMAGE.alt }],
+    images: [{ url: SHARE_IMAGE.url, alt: SHARE_IMAGE.alt }],
   },
 };
 

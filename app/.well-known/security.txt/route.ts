@@ -5,11 +5,10 @@
  * vulnerability in this site, and until when this information is valid.
  * Written at build time into out/.well-known/security.txt.
  *
- * Note: tools only read it at the ROOT of a domain. This copy is served at
- * /ahmed.dev/.well-known/security.txt (linked from the footer); the copy at
- * the root, https://ahmed-emad-nasr.github.io/.well-known/security.txt, is
- * published by the separate repository Ahmed-Emad-Nasr.github.io. Both name
- * each other as Canonical. On a custom domain this file alone is enough.
+ * Note: tools only read it at the ROOT of a domain. When the site is deployed
+ * from Ahmed-Emad-Nasr.github.io (or a custom domain) it is at the root, and
+ * this file is the only copy. From a project repo it is served under the
+ * sub-path and names the root copy as Canonical too.
  *
  * Expires: RFC 9116 wants a date less than a year away. It is set to 364
  * days after the build, and the deploy workflow rebuilds the site every
@@ -23,7 +22,7 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { PROFILE } from "@/data/profile";
-import { absoluteUrl, SITE_BASE_URL } from "@/lib/site";
+import { absoluteUrl, AT_DOMAIN_ROOT, SITE_ORIGIN } from "@/lib/site";
 import { PGP_KEY_FILE, REPO_URL } from "@/lib/shared";
 
 /* Required by the static export (see the same line in app/manifest.ts) */
@@ -47,8 +46,8 @@ export function GET(): Response {
     ...(pgpFingerprint ? [`Encryption: ${absoluteUrl(`/${PGP_KEY_FILE}`)}`] : []),
     "Preferred-Languages: en, ar",
     /* The root copy first: the one scanners find */
-    `Canonical: ${new URL("/.well-known/security.txt", SITE_BASE_URL).href}`,
-    `Canonical: ${absoluteUrl("/.well-known/security.txt")}`,
+    `Canonical: ${SITE_ORIGIN}/.well-known/security.txt`,
+    ...(AT_DOMAIN_ROOT ? [] : [`Canonical: ${absoluteUrl("/.well-known/security.txt")}`]),
     `Policy: ${REPO_URL}/blob/master/SECURITY.md`,
   ];
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-<a href="https://ahmed-emad-nasr.github.io/ahmed.dev/">
+<a href="https://ahmed-emad-nasr.github.io/">
   <img src="./screenshots/home.png" alt="Ahmed Emad Nasr — portfolio home page" width="100%">
 </a>
 
@@ -8,12 +8,12 @@
 
 ### Information Security Portfolio · Blog · Teaching · Proof
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=19&duration=2800&pause=900&color=F0304F&center=true&vCenter=true&width=720&lines=Information+Security+Officer;GRC+%C2%B7+SOC+%C2%B7+IR%2FDFIR+%C2%B7+Malware+Analysis+%C2%B7+IAM;Cybersecurity+Instructor+%E2%80%94+AMIT+%26+NTI;82+case+studies+%C2%B7+54+ATT%26CK+techniques+mapped;%22Security+is+a+process.+Evidence+makes+it+repeatable.%22)](https://ahmed-emad-nasr.github.io/ahmed.dev/)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=19&duration=2800&pause=900&color=F0304F&center=true&vCenter=true&width=720&lines=Information+Security+Officer;GRC+%C2%B7+SOC+%C2%B7+IR%2FDFIR+%C2%B7+Malware+Analysis+%C2%B7+IAM;Cybersecurity+Instructor+%E2%80%94+AMIT+%26+NTI;82+case+studies+%C2%B7+54+ATT%26CK+techniques+mapped;%22Security+is+a+process.+Evidence+makes+it+repeatable.%22)](https://ahmed-emad-nasr.github.io/)
 
-[![Live portfolio](https://img.shields.io/badge/LIVE-portfolio-BC002D?style=for-the-badge&logo=githubpages&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/)
-[![Blog](https://img.shields.io/badge/BLOG-82_cases-111111?style=for-the-badge&logo=readdotcv&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/blog)
-[![Teaching](https://img.shields.io/badge/TEACHING-160h_diploma-00A6B2?style=for-the-badge&logo=googleclassroom&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/teaching)
-[![Gallery](https://img.shields.io/badge/PROOF-certificates-E3B341?style=for-the-badge&logo=credly&logoColor=black)](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery)
+[![Live portfolio](https://img.shields.io/badge/LIVE-portfolio-BC002D?style=for-the-badge&logo=githubpages&logoColor=white)](https://ahmed-emad-nasr.github.io/)
+[![Blog](https://img.shields.io/badge/BLOG-82_cases-111111?style=for-the-badge&logo=readdotcv&logoColor=white)](https://ahmed-emad-nasr.github.io/blog)
+[![Teaching](https://img.shields.io/badge/TEACHING-160h_diploma-00A6B2?style=for-the-badge&logo=googleclassroom&logoColor=white)](https://ahmed-emad-nasr.github.io/teaching)
+[![Gallery](https://img.shields.io/badge/PROOF-certificates-E3B341?style=for-the-badge&logo=credly&logoColor=black)](https://ahmed-emad-nasr.github.io/gallery)
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-connect-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahmed-emad-nasr/)
 [![YouTube](https://img.shields.io/badge/YouTube-@AhmedEmad--0x3omda-FF0000?style=flat-square&logo=youtube&logoColor=white)](https://www.youtube.com/@AhmedEmad-0x3omda)
@@ -36,8 +36,8 @@
 project    : ahmed.dev — the portfolio of Ahmed Emad Nasr (0x3omda)
 role       : Information Security Officer · Cybersecurity Instructor (AMIT & NTI)
 covers     : GRC · SOC · Incident Response & DFIR · Malware Analysis · IAM · Data Security
-live       : https://ahmed-emad-nasr.github.io/ahmed.dev/
-pages      : /  ·  /blog  ·  /blog/<case>  ·  /teaching  ·  /gallery
+live       : https://ahmed-emad-nasr.github.io/
+pages      : /  ·  /blog  ·  /blog/<case>  ·  /teaching  ·  /ar/teaching  ·  /gallery
 built_with : Next.js 16 (static export) · React 19 · TypeScript · Tailwind CSS v4 · GSAP · Framer Motion
 hosting    : GitHub Pages — no server, everything is built ahead of time
 ```
@@ -91,11 +91,12 @@ flowchart LR
 
 | Page | What is on it |
 | :-- | :-- |
-| [`/`](https://ahmed-emad-nasr.github.io/ahmed.dev/) | Hero, roles, projects, open source, tools, experience, the path, LinkedIn recommendations, training platforms, process, FAQ, contact |
-| [`/blog`](https://ahmed-emad-nasr.github.io/ahmed.dev/blog) | Searchable library of **82** cases, **25** videos, **54** ATT&CK techniques mapped, **50+** custom Wazuh rules, a triage challenge, the home lab |
+| [`/`](https://ahmed-emad-nasr.github.io/) | Hero, roles, projects, open source, tools, experience, the path, LinkedIn recommendations, training platforms, process, FAQ, contact |
+| [`/blog`](https://ahmed-emad-nasr.github.io/blog) | Searchable library of **82** cases, **25** videos, **54** ATT&CK techniques mapped, **50+** custom Wazuh rules, a triage challenge, the home lab |
 | `/blog/<case>` | Goal → what happened → what I did → how to prevent it → evidence, with the PDF report |
-| [`/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/teaching) | The 160-hour SOC & Cybersecurity Diploma module by module, where it was taught, **25** student notes quoted word for word |
-| [`/gallery`](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery) | Degree, certifications, courses and records, photos from classrooms and events |
+| [`/teaching`](https://ahmed-emad-nasr.github.io/teaching) | The 160-hour SOC & Cybersecurity Diploma module by module, where it was taught, **25** student notes quoted word for word, and a training request for teams |
+| [`/ar/teaching`](https://ahmed-emad-nasr.github.io/ar/teaching) | The same page in Arabic (right to left, Cairo font), linked to the English one with `hreflang` |
+| [`/gallery`](https://ahmed-emad-nasr.github.io/gallery) | Degree, certifications, courses and records, photos from classrooms and events |
 
 Operator tools on every page: `Ctrl / ⌘ + K` command palette · `?` keyboard
 shortcuts · `g` + key to jump to a section · type `3omda` for the terminal.
@@ -163,14 +164,15 @@ Or all of them at once: `npm run verify`.
 ## `> ./quickstart.sh`
 
 ```bash
-git clone https://github.com/Ahmed-Emad-Nasr/ahmed.dev.git
-cd ahmed.dev
+git clone https://github.com/Ahmed-Emad-Nasr/ahmed-emad-nasr.github.io.git
+cd ahmed-emad-nasr.github.io
 npm install
 npm run dev          # http://localhost:3000
 ```
 
-Copy `.env.example` to `.env.local` only if the site moves away from
-`/ahmed.dev` (`NEXT_PUBLIC_BASE_PATH`). The contact form needs no setup: it
+No environment setup: the deploy workflow reads the address from the
+repository (domain root in `Ahmed-Emad-Nasr.github.io`, `/<repo>` anywhere
+else) — see `.env.example` to test a sub-path locally. The contact form needs no setup: it
 opens the visitor's mail app with the message filled in, with Gmail and
 "copy message" as fallbacks.
 
@@ -179,7 +181,7 @@ opens the visitor's mail app with the message filled in, with Gmail and
 ## `> tree -L 2`
 
 ```text
-app/          routes: /, /blog, /blog/[slug], /teaching, /gallery, metadata, sitemap, feeds
+app/          routes: /, /blog, /blog/[slug], /teaching, /ar/teaching, /gallery, metadata, sitemap, feeds
 components/
   layout/     navigation, theme, terminal, command palette, shortcuts, footer
   ui/         shared pieces: SectionHeader, CounterChip, ShowMore, kit

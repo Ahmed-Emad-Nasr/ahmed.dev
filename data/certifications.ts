@@ -16,7 +16,8 @@
  *       Add an image → save it as N+1.webp and raise this number.
  *     • ALL_GALLERY_CERTIFICATES → which of those images are certificates, with
  *       title, issuer, kind, group (see GalleryCertGroup below = the filter
- *       buttons) and summary. galleryIndex = the image number.
+ *       buttons), summary and, if the issuer offers one, verifyUrl (a
+ *       "Verify" link on the card). galleryIndex = the image number.
  *     Images not listed there show as photos ("Record 07").
  *     The home page counts professional CERTIFICATIONS only
  *     (PROFESSIONAL_CERTIFICATION_COUNT) — courses, programmes, exam score
@@ -78,6 +79,10 @@ type GalleryCertificateItem = {
   kind: string;
   group: GalleryCertGroup;
   summary: string;
+  /** The issuer's own verification page (Credly, Accredible, the issuer's
+      certificate lookup…). Shows a "Verify" link on the card and goes into
+      the JSON-LD. Leave it out when there is none — never a guess. */
+  verifyUrl?: string;
 };
 
 /*
@@ -514,13 +519,17 @@ export const galleryMetadata = (index: number): GalleryMetadata => {
 export const galleryImagePath = (index: number): string =>
   `Assets/art-gallery/Images/image_display_thumb/${index}.webp`;
 
+/* A gallery card's verification link, by image number */
+const galleryVerifyUrl = (index?: number): string | undefined =>
+  index ? ALL_GALLERY_CERTIFICATES.find((c) => c.galleryIndex === index)?.verifyUrl : undefined;
+
 export const certificationsJsonLd = (personId: string) =>
   certifications.map((cert) => ({
     "@type": "EducationalOccupationalCredential",
     name: cert.name,
     ...(cert.shortName ? { alternateName: cert.shortName } : {}),
-    /* The issuer's own verification page, or the scan in the gallery */
-    ...(cert.verifyUrl ? { url: cert.verifyUrl } : {}),
+    /* The issuer's own verification page (here or on the gallery card) */
+    ...((cert.verifyUrl ?? galleryVerifyUrl(cert.galleryIndex)) ? { url: cert.verifyUrl ?? galleryVerifyUrl(cert.galleryIndex) } : {}),
     ...(cert.galleryIndex ? { image: `${SITE_BASE_URL}/${galleryImagePath(cert.galleryIndex)}` } : {}),
     credentialCategory: cert.credential === "course" ? "certificate" : "certification",
     educationalLevel: "professional",

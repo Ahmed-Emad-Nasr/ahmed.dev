@@ -147,9 +147,11 @@ export const metadata: Metadata = {
   /* iOS / Safari: no automatic phone / address / email links — case pages
      are full of IPs, hashes and timestamps that look like phone numbers */
   formatDetection: { telephone: false, address: false, email: false },
-  /* Google Search Console. Both stay: removing a token un-verifies the
-     property it belongs to. The first is the URL-prefix property
-     https://ahmed-emad-nasr.github.io/ahmed.dev/ (added Nov 2026). */
+  /* Google Search Console (HTML-tag method). Keep every token: removing one
+     un-verifies the property it belongs to. The first is the URL-prefix
+     property https://ahmed-emad-nasr.github.io/ahmed.dev/ (Nov 2026). When
+     the site moves to the domain root, add the property
+     https://ahmed-emad-nasr.github.io/ and paste its token here as well. */
   verification: {
     google: ["e3SczIbkSrdElwRDQN5J7KL1GzfH7McL2xq_Hk-DEzw", "VCIeVhcDb-vQGmE68weZARtruR_F2bUwv6hcjKYdwqo"],
   },
@@ -253,9 +255,9 @@ const STRUCTURED_DATA_JSON = jsonLd({
     {
       "@type": "WebSite",
       "@id": WEBSITE_ID,
-      /* The site name Google shows above results. Must match the WebSite
-         name on the domain's real home page (ahmed-emad-nasr.github.io/,
-         served by the separate repo Ahmed-Emad-Nasr.github.io) */
+      /* The site name Google shows above results. Google reads it only on
+         the home page at the root of a domain — this one, once the site is
+         deployed from Ahmed-Emad-Nasr.github.io */
       name: "Ahmed Emad Nasr",
       alternateName: ["ahmed.dev", "3omda", "Ahmed Emad Nasr — Information Security"],
       url: SITE_URL,

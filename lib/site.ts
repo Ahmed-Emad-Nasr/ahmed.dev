@@ -2,11 +2,23 @@
    slash: next.config.mjs has no trailingSlash, so /blog is the real URL.
 
    ═══ lib/site.ts ═══
-   SITE_BASE_URL → the live address of the site. Change it if you move to a
-   custom domain or rename the repo. OG_IMAGE → the default share picture
-   (public/og-image.png, 1200×630) used when a page has none of its own. */
+   SITE_BASE_URL → the live address of the site. The deploy workflow sets it
+   from the repository (actions/configure-pages → NEXT_PUBLIC_SITE_URL), so a
+   repo rename or a custom domain needs no edit here; local builds use the
+   github.io domain root. SITE_ORIGIN → the domain alone (root files such as
+   robots.txt and security.txt are only read there). OG_IMAGE → the default
+   share picture (public/og-image.png, 1200×630). */
 
-export const SITE_BASE_URL = "https://ahmed-emad-nasr.github.io/ahmed.dev";
+const DEFAULT_ORIGIN = "https://ahmed-emad-nasr.github.io";
+
+export const SITE_BASE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL || `${DEFAULT_ORIGIN}${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}`
+).replace(/\/+$/, "");
+
+export const SITE_ORIGIN = new URL(SITE_BASE_URL).origin;
+
+/** True when the site is served from the root of its domain */
+export const AT_DOMAIN_ROOT = SITE_BASE_URL === SITE_ORIGIN;
 
 /** Turns an internal path into an absolute URL in the form crawlers expect */
 export const absoluteUrl = (path: string): string => {

@@ -1307,6 +1307,29 @@ html[data-intro-seen] [data-app-loader] {
   word-break: auto-phrase;
 }
 
+/* ─── Arabic pages (/ar/…, data/teaching-ar.ts) ───────────────────────
+   The wrapper carries lang="ar" dir="rtl" and the Cairo font variable
+   (app/ar/fonts.ts). Arabic letters join up, so no letter-spacing (the
+   site's tracking-[…] would break every word apart); Cairo has no italic,
+   and Arabic lines need more room than the Latin display face. Latin words
+   keep JetBrains Mono in the mono labels. */
+.lang-ar {
+  --font-display: var(--font-arabic), var(--font-display-google), sans-serif;
+  --font-body: var(--font-arabic), var(--font-body-google), sans-serif;
+  --font-mono: var(--font-mono-google), var(--font-arabic), monospace;
+  font-family: var(--font-body);
+}
+.lang-ar,
+.lang-ar :not([lang="en"], [lang="en"] *) {
+  letter-spacing: normal !important;
+}
+.lang-ar :is(h1, h2, h3) {
+  line-height: 1.25 !important;
+}
+.lang-ar .italic {
+  font-style: normal;
+}
+
 /* ─── ATT&CK: the heat fills in as the tiles scroll into view ──────────
    Each tile starts as a plain surface and reaches its own heat (more
    reports = deeper red) when it arrives on screen — once.
