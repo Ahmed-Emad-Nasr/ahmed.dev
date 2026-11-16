@@ -30,10 +30,10 @@ import { whenIntroDone } from "@/lib/intro";
 function FieldRow({ label, value, hot = false }: { label: string; value: string; hot?: boolean }) {
   return (
     <div className="flex items-baseline justify-between gap-4 py-2.5 border-b border-foreground/5 last:border-b-0">
-      <dt className="font-mono text-[0.625rem] uppercase tracking-[0.25em] text-foreground/60 shrink-0">
+      <dt className="font-mono text-[11px] uppercase tracking-[0.25em] text-foreground/35 shrink-0">
         {label}
       </dt>
-      <dd className={`max-w-[72%] font-mono text-xs text-right leading-relaxed break-words ${hot ? "text-accent font-bold" : "text-foreground/80"}`}>
+      <dd className={`font-mono text-xs text-right leading-relaxed ${hot ? "text-accent font-bold" : "text-foreground/80"}`}>
         {value}
       </dd>
     </div>
@@ -41,7 +41,7 @@ function FieldRow({ label, value, hot = false }: { label: string; value: string;
 }
 
 /* Label colours of the spec strip, in order */
-const SPEC_TONES = ["text-primary-ink", "text-accent", "text-tertiary", "text-foreground/60"];
+const SPEC_TONES = ["text-accent", "text-tertiary", "text-foreground/50", "text-primary-ink"];
 
 export default function HeroSection({
   description,
@@ -154,11 +154,11 @@ export default function HeroSection({
       </div>
 
       {/* ─── Flow ─── */}
-      <div className="hero-content relative z-10 w-full max-w-[90rem] mx-auto flex flex-col items-start">
+      <div className="hero-content relative z-10 w-full max-w-7xl mx-auto flex flex-col items-start">
         {/* Badge */}
         <div className="flex max-w-full items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8">
           <div className="w-2 h-2 shrink-0 bg-primary" />
-          <span className="min-w-0 sm:whitespace-nowrap text-[0.5rem] font-mono font-bold uppercase tracking-[0.15em] text-on-surface-variant sm:text-xs sm:tracking-[0.16em]">
+          <span className="min-w-0 text-xs font-mono font-bold uppercase tracking-[0.16em] text-on-surface-variant">
             {PROFILE.japaneseTitle}
           </span>
         </div>
@@ -166,21 +166,18 @@ export default function HeroSection({
         {/* ─── Masthead: name first, portrait second  one row ─── */}
         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 lg:gap-16 w-full">
           {/* Name */}
-          <div className="text-center md:text-left order-2 md:order-1 w-full md:w-auto md:flex-1 min-w-0">
-            <p className="font-mono text-[0.6875rem] md:text-xs font-bold uppercase tracking-[0.16em] text-primary-ink mb-3">
+          <div className="text-center md:text-left order-2 md:order-1 min-w-0">
+            <p className="font-mono text-[11px] md:text-xs font-bold uppercase tracking-[0.16em] text-primary-ink mb-3">
               Portfolio · 履歴書
             </p>
-            {/* The size follows the room left beside the portrait, so "EMAD NASR"
-                (about 8.3 times the font size wide) always fits on ONE line:
-                phones → screen width; md → screen minus portrait, gap and indent;
-                lg → the same inside the 90rem column, capped at the old 8rem (9xl). */}
-            <h1 className="font-display text-[min(3.75rem,calc((100vw-3rem)/8.3))] md:text-[calc((100vw-24.75rem)/8.3)] lg:text-[min(8rem,calc((min(100vw,93rem)-29.5rem)/8.3))] font-black leading-[0.85] tracking-tighter uppercase">
+            {/* min(3.75rem, 15vw) on phones: "AHMED" at a fixed 60px is wider than a 320px screen */}
+            <h1 className="font-display text-[min(3.75rem,15vw)] sm:text-7xl lg:text-8xl xl:text-9xl font-black leading-[0.85] tracking-tighter uppercase">
               <RevealText text="Ahmed" className="block text-foreground" />
-              {/* Side by side on one line, at every width */}
+              {/* Two spaces + pre-wrap: one line per word at every width */}
               <RevealText
-                text="Emad Nasr"
+                text="Emad  Nasr"
                 delay={0.12}
-                className="block md:ml-10 text-transparent whitespace-pre"
+                className="block md:ml-10 text-transparent whitespace-pre-wrap"
                 style={{ WebkitTextStroke: "2px var(--primary)" }}
               />
             </h1>
@@ -193,7 +190,7 @@ export default function HeroSection({
           </div>
 
           {/* Portrait */}
-          <div className="hero-image relative max-w-[78vw] w-[13.75rem] sm:w-[16.25rem] lg:w-[20rem] aspect-square shrink-0 order-1 md:order-2 md:ml-auto">
+          <div className="hero-image relative w-[220px] sm:w-[260px] lg:w-[320px] max-w-[78vw] aspect-square shrink-0 order-1 md:order-2 md:ml-auto">
             {/* Hinomaru sun */}
             <div
               className="pointer-events-none absolute inset-0"
@@ -251,7 +248,7 @@ export default function HeroSection({
                   width={560}
                   height={560}
                   priority
-                  sizes="(max-width: 639px) 176px, (max-width: 1023px) 216px, 276px"
+                  sizes="(max-width: 640px) 220px, (max-width: 1024px) 260px, 320px"
                   className="w-full h-full object-cover object-top grayscale group-hover/photo:grayscale-0 group-hover/photo:scale-105 transition-all duration-1000"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/25 via-transparent to-transparent group-hover/photo:from-transparent transition-all duration-700" />
@@ -290,14 +287,14 @@ export default function HeroSection({
             <div className="mb-8 w-full border border-foreground/5 bg-foreground/[0.02]">
               <div className="border-b border-foreground/5 px-4 py-2 flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-primary" />
-                <span className="font-mono text-[0.625rem] text-foreground/60 uppercase tracking-[0.16em]">
+                <span className="font-mono text-[11px] text-foreground/40 uppercase tracking-[0.16em]">
                   Technical Specifications
                 </span>
               </div>
               <div className="px-4 py-4 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
                 {PROFILE.hero.specs.map((spec, i) => (
                   <div key={spec.label} className="spec-item flex flex-col gap-1.5">
-                    <span className={`font-mono text-[0.625rem] font-bold tracking-[0.2em] uppercase ${SPEC_TONES[i % SPEC_TONES.length]}`}>
+                    <span className={`font-mono text-[11px] font-bold tracking-[0.2em] uppercase ${SPEC_TONES[i % SPEC_TONES.length]}`}>
                       {spec.label}
                     </span>
                     <span className="font-mono text-sm text-foreground/85">
@@ -373,7 +370,7 @@ export default function HeroSection({
                     />
                     <s.icon size={18} strokeWidth={1.5} />
                     <span
-                      className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 bg-background border border-primary/40 font-mono text-[0.5625rem] font-bold tracking-[0.25em] uppercase text-primary-ink opacity-0 group-hover/social:opacity-100 transition-opacity duration-300"
+                      className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 bg-background border border-primary/40 font-mono text-[11px] font-bold tracking-[0.25em] uppercase text-primary-ink opacity-0 group-hover/social:opacity-100 transition-opacity duration-300"
                       aria-hidden="true"
                     >
                       {s.name}
@@ -393,7 +390,7 @@ export default function HeroSection({
             <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/50 pointer-events-none" />
             <div className="flex items-center gap-3 mb-5">
               <div className="w-8 h-[2px] bg-primary" />
-              <span className="font-mono text-[0.625rem] font-bold tracking-[0.16em] uppercase text-primary-ink">
+              <span className="font-mono text-[11px] font-bold tracking-[0.16em] uppercase text-primary-ink">
                 Field Record
               </span>
               <span
@@ -423,7 +420,7 @@ export default function HeroSection({
         role="img"
       >
         <div className="w-8 h-[1px] bg-primary/40" />
-        <p className="text-[0.625rem] text-foreground/60 font-mono font-bold uppercase tracking-[0.16em]">
+        <p className="text-[11px] text-foreground/15 font-mono font-bold uppercase tracking-[0.16em]">
           継続は力なり · PERSEVERANCE IS POWER
         </p>
       </div>
