@@ -16,6 +16,7 @@
  */
 
 import { RevealText } from "@/components/ui/RevealText";
+import { HeroMascot } from "@/components/home/HeroMascot";
 import { PROFILE } from "@/data/profile";
 import { normalizePublicHref } from "@/lib/shared";
 import gsap from "gsap";
@@ -282,6 +283,10 @@ export default function HeroSection({
                 border: "1px dashed rgba(255,255,255,0.06)",
               }}
             />
+
+            {/* Mascot companion — a random blue-team mascot per visit
+                (components/home/HeroMascot.tsx); click it for the next one */}
+            <HeroMascot className="absolute -bottom-3 -left-4 z-20 lg:-left-8" />
           </div>
         </div>
 

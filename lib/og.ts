@@ -4,7 +4,7 @@
  * npm run og:cases draws one 1200×630 card for each of /blog, /teaching and
  * /gallery into public/og/pages/<page>.jpg (scripts/og/generate-case-og.mjs).
  * pageShareImage("blog", …) returns that card, or the site-wide card
- * (public/og-image.png) when it has not been drawn yet — so a missing file
+ * (public/og-image.jpg) when it has not been drawn yet — so a missing file
  * never publishes a dead image link.
  *
  * Server only (reads the disk at build time): import it from page.tsx files,

@@ -7,7 +7,7 @@
    repo rename or a custom domain needs no edit here; local builds use
    /ahmed.dev. SITE_ORIGIN → the domain alone (root files such as
    robots.txt and security.txt are only read there). OG_IMAGE → the default
-   share picture (public/og-image.png, 1200×630). */
+   share picture (public/og-image.jpg, 1200×630 — npm run og:site). */
 
 const DEFAULT_ORIGIN = "https://ahmed-emad-nasr.github.io";
 
@@ -34,12 +34,12 @@ export const absoluteUrl = (path: string): string => {
 /** A case page's URL — the only place this shape is defined */
 export const caseUrl = (id: string): string => absoluteUrl(`/blog/${id}`);
 
-/** The site-wide share card (public/og-image.png) */
+/** The site-wide share card (public/og-image.jpg — npm run og:site) */
 export const OG_IMAGE = {
-  url: `${SITE_BASE_URL}/og-image.png`,
+  url: `${SITE_BASE_URL}/og-image.jpg`,
   width: 1200,
   height: 630,
-  type: "image/png",
+  type: "image/jpeg",
   alt: "Ahmed Emad Nasr — Information Security Officer: GRC, SOC, DFIR, IAM",
 };
 

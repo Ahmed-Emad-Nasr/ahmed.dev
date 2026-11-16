@@ -18,12 +18,13 @@
     "check:links": "node scripts/check-links.mjs",
     "check:a11y": "node scripts/a11y-audit.mjs",
     "check:layout": "node scripts/layout-audit.mjs",
-    "prepare:assets": "npm run pdf:clean && npm run thumbs && npm run hero:sizes && npm run icons && npm run og:cases",
+    "prepare:assets": "npm run pdf:clean && npm run thumbs && npm run hero:sizes && npm run icons && npm run og:cases && npm run og:site",
     "pdf:clean": "node scripts/run-python.mjs scripts/pdf-clean.py public/Assets/Cases",
     "thumbs": "node scripts/generate-thumbs.mjs",
     "hero:sizes": "node scripts/generate-hero-sizes.mjs",
     "icons": "node scripts/generate-icons.cjs",
-    "og:cases": "node scripts/og/generate-case-og.mjs"
+    "og:cases": "node scripts/og/generate-case-og.mjs",
+    "og:site": "node scripts/og/generate-site-og.mjs"
   },
   "dependencies": {
     "focus-trap": "8.2.2",
