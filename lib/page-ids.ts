@@ -10,6 +10,10 @@ export const BLOG_URL = absoluteUrl("/blog");
 export const BLOG_ID = `${BLOG_URL}#blog`;
 export const TEACHING_URL = absoluteUrl("/teaching");
 export const TEACHING_ID = `${TEACHING_URL}#teaching`;
+export const CV_URL = absoluteUrl("/cv");
+export const CV_ID = `${CV_URL}#cv`;
+export const VIDEOS_URL = absoluteUrl("/videos");
+export const VIDEOS_ID = `${VIDEOS_URL}#videos`;
 export const TEACHING_AR_URL = absoluteUrl("/ar/teaching");
 export const TEACHING_AR_ID = `${TEACHING_AR_URL}#teaching`;
 /* The teaching page in both languages (hreflang): each page lists both */

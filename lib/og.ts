@@ -15,7 +15,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { OG_IMAGE, absoluteUrl } from "@/lib/site";
 
-export type SharePage = "blog" | "teaching" | "gallery";
+export type SharePage = "blog" | "teaching" | "gallery" | "cv" | "videos";
 
 export type ShareImage = { url: string; width: number; height: number; type: string; alt: string };
 

@@ -105,6 +105,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
       images: galleryImages,
     },
+    /* The CV page and the videos page */
+    {
+      url: absoluteUrl("/cv"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: absoluteUrl("/videos"),
+      lastModified: SITE_VIDEOS[0]?.publishedAt ? parseDate(SITE_VIDEOS[0].publishedAt) : latestCaseDate,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
     {
       url: loc(absoluteUrl("/Assets/cv/AhmedEmadNasr_CV.pdf")),
       lastModified: latestCaseDate,

@@ -46,6 +46,7 @@ WHERE EACH THING GOES
 - Wazuh detection rule   → data/detection-rules.ts
 - Training platform      → data/platforms.ts
 - Organisation logo      → data/logos.ts
+- CV                     → data/cv.ts (the /cv page) — keep it identical to the PDF CV
 
 RULES — follow all of them
 1. Use ONLY facts I give you or that are in the files I attach. Never invent

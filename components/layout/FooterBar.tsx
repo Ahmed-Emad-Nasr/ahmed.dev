@@ -15,7 +15,7 @@
 
 import Link from "next/link";
 import { PROFILE } from "@/data/profile";
-import { CV_PDF_HREF, PGP_KEY_FILE, REPO_URL, normalizePublicHref } from "@/lib/shared";
+import { PGP_KEY_FILE, REPO_URL, normalizePublicHref } from "@/lib/shared";
 
 /* The last line of every page: the mark, the copyright, the legal pages and
    the design credit */
@@ -42,11 +42,12 @@ export default function FooterBar({ className = "" }: { className?: string }) {
         <span className="text-primary-ink" aria-hidden="true">•</span>
         <Link prefetch={false} href="/gallery" className="hover:text-primary-ink transition-colors">Gallery</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>
-        {/* Files, not pages: plain links (the CV, how to report a security issue) */}
-        <a href={normalizePublicHref(CV_PDF_HREF)} target="_blank" rel="noopener noreferrer" className="hover:text-primary-ink transition-colors">
-          CV
-        </a>
+        <Link prefetch={false} href="/videos" className="hover:text-primary-ink transition-colors">Videos</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>
+        {/* The CV page (it has the PDF download) */}
+        <Link prefetch={false} href="/cv" className="hover:text-primary-ink transition-colors">CV</Link>
+        <span className="text-primary-ink" aria-hidden="true">•</span>
+        {/* A file, not a page: how to report a security issue */}
         <a href={normalizePublicHref(".well-known/security.txt")} className="hover:text-primary-ink transition-colors">
           Security
         </a>

@@ -57,7 +57,8 @@ const cfg = join(ROOT, "data");
 const { caseEvidenceLibrary } = load(join(cfg, "cases.ts"));
 const { caseDetails } = load(join(cfg, "case-details.ts"));
 const { caseAttackMapping, coveredTechniqueCount } = load(join(cfg, "attack.ts"));
-const { blogYoutubeVideos } = load(join(cfg, "youtube.ts"));
+const { blogYoutubeVideos, blogYoutubePlaylists } = load(join(cfg, "youtube.ts"));
+const { CV } = load(join(cfg, "cv.ts"));
 const { DIPLOMA, TEACHING_STATS } = load(join(cfg, "teaching.ts"));
 const { STUDENT_FEEDBACK } = load(join(cfg, "testimonials.ts"));
 const { ALL_GALLERY_CERTIFICATES, PROFESSIONAL_CERTIFICATION_COUNT } = load(join(cfg, "certifications.ts"));
@@ -144,6 +145,26 @@ const PAGES = [
     accent: "#a16207", ink: "#facc15", glow: "rgba(250,204,21,.25)",
     /* A passport-style photo: cut off at the shoulders, so its sides fade too */
     photo: { file: "portrait-formal.webp", width: 430, left: 690, top: 70, fadeSides: true },
+  },
+  {
+    id: "cv",
+    badge: "Curriculum vitae",
+    title: "CV.",
+    line: "Information Security Officer",
+    sub: "GRC · SOC · DFIR · IAM · Instructor",
+    chips: ["eJPT · CCNA", `${CV.certifications.length} certifications`, `${caseEvidenceLibrary.length} case studies`],
+    accent: "#0e7490", ink: "#38bdf8", glow: "rgba(56,189,248,.30)",
+    photo: { file: "portrait-cutout.webp", width: 1000, left: 400, top: -6 },
+  },
+  {
+    id: "videos",
+    badge: "YouTube · @AhmedEmad-0x3omda",
+    title: "Videos.",
+    line: "Cybersecurity, explained",
+    sub: "SOC · Wazuh · Malware · Networking · GRC",
+    chips: [`${blogYoutubeVideos.length}+ videos`, `${blogYoutubePlaylists.length} playlists`, "60K+ views"],
+    accent: "#BC002D", ink: "#ff2d55", glow: "rgba(188,0,45,.35)",
+    photo: { file: "portrait-grey.webp", width: 1000, left: 400, top: -6 },
   },
 ];
 

@@ -75,7 +75,7 @@ If `npm run verify` passes on your machine, it passes on GitHub. If it fails, th
 | `tags` | the topics |
 | `caseId` | optional: the id of the case the video explains — it then shows on that case's page and the two link to each other |
 
-That's it — the video's page, its card on the blog and its sitemap entry are made automatically.
+That's it — the video's page, its card on the blog and on `/videos`, and its sitemap entry are made automatically.
 **After deploying:** Search Console → URL Inspection → the video page's address → Request indexing.
 
 **A new playlist:** same file, `blogYoutubePlaylists` — `playlistId` is the part after `list=`.
@@ -109,7 +109,7 @@ That's it — the video's page, its card on the blog and its sitemap entry are m
 | A detection rule | `data/detection-rules.ts` |
 | A training platform | `data/platforms.ts` |
 | Numbers / your details / links | `data/profile.ts` and `data/live-copy.ts` |
-| The CV | replace `public/Assets/cv/AhmedEmadNasr_CV.pdf`, same name |
+| The CV | replace `public/Assets/cv/AhmedEmadNasr_CV.pdf` (same name) **and** update `data/cv.ts` — the `/cv` page shows the same content as text |
 
 ---
 

@@ -164,6 +164,28 @@ export const KEYWORDS = {
     "AMIT أمن سيبراني",
     "المعهد القومي للاتصالات أمن سيبراني",
   ],
+  /* The CV page (/cv) */
+  cv: [
+    "Ahmed Emad Nasr CV",
+    "Ahmed Emad Nasr resume",
+    "Ahmed Emad Nasr résumé",
+    "Ahmed Emad Nasr information security officer",
+    "Ahmed Emad Nasr SOC analyst",
+    "information security officer CV Egypt",
+    "SOC analyst CV",
+    "cybersecurity instructor CV",
+  ],
+  /* The videos page (/videos) */
+  videos: [
+    "Ahmed Emad Nasr YouTube",
+    "Ahmed Emad Nasr videos",
+    "0x3omda YouTube",
+    "cybersecurity videos",
+    "cybersecurity basics explained",
+    "SOC analyst tutorials",
+    "Wazuh tutorial",
+    "blue team videos",
+  ],
   gallery: [
     "Ahmed Emad Nasr certificates",
     "Ahmed Emad Nasr certifications",

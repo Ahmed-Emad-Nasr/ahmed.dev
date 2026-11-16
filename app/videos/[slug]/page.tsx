@@ -27,7 +27,7 @@ import { formatDate, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import {
   CHANNEL_ID, PERSON_NAME, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, youtubeEmbed, youtubePlayer, youtubeThumb, youtubeWatch,
 } from "@/lib/seo";
-import { BLOG_ID, BLOG_URL } from "@/lib/page-ids";
+import { BLOG_ID, VIDEOS_URL } from "@/lib/page-ids";
 
 export function generateStaticParams() {
   return SITE_VIDEOS.map((v) => ({ slug: v.slug }));
@@ -109,8 +109,7 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
       },
       breadcrumbs([
         ["Ahmed Emad Nasr", absoluteUrl("/")],
-        ["Blog", BLOG_URL],
-        ["Videos", `${BLOG_URL}#videos`],
+        ["Videos", VIDEOS_URL],
         [video.title, url],
       ]),
     ],
@@ -130,7 +129,7 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
           >
             <Link
               prefetch={false}
-              href="/blog#videos"
+              href="/videos"
               className="group flex items-center gap-2 text-primary-ink hover:text-foreground transition-colors"
             >
               <ArrowLeft size={12} className="transition-transform duration-180 group-hover:-translate-x-[3.4px]" aria-hidden="true" />

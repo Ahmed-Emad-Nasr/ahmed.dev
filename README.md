@@ -95,6 +95,8 @@ flowchart LR
 | [`/blog`](https://ahmed-emad-nasr.github.io/ahmed.dev/blog) | Searchable library of **83** cases, **35** videos, **56** ATT&CK techniques mapped, **50+** custom Wazuh rules, a triage challenge, the home lab |
 | `/blog/<case>` | Goal → what happened → what I did → how to prevent it → evidence, with the PDF report |
 | [`/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/teaching) | The 160-hour SOC & Cybersecurity Diploma module by module, where it was taught, **25** student notes quoted word for word, and a training request for teams |
+| [`/cv`](https://ahmed-emad-nasr.github.io/ahmed.dev/cv) | The CV as a web page (from `data/cv.ts`), with the PDF download — indexable as "Ahmed Emad Nasr CV" |
+| [`/videos`](https://ahmed-emad-nasr.github.io/ahmed.dev/videos) | Every YouTube video and playlist; each video also has its own page `/videos/<slug>` with `VideoObject` data |
 | [`/ar/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/teaching) | The same page in Arabic (right to left, Cairo font), linked to the English one with `hreflang` |
 | [`/gallery`](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery) | Degree, certifications, courses and records, photos from classrooms and events |
 

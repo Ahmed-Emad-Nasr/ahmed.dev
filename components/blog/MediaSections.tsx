@@ -132,9 +132,15 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
             aside={
               <div className="flex flex-col items-start gap-4">
                 <CounterChip stats={[{ value: String(videos.length), label: "Videos indexed" }]} />
-                <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className={btnOutline}>
-                  <Youtube size={13} /> Open the channel
-                </a>
+                <div className="flex flex-wrap gap-3">
+                  {/* Every video on one page (app/videos/page.tsx) */}
+                  <Link prefetch={false} href="/videos" className={btnOutline}>
+                    <Play size={13} /> All videos
+                  </Link>
+                  <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noopener noreferrer" className={btnOutline}>
+                    <Youtube size={13} /> Open the channel
+                  </a>
+                </div>
               </div>
             }
           />
