@@ -4,8 +4,10 @@
    repository (actions/configure-pages): "" in Ahmed-Emad-Nasr.github.io (the
    domain root), "/<repo>" in any other repo. basePath prefixes Next's own
    files and links; normalizePublicHref() (lib/shared.ts) prefixes plain asset
-   paths with the same value. Unset (local builds) = "/ahmed.dev", this repo. */
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev";
+   paths with the same value. Unset: "/ahmed.dev" (this repo) for a build,
+   none for `npm run dev` (http://localhost:3000). */
+const BASE_PATH =
+  process.env.NEXT_PUBLIC_BASE_PATH ?? (process.env.NODE_ENV === "production" ? "/ahmed.dev" : "");
 
 /* ═══ next.config.mjs — Next.js settings ═══
    output: "export"  → `npm run build` writes a plain static website to out/

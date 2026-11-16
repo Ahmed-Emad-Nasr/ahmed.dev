@@ -114,7 +114,8 @@ export const CV_PDF_HREF = "Assets/cv/AhmedEmadNasr_CV.pdf";
     workflow, nothing to edit on a rename). */
 export const normalizePublicHref = (href: string): string => {
   if (/^https?:\/\//i.test(href)) return href;
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev";
+  const basePath =
+    process.env.NEXT_PUBLIC_BASE_PATH ?? (process.env.NODE_ENV === "production" ? "/ahmed.dev" : "");
   const normalized = href.startsWith("/") ? href : `/${href}`;
   return `${basePath}${normalized}`.replace(/\/\//g, "/");
 };

@@ -12,7 +12,8 @@
 const DEFAULT_ORIGIN = "https://ahmed-emad-nasr.github.io";
 
 export const SITE_BASE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || `${DEFAULT_ORIGIN}${process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev"}`
+  process.env.NEXT_PUBLIC_SITE_URL ||
+    `${DEFAULT_ORIGIN}${process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev"}`
 ).replace(/\/+$/, "");
 
 export const SITE_ORIGIN = new URL(SITE_BASE_URL).origin;

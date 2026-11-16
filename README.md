@@ -180,6 +180,10 @@ repository (`/ahmed.dev` here; the domain root if it is ever deployed from
 opens the visitor's mail app with the message filled in, with Gmail and
 "copy message" as fallbacks.
 
+**Adding a case, video, certificate or job:** [`HOW-TO-ADD.md`](HOW-TO-ADD.md)
+(step by step, in Arabic) · [`AI-PROMPT.md`](AI-PROMPT.md) (a prompt for any AI
+assistant — AI tools that open the repo read the same rules from `AGENTS.md`).
+
 ---
 
 ## `> tree -L 2`
