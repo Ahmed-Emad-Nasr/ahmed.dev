@@ -20,6 +20,7 @@ export default function NowSection() {
           japanese="現在"
           titleA="Right"
           titleB="Now."
+          titleBClassName="text-primary-ink"
           size="lg"
           description="A snapshot, not a promise. Updated as the work shifts."
           aside={(

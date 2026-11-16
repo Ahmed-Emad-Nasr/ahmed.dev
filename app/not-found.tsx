@@ -7,16 +7,13 @@
      • the 3 suggested cases → the first three of the case library's
        "Recommended" order (lib/library-data.ts),
      • the wording → the <h1> and <p> below.
-   Old /blog… and /gallery… links (separate pages before the site became one
-   page) are sent to the same place on the home page before this paints
-   (legacyPageForwardScript, lib/routes.ts). */
+   */
 
 import Link from "next/link";
 import type { Metadata } from "next";
 import { libraryData } from "@/lib/library-data";
 import { summarize } from "@/lib/site";
 import { CV_PDF_HREF, normalizePublicHref } from "@/lib/shared";
-import { legacyPageForwardScript } from "@/lib/routes";
 import { Home, FolderSearch, FileText } from "lucide-react";
 import PageShell from "@/components/layout/StatusShell";
 import {
@@ -42,12 +39,8 @@ const SUGGESTIONS = libraryData.cases.slice(0, 3).map((item) => ({
   why: summarize(item.verdict ?? item.description ?? item.category ?? "", 120),
 }));
 
-const FORWARD_SCRIPT = legacyPageForwardScript(normalizePublicHref("/").replace(/\/$/, ""));
-
 export default function NotFound() {
   return (
-    <>
-    <script dangerouslySetInnerHTML={{ __html: FORWARD_SCRIPT }} />
     <PageShell>
       <section className={statusPage}>
         <KanjiWatermark chars="迷子" side="right" />
@@ -69,7 +62,7 @@ export default function NotFound() {
             <Link prefetch={false} href="/" className={ctaPrimary}>
               <Home size={16} /> Go to the home page
             </Link>
-            <Link prefetch={false} href="/#cases" className={ctaSecondary}>
+            <Link prefetch={false} href="/blog#cases" className={ctaSecondary}>
               <FolderSearch size={14} className="text-primary-ink" /> Browse the cases
             </Link>
             <a href={normalizePublicHref(CV_PDF_HREF)} target="_blank" rel="noopener noreferrer" className={ctaSecondary}>
@@ -112,6 +105,5 @@ export default function NotFound() {
         </div>
       </section>
     </PageShell>
-    </>
   );
 }

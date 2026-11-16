@@ -31,6 +31,9 @@ interface SectionHeaderProps {
   className?: string;
   /** id of the heading (for aria-labelledby) */
   id?: string;
+  /** Colour of the second line: "text-primary-ink" on lighter section
+      backgrounds, where the plain red would fall below contrast */
+  titleBClassName?: string;
   /** h1 on pages where this is the page title (case library, CV …) */
   as?: "h1" | "h2";
 }
@@ -47,6 +50,7 @@ export default function SectionHeader({
   align = "left",
   className = "",
   id,
+  titleBClassName = "text-primary",
   as: Heading = "h2",
 }: SectionHeaderProps) {
   const split = align === "split" || Boolean(aside);
@@ -96,7 +100,7 @@ export default function SectionHeader({
 
         <Heading id={id} className={`font-display font-black tracking-tighter uppercase ${titleSize}`} style={fit}>
           <span className="text-foreground">{titleA}</span> <br />
-          <span className="text-primary italic">{titleB}</span>
+          <span className={`${titleBClassName} italic`}>{titleB}</span>
         </Heading>
 
         {subLabel ? (

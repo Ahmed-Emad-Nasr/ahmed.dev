@@ -7,7 +7,7 @@
  *     every section of the page, top to bottom, numbered. The one you are
  *     reading is lit;
  *     hover or focus shows its name; a click jumps there instantly (plain
- *     #anchors — lib/perf/PageEffects.tsx mounts lazy sections first).
+ *     #anchors, handled by lib/perf/PageEffects.tsx).
  *   • BACK TO TOP (every screen size): a small button, bottom right, once
  *     you are two screens down. Instant, like every jump on the site.
  *
@@ -30,16 +30,11 @@ const SECTIONS = [
   { id: "experience", label: "Experience" },
   { id: "path", label: "The path" },
   { id: "now", label: "Right now" },
-  { id: "teaching", label: "Teaching" },
-  { id: "testimonials", label: "Testimonials" },
+  { id: "testimonials", label: "Recommendations" },
   { id: "platforms", label: "Platforms" },
   { id: "process", label: "Process" },
   { id: "faq", label: "FAQ" },
   { id: "contact", label: "Contact" },
-  { id: "blog", label: "Blog" },
-  { id: "attack", label: "Detection" },
-  { id: "lab", label: "Lab" },
-  { id: "gallery", label: "Gallery" },
 ];
 /* Numbered in page order: 00, 01, 02 … */
 const CHAPTERS = SECTIONS.map((s, i) => ({ ...s, n: String(i).padStart(2, "0") }));

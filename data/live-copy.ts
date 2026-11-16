@@ -35,9 +35,9 @@ export const LIVE_COPY: LiveCopy = {
   heroDescription: CV_SUMMARY,
   heroEvidence: `${investigationReportCount} hands-on investigations (labs & simulations) · ${coveredTechniqueCount()} attack techniques covered`,
   stats: [
-    { target: investigationReportCount, suffix: "", label: "Hands-on investigations", japanese: "記録", href: `${normalizePublicHref("/")}?kind=investigation#cases` },
-    { target: PROFESSIONAL_CERTIFICATION_COUNT, suffix: "", label: "Professional certifications", japanese: "認定", href: `${normalizePublicHref("/")}#all-certificates` },
-    { target: 300, suffix: "+", label: "Students taught", japanese: "指導", href: "#teaching" },
-    { target: 60, suffix: "K+", label: "YouTube views", japanese: "動画", href: `${normalizePublicHref("/")}#videos` },
+    { target: investigationReportCount, suffix: "", label: "Hands-on investigations", japanese: "記録", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
+    { target: PROFESSIONAL_CERTIFICATION_COUNT, suffix: "", label: "Professional certifications", japanese: "認定", href: `${normalizePublicHref("/gallery")}#all-certificates` },
+    { target: 300, suffix: "+", label: "Students taught", japanese: "指導", href: normalizePublicHref("/teaching") },
+    { target: 60, suffix: "K+", label: "YouTube views", japanese: "動画", href: `${normalizePublicHref("/blog")}#videos` },
   ],
 };

@@ -61,6 +61,8 @@ export function serveOut(root = join(process.cwd(), "out")) {
 /** One page of each kind the site has, from the build itself */
 export function samplePages(root = join(process.cwd(), "out")) {
   const pages = ["/", "/this-page-does-not-exist"];
+  /* The pages of their own (lib/routes.ts) */
+  for (const page of ["blog", "teaching", "gallery"]) if (existsSync(join(root, `${page}.html`))) pages.push(`/${page}`);
   const blogDir = join(root, "blog");
   const html = (name) => existsSync(join(blogDir, `${name}.html`));
   /* A case with a full case file and ones without */

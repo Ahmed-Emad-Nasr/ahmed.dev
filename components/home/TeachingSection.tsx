@@ -35,7 +35,8 @@ export default function TeachingSection() {
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
           id="teaching-title"
-          eyebrow="Teaching // Pass it on"
+          as="h1"
+          eyebrow="Ahmed Emad Nasr // Cybersecurity Instructor"
           japanese="指導"
           titleA="Pass it"
           titleB="Forward."

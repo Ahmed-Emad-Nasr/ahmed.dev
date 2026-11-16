@@ -61,7 +61,7 @@ export default function ErrorView({
               <RotateCcw size={16} /> Try again
             </button>
             <Link prefetch={false} href="/" className={ctaSecondary}>Go to the home page</Link>
-            <Link prefetch={false} href="/#cases" className={ctaSecondary}>Browse the cases</Link>
+            <Link prefetch={false} href="/blog#cases" className={ctaSecondary}>Browse the cases</Link>
           </nav>
 
           {/* digest is the hash Next generates for the error. It's shown so that if someone

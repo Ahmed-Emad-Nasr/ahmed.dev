@@ -12,7 +12,7 @@ type TeachingStat = { value: string; label: string; japanese: string };
 
 export const TEACHING_STATS: TeachingStat[] = [
   { value: "300+", label: "Students at AMIT & NTI (combined)", japanese: "受講生" },
-  /* Counted from data/testimonials.ts — each one is quoted on the home page */
+  /* Counted from data/testimonials.ts — the recommendations are quoted on the home page, the students on /teaching */
   { value: String(TESTIMONIALS.length), label: "Written testimonials", japanese: "推薦" },
   { value: "1st", label: "Of 250 instructors · GDG", japanese: "首位" },
   { value: "60K+", label: "YouTube views", japanese: "視聴" },

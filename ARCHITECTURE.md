@@ -1,9 +1,11 @@
 # Architecture
 
 A static Next.js 16 export (`output: "export"`) served by GitHub Pages under
-`/ahmed.dev`. One page (`/`) holds the whole portfolio — the blog (`#blog`)
-and the gallery (`#gallery`) are its last parts — plus one static page per
-case (`/blog/<id>`).
+`/ahmed.dev`. Pages: the portfolio (`/`), the blog (`/blog`), teaching
+(`/teaching`), the gallery (`/gallery`), plus one static page per case
+(`/blog/<id>`). Which section lives on which page is `SECTION_PAGE` in
+`lib/routes.ts` — the navbar, the command palette, the `g` shortcuts and old
+`/#cases`-style links all follow it.
 Everything is built at build time; there is no server.
 
 ## Folders

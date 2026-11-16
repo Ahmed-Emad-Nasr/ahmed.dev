@@ -8,6 +8,7 @@
 import { ExternalLink, Star } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
+import ShowMore from "@/components/ui/ShowMore";
 import CounterChip from "@/components/ui/CounterChip";
 import { TiltCard } from "@/components/ui/Motion";
 import { Github } from "@/components/ui/BrandIcons";
@@ -49,7 +50,7 @@ export default function ProjectsGrid({ repos }: { repos: RepoCard[] }) {
           )}
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+        <ShowMore first={6} label="Show more repositories" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {repos.map((repo, idx) => (
             <FadeIn key={repo.name} y={40} duration={0.7} delay={(idx % 3) * 0.1} className="flex">
               <TiltCard className="spotlight group relative w-full min-h-[340px] flex flex-col bg-surface/60 border border-foreground/5 p-8 hover:border-primary/40 transition-colors duration-500">
@@ -118,7 +119,7 @@ export default function ProjectsGrid({ repos }: { repos: RepoCard[] }) {
               </TiltCard>
             </FadeIn>
           ))}
-        </div>
+        </ShowMore>
       </div>
     </section>
   );

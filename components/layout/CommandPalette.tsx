@@ -58,7 +58,7 @@ import { Github, Linkedin } from "@/components/ui/BrandIcons";
 import { PROFILE } from "@/data/profile";
 import { ALL_GALLERY_CERTIFICATES } from "@/data/certifications";
 import { normalizePublicHref } from "@/lib/shared";
-import { scrollToHash } from "@/lib/perf/jump";
+import { goToSection } from "@/lib/perf/jump";
 import { lockScroll } from "@/lib/scroll";
 import { useFocusTrap } from "@/lib/use-focus-trap";
 import { useThemeFx } from "@/components/layout/ThemeFxProvider";
@@ -159,18 +159,12 @@ export default function CommandPalette() {
     };
   }, []);
 
-  /* Every section is on the home page: jump to it there, or open it from
-     a case page. Library filters ride along: go("?q=x#cases"). */
+  /* Jump to a section on this page, or open the page that holds it
+     (lib/routes.ts). Filters ride along: go("?q=x#cases"). */
   const go = useCallback(
     (hash: string) => {
       setOpen(false);
-      if (pathname !== "/" || hash.startsWith("?")) {
-        router.push(`/${hash}`);
-        return;
-      }
-      requestAnimationFrame(() => {
-        scrollToHash(hash);
-      });
+      goToSection(hash, pathname, router.push);
     },
     [pathname, router]
   );
@@ -195,10 +189,11 @@ export default function CommandPalette() {
       { id: "tools", group: "Go to", label: "Tools of the trade", icon: Wrench, run: () => go("#tools") },
       { id: "experience", group: "Go to", label: "Experience", icon: Briefcase, run: () => go("#experience") },
       { id: "path", group: "Go to", label: "The path & right now", icon: Route, run: () => go("#path") },
-      { id: "teaching", group: "Go to", label: "Teaching", icon: GraduationCap, run: () => go("#teaching") },
-      { id: "testimonials", group: "Go to", label: "Testimonials & recommendations", icon: MessageSquareQuote, run: () => go("#testimonials") },
+      { id: "teaching", group: "Go to", label: "Teaching — the course & student feedback", icon: GraduationCap, run: () => visit("/teaching") },
+      { id: "testimonials", group: "Go to", label: "Recommendations", icon: MessageSquareQuote, run: () => go("#testimonials") },
+      { id: "student-feedback", group: "Go to", label: "Student feedback", icon: MessageSquareQuote, run: () => go("#student-feedback") },
       { id: "platforms", group: "Go to", label: "Practice platforms (THM, HTB …)", icon: Trophy, run: () => go("#platforms") },
-      { id: "gallery", group: "Go to", label: "Proof gallery", icon: Palette, run: () => go("#gallery") },
+      { id: "gallery", group: "Go to", label: "Proof gallery", icon: Palette, run: () => visit("/gallery") },
       { id: "all-certs", group: "Go to", label: `Certifications, courses & records (${ALL_GALLERY_CERTIFICATES.length})`, icon: Award, run: () => go("#all-certificates") },
       { id: "attack", group: "Go to", label: "MITRE ATT&CK coverage", icon: Crosshair, run: () => go("#attack") },
       { id: "detections", group: "Go to", label: "Detection library (Wazuh rules)", icon: Crosshair, run: () => go("#detections") },
@@ -207,7 +202,7 @@ export default function CommandPalette() {
       { id: "process", group: "Go to", label: "Risk to response — how I work", icon: Route, run: () => go("#process") },
       { id: "faq", group: "Go to", label: "FAQ — fair questions", icon: CircleHelp, run: () => go("#faq") },
       { id: "contact", group: "Go to", label: "Contact", icon: Mail, run: () => go("#contact") },
-      { id: "blog-page", group: "Go to", label: "Blog — cases, ATT&CK, videos", icon: FileText, run: () => go("#blog") },
+      { id: "blog-page", group: "Go to", label: "Blog — cases, ATT&CK, videos", icon: FileText, run: () => visit("/blog") },
       { id: "blog", group: "Go to", label: "Case library", icon: FolderSearch, run: () => go("#cases") },
       { id: "videos", group: "Go to", label: "Videos", icon: PlayCircle, run: () => go("#videos") },
       {
@@ -272,7 +267,7 @@ export default function CommandPalette() {
         run: () => { setOpen(false); window.dispatchEvent(new Event("sensei:open-shortcuts")); },
       },
     ];
-  }, [go, resolvedTheme, transitionTo, copied, fxDuration, singleKeys]);
+  }, [go, visit, resolvedTheme, transitionTo, copied, fxDuration, singleKeys]);
 
   /* Cases and certificates join the list once you type */
   const caseCommands: Command[] = useMemo(

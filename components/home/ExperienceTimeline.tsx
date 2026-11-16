@@ -12,6 +12,7 @@ import CaseFilterLink from "@/components/blog/CaseFilterLink";
 import OrgLogo from "@/components/ui/OrgLogo";
 import SectionHeader from "@/components/ui/SectionHeader";
 import ExperienceReveal from "@/components/home/ExperienceReveal";
+import ShowMore from "@/components/ui/ShowMore";
 import { KanjiWatermark } from "@/components/ui/kit";
 
 /*
@@ -59,7 +60,9 @@ export default function ExperienceTimeline() {
         />
 
         {/* ─── Experience Cards ─── */}
-        <ExperienceReveal className="flex flex-col gap-14 md:gap-20">
+        {/* The first three roles, then "Show more" (components/ui/ShowMore.tsx) */}
+        <ExperienceReveal>
+          <ShowMore first={3} label="Show more experience" className="flex flex-col gap-14 md:gap-20">
           {PORTFOLIO_DATA.experience.map((item, idx) => (
             <div
               key={idx}
@@ -229,6 +232,7 @@ export default function ExperienceTimeline() {
               </TiltCard>
             </div>
           ))}
+          </ShowMore>
         </ExperienceReveal>
       </div>
     </section>

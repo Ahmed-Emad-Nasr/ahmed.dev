@@ -170,10 +170,12 @@ To add a case:
 
 ## `07 // ROUTES`
 
-- `/` — the whole portfolio on one page: services, projects, experience,
-  contact, then the blog (`#blog`: case library, videos, ATT&CK coverage,
-  detections, triage) and the gallery (`#gallery`) at the end
+- `/` — the portfolio: services, projects, experience, recommendations,
+  platforms, process, FAQ, contact
+- `/blog` — case library, videos, ATT&CK coverage, detections, triage, home lab
 - `/blog/<case-id>` — detailed case report
+- `/teaching` — the course, where it was taught, student feedback
+- `/gallery` — certificates, records and photos
 - `Assets/cv/AhmedEmadNasr_CV.pdf` — the CV (PDF)
 - `/sitemap.xml` — machine-readable sitemap
 

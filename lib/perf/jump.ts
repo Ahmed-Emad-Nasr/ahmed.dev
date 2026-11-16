@@ -10,6 +10,7 @@
  */
 
 import { scrollTargetOf, scrollToElement } from "@/lib/scroll";
+import { sectionHref } from "@/lib/routes";
 
 /** Go to an in-page anchor, instantly, under the fixed header. */
 export async function scrollToHash(hash: string): Promise<void> {
@@ -19,6 +20,30 @@ export async function scrollToHash(hash: string): Promise<void> {
   if (!el) return;
   scrollToElement(el);
   void settle(id);
+}
+
+/**
+ * Go to a section on whichever page holds it (lib/routes.ts → SECTION_PAGE):
+ * on this page it jumps; otherwise it opens that page at the section.
+ * `target` is "#work", "?q=wazuh#cases" or "?cert=3#all-certificates".
+ * `pathname` = usePathname(); `push` = router.push.
+ */
+export function goToSection(target: string, pathname: string, push: (href: string) => void): void {
+  const href = sectionHref(target);
+  const cut = href.search(/[?#]/);
+  const page = cut >= 0 ? href.slice(0, cut) : href;
+  const rest = href.slice(page.length);
+  if (page !== (pathname || "/")) {
+    push(href);
+    return;
+  }
+  /* Same page with a filter (?q=…, ?cert=…): put it in the URL and tell the
+     section, as the back button does — no reload */
+  if (rest.startsWith("?")) {
+    history.pushState(null, "", rest);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  }
+  requestAnimationFrame(() => void scrollToHash(rest.slice(rest.indexOf("#"))));
 }
 
 /*

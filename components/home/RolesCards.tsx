@@ -216,9 +216,9 @@ const ROLES: Role[] = [
     focus: ["Curriculum Design", "Hands-On Labs", "CTF Design", "Mentoring"],
     deliverable: "Structured course + hands-on labs",
     proof: [
-      { label: "300+ students at AMIT Learning & NTI", href: "#teaching" },
+      { label: "300+ students at AMIT Learning & NTI", href: "/teaching" },
       { label: "35+ GDG sessions and CTF challenges", href: "#experience" },
-      { label: "Security walkthroughs", href: "/#videos" },
+      { label: "Security walkthroughs", href: "/blog#videos" },
     ],
     credential: "CCEP · SOC & Cybersecurity Diploma (160h)",
   },

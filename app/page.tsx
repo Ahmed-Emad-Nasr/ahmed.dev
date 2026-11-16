@@ -1,10 +1,10 @@
 /*
  * ═══ app/page.tsx — the HOME PAGE  ( URL: / ) ═══
  *
- * THE WHOLE SITE IS THIS ONE PAGE: the pitch (who, roles, proof,
- * experience), contact, then the blog (case library, videos, ATT&CK, rules,
- * triage, home lab) and the gallery at the very end. Only the
- * single case pages (/blog/<id>, app/blog/[slug]/page.tsx) are separate.
+ * The portfolio: the pitch (who, roles, proof, experience) down to contact.
+ * The blog, the teaching and the gallery are pages of their own
+ * (app/blog/page.tsx, app/teaching/page.tsx, app/gallery/page.tsx — the map
+ * of which section lives where is lib/routes.ts).
  * Section order follows the Sensei-Dev portfolio
  * (github.com/MostafaSensei106/Sensei-Dev, GPL-3.0).
  *
@@ -26,25 +26,16 @@
  *   Experience   #experience components/home/ExperienceTimeline  data/experience.ts
  *   The path     #path     components/home/PathSection      data/about.ts
  *   Right now    #now      components/home/NowSection       data/about.ts
- *   Teaching     #teaching components/home/TeachingSection  data/teaching.ts
- *   Testimonials #testimonials components/home/Testimonials  data/testimonials.ts
+ *   Recommendations #testimonials components/home/Testimonials data/testimonials.ts
  *   Platforms    #platforms components/home/PlatformsSection data/platforms.ts (+ TryHackMe API)
  *   Process      #process  components/home/ProcessSection   data/about.ts
  *   FAQ          #faq      components/home/FaqSection       data/about.ts
  *   Contact      #contact  components/layout/ContactFooter
- *   ── Blog ──   #blog     components/ui/AreaIntro          BLOG_DESCRIPTION below
- *   Cases/Videos #cases    components/blog/CaseLibrarySection data/cases.ts, case-details.ts, youtube.ts
- *   ATT&CK       #attack   components/blog/AttackCoverage   data/attack.ts (computed from cases)
- *   Rules        #detections components/blog/DetectionLibrary data/detection-rules.ts
- *   Triage       #triage   components/blog/TriageChallenge  inside the component
- *   Home lab     #lab      components/home/HomeLab          inside the component
- *   ── Gallery ── #gallery components/gallery/ArtGallery    data/certifications.ts, portfolio-data.ts
  *   Footer line            components/layout/FooterBar
  *
  * LOADING (as on Sensei-Dev): every section is a next/dynamic import — its
  * own JS file — and is rendered into the page's HTML, so the whole page is
- * there from the start and every #anchor works. Only the case library's data
- * (/library.json) is fetched in the browser, right after the page loads.
+ * there from the start and every #anchor works.
  * Off-screen animation loops pause (lib/perf/OffscreenAnimations.tsx).
  *
  * HOW TO EDIT
@@ -71,7 +62,6 @@ import {
   HeroSection,
   WorkShowcase,
   ExperienceTimeline,
-  TeachingSection,
   Testimonials,
   PlatformsSection,
   ToolsSection,
@@ -85,38 +75,22 @@ import {
   PaletteHint,
   SectionRail,
 } from "@/components/home/dynamic";
-import {
-  AreaIntro,
-  HomeLab,
-  CaseLibrary,
-  AttackCoverage,
-  ContributionsGrid,
-  DetectionLibrary,
-  TriageChallenge,
-} from "@/components/blog/dynamic";
-import { ArtGallery } from "@/components/gallery/dynamic";
+import { ContributionsGrid } from "@/components/blog/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
 import { getTryHackMeStats } from "@/lib/api/tryhackme";
 import { getContributionStats } from "@/lib/api/contributions";
 import { getRepoCards, type RepoCard } from "@/lib/api/github-repos";
 import { FAQ } from "@/data/about";
-import { attackCoverage, libraryCounts } from "@/lib/library-data";
-import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
 import { PROFILE } from "@/data/profile";
 import { STATIC_PLATFORMS, tryHackMePlatform } from "@/data/platforms";
 import { LIVE_COPY } from "@/data/live-copy";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { knowledgeEducationItems } from "@/data/experience";
-import { OG_IMAGE, summarize } from "@/lib/site";
-import {
-  CHANNEL_ID, KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd, youtubeEmbed, youtubeThumb, youtubeWatch,
-} from "@/lib/seo";
+import { OG_IMAGE } from "@/lib/site";
+import { KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd } from "@/lib/seo";
+import { BLOG_ID, GALLERY_ID, TEACHING_ID } from "@/lib/page-ids";
 import SlashDivider from "@/components/ui/SlashDivider";
 import TickerStrip from "@/components/ui/TickerStrip";
-
-/* The blog part's intro text (under "The Blog.") */
-const BLOG_DESCRIPTION =
-  "Real security work, written up so anyone can follow it: what was attacked, what I did about it and how to stop it next time. Each case opens with a plain summary; the technical detail — reports, detection rules, MITRE ATT&CK — is underneath for those who want it.";
 
 /* <head> tags for the home page only (merged over app/layout.tsx's defaults).
    This title is used as-is: the layout's "%s | Ahmed Emad Nasr" template only
@@ -154,7 +128,7 @@ export const metadata: Metadata = {
     url: SITE_URL,
     type: "website",
     /* A page-level openGraph replaces the layout's whole object */
-    siteName: "ahmed.dev",
+    siteName: "Ahmed Emad Nasr",
     locale: "en_US",
     images: [OG_IMAGE],
   },
@@ -198,9 +172,10 @@ function structuredData(repos: RepoCard[]) {
         hasPart: [
           { "@id": `${SITE_URL}#experience-list` },
           ...(repos.length ? [{ "@id": `${SITE_URL}#projects` }] : []),
-          { "@id": `${SITE_URL}#blog` },
+          { "@id": BLOG_ID },
+          { "@id": TEACHING_ID },
           { "@id": `${SITE_URL}#faq` },
-          { "@id": `${SITE_URL}#gallery` },
+          { "@id": GALLERY_ID },
         ],
       },
       /* ── The questions section (data/about.ts → FAQ) ── */
@@ -280,61 +255,6 @@ function structuredData(repos: RepoCard[]) {
         availableLanguage: ["en"],
         serviceType: ["Governance, Risk & Compliance", "SOC Monitoring", "Incident Response", "Digital Forensics", "Malware Analysis", "Identity & Access Management", "Data Security", "Security Training"],
         url: `${SITE_URL}#roles`,
-      },
-      /* ── The blog part ── */
-      {
-        "@type": "Blog",
-        "@id": `${SITE_URL}#blog`,
-        url: `${SITE_URL}#blog`,
-        name: "Ahmed Emad Nasr — Blog",
-        description: BLOG_DESCRIPTION,
-        author: PERSON_REF,
-        publisher: PERSON_REF,
-        isPartOf: { "@id": WEBSITE_ID },
-      },
-      {
-        "@type": "ItemList",
-        "@id": `${SITE_URL}#videos`,
-        name: "Cybersecurity video tutorials by Ahmed Emad Nasr",
-        numberOfItems: blogYoutubeVideos.length,
-        itemListElement: blogYoutubeVideos.map((video, index) => ({
-          "@type": "ListItem",
-          position: index + 1,
-          item: {
-            "@type": "VideoObject",
-            "@id": `${youtubeWatch(video.videoId)}#video`,
-            name: video.title,
-            description: summarize(video.description ?? video.title, 160),
-            thumbnailUrl: [youtubeThumb(video.videoId)],
-            uploadDate: video.publishedAt,
-            embedUrl: youtubeEmbed(video.videoId),
-            url: youtubeWatch(video.videoId),
-            inLanguage: "en",
-            creator: PERSON_REF,
-            publisher: { "@id": CHANNEL_ID },
-          },
-        })),
-      },
-      ...blogYoutubePlaylists.map((playlist) => ({
-        "@type": "CreativeWorkSeries",
-        "@id": `${playlist.sourceUrl.split("&")[0]}#series`,
-        name: playlist.title,
-        description: playlist.description,
-        url: playlist.sourceUrl.split("&")[0],
-        ...(playlist.thumbnailVideoId ? { image: youtubeThumb(playlist.thumbnailVideoId) } : {}),
-        inLanguage: "en",
-        author: PERSON_REF,
-        publisher: { "@id": CHANNEL_ID },
-      })),
-      /* ── The gallery part (its images are listed in sitemap.xml) ── */
-      {
-        "@type": "ImageGallery",
-        "@id": `${SITE_URL}#gallery`,
-        url: `${SITE_URL}#gallery`,
-        name: "Proof gallery — Ahmed Emad Nasr",
-        description: "Degree, certificates, course records and photos from classrooms and security events.",
-        about: PERSON_REF,
-        author: PERSON_REF,
       },
     ],
   });
@@ -420,9 +340,9 @@ export default async function Home() {
       <PathSection />
       <NowSection />
 
-      <TeachingSection />
 
-      {/* What others wrote: LinkedIn recommendations + student feedback (data/testimonials.ts) */}
+      {/* What others wrote: the LinkedIn recommendations (data/testimonials.ts);
+          the students' feedback is on /teaching */}
       <div className="tone-blue">
         <Testimonials />
       </div>
@@ -441,51 +361,6 @@ export default async function Home() {
       {/* Contact section + form */}
       <div id="contact" className="mt-20">
         <ContactFooter />
-      </div>
-
-      {/* ═══ 02 · The blog: the evidence behind everything above ═══ */}
-      <SlashDivider label="02 // Blog" japanese="記録" origin="right" />
-      <AreaIntro
-        id="blog"
-        titleA="The"
-        titleB="Blog."
-        description={BLOG_DESCRIPTION}
-        /* The pill links under the title: href = a section id below, n = count badge */
-        links={[
-          { href: "#cases", label: "Case library", n: libraryCounts.total },
-          { href: "#videos", label: "Videos", n: blogYoutubeVideos.length },
-          { href: "#attack", label: "Attack techniques covered", n: attackCoverage.techniqueCount },
-          { href: "#detections", label: "My alarm rules" },
-          { href: "#triage", label: "Try a real alert" },
-        ]}
-      />
-
-      {/* The case library (filters, cards) and the videos. Its data is
-          computed at build time into /library.json (app/library.json) and
-          fetched in the browser with the section's code — not part of this
-          page's HTML (a skeleton holds #cases until it arrives) */}
-      <CaseLibrary />
-
-      <SlashDivider label="03 // Detection" japanese="検知" origin="left" />
-
-      {/* ATT&CK and the alert stay red on purpose: there the red means
-          heat and severity. */}
-      <AttackCoverage coverage={attackCoverage} />
-      <div className="tone-blue">
-        <DetectionLibrary />
-      </div>
-      <TriageChallenge />
-
-      <SlashDivider label="04 // Operating model" japanese="実務" origin="right" />
-      <div className="tone-blue">
-        <HomeLab />
-      </div>
-
-      {/* ═══ 03 · The gallery: certificates, records and photos — the very end ═══
-          The id is on this wrapper: the gallery's own <section> is #art */}
-      <SlashDivider label="05 // Gallery" japanese="証明" origin="left" />
-      <div id="gallery">
-        <ArtGallery />
       </div>
     </main>
     {/* The last line of the page: ©, CV, security, license */}

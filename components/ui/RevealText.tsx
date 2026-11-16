@@ -39,15 +39,15 @@ export function RevealText({
       animate={ready ? "show" : "hidden"}
       transition={{ staggerChildren: 0.042, delayChildren: delay }}
     >
-      {/* What assistive tech reads; the moving words are hidden from it */}
-      <span className="sr-only">{text}</span>
+      {/* The moving words ARE the text — read once by screen readers and by
+          search engines (a hidden copy beside them made the hero's h1 read
+          "Ahmed Ahmed Emad Nasr Emad Nasr" to Google) */}
       {units.map((u, i) => (
         /* Clipped at the bottom only: overflow-hidden also cut the last
            letter of each word on the right ("AHMED" read "AHME|") */
         <span
           key={i}
           className="inline-block [clip-path:inset(-0.5em_-0.5em_0_-0.5em)] pb-[0.08em] -mb-[0.08em] align-bottom"
-          aria-hidden="true"
         >
           <motion.span
             className="inline-block will-change-transform"

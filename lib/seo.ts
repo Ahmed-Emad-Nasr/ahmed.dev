@@ -109,10 +109,72 @@ export const KEYWORDS = {
     "SOC analyst Egypt",
     "GRC analyst Egypt",
   ],
+  /* Per page: what someone types to find THAT page (app/blog, app/teaching, app/gallery) */
+  blog: [
+    "Ahmed Emad Nasr blog",
+    "Ahmed Emad blog",
+    "3omda blog",
+    "cybersecurity blog",
+    "security case studies",
+    "incident response write-ups",
+    "DFIR case studies",
+    "SOC investigation reports",
+    "malware analysis reports",
+    "CyberDefenders write-ups",
+    "TryHackMe write-ups",
+    "PortSwigger Web Security Academy labs",
+    "Wazuh detection rules",
+    "MITRE ATT&CK mapping",
+    "triage challenge",
+    "SOC home lab",
+  ],
+  teaching: [
+    "Ahmed Emad Nasr instructor",
+    "Ahmed Emad Nasr teaching",
+    "Ahmed Emad Nasr courses",
+    "Ahmed Emad instructor",
+    "cybersecurity instructor",
+    "cybersecurity instructor Egypt",
+    "SOC course",
+    "SOC analyst course",
+    "cybersecurity diploma",
+    "SOC & Cybersecurity Diploma",
+    "AMIT Learning cybersecurity",
+    "NTI cybersecurity training",
+    "Security+ course",
+    "CCNA course",
+    "cybersecurity training Cairo",
+    "student feedback",
+  ],
+  gallery: [
+    "Ahmed Emad Nasr certificates",
+    "Ahmed Emad Nasr certifications",
+    "Ahmed Emad Nasr gallery",
+    "cybersecurity certifications",
+    "CCNA certified",
+    "eJPT certified",
+    "security credentials",
+  ],
 } as const;
 
-/** The site-wide list: every group, deduplicated */
-export const SITE_KEYWORDS: string[] = [...new Set(Object.values(KEYWORDS).flat())];
+/** The site-wide list: the person-level groups, deduplicated (the page
+    groups — blog, teaching, gallery — are used by their own page) */
+export const SITE_KEYWORDS: string[] = [
+  ...new Set([
+    ...KEYWORDS.identity, ...KEYWORDS.roles, ...KEYWORDS.grc, ...KEYWORDS.operations,
+    ...KEYWORDS.response, ...KEYWORDS.identityData, ...KEYWORDS.place,
+  ]),
+];
+
+/** A page's keyword list: the name variants first, then the page's own terms */
+export const pageKeywords = (...groups: (readonly string[])[]): string[] =>
+  [...new Set([...KEYWORDS.identity, ...groups.flat()])];
+
+/** BreadcrumbList JSON-LD: Home › … (pairs of name + absolute URL) */
+export const breadcrumbs = (trail: readonly (readonly [string, string])[]) => ({
+  "@type": "BreadcrumbList",
+  itemListElement: trail.map(([name, item], i) => ({ "@type": "ListItem", position: i + 1, name, item })),
+});
 
 /** O*NET-SOC code for "Information Security Analysts" — the standard occupation id */
 export const OCCUPATION = {

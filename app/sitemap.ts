@@ -20,10 +20,10 @@ import { PERSON_IMAGE, SITE_URL, youtubeEmbed, youtubeThumb } from "@/lib/seo";
    decodeURI first, so an already-encoded path is not encoded twice. */
 const loc = (url: string) => encodeURI(decodeURI(url));
 
-/* The home page (the whole portfolio): the portrait, the share image and
-   every gallery image */
+/* The home page: the portrait and the share image. The gallery page: every
+   gallery image */
 const galleryImages = Array.from({ length: GALLERY_IMAGE_COUNT }, (_, i) => loc(absoluteUrl(galleryImagePath(i + 1))));
-const homeImages = [PERSON_IMAGE, OG_IMAGE.url, ...galleryImages].map(loc);
+const homeImages = [PERSON_IMAGE, OG_IMAGE.url].map(loc);
 
 /* Google allows 2,048 characters of description; keep well under */
 const clip = (text: string, max = 1000) => (text.length > max ? `${text.slice(0, max - 1)}…` : text);
@@ -32,7 +32,7 @@ const clip = (text: string, max = 1000) => (text.length > max ? `${text.slice(0,
 const xml = (text: string) =>
   text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 
-/* The videos (in the blog part of the home page) */
+/* The videos (on the blog page) */
 const blogVideos = blogYoutubeVideos.map((video) => ({
   title: xml(video.title),
   thumbnail_loc: youtubeThumb(video.videoId),
@@ -70,7 +70,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 1,
       images: homeImages,
+    },
+    {
+      url: absoluteUrl("/blog"),
+      lastModified: latestCaseDate,
+      changeFrequency: "weekly",
+      priority: 0.9,
       videos: blogVideos,
+    },
+    {
+      url: absoluteUrl("/teaching"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: absoluteUrl("/gallery"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+      images: galleryImages,
     },
     {
       url: loc(absoluteUrl("/Assets/cv/AhmedEmadNasr_CV.pdf")),

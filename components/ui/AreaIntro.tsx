@@ -17,12 +17,20 @@ type AreaLink = { href: string; label: string; n?: number };
 
 export default function AreaIntro({
   id,
+  as,
+  eyebrow,
+  japanese,
   titleA,
   titleB,
   description,
   links,
 }: {
   id: string;
+  /** "h1" when the intro is the page's main title */
+  as?: "h1" | "h2";
+  /** The small red label above the title, and its Japanese word */
+  eyebrow?: string;
+  japanese?: string;
   titleA: string;
   titleB: string;
   description: string;
@@ -32,7 +40,7 @@ export default function AreaIntro({
   return (
     <header id={id} className="relative pt-8 md:pt-12 pb-4 px-6 md:px-20 bg-background scroll-mt-24">
       <div className="max-w-7xl mx-auto relative z-10">
-        <SectionHeader titleA={titleA} titleB={titleB} description={description} />
+        <SectionHeader as={as} eyebrow={eyebrow} japanese={japanese} titleA={titleA} titleB={titleB} size="lg" description={description} />
         <FadeIn as="nav" y={16} duration={0.6} delay={0.1} aria-label={`${titleA} ${titleB}`.replace(/\.$/, "") + " — sections"} className="-mt-8 md:-mt-10 flex flex-wrap items-center gap-2">
           {links.map((j) => (
             <a

@@ -36,6 +36,7 @@ import {
   BookOpen,
   Images,
   Command,
+  GraduationCap,
 } from "lucide-react";
 
 const navItems = [
@@ -47,24 +48,33 @@ const navItems = [
   { name: "Process", href: "#process", icon: ShieldCheck, katakana: "手順" },
   { name: "FAQ", href: "#faq", icon: CircleHelp, katakana: "質問" },
   { name: "Contact", href: "#contact", icon: Mail, katakana: "連絡" },
-  { name: "Blog", href: "#blog", icon: BookOpen, katakana: "記録" },
-  { name: "Gallery", href: "#gallery", icon: Images, katakana: "証明" },
+  /* Pages of their own (lib/routes.ts) */
+  { name: "Blog", href: "/blog", icon: BookOpen, katakana: "記録" },
+  { name: "Teaching", href: "/teaching", icon: GraduationCap, katakana: "指導" },
+  { name: "Gallery", href: "/gallery", icon: Images, katakana: "証明" },
 ];
 
-/* #work on the home page; /#work (the home page, at that section) elsewhere */
+/* "/blog" → that page. "#work" → the section on the home page: a plain
+   jump there, /#work from any other page. */
 function NavAnchor({ onHome, href, ...rest }: { onHome: boolean; href: string } & Omit<ComponentProps<"a">, "href">) {
+  if (href.startsWith("/")) return <Link href={href} prefetch={false} {...rest} />;
   return onHome ? <a href={href} {...rest} /> : <Link href={`/${href}`} prefetch={false} {...rest} />;
 }
 
 export default function SiteNav() {
-  const onHome = (usePathname() || "/") === "/";
+  const pathname = usePathname() || "/";
+  const onHome = pathname === "/";
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState("#home");
-  const current = onHome ? active : "#blog";
+  /* On the home page: the section on screen. Elsewhere: the page's own link
+     (/blog/<case> counts as the blog) */
+  const current = onHome
+    ? active
+    : (navItems.find((i) => i.href.startsWith("/") && (pathname === i.href || pathname.startsWith(`${i.href}/`)))?.href ?? "");
 
   useEffect(() => {
     if (!onHome) return;
-    const ids = navItems.map((i) => i.href.slice(1));
+    const ids = navItems.filter((i) => i.href.startsWith("#")).map((i) => i.href.slice(1));
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -73,8 +83,7 @@ export default function SiteNav() {
       },
       { rootMargin: "-40% 0px -55% 0px" }
     );
-    /* Lazy sections replace their placeholder when they load, so the
-       elements are looked up again whenever one mounts (lib/perf/lazy.tsx) */
+    /* Looked up again when a section arrives late (lib/perf/schedule.ts) */
     const watch = () =>
       ids.forEach((id) => {
         const el = document.getElementById(id);
@@ -125,7 +134,7 @@ export default function SiteNav() {
           <span className="text-primary text-2xl leading-none">.</span>
         </NavAnchor>
 
-        {/* Desktop Menu — from 1280px: ten links need the width */}
+        {/* Desktop Menu — from 1280px: eleven links need the width */}
         <div className="hidden xl:flex items-center gap-4 2xl:gap-6">
           {navItems.map((item) => (
             <NavAnchor

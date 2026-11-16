@@ -11,6 +11,7 @@
  */
 
 import { useMemo, useState } from "react";
+import ShowMore from "@/components/ui/ShowMore";
 import Link from "next/link";
 import { ArrowUpRight, Radar } from "lucide-react";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -98,7 +99,8 @@ export default function DetectionLibrary() {
             <span>What makes it ring</span>
             <span>ATT&amp;CK</span>
           </div>
-          <ul key={group ?? "all"} className="max-h-[34rem] overflow-y-auto divide-y divide-foreground/5">
+          {/* The first ten rules, then "Show more"; key={group}: a new filter starts again from ten */}
+          <ShowMore as="ul" key={group ?? "all"} first={10} label="Show more rules" buttonClassName="py-6 border-t border-foreground/5" className="divide-y divide-foreground/5">
             {rules.map((r, i) => (
               <li
                 key={r.id}
@@ -125,7 +127,7 @@ export default function DetectionLibrary() {
                 )}
               </li>
             ))}
-          </ul>
+          </ShowMore>
         </div>
 
         <FadeIn y={12} duration={0.5} className="mt-6 flex flex-wrap items-center justify-between gap-4">

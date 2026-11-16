@@ -144,7 +144,8 @@ export default function ArtGallery() {
         {/* ─── 01 · Main Header ─── */}
         <SectionHeader
           id="art-title"
-          eyebrow="Visual Archive // Proof"
+          as="h1"
+          eyebrow="Ahmed Emad Nasr // Certificates"
           japanese="証明"
           titleA="Proof"
           titleB="Gallery."

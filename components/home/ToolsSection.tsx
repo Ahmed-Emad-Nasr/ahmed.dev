@@ -6,6 +6,7 @@
 
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
+import ShowMore from "@/components/ui/ShowMore";
 import { TiltCard } from "@/components/ui/Motion";
 import { KanjiWatermark, chipTertiary } from "@/components/ui/kit";
 import { TOOL_GROUPS as GROUPS } from "@/data/about";
@@ -26,7 +27,7 @@ export default function ToolsSection() {
           description="No buzzword bingo. Every item below is used in the work and the cases on this page — the list is the same as on the CV."
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 [@media(min-width:90rem)]:grid-cols-4 gap-6">
+        <ShowMore first={6} label="Show more tools" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 [@media(min-width:90rem)]:grid-cols-4 gap-6">
           {GROUPS.map((g) => (
             <FadeIn key={g.id}>
               <TiltCard className="group spotlight spotlight-blue relative bg-surface/60 border border-foreground/5 p-7 h-full hover:border-tertiary/50 transition-colors duration-500">
@@ -48,7 +49,7 @@ export default function ToolsSection() {
               </TiltCard>
             </FadeIn>
           ))}
-        </div>
+        </ShowMore>
       </div>
     </section>
   );

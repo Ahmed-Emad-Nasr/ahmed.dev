@@ -128,7 +128,7 @@ export function caseNumbers({
         value: String(covering.length),
         label: plural(covering.length, "of my Wazuh rules covers this", "of my Wazuh rules cover this"),
         note: "same ATT&CK techniques — see the detection library",
-        href: "/#detections",
+        href: "/blog#detections",
       });
     }
   }

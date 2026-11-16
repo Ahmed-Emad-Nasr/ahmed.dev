@@ -62,6 +62,23 @@ export const STUDENT_FEEDBACK: readonly Testimonial[] = [
       "I would like to express my sincere appreciation to Eng Ahmed Emad Nasr for his outstanding efforts and support throughout the Cybersecurity (SOC) course with Amit.\nThe course was a great learning experience, as the topics were presented in a structured and understandable way, making even complex cybersecurity concepts easier to grasp. I particularly appreciated the practical approach, as the hands-on activities, real-life scenarios, and TryHackMe labs provided an excellent opportunity to strengthen my technical skills and connect theoretical knowledge with practical applications.\nWhat made the experience even more valuable was the instructor’s ability to explain concepts clearly, encourage participation, and create an interactive learning environment. His commitment, professionalism, and willingness to share his experience truly made a difference.\nThank you for your dedication and for making this course both informative and enjoyable. I genuinely appreciate everything I have learned throughout this journey.",
   },
   {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
+    lang: "ar",
+    quote: "البشمهندس ممتاز و شرحو حلو",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
+    quote:
+      "Honestly, you are one of the best instructors I’ve had the chance to learn from. Your teaching style is excellent, and you have a great ability to explain complex cybersecurity concepts in a simple and clear way.\nWhat I appreciate most is that you focus on making sure we truly understand the concepts rather than just memorizing information. Your patience, dedication, and passion for teaching make a real difference.\nThank you for your time, effort, and continuous support. I’m really glad to be learning from you, and I hope to apply everything I’ve learned from you in my cybersecurity career. Keep up the great work!",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
+    quote: "Excellent explanation and covered all points in slides.",
+  },
+  {
     author: "Mentee",
     source: "Cybersecurity (SOC) course · AMIT",
     quote:
@@ -97,6 +114,25 @@ export const STUDENT_FEEDBACK: readonly Testimonial[] = [
     author: "Student",
     source: "Cybersecurity (SOC) course · AMIT",
     quote:
+      "Dear Mr. Ahmed Emad,\nI just wanted to say thank you so much for the amazing sessions on Network, Security+, and SOC.\nHonestly, before this course, I thought these topics would be very difficult and boring, but your way of explaining made everything simple and clear. You don't just explain the theory, you explain it with real examples from the real work, and that helped me understand how things actually work in a SOC.\nI especially liked how you made Security+ easy, even the hard parts, and how you connected it with Networking and SOC. Now I feel I have a real picture of how everything works together.\nThank you for your patience, your energy, and for always answering our questions. I really learned a lot from you, and I'm very excited to continue in this field.\nI highly recommend your course to anyone who wants to start in Cybersecurity.\nBest regards",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
+    lang: "ar",
+    quote: "البشمهندس احمد عماد\nشخصيه محترمه وشرحه عظيم جدا\nومتعاون معانا جدا",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
+    lang: "ar",
+    quote:
+      "المادة العلمية والمحتوى: ممتازة بصراحة، عجبني جداً إزاي ربط الأساسيات زي (Network, Linux, OS) بمفاهيم السايبر سيكيوريتي في (Sec+ و Sec450) بترتيب وتسلسل منطقي يخليك تفهم الصورة كاملة من غير ما تتوه.\nطريقة الشرح: سلسة وبسيطة جداً، البشمهندس عنده قدرة رهيبة إنه يبسط المعلومات التقنية التقيلة عشان أي حد مهما كان مستواه يفهمها ويستوعبها بسهولة.\nالتطبيق العملي: شغل احترافي بجد، خصوصاً في الجزء الخاص بأدوات تحليل الحوادث الأمنية زي (Splunk و QRadar)، كان بيعيشنا جو بيئة العمل الحقيقية مش مجرد كلام نظري.\nالتواصل والدعم: متعاون لأبعد الحدود، بيسمع لكل أسئلة واستفسارات المتدربين وبيجاوب عليها بصدر رحب وبيديك الخلاصة من غير ما يبخل بأي معلومة.",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
+    quote:
       "One of the best instructors ever as he breaks down complex topics into simple, manageable steps instead of overloading learners & use real-world examples to make lessons interesting , also Ahmed is So diligent & full of potential and the way he teaches is unique and always creative I wish him every success in his future career.",
   },
   {
@@ -116,8 +152,20 @@ export const STUDENT_FEEDBACK: readonly Testimonial[] = [
   {
     author: "Student",
     source: "Cybersecurity (SOC) course · AMIT",
+    quote:
+      "Mr. Ahmed Emad Nasr is a great instructor. He explains everything in a simple and clear way, makes the sessions interesting, and makes sure everyone understands the material. He is helpful, patient, and always willing to answer our questions. I really appreciate his effort, support, and the positive learning environment he creates. Thank you for being such a good instructor!",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
     lang: "ar",
-    quote: "وبفهم من حضرتك جدا وبستفاد من حضرتك جدا والسيشن نظامها كويس جدا احسن instractor",
+    quote: "جيد فالشرح وتوصيل المعلومه",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
+    quote:
+      "I want to talk about the engineer who teaches me in this course. Honestly, he is a great teacher. He explains everything in a very clear and simple way, and he makes sure that everyone understands before he moves on.\nI have learned a lot from him, and he really helped me improve. He is patient, organized, and he always makes the course easy and enjoyable. I am really grateful for his effort.",
   },
   {
     author: "Student",
@@ -128,13 +176,31 @@ export const STUDENT_FEEDBACK: readonly Testimonial[] = [
   {
     author: "Student",
     source: "Cybersecurity (SOC) course · AMIT",
+    lang: "ar",
+    quote: "احسن instractor وبفهم من حضرتك جدا وبستفاد من حضرتك جدا والسيشن نظامها كويس جدا",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
     quote:
-      "احسن instractor وبفهم من حضرتك جدا وبستفاد من حضرتك جدا والسيشن نظامها كويس جدا ",
+      "Explains everything clearly, is very supportive .the knowledge they shared with us.The sessions are well-organized and informative.",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
+    lang: "ar",
+    quote:
+      "ربنا يجازي حضرتك خير و الله يا هندسا , شرح حضرتك كويس جدا و معنديش اي مشكلة بل بالعكس اتبسط جدا مع حضرتك علي عكس بداية الكورس ❤️",
   },
   {
     author: "Student",
     source: "Cybersecurity (SOC) course · AMIT",
     quote: "10/10",
+  },
+  {
+    author: "Student",
+    source: "Cybersecurity (SOC) course · AMIT",
+    quote: "All good, no negative feedback thank you for the slides",
   },
 ];
 

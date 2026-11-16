@@ -20,6 +20,7 @@
 
 import { useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
+import ShowMore from "@/components/ui/ShowMore";
 import type { WorkItem, WorkType } from "@/data/types";
 import {
   ExternalLink,
@@ -104,7 +105,8 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
           ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {/* key={filter}: a new filter starts again from the first four */}
+        <ShowMore key={filter} first={4} label="Show more projects" className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {items.map((w, idx) => {
             const Icon = TYPE_ICON[w.type];
             return (
@@ -231,7 +233,7 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
               </FadeIn>
             );
           })}
-        </div>
+        </ShowMore>
 
         {items.length === 0 && (
           <p className="mt-8 font-mono text-sm text-foreground/60">

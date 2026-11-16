@@ -33,10 +33,14 @@ export default function FooterBar({ className = "" }: { className?: string }) {
           © {currentYear} {PROFILE.name}
         </span>
       </div>
-      <nav aria-label="Site information" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-        <Link prefetch={false} href="/#blog" className="hover:text-primary-ink transition-colors">Blog</Link>
+      {/* [&_a]:min-h-6: every link is at least 24px tall, so wrapped rows on
+          a phone stay easy to tap (WCAG 2.5.8 target size) */}
+      <nav aria-label="Site information" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 [&_a]:inline-flex [&_a]:min-h-6 [&_a]:items-center">
+        <Link prefetch={false} href="/blog" className="hover:text-primary-ink transition-colors">Blog</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>
-        <Link prefetch={false} href="/#gallery" className="hover:text-primary-ink transition-colors">Gallery</Link>
+        <Link prefetch={false} href="/teaching" className="hover:text-primary-ink transition-colors">Teaching</Link>
+        <span className="text-primary-ink" aria-hidden="true">•</span>
+        <Link prefetch={false} href="/gallery" className="hover:text-primary-ink transition-colors">Gallery</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>
         {/* Files, not pages: plain links (the CV, how to report a security issue) */}
         <a href={normalizePublicHref(CV_PDF_HREF)} target="_blank" rel="noopener noreferrer" className="hover:text-primary-ink transition-colors">

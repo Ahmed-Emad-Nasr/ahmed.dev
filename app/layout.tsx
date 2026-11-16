@@ -133,7 +133,7 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     locale: "en_US",
-    siteName: "ahmed.dev",
+    siteName: "Ahmed Emad Nasr",
     images: [OG_IMAGE],
   },
   twitter: {
@@ -253,8 +253,11 @@ const STRUCTURED_DATA_JSON = jsonLd({
     {
       "@type": "WebSite",
       "@id": WEBSITE_ID,
-      name: "ahmed.dev",
-      alternateName: ["Ahmed Emad Nasr", "3omda", "Ahmed Emad Nasr — Information Security"],
+      /* The site name Google shows above results. Must match the WebSite
+         name on the domain's real home page (ahmed-emad-nasr.github.io/,
+         served by the separate repo Ahmed-Emad-Nasr.github.io) */
+      name: "Ahmed Emad Nasr",
+      alternateName: ["ahmed.dev", "3omda", "Ahmed Emad Nasr — Information Security"],
       url: SITE_URL,
       description: "The information security portfolio of Ahmed Emad Nasr: GRC, SOC, incident response, DFIR, malware analysis, IAM and data security — with case reports, projects, videos and certifications.",
       inLanguage: "en",

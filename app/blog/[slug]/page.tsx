@@ -40,6 +40,7 @@ import { caseNumbers } from "@/lib/case-numbers";
 import { caseKindOf, CASE_KINDS } from "@/lib/shared";
 import { jsonLd, PERSON_ID, PERSON_NAME, SITE_URL } from "@/lib/seo";
 import { blogYoutubeVideos } from "@/data/youtube";
+import { BLOG_ID, BLOG_URL } from "@/lib/page-ids";
 
 /* slug = the <case-id> part of the URL → the matching entry in data/cases.ts */
 const findCase = (slug: string) => caseEvidenceLibrary.find((item) => item.id === slug);
@@ -112,7 +113,7 @@ export async function generateMetadata({
     openGraph: {
       title: shareTitle,
       description: shareDescription,
-      siteName: "ahmed.dev",
+      siteName: "Ahmed Emad Nasr",
       locale: "en_US",
       url: caseUrl(item.id),
       type: "article",
@@ -175,7 +176,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         author: AUTHOR,
         publisher: AUTHOR,
         copyrightHolder: AUTHOR,
-        isPartOf: { "@id": `${absoluteUrl("/")}#cases` },
+        isPartOf: { "@id": BLOG_ID },
         mainEntityOfPage: { "@type": "WebPage", "@id": caseUrl(item.id) },
         about: [
           ...[...new Set([item.category, ...item.tags])].map((name) => ({ "@type": "Thing", name })),
@@ -207,8 +208,8 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: absoluteUrl("/") },
-          { "@type": "ListItem", position: 2, name: "Case library", item: `${absoluteUrl("/")}#cases` },
+          { "@type": "ListItem", position: 1, name: "Ahmed Emad Nasr", item: absoluteUrl("/") },
+          { "@type": "ListItem", position: 2, name: "Blog", item: BLOG_URL },
           { "@type": "ListItem", position: 3, name: item.title, item: caseUrl(item.id) },
         ],
       },
@@ -241,7 +242,7 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         kindLabel={CASE_KINDS.find((k) => k.id === caseKindOf(item))?.short ?? "Case"}
         kind={caseKindOf(item)}
         /* Cases that belong to a series get a "part of …" link back to the filtered library */
-        collection={item.platform === "PortSwigger" ? { href: "/?q=PortSwigger#cases", title: "Web Security Academy Track" } : undefined}
+        collection={item.platform === "PortSwigger" ? { href: "/blog?q=PortSwigger#cases", title: "Web Security Academy Track" } : undefined}
         />
       </PageShell>
     </>

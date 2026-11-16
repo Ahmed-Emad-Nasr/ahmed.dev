@@ -24,7 +24,7 @@ export const knowledgeEducationItems = [
     kind: "work" as const,
     subTag: "AMIT Learning",
     subTagHyperlink: "https://amit-learning.com/",
-    desc: "Authored a 160-hour cybersecurity curriculum and teach it across Networking (CCNA), Linux Administration, CompTIA Security+, and SANS SEC450 / SEC504 blue-team tracks — part of the 300+ students taught across AMIT & NTI. • Designed and supervise hands-on labs covering SIEM alert triage (Splunk, QRadar, Wazuh), penetration testing, IAM/PAM, and GRC gap assessments; students' own feedback is quoted in the Testimonials section. • Delivered Red Hat System Administration I & II (RH124/RH134) training cohorts in collaboration with NTI.",
+    desc: "Authored a 160-hour cybersecurity curriculum and teach it across Networking (CCNA), Linux Administration, CompTIA Security+, and SANS SEC450 / SEC504 blue-team tracks — part of the 300+ students taught across AMIT & NTI. • Designed and supervise hands-on labs covering SIEM alert triage (Splunk, QRadar, Wazuh), penetration testing, IAM/PAM, and GRC gap assessments; students' own feedback is quoted on the Teaching page. • Delivered Red Hat System Administration I & II (RH124/RH134) training cohorts in collaboration with NTI.",
     startDate: "2026-09-01",
     showDate: true,
     skills: ["Security Training", "Curriculum Design", "SOC Operations", "Splunk & Wazuh", "Linux (RH124)", "Security+", "SANS SEC450/504", "GRC"],

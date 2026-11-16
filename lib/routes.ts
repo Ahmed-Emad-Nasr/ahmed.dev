@@ -1,16 +1,64 @@
 /*
- * lib/routes.ts — the site's pages.
+ * lib/routes.ts — the site's pages, and which page each section lives on.
  *
- *   /             THE WHOLE PORTFOLIO, one page: pitch, contact, then the
- *                 blog (#blog: cases, videos, ATT&CK, rules, triage, lab,
- *                 contributions) and the gallery (#gallery) at the end
+ *   /             the portfolio: hero, roles, projects, experience, the path,
+ *                 recommendations, platforms, process, FAQ, contact
+ *   /blog         the case library, videos, ATT&CK, detection rules, triage,
+ *                 home lab (app/blog/page.tsx)
  *   /blog/<id>    one page per case (app/blog/[slug]/page.tsx)
+ *   /teaching     the course, where it was taught, student feedback
+ *                 (app/teaching/page.tsx)
+ *   /gallery      certificates, records and photos (app/gallery/page.tsx)
  *
- * /blog and /gallery used to be pages of their own. Old links to them
- * (/blog?q=wazuh#cases, /gallery?cert=14 …) land on the 404 page, whose
- * legacyPageForwardScript() sends them to the same place on the home page
- * before anything paints.
+ * SECTION_PAGE below is the one place that knows where a section lives: the
+ * navbar, the command palette, the g-shortcuts and old /#cases-style links
+ * all ask it. Moving a section to another page = change it here.
  */
+
+/** The page each section id is on. Not listed = the home page. */
+export const SECTION_PAGE: Readonly<Record<string, "/blog" | "/teaching" | "/gallery">> = {
+  blog: "/blog",
+  cases: "/blog",
+  videos: "/blog",
+  youtube: "/blog",
+  playlists: "/blog",
+  attack: "/blog",
+  detections: "/blog",
+  triage: "/blog",
+  lab: "/blog",
+  teaching: "/teaching",
+  "student-feedback": "/teaching",
+  gallery: "/gallery",
+  art: "/gallery",
+  "all-certificates": "/gallery",
+};
+
+/** "/blog" for "cases", "/" for "work" */
+const pageOfSection = (id: string): string => SECTION_PAGE[id] ?? "/";
+
+/* The home page's sections (components/home/*) */
+const HOME_SECTIONS = new Set([
+  "home", "roles", "work", "projects", "contributions", "tools", "uses", "experience",
+  "path", "now", "testimonials", "platforms", "process", "faq", "contact",
+]);
+
+/** The page of a KNOWN section or case card (#case-…), or null for any other id */
+export function knownPageOf(id: string): string | null {
+  if (id.startsWith("case-")) return "/blog";
+  if (SECTION_PAGE[id]) return SECTION_PAGE[id];
+  return HOME_SECTIONS.has(id) ? "/" : null;
+}
+
+/**
+ * Where a section link goes, on whichever page holds it:
+ *   "#work" → "/#work"   "#cases" → "/blog#cases"   "?q=x#cases" → "/blog?q=x#cases"
+ *   "?cert=3#all-certificates" → "/gallery?cert=3#all-certificates"
+ */
+export function sectionHref(target: string): string {
+  const at = target.indexOf("#");
+  const id = at >= 0 ? decodeURIComponent(target.slice(at + 1)) : "";
+  return `${pageOfSection(id)}${target}`;
+}
 
 /** Search params that belong to the case library's filters */
 export const LIBRARY_PARAMS = ["q", "cat", "tools", "kind", "sort", "view"] as const;
@@ -27,15 +75,4 @@ export function homeDataFixScript(base: string): string {
   const bad = JSON.stringify(`${base}.txt`);
   const good = JSON.stringify(`${base}/index.txt`);
   return `(function(){var f=window.fetch;if(!f)return;window.fetch=function(i,o){try{var r=typeof i==="string"||i instanceof URL,u=new URL(r?String(i):i.url,location.href);if(u.origin===location.origin&&u.pathname===${bad}){u.pathname=${good};i=r?u.href:new Request(u.href,i)}}catch(e){}return f.call(this,i,o)}})();`;
-}
-
-/**
- * Inline script for the 404 page: /blog… and /gallery… were pages before the
- * site became one page. Keeps the filters (?q=…, ?cert=…) and the anchor;
- * with no anchor, opens the matching part (#blog / #gallery). `base` is the
- * deploy prefix ("/ahmed.dev" in production).
- */
-export function legacyPageForwardScript(base: string): string {
-  const b = JSON.stringify(base);
-  return `(function(){try{var p=location.pathname.slice(${b}.length).replace(/\\/+$/,""),t=p==="/blog"?"#blog":p==="/gallery"?"#gallery":"";if(t)location.replace(${b}+"/"+location.search+(location.hash||t));}catch(e){}})();`;
 }
