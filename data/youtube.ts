@@ -18,6 +18,77 @@ import type {
 } from "@/lib/shared";
 
 export const blogYoutubeVideos: BlogYoutubeVideo[] = [
+  /* ── Cybersecurity basics series (Oct–Nov 2026) ── */
+  {
+    videoId: "Zp1brJ1dQ_A",
+    title: "Backup Basics Explained | 3-2-1 Rule & 4 Types of Backup",
+    description: "Why backups matter for protecting data from loss, damage and cyberattacks. Covers the 3-2-1 backup rule, the four basic backup types — full, incremental, differential and mirror — how they differ and how to pick the right one, with simple examples of how organisations protect and restore their data.",
+    publishedAt: "2026-11-15",
+    tags: ["Backup", "Data Protection", "Disaster Recovery", "3-2-1 Rule", "IT Fundamentals", "Cybersecurity Basics"],
+  },
+  {
+    videoId: "BV_9GnuWNnM",
+    title: "IPS vs IDS vs DLP | What's the Difference? | Cybersecurity Explained",
+    description: "Three security controls side by side: an IDS watches traffic and raises alerts, an IPS inspects traffic and blocks what is malicious, and DLP keeps sensitive data from leaking out. Explains detection versus prevention and where each one fits in a network's defences.",
+    publishedAt: "2026-11-12",
+    tags: ["IDS", "IPS", "DLP", "Network Security", "Blue Team", "SOC"],
+  },
+  {
+    videoId: "3qxPeJOAtls",
+    title: "IOC vs IOA Explained in 90 Seconds | Cybersecurity Basics",
+    description: "Indicators of compromise versus indicators of attack, in 90 seconds. IOCs are the evidence that a system may already be compromised — malicious IPs, file hashes, suspicious domains; IOAs are signs of attacker behaviour while an attack is under way. A short way to remember which is which.",
+    publishedAt: "2026-11-11",
+    tags: ["IOC", "IOA", "Threat Detection", "SOC", "Blue Team", "Cybersecurity Basics"],
+  },
+  {
+    videoId: "xjMLqQOYuGQ",
+    title: "Compliance vs Auditor Explained in 60 Seconds",
+    description: "The difference between compliance and auditing in information security, in 60 seconds: what compliance is, what an auditor does, how the two roles differ and how they work together to keep an organisation in line with its security standards, policies and controls.",
+    publishedAt: "2026-11-08",
+    tags: ["GRC", "Compliance", "Auditing", "ISO 27001", "Information Security", "Cybersecurity Basics"],
+  },
+  {
+    videoId: "vqg_xMdD96E",
+    title: "VA vs PT Explained — Vulnerability Assessment vs Penetration Testing",
+    description: "Vulnerability assessment and penetration testing compared: what each one is, how vulnerabilities are found and then validated, the key differences between the two, and when an organisation needs a VA and when it needs a penetration test.",
+    publishedAt: "2026-11-08",
+    tags: ["Vulnerability Assessment", "Penetration Testing", "Ethical Hacking", "Blue Team", "Red Team", "Cybersecurity Basics"],
+  },
+  {
+    videoId: "1unn5GpIO28",
+    title: "System Hardening Explained | Cybersecurity & Blue Team Fundamentals",
+    description: "What system hardening is and why it matters for a blue team: shrinking a system's attack surface by disabling services that are not needed, removing unused software, applying patches and updates, setting strong access controls and enforcing security policies.",
+    publishedAt: "2026-11-04",
+    tags: ["System Hardening", "Blue Team", "SOC", "Patch Management", "Access Control", "Information Security"],
+  },
+  {
+    videoId: "mvslufknlJ4",
+    title: "TCP vs UDP Explained | What's the Difference? | Networking Fundamentals",
+    description: "The two transport-layer protocols compared: connection-oriented versus connectionless, reliable versus best-effort delivery, the TCP three-way handshake, acknowledgements, sequencing and retransmission, why UDP can be faster, and real uses — HTTP/HTTPS, DNS, SSH, VoIP, gaming and streaming.",
+    publishedAt: "2026-11-01",
+    tags: ["TCP", "UDP", "Networking", "Network Protocols", "CCNA", "SOC Analyst"],
+  },
+  {
+    videoId: "JgMC1NAFNVw",
+    title: "Blue Team vs Red Team vs Purple Team vs White Team",
+    description: "The four security teams and how they work together: the blue team defends and monitors (detection, incident response, SIEM, threat hunting), the red team simulates real attacks, the purple team connects the two to improve detection rules, and the white team sets the rules of engagement and runs the exercise.",
+    publishedAt: "2026-11-01",
+    tags: ["Blue Team", "Red Team", "Purple Team", "White Team", "SOC", "Incident Response"],
+  },
+  {
+    videoId: "kiPXdvAES1Y",
+    title: "NetFlow vs Full Packet Capture (PCAP) | Network Traffic Analysis for SOC Analysts",
+    description: "Flow metadata versus full packet capture for SOC analysts: what NetFlow records and what PCAP keeps, the trade-offs in storage, visibility and analysis, and when flow data is enough to follow communication patterns versus when packet-level detail is needed for threat hunting and incident investigation.",
+    publishedAt: "2026-10-29",
+    tags: ["NetFlow", "PCAP", "Network Traffic Analysis", "Threat Hunting", "SOC", "DFIR"],
+  },
+  {
+    videoId: "sWptomUQ1uo",
+    title: "Black Hat vs White Hat vs Grey Hat & Black Box Testing",
+    description: "Two sets of terms that are easy to mix up: black, white and grey hat describe a hacker's intent and authorisation, while black, white and grey box describe how much a security tester knows about the system being tested. A beginner's guide for ethical hacking, penetration testing and bug bounty.",
+    publishedAt: "2026-10-26",
+    tags: ["Ethical Hacking", "Penetration Testing", "Black Box Testing", "Bug Bounty", "Web Security", "Cybersecurity Basics"],
+  },
   /* ── Security fundamentals series + beginner setup guides (Sep–Oct 2026) ── */
   {
     videoId: "d2eWKWp6cnQ",

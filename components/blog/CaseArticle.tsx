@@ -113,7 +113,7 @@ const PLAIN_GOAL: Record<CaseKind, string> = {
   project:
     "Something had to be built, not only studied — a working setup, a set of alarms or a plan that a security team could put to use the next day.",
   lab:
-    "A hands-on practice exercise on a training platform: attack a deliberately vulnerable system the way a real attacker would, to learn exactly how to defend against it.",
+    "A hands-on practice exercise on a training platform: a realistic scenario — attacking a practice system, or defending one as a security analyst — to learn exactly how real attacks are spotted and stopped.",
   note:
     "Study notes from a guided course — the ideas a security analyst needs to understand before handling a real incident.",
 };

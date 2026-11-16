@@ -8,10 +8,10 @@
 
 ### Information Security Portfolio · Blog · Teaching · Proof
 
-[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=19&duration=2800&pause=900&color=F0304F&center=true&vCenter=true&width=720&lines=Information+Security+Officer;GRC+%C2%B7+SOC+%C2%B7+IR%2FDFIR+%C2%B7+Malware+Analysis+%C2%B7+IAM;Cybersecurity+Instructor+%E2%80%94+AMIT+%26+NTI;82+case+studies+%C2%B7+54+ATT%26CK+techniques+mapped;%22Security+is+a+process.+Evidence+makes+it+repeatable.%22)](https://ahmed-emad-nasr.github.io/ahmed.dev/)
+[![Typing SVG](https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=19&duration=2800&pause=900&color=F0304F&center=true&vCenter=true&width=720&lines=Information+Security+Officer;GRC+%C2%B7+SOC+%C2%B7+IR%2FDFIR+%C2%B7+Malware+Analysis+%C2%B7+IAM;Cybersecurity+Instructor+%E2%80%94+AMIT+%26+NTI;83+case+studies+%C2%B7+56+ATT%26CK+techniques+mapped;%22Security+is+a+process.+Evidence+makes+it+repeatable.%22)](https://ahmed-emad-nasr.github.io/ahmed.dev/)
 
 [![Live portfolio](https://img.shields.io/badge/LIVE-portfolio-BC002D?style=for-the-badge&logo=githubpages&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/)
-[![Blog](https://img.shields.io/badge/BLOG-82_cases-111111?style=for-the-badge&logo=readdotcv&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/blog)
+[![Blog](https://img.shields.io/badge/BLOG-83_cases-111111?style=for-the-badge&logo=readdotcv&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/blog)
 [![Teaching](https://img.shields.io/badge/TEACHING-160h_diploma-00A6B2?style=for-the-badge&logo=googleclassroom&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/teaching)
 [![Gallery](https://img.shields.io/badge/PROOF-certificates-E3B341?style=for-the-badge&logo=credly&logoColor=black)](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery)
 
@@ -80,7 +80,7 @@ Lab scores vary by a few points between runs.
 ```mermaid
 flowchart LR
   H["/  —  Portfolio<br/>roles · projects · experience<br/>recommendations · FAQ · contact"]
-  B["/blog  —  Blog<br/>82 cases · 25 videos<br/>ATT&CK · detection rules · triage · home lab"]
+  B["/blog  —  Blog<br/>83 cases · 35 videos<br/>ATT&CK · detection rules · triage · home lab"]
   C["/blog/&lt;case&gt;<br/>one report per case"]
   T["/teaching  —  Teaching<br/>160 h diploma · where it was taught<br/>student feedback"]
   G["/gallery  —  Proof<br/>49 certificates & records · 50 photos"]
@@ -92,7 +92,7 @@ flowchart LR
 | Page | What is on it |
 | :-- | :-- |
 | [`/`](https://ahmed-emad-nasr.github.io/ahmed.dev/) | Hero, roles, projects, open source, tools, experience, the path, LinkedIn recommendations, training platforms, process, FAQ, contact |
-| [`/blog`](https://ahmed-emad-nasr.github.io/ahmed.dev/blog) | Searchable library of **82** cases, **25** videos, **54** ATT&CK techniques mapped, **50+** custom Wazuh rules, a triage challenge, the home lab |
+| [`/blog`](https://ahmed-emad-nasr.github.io/ahmed.dev/blog) | Searchable library of **83** cases, **35** videos, **56** ATT&CK techniques mapped, **50+** custom Wazuh rules, a triage challenge, the home lab |
 | `/blog/<case>` | Goal → what happened → what I did → how to prevent it → evidence, with the PDF report |
 | [`/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/teaching) | The 160-hour SOC & Cybersecurity Diploma module by module, where it was taught, **25** student notes quoted word for word, and a training request for teams |
 | [`/ar/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/teaching) | The same page in Arabic (right to left, Cairo font), linked to the English one with `hreflang` |
@@ -181,7 +181,7 @@ opens the visitor's mail app with the message filled in, with Gmail and
 "copy message" as fallbacks.
 
 **Adding a case, video, certificate or job:** [`HOW-TO-ADD.md`](HOW-TO-ADD.md)
-(step by step, in Arabic) · [`AI-PROMPT.md`](AI-PROMPT.md) (a prompt for any AI
+(step by step) · [`AI-PROMPT.md`](AI-PROMPT.md) (a prompt for any AI
 assistant — AI tools that open the repo read the same rules from `AGENTS.md`).
 
 ---

@@ -62,6 +62,83 @@ export type CaseDetail = {
 const LD = "LetsDefend SOC simulator";
 
 export const caseDetails: Record<string, CaseDetail> = {
+  "soc-l1-alert-reporting": {
+    verdict: "Two new alerts reported with the Five Ws and escalated to L2 as True Positives: a spoofed 'Microsoft Support' phishing email with a REPORT.rar attachment, and Active Directory discovery from a reverse shell under the IIS worker of an old Exchange server",
+    severity: "High",
+    facts: [
+      { label: "Platform", value: "TryHackMe · SOC Level 1 (SOC Team Internals) — 6 tasks" },
+      { label: "SIEM queue", value: "5 alerts on 27 Mar 2025 (2 awaiting action, 2 already with L2, 1 closed as False Positive)" },
+      { label: "Alert 1 (Medium)", value: "Email Marked as Phishing after Delivery → True Positive, escalated to E.Fleming (L2)" },
+      { label: "Alert 2 (Medium)", value: "Spike of Domain Discovery Commands on DMZ-MSEXCHANGE-2013 → True Positive, escalated to E.Fleming (L2)" },
+      { label: "Report method", value: "Five Ws — who, what, when, where, why" },
+      { label: "Tools", value: "TryHackMe SIEM · VirusTotal" },
+    ],
+    chain: [
+      { step: "Reviewed the queue and the alert already escalated to L2: HR lead m.boslan@tryhackme.thm shared the 'Employee Records (Updated)' spreadsheet with shadow18562@protonmail.thm" },
+      { step: "Alert 1: assigned it to myself (L1) and moved it to In Progress" },
+      { step: "Phishing email to IT manager e.huffman@tryhackme.thm from 'Microsoft Support <support@microsoft.com>' — 'Microsoft Teams Pricing Increase', urgent wording, SPF fail, DKIM fail, attachment REPORT.rar", technique: "T1566.001" },
+      { step: "Checked the sender on VirusTotal (no results), wrote the report, set the verdict to True Positive and escalated to E.Fleming (L2)" },
+      { step: "Alert 2: the IIS worker w3wp.exe on the DMZ Exchange 2013 server started C:\\Users\\Public\\revshell.exe — a web shell / reverse shell on an old, internet-facing Exchange", technique: "T1505.003" },
+      { step: "Initial access through the public-facing Exchange web server", technique: "T1190" },
+      { step: "revshell.exe launched cmd.exe as NT AUTHORITY\\SYSTEM", technique: "T1059.003" },
+      { step: "whoami /priv — checked the account and its privileges", technique: "T1033" },
+      { step: "net group \"Domain Admins\" /domain — listed the domain administrators", technique: "T1069.002" },
+      { step: "nltest /dclist:tryhackme.thm — listed the domain controllers", technique: "T1018" },
+      { step: "Reported it as AD discovery from an unauthorized reverse shell, set True Positive and escalated to E.Fleming (L2)" },
+    ],
+    timeline: [
+      { time: "2025-03-27 18:02", event: "Fast Beaconing to Untrusted Domain (High) — closed as False Positive by S.Todd (L1)" },
+      { time: "2025-03-27 18:30", event: "Sensitive Document Share to External (Medium) — HR spreadsheet shared with a personal Protonmail address; True Positive, with E.Fleming (L2)" },
+      { time: "2025-03-27 19:10", event: "Web Scanning of Corporate Resources (Low) — True Positive, with E.Fleming (L2)" },
+      { time: "2025-03-27 19:25", event: "Email Marked as Phishing after Delivery (Medium) — triaged by me: True Positive, escalated to L2" },
+      { time: "2025-03-27 19:56", event: "Spike of Domain Discovery Commands (Medium) on DMZ-MSEXCHANGE-2013 — triaged by me: True Positive, escalated to L2" },
+    ],
+    iocs: [
+      { type: "email", value: "support@microsoft.com", note: "Spoofed sender ('Microsoft Support') — SPF and DKIM failed" },
+      { type: "file", value: "REPORT.rar", note: "Attachment of the phishing email" },
+      { type: "account", value: "e.huffman@tryhackme.thm", note: "Recipient — Eddie Huffman, IT Manager" },
+      { type: "file", value: "C:\\Users\\Public\\revshell.exe", note: "Reverse shell started by w3wp.exe (parent of cmd.exe)" },
+      { type: "other", value: "DMZ-MSEXCHANGE-2013", note: "Compromised host — Exchange 2013 in the DMZ, Windows Server 2012 R2" },
+      { type: "account", value: "NT AUTHORITY\\SYSTEM", note: "Account that ran the discovery commands" },
+      { type: "email", value: "shadow18562@protonmail.thm", note: "External address that received the HR spreadsheet (alert already with L2)" },
+    ],
+    detection: [
+      {
+        title: "My alert reports (as written in the SIEM) and the flags",
+        lang: "text",
+        code: `# Alert 1: Email Marked as Phishing after Delivery (Medium -> True Positive, escalated to E.Fleming L2)
+email sent to IT Manager and There are 4 suspicious thinks
+* no urls
+* domain not found in virustotal public TIP
+1- SPF failed which means sender server not authinticated to send with this domain
+2- DKIM failed Means signiture invalid or no signiture at all
+3- DMARC invaild
+4- report.rar looks like how malware are sent in zip file and passwords
+Flags: THM{nice_attempt_faking_microsoft_support}
+       THM{good_job_escalating_your_first_alert}
+
+# Alert 2: Spike of Domain Discovery Commands (Medium -> True Positive, escalated to E.Fleming L2)
+suspicious commands are run on DMZ-MSEXCHANGE-2013 which indicates AD domain discovery,
+lateral Movment, Privelege Escalation
+and suspicious process tree cmd.exe - revshell.exe - w3wp.exe
+which indicates unauthorized Reverse Shell
+Flag:  THM{looks_like_webshell_via_old_exchange}
+
+# The discovery commands in the alert
+dir
+hostname
+whoami /priv
+net group "Domain Admins" /domain
+nltest /dclist:tryhackme.thm`,
+      },
+    ],
+    response: [
+      "Both alerts escalated to the L2 on shift (E.Fleming) with a written report, as the SOC workflow requires: In Progress → report → verdict → assign to L2",
+      "Phishing: remove the email from every mailbox that received it, block the spoofed sender pattern, and confirm with the IT manager whether REPORT.rar was opened",
+      "Exchange: isolate DMZ-MSEXCHANGE-2013, remove revshell.exe and look for the web shell under IIS, patch or retire the old Exchange 2013, and check the domain admin accounts that were listed",
+    ],
+    lessons: "A good L1 report answers the Five Ws — who, what, when, where and why — so L2 can start from it instead of from scratch. Escalate True Positives that need more work to L2, not to your manager; and if you think you missed an attack, tell L2 at once. An email can look like Microsoft and still fail SPF, DKIM and DMARC; and whoami, net group and nltest running as SYSTEM under w3wp.exe on an old Exchange server is an attacker mapping Active Directory, not IT work.",
+  },
   /* ── LetsDefend SOC alerts ─────────────────────────────────────────── */
   "soc127-pdf": {
     verdict: "True positive — web attack allowed, server treated as potentially compromised",
