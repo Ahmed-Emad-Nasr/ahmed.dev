@@ -32,13 +32,13 @@ import {
 } from "@/components/blog/dynamic";
 import { attackCoverage, libraryCounts } from "@/lib/library-data";
 import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
-import { summarize } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
 import {
-  CHANNEL_ID, KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, youtubeEmbed, youtubeThumb, youtubeWatch,
+  CHANNEL_ID, KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, youtubeThumb,
 } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/site";
 import { BLOG_ID, BLOG_URL } from "@/lib/page-ids";
+import { SITE_VIDEOS, videoUrl } from "@/lib/videos";
 
 /* The intro text under "The Blog." */
 const BLOG_DESCRIPTION =
@@ -100,23 +100,14 @@ function structuredData() {
         "@type": "ItemList",
         "@id": `${BLOG_URL}#videos`,
         name: "Cybersecurity video tutorials by Ahmed Emad Nasr",
-        numberOfItems: blogYoutubeVideos.length,
-        itemListElement: blogYoutubeVideos.map((video, index) => ({
+        /* A summary list: each video is described in full (VideoObject) on
+           its own page, /videos/<slug> — where Google can index it */
+        numberOfItems: SITE_VIDEOS.length,
+        itemListElement: SITE_VIDEOS.map((video, index) => ({
           "@type": "ListItem",
           position: index + 1,
-          item: {
-            "@type": "VideoObject",
-            "@id": `${youtubeWatch(video.videoId)}#video`,
-            name: video.title,
-            description: summarize(video.description ?? video.title, 160),
-            thumbnailUrl: [youtubeThumb(video.videoId)],
-            uploadDate: video.publishedAt,
-            embedUrl: youtubeEmbed(video.videoId),
-            url: youtubeWatch(video.videoId),
-            inLanguage: "en",
-            creator: PERSON_REF,
-            publisher: { "@id": CHANNEL_ID },
-          },
+          url: videoUrl(video),
+          name: video.title,
         })),
       },
       breadcrumbs([

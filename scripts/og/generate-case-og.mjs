@@ -110,32 +110,46 @@ ${ids.length ? `<div class="ids">${ids.map((i) => `<span>${esc(i)}</span>`).join
 /* ─── Page cards: /blog, /teaching, /gallery ─── */
 /* Same count as the ATT&CK section on /blog (parent techniques) */
 const techniqueCount = coveredTechniqueCount();
+/* Each page: its words, its colour and its own photo (scripts/og/portrait-*.webp —
+   the photos with their background removed). photo: width / left / top in px
+   on the 1200×630 card. */
 const PAGES = [
   {
     id: "blog",
     badge: "Case library · blog",
-    kicker: "Ahmed Emad Nasr",
     title: "Blog.",
-    line: "Cybersecurity case studies — SOC, DFIR & malware",
+    line: "Cybersecurity case studies",
+    sub: "SOC · DFIR · Malware analysis · Detection",
     chips: [`${caseEvidenceLibrary.length} cases`, `${techniqueCount} ATT&CK techniques`, `${blogYoutubeVideos.length} videos`],
+    accent: "#BC002D", ink: "#ff2d55", glow: "rgba(188,0,45,.35)",
+    photo: { file: "portrait-sitting.webp", width: 1000, left: 400, top: -6 },
   },
   {
     id: "teaching",
-    badge: "Instructor · NTI · AMIT",
-    kicker: "Ahmed Emad Nasr",
+    badge: "Instructor · AMIT · NTI",
     title: "Teaching.",
-    line: "Cybersecurity instructor — the SOC diploma",
-    chips: [`${DIPLOMA.hours}-hour diploma`, `${TEACHING_STATS[0].value} students`, `${STUDENT_FEEDBACK.length} student notes`],
+    line: "Cybersecurity instructor",
+    sub: "The 160-hour SOC & Cybersecurity Diploma",
+    chips: [`${DIPLOMA.hours}h diploma`, `${TEACHING_STATS[0].value} students`, `${STUDENT_FEEDBACK.length} student notes`],
+    accent: "#0e7490", ink: "#38bdf8", glow: "rgba(56,189,248,.30)",
+    photo: { file: "portrait-grey.webp", width: 1000, left: 400, top: -6 },
   },
   {
     id: "gallery",
     badge: "Certificates · proof",
-    kicker: "Ahmed Emad Nasr",
     title: "Gallery.",
-    line: "Certificates, degree & classes — the originals",
+    line: "Certificates & degree",
+    sub: "The original documents, and the classes",
     chips: [`${PROFESSIONAL_CERTIFICATION_COUNT} certifications`, `${ALL_GALLERY_CERTIFICATES.length} documents`],
+    accent: "#a16207", ink: "#facc15", glow: "rgba(250,204,21,.25)",
+    /* A passport-style photo: cut off at the shoulders, so its sides fade too */
+    photo: { file: "portrait-formal.webp", width: 430, left: 690, top: 70, fadeSides: true },
   },
 ];
+
+const photo = (f) => `data:image/webp;base64,${readFileSync(join(ROOT, "scripts/og", f)).toString("base64")}`;
+/* The page word as large as it fits in the left half */
+const titleSize = (t) => (t.length <= 5 ? 128 : t.length <= 8 ? 100 : 88);
 
 const pageHtml = (p) => `<!doctype html><html><head><meta charset="utf-8"><style>
 @font-face{font-family:Dela;src:url(${font("dela-gothic-one.woff2")})}
@@ -144,27 +158,41 @@ const pageHtml = (p) => `<!doctype html><html><head><meta charset="utf-8"><style
 *{margin:0;box-sizing:border-box}
 body{width:1200px;height:630px;background:#080808;color:#fff;font-family:Outfit;position:relative;overflow:hidden}
 .grid{position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.07) 1px,transparent 0);background-size:40px 40px}
-.top{position:absolute;top:0;left:0;right:0;height:4px;background:#BC002D}
-.sun{position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(188,0,45,.22) 0%,rgba(188,0,45,.12) 40%,transparent 70%)}
-.wrap{position:absolute;left:80px;top:76px;right:80px}
-.badge{display:inline-flex;gap:14px;align-items:center;padding:10px 16px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);font-family:Mono;font-size:15px;font-weight:700;letter-spacing:.25em;color:#a0a0a0;text-transform:uppercase}
-.dot{width:10px;height:10px;background:#BC002D}
-.kicker{margin-top:34px;font-family:Dela;font-size:44px;letter-spacing:-.02em;text-transform:uppercase}
-h1{margin-top:6px;font-family:Dela;font-size:132px;line-height:.92;letter-spacing:-.04em;text-transform:uppercase;color:transparent;-webkit-text-stroke:3px #BC002D}
-.line{margin-top:24px;font-family:Mono;font-size:21px;font-weight:700;letter-spacing:.14em;color:#FFD700;text-transform:uppercase}
-.chips{margin-top:22px;display:flex;gap:12px;flex-wrap:wrap}
-.chips span{padding:8px 14px;border:1px solid rgba(56,189,248,.4);background:rgba(56,189,248,.08);font-family:Mono;font-size:16px;font-weight:700;color:#7dd3fc}
-.foot{position:absolute;left:80px;right:80px;bottom:52px;display:flex;justify-content:space-between;align-items:center;font-family:Mono;font-size:16px;letter-spacing:.22em;color:rgba(255,255,255,.45);text-transform:uppercase}
+.top{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,${p.accent},${p.ink})}
+.halo{position:absolute;left:560px;top:-10px;width:660px;height:660px;border-radius:50%;background:radial-gradient(circle,${p.glow} 0%,transparent 68%)}
+.sun{position:absolute;left:650px;top:75px;width:490px;height:490px;border-radius:50%;
+  background:radial-gradient(circle at 50% 42%,${p.ink} 0%,${p.accent} 40%,rgba(0,0,0,.55) 66%,transparent 72%);opacity:.92}
+.ring{position:absolute;left:615px;top:40px;width:560px;height:560px;border-radius:50%;border:1px dashed rgba(255,255,255,.14)}
+.photo{position:absolute;left:${p.photo.left}px;top:${p.photo.top}px;width:${p.photo.width}px;height:auto;
+  -webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 84%,transparent 99%)${p.photo.fadeSides ? ",linear-gradient(90deg,transparent 0%,#000 14%,#000 86%,transparent 100%)" : ""};
+  -webkit-mask-composite:source-in;mask-composite:intersect;
+  filter:drop-shadow(0 0 1px rgba(255,255,255,.35)) drop-shadow(-14px 0 34px ${p.glow})}
+.fade{position:absolute;inset:0;background:linear-gradient(90deg,#080808 0%,#080808 42%,rgba(8,8,8,.85) 51%,rgba(8,8,8,0) 62%)}
+.wrap{position:absolute;left:72px;top:64px;width:600px}
+.badge{display:inline-flex;gap:12px;align-items:center;padding:10px 16px;border:1px solid rgba(255,255,255,.14);background:rgba(8,8,8,.7);font-family:Mono;font-size:14px;font-weight:700;letter-spacing:.26em;color:#b5b5b5;text-transform:uppercase}
+.dot{width:9px;height:9px;background:${p.ink};box-shadow:0 0 12px ${p.ink}}
+.kicker{margin-top:30px;font-family:Dela;font-size:42px;letter-spacing:-.02em;text-transform:uppercase}
+h1{margin-top:4px;font-family:Dela;font-size:${titleSize(p.title)}px;line-height:.95;letter-spacing:-.04em;text-transform:uppercase;color:transparent;-webkit-text-stroke:3px ${p.ink}}
+.line{margin-top:22px;display:flex;align-items:center;gap:14px;font-family:Mono;font-size:21px;font-weight:800;letter-spacing:.2em;color:#FFD700;text-transform:uppercase}
+.line:before{content:"";width:34px;height:2px;background:#FFD700}
+.sub{margin-top:10px;font-family:Mono;font-size:14.5px;font-weight:600;letter-spacing:.14em;color:rgba(255,255,255,.62);text-transform:uppercase}
+.chips{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
+.chips span{padding:8px 13px;border:1px solid rgba(56,189,248,.45);background:rgba(8,20,28,.85);font-family:Mono;font-size:15px;font-weight:700;color:#8fdcff}
+.foot{position:absolute;left:72px;bottom:40px;display:flex;align-items:center;gap:18px;font-family:Mono;font-size:15px;letter-spacing:.2em;color:rgba(255,255,255,.5);text-transform:uppercase}
 .mark{font-family:Dela;font-size:30px;letter-spacing:-.02em;color:#fff}.mark i{color:#BC002D;font-style:normal}
-</style></head><body><div class="grid"></div><div class="sun"></div><div class="top"></div>
+.bar{width:1px;height:22px;background:rgba(255,255,255,.2)}
+</style></head><body><div class="grid"></div><div class="halo"></div><div class="sun"></div><div class="ring"></div>
+<img class="photo" src="${photo(p.photo.file)}" alt="">
+<div class="fade"></div><div class="top"></div>
 <div class="wrap">
 <div class="badge"><span class="dot"></span>${esc(p.badge)}</div>
-<div class="kicker">${esc(p.kicker)}</div>
+<div class="kicker">Ahmed Emad Nasr</div>
 <h1>${esc(p.title)}</h1>
 <div class="line">${esc(p.line)}</div>
+<div class="sub">${esc(p.sub)}</div>
 <div class="chips">${p.chips.map((c) => `<span>${esc(c)}</span>`).join("")}</div>
 </div>
-<div class="foot"><span class="mark">AE<i>.</i></span><span>Information Security Officer</span></div>
+<div class="foot"><span class="mark">AE<i>.</i></span><span class="bar"></span><span>Information Security Officer</span></div>
 </body></html>`;
 
 const out = join(ROOT, "public/og/cases");

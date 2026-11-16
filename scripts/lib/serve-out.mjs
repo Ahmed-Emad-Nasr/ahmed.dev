@@ -6,7 +6,7 @@
  */
 
 import { createServer } from "node:http";
-import { createReadStream, existsSync, readFileSync, statSync } from "node:fs";
+import { createReadStream, existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { extname, join } from "node:path";
 
 const TYPES = {
@@ -67,5 +67,9 @@ export function samplePages(root = join(process.cwd(), "out")) {
   const html = (name) => existsSync(join(blogDir, `${name}.html`));
   /* A case with a full case file and ones without */
   for (const id of ["soc336-report", "3omda-custom-detection-rules", "owasp-juice-shop"]) if (html(id)) pages.push(`/blog/${id}`);
+  /* One video page (app/videos/[slug]) */
+  const videosDir = join(root, "videos");
+  const video = existsSync(videosDir) && readdirSync(videosDir).find((f) => f.endsWith(".html"));
+  if (video) pages.push(`/videos/${video.slice(0, -5)}`);
   return pages;
 }

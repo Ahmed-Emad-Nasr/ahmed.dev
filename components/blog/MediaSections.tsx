@@ -13,6 +13,8 @@
 
 import { memo, useCallback, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { videoById, videoPath } from "@/lib/videos";
 import { Play, ExternalLink, ListVideo, ChevronDown, FileText } from "lucide-react";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import { CountUp } from "@/components/ui/CountUp";
@@ -160,7 +162,10 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                         )}
                       </span>
                       <h3 className="font-display text-lg font-black uppercase tracking-tight text-foreground leading-tight mb-5">
-                        {video.title}
+                        {/* The video's own page (app/videos/[slug]) */}
+                        <Link prefetch={false} href={videoPath(videoById(video.videoId) ?? { slug: "" })} className="hover:text-primary-ink transition-colors duration-180">
+                          {video.title}
+                        </Link>
                       </h3>
                       {video.description && (
                         <p className="mb-5 text-sm text-foreground/60 font-light leading-relaxed">{video.description}</p>
@@ -175,6 +180,9 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                         </ul>
                       )}
                       <div className="mt-auto flex flex-wrap gap-3">
+                        <Link prefetch={false} href={videoPath(videoById(video.videoId) ?? { slug: "" })} className={`${btnOutline} w-fit`}>
+                          <Play size={13} /> Video page
+                        </Link>
                         <a href={video.sourceUrl} target="_blank" rel="noopener noreferrer" className={`${btnOutline} w-fit`}>
                           <ExternalLink size={13} /> Watch on YouTube
                         </a>

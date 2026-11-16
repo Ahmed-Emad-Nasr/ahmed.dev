@@ -6,6 +6,7 @@
 #   python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements.txt
 
 # npm run pdf:clean  (scripts/pdf-clean.py) — PDF metadata + image recompression
+# npm run pdf:cv     (scripts/pdf-cv-meta.py) — the CV's title / author / keywords
 pikepdf>=10.0
 pillow>=12.0
 

@@ -159,6 +159,10 @@ npm run check:a11y    # axe-core, WCAG 2.2 AA (needs Playwright)
 
 Or all of them at once: `npm run verify`.
 
+Every Monday, `.github/workflows/links.yml` also builds the site and checks
+every **outside** link (repos, videos, certificate pages, platforms); dead ones
+are listed in one GitHub issue, *Broken external links*.
+
 ---
 
 ## `> ./quickstart.sh`

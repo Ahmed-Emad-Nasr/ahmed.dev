@@ -99,6 +99,8 @@ type RelatedVideo = {
   title: string;
   description?: string;
   sourceUrl: string;
+  /** The video's own page on this site (/videos/<slug>) */
+  pagePath: string;
 };
 
 /* A block inside a chapter (h3), or a closing section of the page (h2).
@@ -614,11 +616,10 @@ export default function CaseArticle({
             </BlockTitle>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {relatedVideos.map((video) => (
-                <a
+                <Link
+                  prefetch={false}
                   key={video.videoId}
-                  href={video.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={video.pagePath}
                   className="group spotlight flex gap-4 bg-surface/60 border border-foreground/5 p-5 hover:border-primary/40 transition-colors"
                 >
                   <PlayCircle
@@ -636,10 +637,10 @@ export default function CaseArticle({
                       </span>
                     )}
                     <span className="mt-3 block font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-tertiary">
-                      Watch on YouTube
+                      Watch the video
                     </span>
                   </span>
-                </a>
+                </Link>
               ))}
             </div>
           </section>

@@ -1,0 +1,69 @@
+# Weekly check of every EXTERNAL link on the site (GitHub repos, YouTube
+# videos, certificate pages, platforms…). The internal links are already
+# checked on every deploy (npm run check:links); this one looks outward.
+#
+# It builds the site, has lychee open each outside link found in the built
+# pages, and when some are dead it opens (or updates) one GitHub issue,
+# "Broken external links", with the list — so a deleted repo or a removed
+# video is fixed before a visitor clicks it. Nothing is deployed or changed.
+#
+# Skipped on purpose: LinkedIn (answers every bot with status 999), mailto:
+# links, this site's own address (checked by check:links), and schema.org /
+# W3C names that only appear inside the page's data, not as links.
+name: External links
+
+on:
+  schedule:
+    - cron: "41 4 * * 1" # Mondays, 06:41 Cairo time
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+
+      - id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          fail: false
+          output: ./lychee/report.md
+          args: >-
+            --no-progress
+            --max-concurrency 8
+            --max-retries 3
+            --retry-wait-time 5
+            --timeout 30
+            --accept "200..=299,403,429"
+            --exclude "linkedin\.com"
+            --exclude "ahmed-emad-nasr\.github\.io"
+            --exclude "^mailto:"
+            --exclude "schema\.org"
+            --exclude "w3\.org"
+            --exclude "fonts\.(googleapis|gstatic)\.com"
+            --exclude-path "out/_next"
+            "out/**/*.html"
+
+      # One issue, updated each week while links stay broken
+      - id: existing
+        if: steps.lychee.outputs.exit_code != 0
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: echo "number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "Broken external links"' --json number --jq '.[0].number')" >> "$GITHUB_OUTPUT"
+      - if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: Broken external links
+          content-filepath: ./lychee/report.md
+          issue-number: ${{ steps.existing.outputs.number }}
+          labels: links

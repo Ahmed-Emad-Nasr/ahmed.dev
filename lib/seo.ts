@@ -212,6 +212,10 @@ export const OCCUPATION = {
 export const youtubeThumb = (videoId: string) => `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
 export const youtubeWatch = (videoId: string) => `https://www.youtube.com/watch?v=${videoId}`;
 export const youtubeEmbed = (videoId: string) => `https://www.youtube-nocookie.com/embed/${videoId}`;
+/* The player address for search engines (VideoObject embedUrl, sitemap
+   player_loc): the standard YouTube one, which Google matches to the video.
+   The pages themselves embed youtube-nocookie (youtubeEmbed). */
+export const youtubePlayer = (videoId: string) => `https://www.youtube.com/embed/${videoId}`;
 
 /* JSON for a <script type="application/ld+json">, escaped so a "</script>"
    inside a description (some cases quote XSS payloads) cannot close the tag */

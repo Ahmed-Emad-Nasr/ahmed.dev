@@ -11,8 +11,8 @@ import type { MetadataRoute } from "next";
 import { caseEvidenceLibrary, caseScreenshotsByEvidenceId } from "@/data/cases";
 import { absoluteUrl, caseUrl, OG_IMAGE } from "@/lib/site";
 import { GALLERY_IMAGE_COUNT, galleryImagePath } from "@/data/certifications";
-import { blogYoutubeVideos } from "@/data/youtube";
-import { PERSON_IMAGE, SITE_URL, youtubeEmbed, youtubeThumb } from "@/lib/seo";
+import { SITE_VIDEOS, videoUrl, type SiteVideo } from "@/lib/videos";
+import { PERSON_IMAGE, SITE_URL, youtubePlayer, youtubeThumb } from "@/lib/seo";
 import { TEACHING_LANGUAGES } from "@/lib/page-ids";
 
 /* A URL as a sitemap needs it: asset paths have spaces ("Assets/Cases/Depi
@@ -33,18 +33,19 @@ const clip = (text: string, max = 1000) => (text.length > max ? `${text.slice(0,
 const xml = (text: string) =>
   text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&apos;");
 
-/* The videos (on the blog page) */
-const blogVideos = blogYoutubeVideos.map((video) => ({
+/* Each video, listed on its own page (/videos/<slug>, lib/videos.ts) —
+   Google indexes a video only where it is the page's main content */
+const videoEntry = (video: SiteVideo) => ({
   title: xml(video.title),
   thumbnail_loc: youtubeThumb(video.videoId),
   description: xml(clip(video.description ?? video.title)),
-  player_loc: youtubeEmbed(video.videoId),
-  publication_date: video.publishedAt,
+  player_loc: youtubePlayer(video.videoId),
+  ...(video.publishedAt ? { publication_date: video.publishedAt } : {}),
   family_friendly: "yes" as const,
   requires_subscription: "no" as const,
   uploader: { info: SITE_URL, content: "Ahmed Emad Nasr" },
   ...(video.tags?.[0] ? { tag: xml(video.tags[0]) } : {}),
-}));
+});
 
 const teachingLanguages = Object.fromEntries(
   Object.entries(TEACHING_LANGUAGES).map(([lang, path]) => [lang, absoluteUrl(path)]),
@@ -81,7 +82,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: latestCaseDate,
       changeFrequency: "weekly",
       priority: 0.9,
-      videos: blogVideos,
     },
     /* The teaching page in English and Arabic: each names the other (hreflang) */
     {
@@ -119,6 +119,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: [...new Set([...(item.image ? [item.image] : []), ...(caseScreenshotsByEvidenceId[item.id] ?? [])])]
         .slice(0, 50)
         .map((src) => loc(absoluteUrl(src))),
+    })),
+    /* One page per video */
+    ...SITE_VIDEOS.map((video) => ({
+      url: loc(videoUrl(video)),
+      lastModified: video.publishedAt ? parseDate(video.publishedAt) : latestCaseDate,
+      changeFrequency: "yearly" as const,
+      priority: 0.7,
+      videos: [videoEntry(video)],
     })),
     /* The case PDFs that exist */
     ...caseEvidenceLibrary

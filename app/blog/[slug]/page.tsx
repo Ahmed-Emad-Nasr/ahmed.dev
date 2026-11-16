@@ -40,6 +40,7 @@ import { caseNumbers } from "@/lib/case-numbers";
 import { caseKindOf, CASE_KINDS } from "@/lib/shared";
 import { jsonLd, PERSON_ID, PERSON_NAME, SITE_URL } from "@/lib/seo";
 import { blogYoutubeVideos } from "@/data/youtube";
+import { videoById, videoPath } from "@/lib/videos";
 import { BLOG_ID, BLOG_URL } from "@/lib/page-ids";
 
 /* slug = the <case-id> part of the URL → the matching entry in data/cases.ts */
@@ -151,6 +152,8 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
       title: video.title,
       description: video.description,
       sourceUrl: `https://youtu.be/${video.videoId}`,
+      /* The video's own page on this site (lib/videos.ts) */
+      pagePath: videoPath(videoById(video.videoId) ?? { slug: "" }),
     }));
 
   /* Previous / next follow the library order */
