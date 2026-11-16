@@ -91,12 +91,16 @@ flowchart LR
 
 | Page | What is on it |
 | :-- | :-- |
-| [`/`](https://ahmed-emad-nasr.github.io/ahmed.dev/) | Hero, roles, projects, open source, tools, experience, the path, LinkedIn recommendations, training platforms, process, FAQ, contact |
+| [`/`](https://ahmed-emad-nasr.github.io/ahmed.dev/) | Hero, roles, services, projects, open source, tools, experience, the path, LinkedIn recommendations, training platforms, process, FAQ, contact |
 | [`/blog`](https://ahmed-emad-nasr.github.io/ahmed.dev/blog) | Searchable library of **83** cases, **35** videos, **56** ATT&CK techniques mapped, **50+** custom Wazuh rules, a triage challenge, the home lab |
 | `/blog/<case>` | Goal → what happened → what I did → how to prevent it → evidence, with the PDF report |
 | [`/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/teaching) | The 160-hour SOC & Cybersecurity Diploma module by module, where it was taught, **25** student notes quoted word for word, and a training request for teams |
 | [`/cv`](https://ahmed-emad-nasr.github.io/ahmed.dev/cv) | The CV as a web page (from `data/cv.ts`), with the PDF download — indexable as "Ahmed Emad Nasr CV" |
 | [`/videos`](https://ahmed-emad-nasr.github.io/ahmed.dev/videos) | Every YouTube video and playlist; each video also has its own page `/videos/<slug>` with `VideoObject` data |
+| [`/attack`](https://ahmed-emad-nasr.github.io/ahmed.dev/attack) | Every MITRE ATT&CK technique the cases show, by tactic; each has its own page `/attack/<T-id>` with its cases, sub-techniques and tools |
+| `/writeups/<platform>` | The write-ups of one platform — [TryHackMe](https://ahmed-emad-nasr.github.io/ahmed.dev/writeups/tryhackme), [PortSwigger](https://ahmed-emad-nasr.github.io/ahmed.dev/writeups/portswigger), [LetsDefend](https://ahmed-emad-nasr.github.io/ahmed.dev/writeups/letsdefend) |
+| `/projects/<tool>` | A page per tool I wrote — [CyberSuite](https://ahmed-emad-nasr.github.io/ahmed.dev/projects/cybersuite), [WebP Converter](https://ahmed-emad-nasr.github.io/ahmed.dev/projects/webp-converter): what it does, how to run it, sample output |
+| [`/training`](https://ahmed-emad-nasr.github.io/ahmed.dev/training) · [`/ar/training`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/training) | Training for teams, in English and Arabic (`hreflang`): who it is for, the formats, the diploma module by module, student quotes and a request button |
 | [`/ar/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/teaching) | The same page in Arabic (right to left, Cairo font), linked to the English one with `hreflang` |
 | [`/gallery`](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery) | Degree, certifications, courses and records, photos from classrooms and events |
 

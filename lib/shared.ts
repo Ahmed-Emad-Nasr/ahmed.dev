@@ -142,13 +142,19 @@ export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AhmedEmad-0x3omda";
    profile, the terminal, the JSON-LD and the geo meta tags all read
    it. (Each job's own city stays on its Experience card, data/portfolio-data.ts.) */
 export const HOME_LOCATION = {
-  label: "Benha, Egypt",
-  city: "Benha",
-  region: "Qalyubia",
-  regionCode: "EG-KB",
+  label: "Cairo, Egypt",
+  city: "Cairo",
+  region: "Cairo Governorate",
+  regionCode: "EG-C",
   country: "EG",
-  lat: 30.4667,
-  lng: 31.1833,
+  lat: 30.0444,
+  lng: 31.2357,
+  /** Where he can work on site — shown as "Base" in the hero and the terminal */
+  workArea: "Cairo & Benha, Egypt",
+  workCities: [
+    { city: "Cairo", region: "Cairo Governorate" },
+    { city: "Benha", region: "Qalyubia" },
+  ],
 } as const;
 
 /* The GitHub account: profile links, project links and the contribution graph */

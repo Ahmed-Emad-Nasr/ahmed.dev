@@ -42,6 +42,7 @@ import { jsonLd, PERSON_ID, PERSON_NAME, SITE_URL } from "@/lib/seo";
 import { blogYoutubeVideos } from "@/data/youtube";
 import { videoById, videoPath } from "@/lib/videos";
 import { BLOG_ID, BLOG_URL } from "@/lib/page-ids";
+import { PLATFORM_PAGES } from "@/lib/collections";
 
 /* slug = the <case-id> part of the URL → the matching entry in data/cases.ts */
 const findCase = (slug: string) => caseEvidenceLibrary.find((item) => item.id === slug);
@@ -244,8 +245,11 @@ export default async function CasePage({ params }: { params: Promise<{ slug: str
         detail={caseDetails[item.id]}
         kindLabel={CASE_KINDS.find((k) => k.id === caseKindOf(item))?.short ?? "Case"}
         kind={caseKindOf(item)}
-        /* Cases that belong to a series get a "part of …" link back to the filtered library */
-        collection={item.platform === "PortSwigger" ? { href: "/blog?q=PortSwigger#cases", title: "Web Security Academy Track" } : undefined}
+        /* A case from a platform with its own page (lib/collections.ts) links to it */
+        collection={(() => {
+          const page = PLATFORM_PAGES.find((p) => p.platform === item.platform);
+          return page ? { href: `/writeups/${page.slug}`, title: `${page.platform} write-ups` } : undefined;
+        })()}
         />
       </PageShell>
     </>

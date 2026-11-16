@@ -37,10 +37,12 @@ import {
   Images,
   Command,
   GraduationCap,
+  Handshake,
 } from "lucide-react";
 
 const navItems = [
   { name: "Home", href: "#home", icon: Home, katakana: "ホーム" },
+  { name: "Services", href: "#services", icon: Handshake, katakana: "役務" },
   { name: "Projects", href: "#work", icon: Code2, katakana: "仕事" },
   { name: "Tools", href: "#tools", icon: Wrench, katakana: "道具" },
   { name: "Experience", href: "#experience", icon: Briefcase, katakana: "経験" },
@@ -67,8 +69,12 @@ export default function SiteNav() {
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState("#home");
   /* On the home page: the section on screen. Elsewhere: the page's own link
-     (/blog/<case> and /videos/<video> count as the blog, /ar/teaching as teaching) */
-  const page = pathname.replace(/^\/ar(?=\/)/, "").replace(/^\/videos(?=\/)/, "/blog");
+     (/blog/<case>, /videos/<video>, /attack and /writeups count as the blog;
+     /ar/teaching and /training as teaching) */
+  const page = pathname
+    .replace(/^\/ar(?=\/)/, "")
+    .replace(/^\/(videos(?=\/)|attack|writeups)/, "/blog")
+    .replace(/^\/training/, "/teaching");
   const current = onHome
     ? active
     : (navItems.find((i) => i.href.startsWith("/") && (page === i.href || page.startsWith(`${i.href}/`)))?.href ?? "");
@@ -135,7 +141,7 @@ export default function SiteNav() {
           <span className="text-primary text-2xl leading-none">.</span>
         </NavAnchor>
 
-        {/* Desktop Menu — from 1280px: eleven links need the width */}
+        {/* Desktop Menu — from 1280px: twelve links need the width */}
         <div className="hidden xl:flex items-center gap-4 2xl:gap-6">
           {navItems.map((item) => (
             <NavAnchor

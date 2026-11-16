@@ -33,6 +33,9 @@ WHERE EACH THING GOES
                            /videos/<slug> is made from the title automatically.
                            caseId = optional id of the case it explains.
 - Playlist               → data/youtube.ts (blogYoutubePlaylists)
+- Video page text        → data/video-notes.ts: VIDEO_NOTES["<videoId>"] = 3–5
+                           points taken ONLY from what the video shows; a new
+                           term in its tags can get one sentence in GLOSSARY
 - Certificate            → image public/Assets/art-gallery/Images/image_display_thumb/<N>.webp
                            data/certifications.ts: raise GALLERY_IMAGE_COUNT,
                            add to ALL_GALLERY_CERTIFICATES (galleryIndex = N,
@@ -42,6 +45,13 @@ WHERE EACH THING GOES
 - A place I taught       → data/teaching.ts (TEACHING_ROLES) AND the same in
                            Arabic in data/teaching-ar.ts
 - Project                → data/portfolio-data.ts (work)
+- Service ("What I Do.") → data/services.ts
+- Tool page /projects/<id> → data/tools.ts (id = the project's id; screenshots
+                           in public/Assets/projects/<id>/*.webp) and set
+                           links.docs: "/projects/<id>" on the project
+- Platform write-ups page → lib/collections.ts (PLATFORM_PAGES); the
+                           /attack/<T-id> and /writeups/<platform> pages fill
+                           themselves from cases.ts and attack.ts
 - Testimonial            → data/testimonials.ts
 - Wazuh detection rule   → data/detection-rules.ts
 - Training platform      → data/platforms.ts

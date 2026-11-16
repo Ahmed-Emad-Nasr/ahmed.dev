@@ -24,13 +24,15 @@
  *   PlatformCard → one small card
  */
 
-import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CounterChip from "@/components/ui/CounterChip";
 import OrgLogo from "@/components/ui/OrgLogo";
-import { KanjiWatermark, cardSurface } from "@/components/ui/kit";
+import { KanjiWatermark, btnOutline, cardSurface } from "@/components/ui/kit";
 import type { Platform, TryHackMeStats } from "@/data/platforms";
+import { PLATFORM_PAGES, casesForPlatform } from "@/lib/collections";
 
 /* The platform's logo; its short monogram (platform.mark) when it has none */
 function Mark({ platform }: { platform: Platform }) {
@@ -167,6 +169,16 @@ export default function PlatformsSection({
             </FadeIn>
           ))}
         </div>
+
+        {/* The write-ups from each platform, one page per platform (/writeups/<slug>) */}
+        <FadeIn className="mt-10 flex flex-wrap items-center gap-4">
+          <span className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">Read the write-ups:</span>
+          {PLATFORM_PAGES.map((p) => (
+            <Link key={p.slug} prefetch={false} href={`/writeups/${p.slug}`} className={btnOutline}>
+              {p.platform} · {casesForPlatform(p.platform).length} <ArrowRight size={13} aria-hidden="true" />
+            </Link>
+          ))}
+        </FadeIn>
       </div>
     </section>
   );

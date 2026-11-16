@@ -16,6 +16,9 @@ import Image from "next/image";
 import { LOGO_FILES, brandIconOf, monogramOf } from "@/data/logos";
 import { normalizePublicHref } from "@/lib/shared";
 
+/* Brand marks are drawn from one cached file, /icons.svg (app/icons.svg/route.ts) */
+const SPRITE = normalizePublicHref("icons.svg");
+
 const BOX = {
   md: "w-12 h-12 text-xs",
   sm: "w-7 h-7 text-[0.5rem]",
@@ -28,8 +31,8 @@ export function BrandGlyph({ name, size = 11, className = "" }: { name: string; 
   const icon = brandIconOf(name);
   if (!icon) return null;
   return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor" aria-hidden="true" className={`shrink-0 ${className}`}>
-      <path d={icon.path} />
+    <svg width={size} height={size} fill="currentColor" aria-hidden="true" className={`shrink-0 ${className}`}>
+      <use href={`${SPRITE}#logo-${icon.key}`} />
     </svg>
   );
 }
@@ -73,8 +76,8 @@ export default function OrgLogo({
   if (icon) {
     return (
       <span className={box} title={name}>
-        <svg viewBox="0 0 24 24" width={ICON[size]} height={ICON[size]} fill="currentColor" role="img" aria-label={`${icon.title} logo`}>
-          <path d={icon.path} />
+        <svg width={ICON[size]} height={ICON[size]} fill="currentColor" role="img" aria-label={`${icon.title} logo`}>
+          <use href={`${SPRITE}#logo-${icon.key}`} />
         </svg>
       </span>
     );

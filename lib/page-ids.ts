@@ -18,5 +18,13 @@ export const TEACHING_AR_URL = absoluteUrl("/ar/teaching");
 export const TEACHING_AR_ID = `${TEACHING_AR_URL}#teaching`;
 /* The teaching page in both languages (hreflang): each page lists both */
 export const TEACHING_LANGUAGES = { en: "/teaching", ar: "/ar/teaching", "x-default": "/teaching" };
+export const ATTACK_URL = absoluteUrl("/attack");
+export const ATTACK_ID = `${ATTACK_URL}#attack`;
+export const TRAINING_URL = absoluteUrl("/training");
+export const TRAINING_ID = `${TRAINING_URL}#training`;
+export const TRAINING_AR_URL = absoluteUrl("/ar/training");
+export const TRAINING_AR_ID = `${TRAINING_AR_URL}#training`;
+/* The training page in both languages (hreflang): each page lists both */
+export const TRAINING_LANGUAGES = { en: "/training", ar: "/ar/training", "x-default": "/training" };
 export const GALLERY_URL = absoluteUrl("/gallery");
 export const GALLERY_ID = `${GALLERY_URL}#gallery`;

@@ -220,6 +220,15 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
                         Case study
                       </Link>
                     )}
+                    {w.links.docs && (
+                      <Link
+                        prefetch={false}
+                        href={w.links.docs}
+                        className="flex items-center gap-2 px-4 py-2.5 border border-tertiary/30 text-tertiary font-mono text-[0.625rem] uppercase tracking-[0.2em] hover:border-tertiary hover:bg-tertiary/10 transition-colors duration-300"
+                      >
+                        <FileText size={13} /> How to use it
+                      </Link>
+                    )}
                     {!w.links.github &&
                       !w.links.live &&
                       !w.links.demo &&

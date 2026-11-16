@@ -1,5 +1,6 @@
 /* Brand icons (lucide-react v1 has none), with lucide-like props, drawn
-   from the FontAwesome paths in icon-data.ts (npm run icons)
+   from the FontAwesome paths in icon-data.ts (npm run icons), served
+   together in /icons.svg
 
    ═══ components/ui/BrandIcons.tsx ═══
    Use like a lucide icon:  <Github size={16} className="…" />
@@ -9,7 +10,12 @@
    For simple shapes you can also paste an SVG path, like XLogo below. */
 
 import type { SVGProps } from "react";
-import { ICONS, type IconName } from "@/components/ui/icon-data";
+import type { IconName } from "@/components/ui/icon-data";
+import { normalizePublicHref } from "@/lib/shared";
+
+/* The drawings live in one cached file, /icons.svg (app/icons.svg/route.ts),
+   so a page carries a short <use> instead of the whole path each time */
+const SPRITE = normalizePublicHref("icons.svg");
 
 type BrandProps = Omit<SVGProps<SVGSVGElement>, "ref"> & {
   size?: number | string;
@@ -18,11 +24,9 @@ type BrandProps = Omit<SVGProps<SVGSVGElement>, "ref"> & {
 
 function make(name: IconName, label: string) {
   function BrandIcon({ size = 24, strokeWidth: _ignored, className, ...rest }: BrandProps) {
-    const [w, h, d] = ICONS[name];
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox={`0 0 ${w} ${h}`}
         width={size}
         height={size}
         fill="currentColor"
@@ -31,7 +35,7 @@ function make(name: IconName, label: string) {
         className={className}
         {...rest}
       >
-        <path d={d} />
+        <use href={`${SPRITE}#${name}`} />
       </svg>
     );
   }

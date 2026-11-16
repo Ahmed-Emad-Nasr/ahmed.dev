@@ -9,7 +9,7 @@
 
 import { CV_PDF_HREF, GITHUB_USERNAME } from "@/lib/shared";
 
-export type CvEntry = {
+type CvEntry = {
   title: string;
   org: string;
   place: string;
@@ -17,7 +17,7 @@ export type CvEntry = {
   points: string[];
 };
 
-export type CvProject = {
+type CvProject = {
   title: string;
   stack: string;
   github?: string;

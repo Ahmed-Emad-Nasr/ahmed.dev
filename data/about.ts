@@ -53,7 +53,7 @@ export const PATH = [
 ] as const;
 
 export const NOW = [
-  { label: "Teaching", detail: "Part-time cybersecurity instructor at AMIT Learning (since Sep 2026) and NTI (since Feb 2026)." },
+  { label: "Teaching", detail: "Part-time cybersecurity instructor at AMIT Learning and NTI, in partnership, since Feb 2026." },
   { label: "Coordinating", detail: "Tutor assistant & coordinator at iSchool: technical labs for DEPI and DECI programs." },
   { label: "Publishing", detail: "Security write-ups in the case library and walkthroughs on YouTube." },
   { label: "Open to", detail: "InfoSec roles: Officer, Engineer, GRC, SOC, IR/DFIR, IAM and Security Education." },
@@ -61,7 +61,7 @@ export const NOW = [
 
 export const FAQ = [
   { q: "Which roles are you open to?", a: "Information security roles — Officer, Engineer, GRC, SOC, IR/DFIR, IAM and security education." },
-  { q: "Where are you based?", a: "Benha, Egypt." },
+  { q: "Where are you based?", a: "In Cairo, Egypt — and I can work on site in both Cairo and Benha." },
   { q: "Where is the proof of the work?", a: "In the case library: every case opens with a plain summary, with the reports, screenshots and MITRE ATT&CK mapping underneath." },
   { q: "Do you teach?", a: "Yes — 300+ students at AMIT Learning and NTI, plus 35+ sessions and 10+ CTF challenges with GDG." },
   { q: "Which certifications do you hold?", a: "eJPT v2, CCNA, HCIA-Datacom, HCIA-Cloud, CCEP and more — every scan is in the proof gallery." },

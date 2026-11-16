@@ -229,6 +229,12 @@ const STRUCTURED_DATA_JSON = jsonLd({
       email: "mailto:ahmed.em.nasr@gmail.com",
       telephone: "+20 101 397 2690",
       address: { "@type": "PostalAddress", addressLocality: HOME_LOCATION.city, addressRegion: HOME_LOCATION.region, addressCountry: HOME_LOCATION.country },
+      /* The cities he can work in on site */
+      workLocation: HOME_LOCATION.workCities.map((w) => ({
+        "@type": "Place",
+        name: `${w.city}, Egypt`,
+        address: { "@type": "PostalAddress", addressLocality: w.city, addressRegion: w.region, addressCountry: HOME_LOCATION.country },
+      })),
       contactPoint: {
         "@type": "ContactPoint", contactType: "professional inquiry",
         email: "ahmed.em.nasr@gmail.com", availableLanguage: ["en", "ar"],
@@ -264,7 +270,6 @@ const STRUCTURED_DATA_JSON = jsonLd({
       author: PERSON_REF,
       publisher: PERSON_REF,
       copyrightHolder: PERSON_REF,
-      keywords: SITE_KEYWORDS.join(", "),
     },
   ],
 });

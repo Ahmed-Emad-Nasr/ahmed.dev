@@ -328,7 +328,13 @@ export default function CaseArticle({
             </h1>
           </ViewTransition>
           <p className="mt-5 font-mono text-xs uppercase tracking-[0.25em] text-tertiary">
-            {item.platform}
+            {collection ? (
+              <Link prefetch={false} href={collection.href} className="hover:text-foreground transition-colors duration-300">
+                {item.platform}
+              </Link>
+            ) : (
+              item.platform
+            )}
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 text-on-surface-variant">
@@ -562,17 +568,17 @@ export default function CaseArticle({
               <div>
                 <BlockTitle
                   japanese="戦術"
-                  hint="MITRE ATT&CK is the public catalogue security teams use to name attacker techniques. These are the ones seen in this case."
+                  hint="MITRE ATT&CK is the public catalogue security teams use to name attacker techniques. These are the ones seen in this case — click one to see every other case that shows it."
                 >
                   Attack techniques (MITRE ATT&amp;CK) — {techniques.length}
                 </BlockTitle>
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {techniques.map((t) => (
                     <li key={t.id}>
-                      <a
-                        href={`https://attack.mitre.org/techniques/${t.id.replace(".", "/")}/`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                      {/* The technique's own page: every other case that shows it */}
+                      <Link
+                        prefetch={false}
+                        href={`/attack/${t.id.split(".")[0]}`}
                         className="group spotlight relative flex h-full items-baseline gap-4 bg-surface/60 border border-foreground/5 px-5 py-4 hover:border-primary/40 transition-colors duration-300"
                       >
                         <span className="font-mono text-xs font-black text-accent tabular-nums shrink-0">
@@ -584,7 +590,7 @@ export default function CaseArticle({
                         <span className="hidden sm:block font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60 shrink-0">
                           {t.tactic.replace(/-/g, " ")}
                         </span>
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>

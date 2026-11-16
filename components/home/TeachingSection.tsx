@@ -19,12 +19,13 @@
  * sides (start / end), so it mirrors by itself under dir="rtl".
  */
 
-import { ArrowUpRight, Mail } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight, Mail } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CounterChip from "@/components/ui/CounterChip";
 import OrgLogo from "@/components/ui/OrgLogo";
-import { KanjiWatermark, cardSurface, chipNeutral, chipTertiary, ctaPrimary } from "@/components/ui/kit";
+import { KanjiWatermark, btnOutline, cardSurface, chipNeutral, chipTertiary, ctaPrimary } from "@/components/ui/kit";
 import { TEACHING_EN, type TeachingContent } from "@/data/teaching";
 import { PROFILE } from "@/data/profile";
 
@@ -220,10 +221,17 @@ export default function TeachingSection({ content = TEACHING_EN }: { content?: T
               {ui.cta.text}
             </p>
           </div>
-          <a href={mailto} className={`${ctaPrimary} shrink-0 self-start md:self-center`}>
-            <Mail size={16} aria-hidden="true" />
-            {ui.cta.button}
-          </a>
+          <div className="flex shrink-0 flex-wrap items-center gap-4 self-start md:self-center">
+            <a href={mailto} className={ctaPrimary}>
+              <Mail size={16} aria-hidden="true" />
+              {ui.cta.button}
+            </a>
+            {ui.cta.more && (
+              <Link prefetch={false} href={ui.cta.more.href} className={btnOutline}>
+                {ui.cta.more.label} <ArrowRight size={13} className="rtl:-scale-x-100" aria-hidden="true" />
+              </Link>
+            )}
+          </div>
         </FadeIn>
       </div>
     </section>

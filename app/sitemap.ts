@@ -13,7 +13,9 @@ import { absoluteUrl, caseUrl, OG_IMAGE } from "@/lib/site";
 import { GALLERY_IMAGE_COUNT, galleryImagePath } from "@/data/certifications";
 import { SITE_VIDEOS, videoUrl, type SiteVideo } from "@/lib/videos";
 import { PERSON_IMAGE, SITE_URL, youtubePlayer, youtubeThumb } from "@/lib/seo";
-import { TEACHING_LANGUAGES } from "@/lib/page-ids";
+import { TEACHING_LANGUAGES, TRAINING_LANGUAGES } from "@/lib/page-ids";
+import { ATTACK_TECHNIQUES, PLATFORM_PAGES, casesForPlatform } from "@/lib/collections";
+import { TOOL_PAGES } from "@/data/tools";
 
 /* A URL as a sitemap needs it: asset paths have spaces ("Assets/Cases/Depi
    R4 Project/…", "Screenshot (328).webp") and Next writes <loc> as given —
@@ -49,6 +51,10 @@ const videoEntry = (video: SiteVideo) => ({
 
 const teachingLanguages = Object.fromEntries(
   Object.entries(TEACHING_LANGUAGES).map(([lang, path]) => [lang, absoluteUrl(path)]),
+);
+
+const trainingLanguages = Object.fromEntries(
+  Object.entries(TRAINING_LANGUAGES).map(([lang, path]) => [lang, absoluteUrl(path)]),
 );
 
 /* Required by the static export (see the same line in app/manifest.ts) */
@@ -118,6 +124,49 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    /* Training for teams, in English and Arabic: each names the other (hreflang) */
+    {
+      url: absoluteUrl("/training"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.8,
+      alternates: { languages: trainingLanguages },
+    },
+    {
+      url: absoluteUrl("/ar/training"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.8,
+      alternates: { languages: trainingLanguages },
+    },
+    /* ATT&CK: the hub and one page per technique (lib/collections.ts) */
+    {
+      url: absoluteUrl("/attack"),
+      lastModified: latestCaseDate,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    },
+    ...ATTACK_TECHNIQUES.map((t) => ({
+      url: absoluteUrl(`/attack/${t.id}`),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
+    /* One page per training platform's write-ups */
+    ...PLATFORM_PAGES.map((p) => ({
+      url: absoluteUrl(`/writeups/${p.slug}`),
+      lastModified: parseDate(casesForPlatform(p.platform)[0]?.date),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    /* One page per tool (data/tools.ts) */
+    ...TOOL_PAGES.map((t) => ({
+      url: absoluteUrl(`/projects/${t.id}`),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+      ...(t.screenshots?.length ? { images: t.screenshots.map((s) => loc(absoluteUrl(s.src))) } : {}),
+    })),
     {
       url: loc(absoluteUrl("/Assets/cv/AhmedEmadNasr_CV.pdf")),
       lastModified: latestCaseDate,

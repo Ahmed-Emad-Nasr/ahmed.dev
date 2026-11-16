@@ -76,10 +76,10 @@ const clamp = (v: number, lo: number, hi: number) =>
    (Speed is the other dial: SLOW below, and MOTION_ENTER_DURATION /
    MOTION_STAGGER_STEP in lib/motion.ts.) */
 const CALM = 0.72;
-/* SLOW = 0.9: entrances take 90% of the duration their caller passes
-   (0.54–1.08 s). Higher = slower. Was 0.6. Only opacity + transform move,
+/* SLOW = 1.2: entrances take 120% of the duration their caller passes
+   (0.72–1.44 s). Higher = slower. Was 0.6. Only opacity + transform move,
    so a slower entrance costs nothing on the main thread. */
-const SLOW = 0.9;
+const SLOW = 1.2;
 const travel = (v: number, k: number) =>
   v ? Math.sign(v) * Math.min(Math.abs(v) * k * 0.9, 50) * CALM : 0;
 const calmScale = (s: number) => 1 - (1 - s) * CALM;

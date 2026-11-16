@@ -11,7 +11,7 @@
 import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { TESTIMONIALS } from "@/data/testimonials";
 
-export type TeachingStat = { value: string; label: string; japanese: string };
+type TeachingStat = { value: string; label: string; japanese: string };
 
 export const TEACHING_STATS: TeachingStat[] = [
   { value: "300+", label: "Students at AMIT & NTI (combined)", japanese: "受講生" },
@@ -40,7 +40,7 @@ export const DIPLOMA = {
   format: ["Structured slide deck & notes", "Key security terminology", "Guided hands-on lab", "Practical assessment & quiz"],
 };
 
-export type TeachingRole = {
+type TeachingRole = {
   /** The organisation — also the key of its logo (data/logos.ts) */
   org: string;
   /** Shown instead of `org` where the page is in another language */
@@ -106,7 +106,7 @@ export const TEACHING_ROLES: TeachingRole[] = [
 
 /* ─── The section's own words, and the whole content in one object ─── */
 
-export type TeachingUi = {
+type TeachingUi = {
   eyebrow: string;
   titleA: string;
   titleB: string;
@@ -129,6 +129,8 @@ export type TeachingUi = {
     /** The e-mail it opens: subject and the first lines of the body */
     subject: string;
     body: string;
+    /** A second link next to the button: the training page (/training) */
+    more?: { label: string; href: string };
   };
 };
 
@@ -159,10 +161,11 @@ export const TEACHING_EN: TeachingContent = {
     cta: {
       eyebrow: "Training // For your team",
       title: "Need this training for your team?",
-      text: "The diploma, or any module of it — for a company SOC team, a university, or a training centre. In English or Arabic, on site or online.",
+      text: "The diploma, or any module of it — for a company SOC team, a university, or a training centre. In English or Arabic, on site in Cairo or Benha, or online.",
       button: "Request a training",
       subject: "Cybersecurity training request",
       body: "Hi Ahmed,\n\nOrganisation:\nTopic / modules:\nNumber of trainees and their level:\nOn site or online:\nPreferred dates:\n",
+      more: { label: "Formats & details", href: "/training" },
     },
   },
 };

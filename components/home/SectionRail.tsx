@@ -23,6 +23,7 @@ import { scrollToTop } from "@/lib/scroll";
 const SECTIONS = [
   { id: "home", label: "Intro" },
   { id: "roles", label: "Roles" },
+  { id: "services", label: "Services" },
   { id: "work", label: "Projects" },
   { id: "projects", label: "Open source" },
   { id: "tools", label: "Tools" },

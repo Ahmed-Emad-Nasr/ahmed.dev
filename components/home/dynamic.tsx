@@ -34,6 +34,7 @@ export const Testimonials = dynamic(() => import("@/components/home/Testimonials
 export const StudentFeedback = dynamic(() => import("@/components/home/StudentFeedback"), { loading: () => <SectionSkeleton lines={3} /> });
 export const PlatformsSection = dynamic(() => import("@/components/home/PlatformsSection"), { loading: () => <SectionSkeleton lines={3} /> });
 /* The sections from Sensei-Dev's layout (data/about.ts) */
+export const ServicesSection = dynamic(() => import("@/components/home/ServicesSection"), { loading: () => <SectionSkeleton lines={2} /> });
 export const ToolsSection = dynamic(() => import("@/components/home/ToolsSection"), { loading: () => <SectionSkeleton lines={2} /> });
 export const UsesSection = dynamic(() => import("@/components/home/UsesSection"), { loading: () => <SectionSkeleton lines={1} /> });
 export const PathSection = dynamic(() => import("@/components/home/PathSection"), { loading: () => <SectionSkeleton lines={3} /> });

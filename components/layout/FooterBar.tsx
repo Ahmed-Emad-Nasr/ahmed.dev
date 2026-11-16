@@ -44,6 +44,10 @@ export default function FooterBar({ className = "" }: { className?: string }) {
         <span className="text-primary-ink" aria-hidden="true">•</span>
         <Link prefetch={false} href="/videos" className="hover:text-primary-ink transition-colors">Videos</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>
+        <Link prefetch={false} href="/attack" className="hover:text-primary-ink transition-colors">ATT&amp;CK</Link>
+        <span className="text-primary-ink" aria-hidden="true">•</span>
+        <Link prefetch={false} href="/training" className="hover:text-primary-ink transition-colors">Training</Link>
+        <span className="text-primary-ink" aria-hidden="true">•</span>
         {/* The CV page (it has the PDF download) */}
         <Link prefetch={false} href="/cv" className="hover:text-primary-ink transition-colors">CV</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>

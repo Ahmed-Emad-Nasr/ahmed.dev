@@ -183,6 +183,7 @@ export default function CommandPalette() {
     const isDark = resolvedTheme === "dark";
     return [
       { id: "home", group: "Go to", label: "Home", icon: Home, run: () => go("#home") },
+      { id: "services", group: "Go to", label: "Services — what I do", icon: Briefcase, run: () => go("#services") },
       { id: "work", group: "Go to", label: "Selected work", icon: Code2, run: () => go("#work") },
       { id: "lab", group: "Go to", label: "Home lab architecture", icon: Code2, run: () => go("#lab") },
       { id: "projects", group: "Go to", label: "Open source — GitHub repositories", icon: Code2, run: () => go("#projects") },
@@ -197,6 +198,8 @@ export default function CommandPalette() {
       { id: "all-certs", group: "Go to", label: `Certifications, courses & records (${ALL_GALLERY_CERTIFICATES.length})`, icon: Award, run: () => go("#all-certificates") },
       { id: "attack", group: "Go to", label: "MITRE ATT&CK coverage", icon: Crosshair, run: () => go("#attack") },
       { id: "detections", group: "Go to", label: "Detection library (Wazuh rules)", icon: Crosshair, run: () => go("#detections") },
+      { id: "attack-pages", group: "Go to", label: "ATT&CK techniques — one page each", icon: Crosshair, run: () => visit("/attack") },
+      { id: "training", group: "Go to", label: "Training for teams", icon: GraduationCap, run: () => visit("/training") },
       { id: "triage", group: "Go to", label: "Triage challenge", icon: Crosshair, run: () => go("#triage") },
       { id: "wsa", group: "Go to", label: "PortSwigger Web Security Academy labs (29)", icon: FolderSearch, run: () => go("?q=PortSwigger#cases") },
       { id: "process", group: "Go to", label: "Risk to response — how I work", icon: Route, run: () => go("#process") },

@@ -37,7 +37,7 @@ export function RevealText({
       style={style}
       initial="hidden"
       animate={ready ? "show" : "hidden"}
-      transition={{ staggerChildren: 0.07, delayChildren: delay }}
+      transition={{ staggerChildren: 0.09, delayChildren: delay }}
     >
       {/* The moving words ARE the text — read once by screen readers and by
           search engines (a hidden copy beside them made the hero's h1 read
@@ -53,7 +53,7 @@ export function RevealText({
             className="inline-block will-change-transform"
             variants={{
               hidden: { y: "110%" },
-              show: { y: "0%", transition: { duration: 0.6, ease: MOTION_EASE } },
+              show: { y: "0%", transition: { duration: 0.85, ease: MOTION_EASE } },
             }}
           >
             {u}

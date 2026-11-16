@@ -106,6 +106,10 @@ export const KEYWORDS = {
   place: [
     "cybersecurity Egypt",
     "information security Cairo",
+    "cybersecurity Cairo",
+    "SOC analyst Cairo",
+    "cybersecurity Benha",
+    "information security Benha",
     "SOC analyst Egypt",
     "GRC analyst Egypt",
   ],
@@ -164,6 +168,18 @@ export const KEYWORDS = {
     "AMIT أمن سيبراني",
     "المعهد القومي للاتصالات أمن سيبراني",
   ],
+  /* The Arabic training page (/ar/training): what companies in Egypt type */
+  trainingAr: [
+    "تدريب أمن سيبراني للشركات",
+    "تدريب سايبر سيكيوريتي للشركات",
+    "تدريب SOC للشركات",
+    "تدريب أمن المعلومات للموظفين",
+    "كورس أمن سيبراني للشركات",
+    "تدريب أمن سيبراني في القاهرة",
+    "تدريب أمن سيبراني في بنها",
+    "مدرب أمن سيبراني للشركات",
+    "دبلومة SOC",
+  ],
   /* The CV page (/cv) */
   cv: [
     "Ahmed Emad Nasr CV",
@@ -185,6 +201,43 @@ export const KEYWORDS = {
     "SOC analyst tutorials",
     "Wazuh tutorial",
     "blue team videos",
+  ],
+  /* The ATT&CK pages (/attack, /attack/<T-id>) */
+  attack: [
+    "MITRE ATT&CK",
+    "ATT&CK techniques",
+    "ATT&CK mapping",
+    "detection write-ups",
+    "SOC investigations",
+    "threat detection examples",
+    "Ahmed Emad Nasr ATT&CK",
+  ],
+  /* The platform write-up pages (/writeups/<platform>) */
+  writeups: [
+    "write-ups",
+    "walkthrough",
+    "lab solutions",
+    "Ahmed Emad Nasr write-ups",
+    "0x3omda write-ups",
+  ],
+  /* The tool pages (/projects/<tool>) */
+  tools: [
+    "Ahmed Emad Nasr tools",
+    "open-source security tools",
+    "Python security tool",
+    "GitHub Ahmed-Emad-Nasr",
+  ],
+  /* The training page (/training) */
+  training: [
+    "cybersecurity training for companies",
+    "corporate cybersecurity training",
+    "SOC training for teams",
+    "SOC analyst training Egypt",
+    "cybersecurity training Egypt",
+    "cybersecurity trainer Egypt",
+    "SOC & Cybersecurity Diploma",
+    "Ahmed Emad Nasr training",
+    "Ahmed Emad Nasr instructor",
   ],
   gallery: [
     "Ahmed Emad Nasr certificates",

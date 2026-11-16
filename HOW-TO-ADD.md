@@ -105,11 +105,19 @@ That's it — the video's page, its card on the blog and on `/videos`, and its s
 | To add | File |
 |---|---|
 | A project | `data/portfolio-data.ts` → `work` |
+| A service ("What I Do." on the home page) | `data/services.ts` — a fifth one also needs an icon in `components/home/ServicesSection.tsx` (`ICONS`) |
 | A student note / recommendation | `data/testimonials.ts` — **copy it word for word**; Arabic ones get `lang: "ar"` |
 | A detection rule | `data/detection-rules.ts` |
 | A training platform | `data/platforms.ts` |
 | Numbers / your details / links | `data/profile.ts` and `data/live-copy.ts` |
 | The CV | replace `public/Assets/cv/AhmedEmadNasr_CV.pdf` (same name) **and** update `data/cv.ts` — the `/cv` page shows the same content as text |
+| A tool page (`/projects/<id>`) — what it does, how to run it, screenshots | `data/tools.ts` (the `id` must match the project in `data/portfolio-data.ts`); screenshots go in `public/Assets/projects/<id>/` as `.webp` |
+| A platform write-ups page (`/writeups/<platform>`) | `lib/collections.ts` → `PLATFORM_PAGES` (`platform` = the exact text the cases use) |
+| The training pages (`/training` and `/ar/training`) | the words of both in `data/training.ts` (English and Arabic — change both); the diploma comes from `data/teaching.ts` / `data/teaching-ar.ts` |
+| The written part of a video page — "What the video covers" and "Key terms" | `data/video-notes.ts` (`VIDEO_NOTES` by videoId, `GLOSSARY` by tag) |
+| A brand logo or icon | its drawing in `data/logo-paths.ts` (or `components/ui/icon-data.ts`) — every icon is served from one cached file, `/icons.svg` |
+
+**Pages that fill themselves:** `/attack/<T-id>` (one per ATT&CK technique) and `/writeups/<platform>` list the cases automatically. Map a new case in `data/attack.ts` and give it the right `platform`, and it appears on those pages on the next build — nothing else to do.
 
 ---
 

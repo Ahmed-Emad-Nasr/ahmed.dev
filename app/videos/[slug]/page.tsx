@@ -28,6 +28,8 @@ import {
   CHANNEL_ID, PERSON_NAME, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, youtubeEmbed, youtubePlayer, youtubeThumb, youtubeWatch,
 } from "@/lib/seo";
 import { BLOG_ID, VIDEOS_URL } from "@/lib/page-ids";
+import { GLOSSARY, VIDEO_NOTES } from "@/data/video-notes";
+import CaseLinkGrid from "@/components/blog/CaseLinkGrid";
 
 export function generateStaticParams() {
   return SITE_VIDEOS.map((v) => ({ slug: v.slug }));
@@ -75,6 +77,19 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
   const url = videoUrl(video);
   const theCase = video.caseId ? caseEvidenceLibrary.find((c) => c.id === video.caseId) : undefined;
   const more = relatedVideos(video, 3);
+  /* The written part of the page (data/video-notes.ts) */
+  const notes = VIDEO_NOTES[video.videoId] ?? [];
+  const glossaryKey = new Map(Object.keys(GLOSSARY).map((k) => [k.toLowerCase(), k]));
+  const terms = [...new Set((video.tags ?? []).flatMap((t) => glossaryKey.get(t.toLowerCase()) ?? []))];
+  /* Cases on the same topics: a video tag that is a case's tag, tool or category */
+  const topics = new Set((video.tags ?? []).map((t) => t.toLowerCase()));
+  const onTopic = caseEvidenceLibrary
+    .filter((c) => c.id !== theCase?.id)
+    .map((c) => ({ c, score: [...c.tags, ...c.tools, c.category].filter((x) => topics.has(x.toLowerCase())).length }))
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score || b.c.date.localeCompare(a.c.date))
+    .slice(0, 3)
+    .map((x) => x.c);
 
   const structuredData = jsonLd({
     "@context": "https://schema.org",
@@ -190,6 +205,41 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
             </div>
           </div>
 
+          {(notes.length > 0 || terms.length > 0) && (
+            <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {notes.length > 0 && (
+                <section className="border border-foreground/10 bg-surface/50 p-6 md:p-8" aria-labelledby="video-notes-title">
+                  <h2 id="video-notes-title" className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
+                    What the video covers
+                  </h2>
+                  <ol className="mt-5 space-y-3">
+                    {notes.map((n, i) => (
+                      <li key={n} className="flex gap-4 text-sm md:text-[0.9375rem] text-foreground/80 leading-relaxed">
+                        <span className="font-mono text-xs font-black text-accent tabular-nums shrink-0 pt-0.5">{String(i + 1).padStart(2, "0")}</span>
+                        {n}
+                      </li>
+                    ))}
+                  </ol>
+                </section>
+              )}
+              {terms.length > 0 && (
+                <section className="border border-foreground/10 bg-surface/50 p-6 md:p-8" aria-labelledby="video-terms-title">
+                  <h2 id="video-terms-title" className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-tertiary">
+                    Key terms
+                  </h2>
+                  <dl className="mt-5 space-y-4">
+                    {terms.map((t) => (
+                      <div key={t}>
+                        <dt className="font-mono text-xs font-black uppercase tracking-[0.15em] text-foreground">{t}</dt>
+                        <dd className="mt-1 text-sm text-foreground/60 font-light leading-relaxed">{GLOSSARY[t]}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                </section>
+              )}
+            </div>
+          )}
+
           {theCase && (
             <section className="mt-14 border border-foreground/10 bg-surface/50 p-6 md:p-8" aria-labelledby="video-case-title">
               <p className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-primary-ink">The written case</p>
@@ -201,6 +251,16 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
               {theCase.description && (
                 <p className="mt-3 text-sm text-foreground/60 font-light leading-relaxed line-clamp-3">{theCase.description}</p>
               )}
+            </section>
+          )}
+
+          {onTopic.length > 0 && (
+            <section className="mt-20" aria-labelledby="video-cases-title">
+              <h2 id="video-cases-title" className="mb-8 flex items-center gap-4 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.35em] text-primary-ink">
+                <span className="w-12 h-[2px] bg-primary" aria-hidden="true" />
+                Cases on the same topic
+              </h2>
+              <CaseLinkGrid cases={onTopic} />
             </section>
           )}
 

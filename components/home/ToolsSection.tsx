@@ -11,8 +11,6 @@ import { TiltCard } from "@/components/ui/Motion";
 import { KanjiWatermark, chipTertiary } from "@/components/ui/kit";
 import { TOOL_GROUPS as GROUPS } from "@/data/about";
 
-const toolCount = GROUPS.reduce((n, g) => n + g.items.length, 0);
-
 export default function ToolsSection() {
   return (
     <section id="tools" aria-labelledby="tools-title" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">

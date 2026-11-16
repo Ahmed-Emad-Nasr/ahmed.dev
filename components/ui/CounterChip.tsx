@@ -38,7 +38,7 @@ function RollingDigits({ value }: { value: string }) {
             initial={{ y: "100%" }}
             whileInView={{ y: "0%" }}
             viewport={{ once: true }}
-            transition={{ duration: 0.55, delay: i * 0.07, ease: MOTION_EASE }}
+            transition={{ duration: 0.8, delay: i * 0.09, ease: MOTION_EASE }}
           >
             {char}
           </motion.span>

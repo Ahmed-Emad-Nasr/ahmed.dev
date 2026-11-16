@@ -16,6 +16,7 @@
  *   Hero (top)             components/home/HeroSection      data/portfolio-data.ts, data/live-copy.ts
  *   Numbers strip          components/home/StatsBar         data/live-copy.ts (stats)
  *   Roles cards  #roles    components/home/RolesCards       inside the component (ROLES)
+ *   Services     #services components/home/ServicesSection  data/services.ts
  *   Divider                components/ui/SlashDivider
  *   Projects     #work     components/home/WorkShowcase     data/portfolio-data.ts (`work`)
  *   Open source  #projects components/home/ProjectsGrid     data/portfolio-data.ts + GitHub API (build time)
@@ -64,6 +65,7 @@ import {
   ExperienceTimeline,
   Testimonials,
   PlatformsSection,
+  ServicesSection,
   ToolsSection,
   UsesSection,
   PathSection,
@@ -85,6 +87,7 @@ import { PROFILE } from "@/data/profile";
 import { STATIC_PLATFORMS, tryHackMePlatform } from "@/data/platforms";
 import { LIVE_COPY } from "@/data/live-copy";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { SERVICES } from "@/data/services";
 import { knowledgeEducationItems } from "@/data/experience";
 import { OG_IMAGE } from "@/lib/site";
 import { KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd } from "@/lib/seo";
@@ -223,13 +226,14 @@ function structuredData(repos: RepoCard[]) {
         itemListElement: knowledgeEducationItems.map((item, index) => ({
           "@type": "ListItem",
           position: index + 1,
-          /* Jobs as roles at an organisation, education as credentials */
+          /* Jobs as roles at an organisation, education as credentials.
+             No descriptions: the full text is on the page itself, and here
+             it was sent twice more (in the HTML and in the page data) */
           item:
             item.kind === "education"
               ? {
                   "@type": "EducationalOccupationalCredential",
                   name: item.tag,
-                  description: item.desc,
                   credentialCategory: /bachelor|degree/i.test(item.tag) ? "degree" : "certificate",
                   recognizedBy: { "@type": "EducationalOrganization", name: item.subTag, url: item.subTagHyperlink },
                   validFrom: item.startDate,
@@ -238,7 +242,6 @@ function structuredData(repos: RepoCard[]) {
               : {
                   "@type": "OrganizationRole",
                   roleName: item.tag,
-                  description: item.desc,
                   startDate: item.startDate,
                   ...("endDate" in item && item.endDate ? { endDate: item.endDate } : {}),
                   memberOf: { "@type": "Organization", name: item.subTag, url: item.subTagHyperlink },
@@ -251,10 +254,18 @@ function structuredData(repos: RepoCard[]) {
         name: "Information Security: GRC, Security Operations and Incident Response",
         description: "Governance, risk and compliance assessments, SOC monitoring and triage, incident response and digital forensics, malware analysis, identity and access management, data security, and security training.",
         provider: PERSON_REF,
-        areaServed: [{ "@type": "Country", name: "Egypt" }, "Worldwide"],
+        areaServed: [{ "@type": "City", name: "Cairo" }, { "@type": "City", name: "Benha" }, { "@type": "Country", name: "Egypt" }, "Worldwide"],
         availableLanguage: ["en"],
         serviceType: ["Governance, Risk & Compliance", "SOC Monitoring", "Incident Response", "Digital Forensics", "Malware Analysis", "Identity & Access Management", "Data Security", "Security Training"],
-        url: `${SITE_URL}#roles`,
+        url: `${SITE_URL}#services`,
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "What I do",
+          itemListElement: SERVICES.map((s) => ({
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: s.title, description: s.description, provider: PERSON_REF },
+          })),
+        },
       },
     ],
   });
@@ -306,6 +317,11 @@ export default async function Home() {
         <StatsBar stats={LIVE_COPY.stats} />
       </div>
       <RolesCards />
+
+      {/* What I can be hired for: four services, each with a deliverable (data/services.ts) */}
+      <div className="tone-blue">
+        <ServicesSection />
+      </div>
 
       {/* Decorative divider with a label */}
       <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />

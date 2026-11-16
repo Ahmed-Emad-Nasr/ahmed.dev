@@ -20,7 +20,8 @@
  * HOW TO ADD A PROJECT: copy an entry of `work` below — fields are the
  * WorkItem type in data/types.ts (id, title, type: "lab" | "tool" |
  * "research" | "platform", tagline, problem, role, stack, platform, status,
- * year, metrics, links { github, live, demo, caseStudy }).
+ * year, metrics, links { github, live, demo, caseStudy, docs }).
+ *   docs → the tool's own page on this site (/projects/<id>, data/tools.ts)
  */
 
 import type { Experience, PortfolioData, WorkItem } from "@/data/types";
@@ -241,7 +242,7 @@ const work: WorkItem[] = [
     platform: "Desktop (Tkinter)",
     status: "open-source",
     year: "2026",
-    links: { github: repo("3omda-PDFparser-tool") },
+    links: { github: repo("3omda-PDFparser-tool"), docs: "/projects/cybersuite" },
     metrics: ["Static PDF analysis", "5 intel sources", "Built from two earlier tools"],
   },
   {
@@ -255,7 +256,7 @@ const work: WorkItem[] = [
     platform: "CLI + desktop",
     status: "open-source",
     year: "2026",
-    links: { github: repo("3omda-WEBP-Converter-and-compressor") },
+    links: { github: repo("3omda-WEBP-Converter-and-compressor"), docs: "/projects/webp-converter" },
     metrics: ["CLI + GUI", "Batch conversion", "Compression"],
   },
 ];

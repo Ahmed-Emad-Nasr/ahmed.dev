@@ -160,6 +160,9 @@ function TechniqueTile({ technique, tactic, max }: { technique: CoverageTechniqu
           ))}
         </ol>
 
+        <Link prefetch={false} className="attack-pop-ext" href={`/attack/${technique.id}`}>
+          The {technique.id} page →
+        </Link>
         <a className="attack-pop-ext" href={attackUrl(technique.id)} target="_blank" rel="noopener noreferrer">
           {technique.id} on attack.mitre.org ↗
         </a>
@@ -294,6 +297,9 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
             <span className="attack-pips" style={{ "--n": 1, "--max": 1 } as CSSProperties} aria-hidden="true" />
             = one report · tint = depth of evidence
           </span>
+          <Link prefetch={false} href="/attack" className="underline underline-offset-4 decoration-primary/50 hover:text-primary-ink">
+            Every technique, one page each →
+          </Link>
           <span>
             Mapping per report · ATT&amp;CK Enterprise v19 ·{" "}
             <a
