@@ -114,7 +114,7 @@ export const CV_PDF_HREF = "Assets/cv/AhmedEmadNasr_CV.pdf";
     workflow, nothing to edit on a rename). */
 export const normalizePublicHref = (href: string): string => {
   if (/^https?:\/\//i.test(href)) return href;
-  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev";
   const normalized = href.startsWith("/") ? href : `/${href}`;
   return `${basePath}${normalized}`.replace(/\/\//g, "/");
 };
@@ -156,7 +156,7 @@ export const GITHUB_USERNAME = "Ahmed-Emad-Nasr";
 /* This site's own repository (the security policy link in security.txt).
    On GitHub Actions it is the repo being built (NEXT_PUBLIC_REPOSITORY, set
    in next.config.mjs from GITHUB_REPOSITORY), so a rename needs no edit. */
-export const REPO_URL = `https://github.com/${process.env.NEXT_PUBLIC_REPOSITORY || `${GITHUB_USERNAME}/ahmed-emad-nasr.github.io`}`;
+export const REPO_URL = `https://github.com/${process.env.NEXT_PUBLIC_REPOSITORY || `${GITHUB_USERNAME}/ahmed.dev`}`;
 
 /* The PGP public key, in public/ — see SECURITY.md for how to add it */
 export const PGP_KEY_FILE = "pgp-key.asc";

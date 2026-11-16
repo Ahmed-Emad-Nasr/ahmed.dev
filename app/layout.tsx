@@ -149,9 +149,7 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false, address: false, email: false },
   /* Google Search Console (HTML-tag method). Keep every token: removing one
      un-verifies the property it belongs to. The first is the URL-prefix
-     property https://ahmed-emad-nasr.github.io/ahmed.dev/ (Nov 2026). When
-     the site moves to the domain root, add the property
-     https://ahmed-emad-nasr.github.io/ and paste its token here as well. */
+     property https://ahmed-emad-nasr.github.io/ahmed.dev/ (Nov 2026). */
   verification: {
     google: ["e3SczIbkSrdElwRDQN5J7KL1GzfH7McL2xq_Hk-DEzw", "VCIeVhcDb-vQGmE68weZARtruR_F2bUwv6hcjKYdwqo"],
   },
@@ -256,8 +254,8 @@ const STRUCTURED_DATA_JSON = jsonLd({
       "@type": "WebSite",
       "@id": WEBSITE_ID,
       /* The site name Google shows above results. Google reads it only on
-         the home page at the root of a domain — this one, once the site is
-         deployed from Ahmed-Emad-Nasr.github.io */
+         the home page at the root of the domain (ahmed-emad-nasr.github.io/,
+         the separate repo Ahmed-Emad-Nasr.github.io) — keep the same name there */
       name: "Ahmed Emad Nasr",
       alternateName: ["ahmed.dev", "3omda", "Ahmed Emad Nasr — Information Security"],
       url: SITE_URL,

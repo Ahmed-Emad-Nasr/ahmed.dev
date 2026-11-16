@@ -4,15 +4,15 @@
    ═══ lib/site.ts ═══
    SITE_BASE_URL → the live address of the site. The deploy workflow sets it
    from the repository (actions/configure-pages → NEXT_PUBLIC_SITE_URL), so a
-   repo rename or a custom domain needs no edit here; local builds use the
-   github.io domain root. SITE_ORIGIN → the domain alone (root files such as
+   repo rename or a custom domain needs no edit here; local builds use
+   /ahmed.dev. SITE_ORIGIN → the domain alone (root files such as
    robots.txt and security.txt are only read there). OG_IMAGE → the default
    share picture (public/og-image.png, 1200×630). */
 
 const DEFAULT_ORIGIN = "https://ahmed-emad-nasr.github.io";
 
 export const SITE_BASE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || `${DEFAULT_ORIGIN}${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}`
+  process.env.NEXT_PUBLIC_SITE_URL || `${DEFAULT_ORIGIN}${process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev"}`
 ).replace(/\/+$/, "");
 
 export const SITE_ORIGIN = new URL(SITE_BASE_URL).origin;

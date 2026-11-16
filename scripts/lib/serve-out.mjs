@@ -26,7 +26,7 @@ const TYPES = {
   ".webmanifest": "application/manifest+json",
 };
 
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev";
 
 /** Starts the server on a free port; resolves { url, close } */
 export function serveOut(root = join(process.cwd(), "out")) {
