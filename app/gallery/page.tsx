@@ -11,13 +11,14 @@
  */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import PageShell from "@/components/layout/PageShell";
 import PageEffects from "@/lib/perf/PageEffects";
 import { ArtGallery } from "@/components/gallery/dynamic";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
 import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
-import { GALLERY_ID, GALLERY_URL } from "@/lib/page-ids";
+import { GALLERY_ID, GALLERY_LANGUAGES, GALLERY_URL } from "@/lib/page-ids";
 
 /* What a search result shows: the name first, so "Ahmed Emad Nasr
    certificates" matches */
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   keywords: pageKeywords(KEYWORDS.gallery),
-  alternates: { canonical: "/gallery" },
+  alternates: { canonical: "/gallery", languages: GALLERY_LANGUAGES },
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
@@ -85,6 +86,20 @@ export default function GalleryPage() {
       {/* pt: room for the fixed navbar. The id is on this wrapper: the
           gallery's own <section> is #art */}
       <div id="gallery" className="pt-28 md:pt-32">
+        {/* The same page in Arabic (app/ar/gallery/page.tsx) — no prefetch: it would preload the Arabic font */}
+        <p className="relative z-10 px-6 md:px-20 -mb-2">
+          <span className="block max-w-7xl mx-auto">
+            <Link
+              href="/ar/gallery"
+              prefetch={false}
+              hrefLang="ar"
+              className="inline-flex min-h-6 items-center gap-2 text-sm text-foreground/70 hover:text-primary-ink transition-colors"
+            >
+              <bdi lang="ar">اقرأ هذه الصفحة بالعربية</bdi>
+              <span aria-hidden="true">→</span>
+            </Link>
+          </span>
+        </p>
         <ArtGallery />
       </div>
     </PageShell>

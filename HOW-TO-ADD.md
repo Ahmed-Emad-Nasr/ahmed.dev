@@ -114,6 +114,7 @@ That's it — the video's page, its card on the blog and on `/videos`, and its s
 | A tool page (`/projects/<id>`) — what it does, how to run it, screenshots | `data/tools.ts` (the `id` must match the project in `data/portfolio-data.ts`); screenshots go in `public/Assets/projects/<id>/` as `.webp` |
 | A platform write-ups page (`/writeups/<platform>`) | `lib/collections.ts` → `PLATFORM_PAGES` (`platform` = the exact text the cases use) |
 | The training pages (`/training` and `/ar/training`) | the words of both in `data/training.ts` (English and Arabic — change both); the diploma comes from `data/teaching.ts` / `data/teaching-ar.ts` |
+| The words of the gallery pages (`/gallery` and `/ar/gallery`) | `data/gallery-copy.ts` (English and Arabic — change both); the certificates themselves stay in `data/certifications.ts` |
 | The written part of a video page — "What the video covers" and "Key terms" | `data/video-notes.ts` (`VIDEO_NOTES` by videoId, `GLOSSARY` by tag) |
 | A brand logo or icon | its drawing in `data/logo-paths.ts` (or `components/ui/icon-data.ts`) — every icon is served from one cached file, `/icons.svg` |
 

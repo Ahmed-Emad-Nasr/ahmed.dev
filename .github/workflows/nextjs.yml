@@ -46,6 +46,10 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
       - run: npm ci
+      # The small cover of every case image (X-thumb.webp next to X.webp):
+      # made here on every deploy, so a missing one never makes a page load
+      # the full-size image. Only the missing ones are made (scripts/generate-thumbs.mjs).
+      - run: npm run thumbs
       # output: "export" in next.config.mjs makes next build write out/
       - run: npm run build
         env:

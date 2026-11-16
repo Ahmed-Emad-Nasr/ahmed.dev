@@ -27,4 +27,7 @@ export const TRAINING_AR_ID = `${TRAINING_AR_URL}#training`;
 /* The training page in both languages (hreflang): each page lists both */
 export const TRAINING_LANGUAGES = { en: "/training", ar: "/ar/training", "x-default": "/training" };
 export const GALLERY_URL = absoluteUrl("/gallery");
+export const GALLERY_AR_URL = absoluteUrl("/ar/gallery");
+/* The gallery in both languages (hreflang): each page lists both */
+export const GALLERY_LANGUAGES = { en: "/gallery", ar: "/ar/gallery", "x-default": "/gallery" };
 export const GALLERY_ID = `${GALLERY_URL}#gallery`;

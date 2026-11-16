@@ -100,6 +100,7 @@ flowchart LR
 | [`/attack`](https://ahmed-emad-nasr.github.io/ahmed.dev/attack) | Every MITRE ATT&CK technique the cases show, by tactic; each has its own page `/attack/<T-id>` with its cases, sub-techniques and tools |
 | `/writeups/<platform>` | The write-ups of one platform — [TryHackMe](https://ahmed-emad-nasr.github.io/ahmed.dev/writeups/tryhackme), [PortSwigger](https://ahmed-emad-nasr.github.io/ahmed.dev/writeups/portswigger), [LetsDefend](https://ahmed-emad-nasr.github.io/ahmed.dev/writeups/letsdefend) |
 | `/projects/<tool>` | A page per tool I wrote — [CyberSuite](https://ahmed-emad-nasr.github.io/ahmed.dev/projects/cybersuite), [WebP Converter](https://ahmed-emad-nasr.github.io/ahmed.dev/projects/webp-converter): what it does, how to run it, sample output |
+| [`/ar/gallery`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/gallery) | The gallery in Arabic (`hreflang` with `/gallery`) |
 | [`/training`](https://ahmed-emad-nasr.github.io/ahmed.dev/training) · [`/ar/training`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/training) | Training for teams, in English and Arabic (`hreflang`): who it is for, the formats, the diploma module by module, student quotes and a request button |
 | [`/ar/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/teaching) | The same page in Arabic (right to left, Cairo font), linked to the English one with `hreflang` |
 | [`/gallery`](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery) | Degree, certifications, courses and records, photos from classrooms and events |

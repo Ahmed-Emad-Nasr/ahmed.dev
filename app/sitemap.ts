@@ -13,7 +13,7 @@ import { absoluteUrl, caseUrl, OG_IMAGE } from "@/lib/site";
 import { GALLERY_IMAGE_COUNT, galleryImagePath } from "@/data/certifications";
 import { SITE_VIDEOS, videoUrl, type SiteVideo } from "@/lib/videos";
 import { PERSON_IMAGE, SITE_URL, youtubePlayer, youtubeThumb } from "@/lib/seo";
-import { TEACHING_LANGUAGES, TRAINING_LANGUAGES } from "@/lib/page-ids";
+import { GALLERY_LANGUAGES, TEACHING_LANGUAGES, TRAINING_LANGUAGES } from "@/lib/page-ids";
 import { ATTACK_TECHNIQUES, PLATFORM_PAGES, casesForPlatform } from "@/lib/collections";
 import { TOOL_PAGES } from "@/data/tools";
 
@@ -53,9 +53,10 @@ const teachingLanguages = Object.fromEntries(
   Object.entries(TEACHING_LANGUAGES).map(([lang, path]) => [lang, absoluteUrl(path)]),
 );
 
-const trainingLanguages = Object.fromEntries(
-  Object.entries(TRAINING_LANGUAGES).map(([lang, path]) => [lang, absoluteUrl(path)]),
-);
+const absoluteLanguages = (languages: Record<string, string>) =>
+  Object.fromEntries(Object.entries(languages).map(([lang, path]) => [lang, absoluteUrl(path)]));
+const trainingLanguages = absoluteLanguages(TRAINING_LANGUAGES);
+const galleryLanguages = absoluteLanguages(GALLERY_LANGUAGES);
 
 /* Required by the static export (see the same line in app/manifest.ts) */
 export const dynamic = "force-static";
@@ -110,6 +111,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
       images: galleryImages,
+      alternates: { languages: galleryLanguages },
     },
     /* The CV page and the videos page */
     {
@@ -123,6 +125,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: SITE_VIDEOS[0]?.publishedAt ? parseDate(SITE_VIDEOS[0].publishedAt) : latestCaseDate,
       changeFrequency: "weekly",
       priority: 0.8,
+    },
+    /* The gallery in Arabic (its images are listed on /gallery) */
+    {
+      url: absoluteUrl("/ar/gallery"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: { languages: galleryLanguages },
     },
     /* Training for teams, in English and Arabic: each names the other (hreflang) */
     {

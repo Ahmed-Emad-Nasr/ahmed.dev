@@ -168,6 +168,16 @@ export const KEYWORDS = {
     "AMIT أمن سيبراني",
     "المعهد القومي للاتصالات أمن سيبراني",
   ],
+  /* The Arabic gallery (/ar/gallery) */
+  galleryAr: [
+    "شهادات أحمد عماد نصر",
+    "أحمد عماد نصر",
+    "شهادات أمن سيبراني",
+    "شهادات أمن المعلومات",
+    "eJPT",
+    "CCNA",
+    "مدرب أمن سيبراني",
+  ],
   /* The Arabic training page (/ar/training): what companies in Egypt type */
   trainingAr: [
     "تدريب أمن سيبراني للشركات",
