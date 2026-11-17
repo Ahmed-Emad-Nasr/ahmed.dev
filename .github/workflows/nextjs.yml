@@ -34,15 +34,15 @@ jobs:
     needs: verify
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "22"
           cache: npm
       # base_path is "" in Ahmed-Emad-Nasr.github.io (the domain root) and
       # "/<repo>" in a project repo; base_url is the full live address.
       - id: pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - uses: actions/cache@v4
         with:
           path: .next/cache
@@ -78,9 +78,12 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./out
+          # Since v4 dot-folders are left out by default — that would drop
+          # /.well-known/security.txt from the site. Keep them.
+          include-hidden-files: true
 
   deploy:
     environment:
@@ -90,4 +93,4 @@ jobs:
     needs: build
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
