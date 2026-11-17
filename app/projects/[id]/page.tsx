@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     description,
     path: `/projects/${project.id}`,
     keywords: pageKeywords([project.title, `${project.title} GitHub`, ...project.stack], KEYWORDS.tools),
-    share: pageShareImage("tools", `${project.title} — Ahmed Emad Nasr`),
+    share: pageShareImage(`tool-${project.id}`, `${project.title} — Ahmed Emad Nasr`),
   });
 }
 

@@ -14,7 +14,7 @@ import type { Metadata } from "next";
 import { libraryData } from "@/lib/library-data";
 import { summarize } from "@/lib/site";
 import { CV_PDF_HREF, normalizePublicHref } from "@/lib/shared";
-import { Home, FolderSearch, FileText } from "lucide-react";
+import { BookOpen, Briefcase, Code2, Crosshair, FileText, FolderSearch, GraduationCap, Handshake, Home, Images, Mail, PlayCircle, Users } from "lucide-react";
 import PageShell from "@/components/layout/StatusShell";
 import {
   KanjiWatermark, ctaPrimary, ctaSecondary,
@@ -30,6 +30,20 @@ export const metadata: Metadata = {
   /* No canonical: the layout's "/" would tell crawlers this 404 is the home page */
   alternates: { canonical: null },
 };
+
+/* Every main part of the site, one click away */
+const SECTIONS = [
+  { href: "/#work", label: "Projects", icon: Code2 },
+  { href: "/#services", label: "Services", icon: Handshake },
+  { href: "/#experience", label: "Experience", icon: Briefcase },
+  { href: "/blog", label: "Blog & cases", icon: BookOpen },
+  { href: "/attack", label: "MITRE ATT&CK", icon: Crosshair },
+  { href: "/videos", label: "Videos", icon: PlayCircle },
+  { href: "/teaching", label: "Teaching", icon: GraduationCap },
+  { href: "/training", label: "Training for teams", icon: Users },
+  { href: "/gallery", label: "Certificates", icon: Images },
+  { href: "/#contact", label: "Contact", icon: Mail },
+];
 
 /* The first 3 cases the library recommends (featured case, then the
    strongest investigations) */
@@ -69,6 +83,29 @@ export default function NotFound() {
               <FileText size={14} className="text-primary-ink" /> Read my CV (PDF)
             </a>
           </nav>
+
+          <section aria-labelledby="nf-sections" className="mb-14">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
+              <h2 id="nf-sections" className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">
+                Or jump to a section
+              </h2>
+            </div>
+            <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+              {SECTIONS.map(({ href, label, icon: Icon }) => (
+                <li key={href}>
+                  <Link
+                    prefetch={false}
+                    href={href}
+                    className="group flex h-full items-center gap-3 border border-foreground/10 bg-surface/60 px-4 py-3 font-mono text-[0.625rem] font-bold uppercase tracking-[0.18em] text-foreground/75 hover:border-primary/50 hover:text-foreground transition-colors duration-300"
+                  >
+                    <Icon size={14} className="shrink-0 text-primary-ink" aria-hidden="true" />
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
 
           {SUGGESTIONS.length > 0 && (
             <section aria-labelledby="nf-suggest">

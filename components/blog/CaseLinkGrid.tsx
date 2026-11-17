@@ -13,6 +13,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import Image from "next/image";
 import Link from "next/link";
+import FadeIn from "@/components/ui/FadeIn";
 import ShowMore from "@/components/ui/ShowMore";
 import { chipNeutral, chipTertiary } from "@/components/ui/kit";
 import { caseCardBlurb } from "@/lib/case-summary";
@@ -27,8 +28,8 @@ const cover = (image: string) => {
 export default function CaseLinkGrid({ cases, label = "Show more cases" }: { cases: readonly CaseEvidence[]; label?: string }) {
   return (
     <ShowMore as="ul" first={9} step={9} label={label} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      {cases.map((c) => (
-        <li key={c.id} className="flex">
+      {cases.map((c, i) => (
+        <FadeIn as="li" key={c.id} y={24} duration={0.65} delay={(i % 3) * 0.08} className="flex">
           <Link
             prefetch={false}
             href={`/blog/${c.id}`}
@@ -63,7 +64,7 @@ export default function CaseLinkGrid({ cases, label = "Show more cases" }: { cas
               </span>
             </span>
           </Link>
-        </li>
+        </FadeIn>
       ))}
     </ShowMore>
   );

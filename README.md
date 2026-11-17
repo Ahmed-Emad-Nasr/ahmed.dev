@@ -16,7 +16,7 @@
 [![Gallery](https://img.shields.io/badge/PROOF-certificates-E3B341?style=for-the-badge&logo=credly&logoColor=black)](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery)
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-connect-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahmed-emad-nasr/)
-[![YouTube](https://img.shields.io/badge/YouTube-@AhmedEmad--0x3omda-FF0000?style=flat-square&logo=youtube&logoColor=white)](https://www.youtube.com/@AhmedEmad-0x3omda)
+[![YouTube](https://img.shields.io/badge/YouTube-@AhmedEmadNasr--0x3omda-FF0000?style=flat-square&logo=youtube&logoColor=white)](https://www.youtube.com/@AhmedEmadNasr-0x3omda)
 [![TryHackMe](https://img.shields.io/badge/TryHackMe-profile-212C42?style=flat-square&logo=tryhackme&logoColor=white)](https://tryhackme.com/p/Ahmed.Emad.Nasr)
 [![Email](https://img.shields.io/badge/Email-ahmed.em.nasr%40gmail.com-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:ahmed.em.nasr@gmail.com)
 

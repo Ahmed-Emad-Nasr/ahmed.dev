@@ -17,6 +17,7 @@ import PageShell from "@/components/layout/PageShell";
 import BackCrumb from "@/components/layout/BackCrumb";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CounterChip from "@/components/ui/CounterChip";
+import FadeIn from "@/components/ui/FadeIn";
 import CaseLinkGrid from "@/components/blog/CaseLinkGrid";
 import { KanjiWatermark, btnOutline, chipNeutral } from "@/components/ui/kit";
 import {
@@ -145,7 +146,7 @@ export default async function PlatformWriteupsPage({ params }: { params: Promise
             }
           />
 
-          <div className="mb-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <FadeIn y={24} className="mb-16 grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div>
               <h2 className="mb-4 font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-tertiary">Topics</h2>
               <ul className="flex flex-wrap gap-2">
@@ -187,7 +188,7 @@ export default async function PlatformWriteupsPage({ params }: { params: Promise
                 </ul>
               </div>
             )}
-          </div>
+          </FadeIn>
 
           <h2 className="mb-8 flex items-center gap-4 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.35em] text-primary-ink">
             <span className="w-12 h-[2px] bg-primary" aria-hidden="true" />

@@ -1,10 +1,11 @@
 "use client";
 
 /*
- * FadeIn — the site's entrance: fade + slide, once, when the element is ~15%
- * into the screen. `as` keeps the real tag (li, nav, figure …).
+ * FadeIn — the site's entrance: fade + slide, once, when 40px of the element
+ * is on screen (Sensei-Dev's tempo). `as` keeps the real tag (li, nav, figure …).
  *
- *  · Elements entering in the same frame start top to bottom, 110 ms apart.
+ *  · Elements without a delay entering in the same frame start top to bottom,
+ *    80 ms apart; lists stagger through their own `delay`.
  *  · opacity + transform (not framer's x/y) so the browser runs them off the
  *    main thread (WAAPI) and a cascade never stutters the scroll.
  *
@@ -69,34 +70,24 @@ type FadeInProps = Omit<
   popoverTarget?: string;
 };
 
-const clamp = (v: number, lo: number, hi: number) =>
-  Math.min(hi, Math.max(lo, v));
-/* CALM = 0.72: every entrance travels (and scales) 28% less than the
-   numbers its caller passes. One dial for the whole site — lower = calmer.
-   (Speed is the other dial: SLOW below, and MOTION_ENTER_DURATION /
-   MOTION_STAGGER_STEP in lib/motion.ts.) */
-const CALM = 0.72;
-/* SLOW = 1.2: entrances take 120% of the duration their caller passes
-   (0.72–1.44 s). Higher = slower. Was 0.6. Only opacity + transform move,
-   so a slower entrance costs nothing on the main thread. */
-const SLOW = 1.2;
-const travel = (v: number, k: number) =>
-  v ? Math.sign(v) * Math.min(Math.abs(v) * k * 0.9, 50) * CALM : 0;
-const calmScale = (s: number) => 1 - (1 - s) * CALM;
+/* The tempo is Sensei-Dev's: each entrance takes the duration its caller
+   passes (0.65–0.7 s on most cards), travels the distance it passes, and
+   starts as soon as 40px of it is on screen. Lists stagger through their
+   own `delay` (index × MOTION_STAGGER_STEP); the delay is capped at 8 steps
+   so item 20 of a "Show more" list does not wait 1.6 s.
+   Speed dials for the whole site: MOTION_ENTER_DURATION / MOTION_EASE in
+   lib/motion.ts. */
+const MAX_DELAY = 8 * MOTION_STAGGER_STEP;
 
-/* Entrances that start in the same frame, played top to bottom */
+/* Elements without a delay of their own that enter in the same frame (a
+   header's eyebrow, title and text) start top to bottom, one step apart */
 let batch: { el: Element; play: (order: number) => void }[] = [];
-function enqueue(el: Element | null, play: (order: number) => void) {
-  if (!el) return play(0);
+function enqueue(el: Element, play: (order: number) => void) {
   if (!batch.length) {
     requestAnimationFrame(() => {
       const now = batch;
       batch = [];
-      now.sort((a, b) =>
-        a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING
-          ? -1
-          : 1,
-      );
+      now.sort((a, b) => (a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
       now.forEach((item, order) => item.play(order));
     });
   }
@@ -121,29 +112,21 @@ export default function FadeIn({
       ref={ref}
       initial={{
         opacity: 0,
-        transform: `translate(${travel(x, 1.4)}px, ${travel(y, 1.8)}px) scale(${calmScale(scale)})`,
+        transform: `translate(${x}px, ${y}px) scale(${scale})`,
       }}
       animate={controls}
-      viewport={{ once: true, margin: "0px 0px -15% 0px" }}
+      viewport={{ once: true, margin: "0px 0px -40px 0px" }}
       onViewportEnter={() =>
         /* Under the intro screen nothing plays: it starts as the screen lifts */
         whenIntroDone(() => {
           if (!ref.current) return; // left the page while waiting
           enqueue(ref.current, (order) => {
-            const tempo = window.innerWidth < 768 ? 0.9 : 1;
             void controls.start({
               opacity: 1,
               transform: "translate(0px, 0px) scale(1)",
               transition: {
-                duration:
-                  clamp(duration || MOTION_ENTER_DURATION, 0.6, 1.2) *
-                  SLOW *
-                  tempo,
-                delay:
-                  (MOTION_STAGGER_STEP +
-                    Math.min(delay, 0.5) +
-                    Math.min(order, 7) * MOTION_STAGGER_STEP) *
-                  tempo,
+                duration: duration || MOTION_ENTER_DURATION,
+                delay: delay ? Math.min(delay, MAX_DELAY) : Math.min(order, 4) * MOTION_STAGGER_STEP,
                 ease: MOTION_EASE,
               },
             });

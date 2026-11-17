@@ -17,7 +17,6 @@
  *   Numbers strip          components/home/StatsBar         data/live-copy.ts (stats)
  *   Roles cards  #roles    components/home/RolesCards       inside the component (ROLES)
  *   Services     #services components/home/ServicesSection  data/services.ts
- *   Divider                components/ui/SlashDivider
  *   Projects     #work     components/home/WorkShowcase     data/portfolio-data.ts (`work`)
  *   Open source  #projects components/home/ProjectsGrid     data/portfolio-data.ts + GitHub API (build time)
  *   Contributions #contributions components/home/ContributionsGrid GitHub calendar (build time)
@@ -91,7 +90,6 @@ import { knowledgeEducationItems } from "@/data/experience";
 import { OG_IMAGE } from "@/lib/site";
 import { KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd } from "@/lib/seo";
 import { BLOG_ID, GALLERY_ID, TEACHING_ID } from "@/lib/page-ids";
-import SlashDivider from "@/components/ui/SlashDivider";
 
 /* <head> tags for the home page only (merged over app/layout.tsx's defaults).
    This title is used as-is: the layout's "%s | Ahmed Emad Nasr" template only
@@ -316,20 +314,18 @@ export default async function Home() {
       </div>
       <RolesCards />
 
-      {/* What I can be hired for: four services, each with a deliverable (data/services.ts) */}
-      <div className="tone-blue">
-        <ServicesSection />
-      </div>
-
-      {/* Decorative divider with a label */}
-      <SlashDivider label="01 // Evidence" japanese="証拠" origin="left" />
-
       {/* Projects grid — the curated list in data/portfolio-data.ts (`work`).
           Passed as a prop so the list travels in the page data, not in JS. */}
       <WorkShowcase items={PORTFOLIO_DATA.work} />
 
       {/* The GitHub repositories behind the projects (lib/api/github-repos.ts) */}
       <ProjectsGrid repos={repos} />
+
+      {/* What I can be hired for, right after the work that proves it:
+          four services, each with a deliverable (data/services.ts) */}
+      <div className="tone-blue">
+        <ServicesSection />
+      </div>
 
       {/* Upstream contributions + the GitHub year graph (right after the repos, as in Sensei-Dev) */}
       <div className="tone-blue">

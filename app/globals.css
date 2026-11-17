@@ -22,7 +22,7 @@
  *                                     skip link, scrollbar, text selection
  *   ─── Neo-Samurai Components ─── → vertical text, brush font, button sheen,
  *                                     .jp-eyebrow (Japanese labels), .site-texture,
- *                                     .spotlight cards, chapter slash
+ *                                     .spotlight cards
  *   Contribution cells / theme morph / loader → animations for those parts
  *   @media print                   → how a page looks when printed
  *   @utility title-fit             → big headings that shrink to fit
@@ -66,10 +66,7 @@
   /* Lighter effects: every blur radius is 15% under Tailwind's default
      (8 / 12 / 24 / 40px); the pulse loops in 1.62s (default 2s).
      To go back, delete these five lines. */
-  --blur-sm: 6.8px;
-  --blur-md: 10.2px;
   --blur-xl: 20.4px;
-  --blur-2xl: 34px;
   --animate-pulse: pulse 1.62s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 
   --color-background: var(--background);
@@ -553,10 +550,6 @@
   );
   background-size: 8px 8px;
   mix-blend-mode: screen;
-}
-
-.chapter-slash {
-  margin: 2rem 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

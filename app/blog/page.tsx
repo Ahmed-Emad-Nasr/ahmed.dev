@@ -21,7 +21,6 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/layout/PageShell";
 import PageEffects from "@/lib/perf/PageEffects";
-import SlashDivider from "@/components/ui/SlashDivider";
 import {
   AreaIntro,
   AttackCoverage,
@@ -162,8 +161,6 @@ export default function BlogPage() {
           the browser; a skeleton holds #cases until it arrives */}
       <CaseLibrary />
 
-      <SlashDivider label="01 // Detection" japanese="検知" origin="left" />
-
       {/* ATT&CK and the alert stay red on purpose: there the red means
           heat and severity. */}
       <AttackCoverage coverage={attackCoverage} />
@@ -172,7 +169,6 @@ export default function BlogPage() {
       </div>
       <TriageChallenge />
 
-      <SlashDivider label="02 // Operating model" japanese="実務" origin="right" />
       <div className="tone-blue">
         <HomeLab />
       </div>

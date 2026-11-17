@@ -158,7 +158,7 @@ const PAGES = [
   },
   {
     id: "videos",
-    badge: "YouTube · @AhmedEmad-0x3omda",
+    badge: "YouTube · @AhmedEmadNasr-0x3omda",
     title: "Videos.",
     line: "Cybersecurity, explained",
     sub: "SOC · Wazuh · Malware · Networking · GRC",
@@ -194,6 +194,27 @@ const PAGES = [
     sub: "3OMDA CyberSuite · WebP Converter",
     chips: ["Python", "Open source", "How to run them"],
     accent: "#BC002D", ink: "#ff2d55", glow: "rgba(188,0,45,.35)",
+    photo: { file: "portrait-grey.webp", width: 1000, left: 400, top: -6 },
+  },
+  /* One card per tool page (/projects/<id>): id = "tool-" + the id in data/tools.ts */
+  {
+    id: "tool-cybersuite",
+    badge: "Open-source tool · Python",
+    title: "CyberSuite.",
+    line: "PDF malware triage",
+    sub: "Static PDF analysis · IOCs · threat-intel lookups",
+    chips: ["Risk score", "VirusTotal · OTX", "Reports"],
+    accent: "#BC002D", ink: "#ff2d55", glow: "rgba(188,0,45,.35)",
+    photo: { file: "portrait-cutout.webp", width: 1000, left: 470, top: -6 },
+  },
+  {
+    id: "tool-webp-converter",
+    badge: "Open-source tool · Python",
+    title: "WebP.",
+    line: "Images, lighter",
+    sub: "3omda WebP Converter & Compressor",
+    chips: ["JPG · PNG · GIF → WebP", "Batch + CLI", "Keeps quality"],
+    accent: "#0e7490", ink: "#38bdf8", glow: "rgba(56,189,248,.30)",
     photo: { file: "portrait-grey.webp", width: 1000, left: 400, top: -6 },
   },
   {

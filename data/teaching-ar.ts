@@ -81,9 +81,9 @@ export const TEACHING_AR: TeachingContent = {
       results: ["أكثر من 5 فرق", "أكثر من 20 طالبًا", "المركز الثاني في IEEE GHOSTEC"],
     },
     {
-      org: "YouTube — @AhmedEmad-0x3omda",
+      org: "YouTube — @AhmedEmadNasr-0x3omda",
       /* \u2066…\u2069 keep "@handle" in one piece inside the Arabic line */
-      orgLabel: "يوتيوب — \u2066@AhmedEmad-0x3omda\u2069",
+      orgLabel: "يوتيوب — \u2066@AhmedEmadNasr-0x3omda\u2069",
       role: "صانع محتوى — شروحات ولابات أمنية",
       period: "مستمر",
       link: YOUTUBE_CHANNEL_URL,

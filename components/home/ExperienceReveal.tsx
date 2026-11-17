@@ -30,7 +30,7 @@ export default function ExperienceReveal({ className, children }: { className?: 
     const tweens = new Map(
       cards.map((card, i) => [
         card,
-        gsap.from(card, { x: i % 2 === 0 ? -100 : 100, opacity: 0, duration: 1.8, ease: "expo.out", paused: true }),
+        gsap.from(card, { x: i % 2 === 0 ? -100 : 100, opacity: 0, duration: 1.2, ease: "expo.out", paused: true }),
       ]),
     );
 

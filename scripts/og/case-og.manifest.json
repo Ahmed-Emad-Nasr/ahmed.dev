@@ -86,9 +86,11 @@
   "page:teaching": "fb333d2de674d9cda7e43902403c75471ffb5246",
   "page:gallery": "5796784a34b7f27a01df0d1169b2feec93e502b1",
   "page:cv": "76c5106cd0955e48e9c9a7c140c1a76ce64202d8",
-  "page:videos": "667e8f74b502fe8c89fddea258b483e0c7841751",
+  "page:videos": "36432af33a39a42e67bcd990b2c55eb6e73a33b5",
   "page:attack": "3e90917a41a6f1b8f3b399a7f73f2bf8f9e2b1a4",
   "page:writeups": "aa1c4389f310961030827e23e84fb4cfc189e846",
   "page:tools": "fdd07724979339339db3c7cd9eba716b345f9ac2",
+  "page:tool-cybersuite": "cc6002e79de480605cdfcc93db4d09c7a4390000",
+  "page:tool-webp-converter": "aeec4d2174bbacc31f843f81f0c422e5d866ca87",
   "page:training": "4c5d1a06a01a9f88f641fa1e9374a3192c3e4b1a"
 }

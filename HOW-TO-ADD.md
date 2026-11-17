@@ -111,7 +111,7 @@ That's it — the video's page, its card on the blog and on `/videos`, and its s
 | A training platform | `data/platforms.ts` |
 | Numbers / your details / links | `data/profile.ts` and `data/live-copy.ts` |
 | The CV | replace `public/Assets/cv/AhmedEmadNasr_CV.pdf` (same name) **and** update `data/cv.ts` — the `/cv` page shows the same content as text |
-| A tool page (`/projects/<id>`) — what it does, how to run it, screenshots | `data/tools.ts` (the `id` must match the project in `data/portfolio-data.ts`); screenshots go in `public/Assets/projects/<id>/` as `.webp` |
+| A tool page (`/projects/<id>`) — what it does, how to run it, screenshots | `data/tools.ts` (the `id` must match the project in `data/portfolio-data.ts`); screenshots go in `public/Assets/projects/<id>/` as `.webp` — its share card: add a `tool-<id>` entry to `PAGES` in `scripts/og/generate-case-og.mjs`, then `npm run og:cases` |
 | A platform write-ups page (`/writeups/<platform>`) | `lib/collections.ts` → `PLATFORM_PAGES` (`platform` = the exact text the cases use) |
 | The training pages (`/training` and `/ar/training`) | the words of both in `data/training.ts` (English and Arabic — change both); the diploma comes from `data/teaching.ts` / `data/teaching-ar.ts` |
 | The words of the gallery pages (`/gallery` and `/ar/gallery`) | `data/gallery-copy.ts` (English and Arabic — change both); the certificates themselves stay in `data/certifications.ts` |

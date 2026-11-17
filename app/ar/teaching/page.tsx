@@ -17,7 +17,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PageShell from "@/components/layout/PageShell";
 import PageEffects from "@/lib/perf/PageEffects";
-import SlashDivider from "@/components/ui/SlashDivider";
 import { StudentFeedback, TeachingSection } from "@/components/home/dynamic";
 import { TEACHING_AR, TEACHING_AR_PAGE } from "@/data/teaching-ar";
 import { absoluteUrl } from "@/lib/site";
@@ -114,7 +113,6 @@ export default function ArabicTeachingPage() {
           <TeachingSection content={TEACHING_AR} />
         </div>
 
-        <SlashDivider label="01 // آراء" japanese="受講生" origin="right" />
         <div className="tone-blue">
           <StudentFeedback copy={TEACHING_AR_PAGE.feedback} />
         </div>

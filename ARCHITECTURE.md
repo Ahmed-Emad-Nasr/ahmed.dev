@@ -110,8 +110,14 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
   in `components/ui/Motion.tsx`).
 - ATT&CK tiles fill with their heat once, on arrival
   (`components/blog/HeatReveal.tsx`) — not on every scrolled frame.
-- Calmness dials: `CALM` and the duration factor in `components/ui/FadeIn.tsx`,
-  `MOTION_ENTER_DURATION` / `MOTION_STAGGER_STEP` in `lib/motion.ts`.
+- Speed dials (Sensei-Dev's tempo): `MOTION_ENTER_DURATION`, `MOTION_STAGGER_STEP`
+  and `MOTION_EASE` in `lib/motion.ts`; each `<FadeIn>` passes its own
+  duration, distance and delay.
+- Experience cards: GSAP draws the slide, the browser's IntersectionObserver
+  starts it (`components/home/ExperienceReveal.tsx`) — no ScrollTrigger, so no
+  loop runs while the page stands still.
+- Home sections below the hero use `content-visibility: auto`
+  (`app/globals.css`); `lib/perf/jump.ts` re-aims #jumps once they are drawn.
 - Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
   only, staggered top to bottom). framer-motion loads lazily
   (`LazyMotion` + `m`).

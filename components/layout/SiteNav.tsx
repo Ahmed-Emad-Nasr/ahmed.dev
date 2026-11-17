@@ -9,7 +9,7 @@
  *     the home page at that section (/#work), with no prefetching.
  *   • The section you are reading is lit (IntersectionObserver), or "Blog"
  *     on a case page.
- *   • Phones / tablets / laptops under 1280px: a full-screen menu.
+ *   • Phones and tablets under 1024px: a full-screen menu.
  *
  * Add / rename / reorder a link → navItems below (the #id must exist on the
  * home page; icon = any lucide-react icon; katakana = the small word under
@@ -28,32 +28,25 @@ import {
   Home,
   Briefcase,
   Code2,
-  Wrench,
-  Route,
-  ShieldCheck,
-  CircleHelp,
   Mail,
   BookOpen,
-  Images,
   Command,
   GraduationCap,
   Handshake,
 } from "lucide-react";
 
+/* Seven links, in page order. Every other section is one click away in the
+   section rail on the right (components/home/SectionRail.tsx), the footer
+   and the command palette (Ctrl+K). */
 const navItems = [
   { name: "Home", href: "#home", icon: Home, katakana: "ホーム" },
-  { name: "Services", href: "#services", icon: Handshake, katakana: "役務" },
   { name: "Projects", href: "#work", icon: Code2, katakana: "仕事" },
-  { name: "Tools", href: "#tools", icon: Wrench, katakana: "道具" },
+  { name: "Services", href: "#services", icon: Handshake, katakana: "役務" },
   { name: "Experience", href: "#experience", icon: Briefcase, katakana: "経験" },
-  { name: "Path", href: "#path", icon: Route, katakana: "道程" },
-  { name: "Process", href: "#process", icon: ShieldCheck, katakana: "手順" },
-  { name: "FAQ", href: "#faq", icon: CircleHelp, katakana: "質問" },
-  { name: "Contact", href: "#contact", icon: Mail, katakana: "連絡" },
   /* Pages of their own (lib/routes.ts) */
   { name: "Blog", href: "/blog", icon: BookOpen, katakana: "記録" },
   { name: "Teaching", href: "/teaching", icon: GraduationCap, katakana: "指導" },
-  { name: "Gallery", href: "/gallery", icon: Images, katakana: "証明" },
+  { name: "Contact", href: "#contact", icon: Mail, katakana: "連絡" },
 ];
 
 /* "/blog" → that page. "#work" → the section on the home page: a plain
@@ -141,8 +134,8 @@ export default function SiteNav() {
           <span className="text-primary text-2xl leading-none">.</span>
         </NavAnchor>
 
-        {/* Desktop Menu — from 1280px: twelve links need the width */}
-        <div className="hidden xl:flex items-center gap-4 2xl:gap-6">
+        {/* Desktop Menu — from 1024px */}
+        <div className="hidden lg:flex items-center gap-5 xl:gap-7">
           {navItems.map((item) => (
             <NavAnchor
               onHome={onHome}
@@ -157,7 +150,7 @@ export default function SiteNav() {
                 size={14}
                 strokeWidth={1.75}
                 aria-hidden="true"
-                className={`hidden 2xl:block transition-colors duration-300 ${current === item.href ? "text-primary-ink" : "text-foreground/30 group-hover:text-primary-ink"}`}
+                className={`hidden xl:block transition-colors duration-300 ${current === item.href ? "text-primary-ink" : "text-foreground/30 group-hover:text-primary-ink"}`}
               />
               <span>{item.name}</span>
               {/* Red dot indicator */}
@@ -167,7 +160,7 @@ export default function SiteNav() {
         </div>
 
         {/* Mobile Toggle */}
-        <div className="flex xl:hidden items-center gap-2">
+        <div className="flex lg:hidden items-center gap-2">
           <ThemeToggle />
           <button
             type="button"
@@ -182,7 +175,7 @@ export default function SiteNav() {
         </div>
 
         {/* Desktop theme toggle */}
-        <div className="hidden xl:flex items-center gap-2">
+        <div className="hidden lg:flex items-center gap-2">
           <button
             type="button"
             onClick={() => window.dispatchEvent(new Event("sensei:palette"))}
@@ -208,7 +201,7 @@ export default function SiteNav() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[95] xl:hidden bg-background/95 flex flex-col overflow-y-auto"
+            className="fixed inset-0 z-[95] lg:hidden bg-background/95 flex flex-col overflow-y-auto"
             onClick={() => setIsOpen(false)}
           >
             {/* Background Decorative Kanji */}

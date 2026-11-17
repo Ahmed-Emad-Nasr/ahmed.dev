@@ -12,6 +12,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Download, ExternalLink, Mail, Phone } from "lucide-react";
+import FadeIn from "@/components/ui/FadeIn";
 import PageShell from "@/components/layout/PageShell";
 import { Github, Linkedin } from "@/components/ui/BrandIcons";
 import { KanjiWatermark, btnOutline, btnPrimary } from "@/components/ui/kit";
@@ -103,13 +104,13 @@ function Rich({ text }: { text: string }) {
 
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
-    <section aria-labelledby={id} className="mt-14">
+    <FadeIn as="section" aria-labelledby={id} y={24} className="mt-14">
       <h2 id={id} className="mb-6 flex items-center gap-4 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.35em] text-primary-ink">
         <span className="w-12 h-[2px] bg-primary" aria-hidden="true" />
         {title}
       </h2>
       {children}
-    </section>
+    </FadeIn>
   );
 }
 

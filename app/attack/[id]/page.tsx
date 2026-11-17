@@ -14,6 +14,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ExternalLink } from "lucide-react";
+import FadeIn from "@/components/ui/FadeIn";
 import PageShell from "@/components/layout/PageShell";
 import BackCrumb from "@/components/layout/BackCrumb";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -172,7 +173,7 @@ export default async function TechniquePage({ params }: { params: Promise<{ id: 
           />
 
           {(subs.length > 0 || tools.length > 0) && (
-            <div className="mb-16 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <FadeIn y={24} className="mb-16 grid grid-cols-1 md:grid-cols-2 gap-8">
               {subs.length > 0 && (
                 <div>
                   <h2 className="mb-4 font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-tertiary">Sub-techniques seen</h2>
@@ -206,7 +207,7 @@ export default async function TechniquePage({ params }: { params: Promise<{ id: 
                   </ul>
                 </div>
               )}
-            </div>
+            </FadeIn>
           )}
 
           <h2 className="mb-8 flex items-center gap-4 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.35em] text-primary-ink">
@@ -225,8 +226,8 @@ export default async function TechniquePage({ params }: { params: Promise<{ id: 
                 Seen in the same cases
               </h2>
               <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {related.map((t) => (
-                  <li key={t.id} className="flex">
+                {related.map((t, i) => (
+                  <FadeIn as="li" key={t.id} y={16} delay={(i % 3) * 0.08} className="flex">
                     <Link
                       prefetch={false}
                       href={`/attack/${t.id}`}
@@ -236,7 +237,7 @@ export default async function TechniquePage({ params }: { params: Promise<{ id: 
                       <span className="flex-1 text-sm text-foreground/80 group-hover:text-foreground transition-colors duration-300">{t.name}</span>
                       <span className="font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60 shrink-0">{t.tactic.short}</span>
                     </Link>
-                  </li>
+                  </FadeIn>
                 ))}
               </ul>
             </section>

@@ -38,7 +38,7 @@ const pageOfSection = (id: string): string => SECTION_PAGE[id] ?? "/";
 
 /* The home page's sections (components/home/*) */
 const HOME_SECTIONS = new Set([
-  "home", "roles", "services", "work", "projects", "contributions", "tools", "uses", "experience",
+  "home", "roles", "work", "projects", "services", "contributions", "tools", "uses", "experience",
   "path", "now", "testimonials", "platforms", "process", "faq", "contact",
 ]);
 

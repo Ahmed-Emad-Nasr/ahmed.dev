@@ -16,7 +16,6 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/layout/PageShell";
 import PageEffects from "@/lib/perf/PageEffects";
-import SlashDivider from "@/components/ui/SlashDivider";
 import { StudentFeedback, TeachingSection } from "@/components/home/dynamic";
 import { DIPLOMA } from "@/data/teaching";
 import { absoluteUrl } from "@/lib/site";
@@ -124,7 +123,6 @@ export default function TeachingPage() {
         <TeachingSection />
       </div>
 
-      <SlashDivider label="01 // Feedback" japanese="受講生" origin="left" />
       <div className="tone-blue">
         <StudentFeedback />
       </div>

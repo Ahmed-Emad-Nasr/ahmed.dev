@@ -32,7 +32,6 @@
 import dynamic from "next/dynamic";
 import { Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import SectionHeader from "@/components/ui/SectionHeader";
-import SlashDivider from "@/components/ui/SlashDivider";
 import { preloadable } from "@/lib/perf/lazy";
 import FadeIn from "@/components/ui/FadeIn";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
@@ -375,7 +374,6 @@ export default function CaseLibrarySection({ data }: { data: LibraryData }) {
         </div>
       </section>
 
-      <SlashDivider label="02 // Case files" japanese="調査" origin="left" />
 
       <div id="videos" className="px-6 md:px-20 pt-16 bg-background">
         <div className="max-w-7xl mx-auto">

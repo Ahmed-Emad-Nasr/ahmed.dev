@@ -136,7 +136,7 @@ export const formatDate = (value: string): string => {
   return Number.isNaN(parsed.getTime()) ? value : dateFormatter.format(parsed);
 };
 
-export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AhmedEmad-0x3omda";
+export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AhmedEmadNasr-0x3omda";
 
 /* Where he lives — the ONE place the personal location is written. The
    profile, the terminal, the JSON-LD and the geo meta tags all read

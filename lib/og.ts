@@ -15,7 +15,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { OG_IMAGE, absoluteUrl } from "@/lib/site";
 
-type SharePage = "blog" | "teaching" | "gallery" | "cv" | "videos" | "attack" | "writeups" | "tools" | "training";
+type SharePage = "blog" | "teaching" | "gallery" | "cv" | "videos" | "attack" | "writeups" | "tools" | "training" | `tool-${string}`;
 
 export type ShareImage = { url: string; width: number; height: number; type: string; alt: string };
 
@@ -24,7 +24,8 @@ const BORROWED: Partial<Record<SharePage, SharePage>> = { attack: "blog", writeu
 
 export function pageShareImage(page: SharePage, alt: string): ShareImage {
   const own = `og/pages/${page}.jpg`;
-  const file = existsSync(join(process.cwd(), "public", own)) ? own : `og/pages/${BORROWED[page] ?? page}.jpg`;
+  const fallback = page.startsWith("tool-") ? "tools" : (BORROWED[page] ?? page);
+  const file = existsSync(join(process.cwd(), "public", own)) ? own : `og/pages/${fallback}.jpg`;
   if (!existsSync(join(process.cwd(), "public", file))) return OG_IMAGE;
   return { url: absoluteUrl(file), width: 1200, height: 630, type: "image/jpeg", alt };
 }

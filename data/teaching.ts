@@ -95,7 +95,7 @@ export const TEACHING_ROLES: TeachingRole[] = [
     results: ["5+ teams", "20+ students", "2nd Place IEEE GHOSTEC"],
   },
   {
-    org: "YouTube — @AhmedEmad-0x3omda",
+    org: "YouTube — @AhmedEmadNasr-0x3omda",
     role: "Creator — Security Walkthroughs & Labs",
     period: "Ongoing",
     link: YOUTUBE_CHANNEL_URL,

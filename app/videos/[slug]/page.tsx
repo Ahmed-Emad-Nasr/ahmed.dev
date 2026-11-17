@@ -25,10 +25,12 @@ import { SITE_VIDEOS, relatedVideos, uploadDate, videoBySlug, videoPath, videoUr
 import { absoluteUrl, caseUrl, summarize } from "@/lib/site";
 import { formatDate, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import {
-  CHANNEL_ID, PERSON_NAME, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, youtubeEmbed, youtubePlayer, youtubeThumb, youtubeWatch,
+  CHANNEL_ID, PERSON_NAME, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, youtubePlayer, youtubeThumb, youtubeWatch,
 } from "@/lib/seo";
 import { BLOG_ID, VIDEOS_URL } from "@/lib/page-ids";
 import { GLOSSARY, VIDEO_NOTES } from "@/data/video-notes";
+import FadeIn from "@/components/ui/FadeIn";
+import VideoPlayer from "@/components/videos/VideoPlayer";
 import CaseLinkGrid from "@/components/blog/CaseLinkGrid";
 
 export function generateStaticParams() {
@@ -159,20 +161,14 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
           </h1>
           {video.publishedAt && (
             <p className="mt-5 font-mono text-xs uppercase tracking-[0.25em] text-tertiary">
-              <time dateTime={video.publishedAt}>{formatDate(video.publishedAt)}</time> · YouTube · @AhmedEmad-0x3omda
+              <time dateTime={video.publishedAt}>{formatDate(video.publishedAt)}</time> · YouTube · @AhmedEmadNasr-0x3omda
             </p>
           )}
 
           {/* The video — the main content of the page */}
           <div className="mt-10 relative aspect-video w-full overflow-hidden border border-foreground/10 bg-surface">
-            <iframe
-              src={youtubeEmbed(video.videoId)}
-              title={video.title}
-              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-              className="absolute inset-0 h-full w-full"
-            />
+            {/* Thumbnail first; the YouTube player loads on "Play" */}
+            <VideoPlayer videoId={video.videoId} title={video.title} />
           </div>
 
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_auto] gap-8 items-start">
@@ -206,7 +202,7 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
           </div>
 
           {(notes.length > 0 || terms.length > 0) && (
-            <div className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <FadeIn y={24} className="mt-14 grid grid-cols-1 lg:grid-cols-2 gap-8">
               {notes.length > 0 && (
                 <section className="border border-foreground/10 bg-surface/50 p-6 md:p-8" aria-labelledby="video-notes-title">
                   <h2 id="video-notes-title" className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
@@ -237,7 +233,7 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
                   </dl>
                 </section>
               )}
-            </div>
+            </FadeIn>
           )}
 
           {theCase && (

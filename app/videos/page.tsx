@@ -13,6 +13,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { ExternalLink, ListVideo, Play } from "lucide-react";
+import FadeIn from "@/components/ui/FadeIn";
 import PageShell from "@/components/layout/PageShell";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CounterChip from "@/components/ui/CounterChip";
@@ -119,8 +120,8 @@ export default function VideosPage() {
 
           {/* ─── Every video, newest first ─── */}
           <ShowMore as="ul" first={12} step={12} label="Show more videos" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {SITE_VIDEOS.map((v) => (
-              <li key={v.videoId} className="flex">
+            {SITE_VIDEOS.map((v, i) => (
+              <FadeIn as="li" key={v.videoId} y={24} duration={0.65} delay={(i % 3) * 0.08} className="flex">
                 <Link
                   prefetch={false}
                   href={videoPath(v)}
@@ -153,7 +154,7 @@ export default function VideosPage() {
                     )}
                   </span>
                 </Link>
-              </li>
+              </FadeIn>
             ))}
           </ShowMore>
 
