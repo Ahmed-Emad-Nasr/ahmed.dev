@@ -31,28 +31,28 @@
     "videos:sync": "node scripts/sync-youtube.mjs"
   },
   "dependencies": {
-    "focus-trap": "8.2.2",
-    "framer-motion": "^14.6.0",
+    "focus-trap": "8.2.4",
+    "framer-motion": "^14.14.0",
     "gsap": "^3.15.1",
-    "lucide-react": "^1.61.0",
+    "lucide-react": "^1.73.0",
     "next": "^16.4.6",
     "next-themes": "^0.4.6",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "yet-another-react-lightbox": "^3.32.2"
+    "yet-another-react-lightbox": "^3.33.0"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^7.3.1",
-    "@tailwindcss/postcss": "^4.3.3",
-    "@types/node": "^26.6.3",
+    "@tailwindcss/postcss": "^4.3.5",
+    "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "axe-core": "4.14.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "^16.4.6",
-    "playwright": "1.63.0",
-    "postcss": "^8.5.31",
-    "prettier": "^3.9.9",
+    "playwright": "1.65.1",
+    "postcss": "^8.5.33",
+    "prettier": "^3.10.1",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"
