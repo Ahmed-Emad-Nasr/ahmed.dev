@@ -19,6 +19,21 @@ export async function scrollToHash(hash: string): Promise<void> {
   const el = document.getElementById(id);
   if (!el) return;
   scrollToElement(el);
+  /* Sections far down the home page are drawn only once they are near the
+     screen (content-visibility in globals.css). After a jump the sections it
+     lands among get drawn and their real heights replace the estimate, which
+     moves the target. Re-aim each frame until it holds still for two frames
+     (at most ~12 frames, a fifth of a second) — before anyone sees the gap. */
+  const max = () => document.documentElement.scrollHeight - window.innerHeight;
+  let still = 0;
+  for (let frame = 0; frame < 12 && still < 2; frame++) {
+    await new Promise(requestAnimationFrame);
+    if (Math.abs(window.scrollY - Math.min(scrollTargetOf(el), max())) <= 2) still++;
+    else {
+      still = 0;
+      scrollToElement(el);
+    }
+  }
   void settle(id);
 }
 

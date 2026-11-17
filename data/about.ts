@@ -11,7 +11,6 @@
  *   NOW         → "Right Now." — update when a role starts or ends
  *   FAQ         → "Fair Questions." (#faq) — the accordion before Contact
  *   PROCESS     → "Risk to Response." (#process) — how a security job runs
- *   TICKER      → the drifting band of words between sections
  */
 
 import { skillGroups } from "@/data/skills";
@@ -76,4 +75,3 @@ export const PROCESS = [
   { id: "respond", index: "04", title: "Respond", japanese: "対応", description: "Contain, eradicate, recover — NIST 800-61, not instinct — then a report with the root cause and the fix." },
 ] as const;
 
-export const TICKER = ["統治", "防御", "検知", "対応", "調査", "FROM THE RISK REGISTER TO THE ROOT CAUSE"];

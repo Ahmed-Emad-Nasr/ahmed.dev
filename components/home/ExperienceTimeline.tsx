@@ -32,7 +32,7 @@ import { KanjiWatermark } from "@/components/ui/kit";
  *   (both keyed by the company name = `subTag` in data/experience.ts)
  *   • hide a job from here                  → `hidden: true` on it in data/experience.ts
  *
- * Cards slide in from alternating sides (GSAP ScrollTrigger, ExperienceReveal.tsx).
+ * Cards slide in from alternating sides (GSAP + IntersectionObserver, ExperienceReveal.tsx).
  */
 export default function ExperienceTimeline() {
   return (

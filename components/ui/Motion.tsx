@@ -27,9 +27,10 @@ export function CardEffects({ index, tone = "red", topLine = false }: { index?: 
   const blue = tone === "blue";
   return (
     <>
+      {/* The big card number: on hover it only lights up in the card's colour — it does not move */}
       {index !== undefined && (
         <span
-          className={`pointer-events-none absolute -right-2 -bottom-6 font-display text-[7rem] font-black leading-none text-foreground/[0.03] transition-all duration-300 group-hover:-translate-y-[5.1px] select-none ${blue ? "group-hover:text-tertiary/10" : "group-hover:text-primary/10"}`}
+          className={`pointer-events-none absolute -right-2 -bottom-6 font-display text-[7rem] font-black leading-none text-foreground/[0.03] transition-colors duration-300 select-none ${blue ? "group-hover:text-tertiary/10" : "group-hover:text-primary/10"}`}
           aria-hidden="true"
           data-deco={String(index).padStart(2, "0")}
         />

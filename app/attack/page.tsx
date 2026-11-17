@@ -115,7 +115,7 @@ export default function AttackPage() {
                   >
                     <span className="w-12 h-[2px] bg-primary" aria-hidden="true" />
                     {tactic.name}
-                    <span className="text-foreground/40 tracking-[0.2em]">{tactic.ta}</span>
+                    <span className="text-foreground/60 tracking-[0.2em]">{tactic.ta}</span>
                   </h2>
                   <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {techniques.map((t, i) => (

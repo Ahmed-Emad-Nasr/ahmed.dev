@@ -21,7 +21,6 @@
  *   Projects     #work     components/home/WorkShowcase     data/portfolio-data.ts (`work`)
  *   Open source  #projects components/home/ProjectsGrid     data/portfolio-data.ts + GitHub API (build time)
  *   Contributions #contributions components/home/ContributionsGrid GitHub calendar (build time)
- *   Ticker band            components/ui/TickerStrip        data/about.ts (TICKER)
  *   Tools        #tools    components/home/ToolsSection     data/about.ts (from data/skills.ts)
  *   Daily drivers #uses    components/home/UsesSection      data/about.ts
  *   Experience   #experience components/home/ExperienceTimeline  data/experience.ts
@@ -93,7 +92,6 @@ import { OG_IMAGE } from "@/lib/site";
 import { KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd } from "@/lib/seo";
 import { BLOG_ID, GALLERY_ID, TEACHING_ID } from "@/lib/page-ids";
 import SlashDivider from "@/components/ui/SlashDivider";
-import TickerStrip from "@/components/ui/TickerStrip";
 
 /* <head> tags for the home page only (merged over app/layout.tsx's defaults).
    This title is used as-is: the layout's "%s | Ahmed Emad Nasr" template only
@@ -337,9 +335,6 @@ export default async function Home() {
       <div className="tone-blue">
         <ContributionsGrid stats={contributions} />
       </div>
-
-      {/* A band of words drifting past (data/about.ts → TICKER) */}
-      <TickerStrip />
 
       {/* What the work is done with: skill groups, then the daily tools (data/about.ts) */}
       <div className="tone-blue">

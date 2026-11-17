@@ -1336,6 +1336,20 @@ html[data-intro-seen] [data-app-loader] {
   font-style: normal;
 }
 
+/* ─── Home: sections below the hero are drawn only when near the screen ───
+   content-visibility: auto lets the browser skip the layout and painting of
+   a section until it comes close to the viewport — the home page has ~2,700
+   elements, most of them far below. The text stays in the page (search,
+   Ctrl+F, screen readers and #links all still find it). contain-intrinsic-
+   size holds an estimated height until a section has been drawn once, then
+   remembers its real one; lib/perf/jump.ts corrects a #jump in the next
+   frames once the target is drawn. */
+#main-content:has(> #home) > section:not(#home),
+#main-content:has(> #home) > div > section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 /* ─── ATT&CK: the heat fills in as the tiles scroll into view ──────────
    Each tile starts as a plain surface and reaches its own heat (more
    reports = deeper red) when it arrives on screen — once.
@@ -1466,29 +1480,3 @@ html[data-intro-seen] [data-app-loader] {
   animation-play-state: paused !important;
 }
 
-/* ── Ticker band (components/ui/TickerStrip.tsx) ──
-   The track holds the words twice; sliding it by half its width loops
-   seamlessly. Pauses on hover / keyboard focus; still with reduced motion. */
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 56s linear infinite;
-  will-change: transform;
-}
-.marquee:hover .marquee-track,
-.marquee:focus-within .marquee-track {
-  animation-play-state: paused;
-}
-@keyframes marquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .marquee-track {
-    animation: none;
-  }
-}

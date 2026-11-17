@@ -191,7 +191,8 @@ export default async function ToolPage({ params }: { params: Promise<{ id: strin
                 <h2 id="tool-install" className="flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
                   <Terminal size={14} aria-hidden="true" /> Install and run
                 </h2>
-                <pre className="mt-6 overflow-x-auto bg-background border border-foreground/10 p-5 font-mono text-xs leading-relaxed">
+                {/* tabIndex: a box that scrolls sideways must be reachable by keyboard */}
+                <pre tabIndex={0} aria-label="Install commands" className="mt-6 overflow-x-auto bg-background border border-foreground/10 p-5 font-mono text-xs leading-relaxed">
                   <code>
                     {tool.install.map((line) => (
                       <span key={line} className={`block ${isComment(line) ? "text-foreground/45" : "text-foreground/85"}`}>
@@ -205,7 +206,7 @@ export default async function ToolPage({ params }: { params: Promise<{ id: strin
                     {tool.examples.map((e) => (
                       <div key={e.command}>
                         <dt className="font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/60">{e.label}</dt>
-                        <dd className="mt-1.5 overflow-x-auto">
+                        <dd tabIndex={0} className="mt-1.5 overflow-x-auto">
                           <code className="block whitespace-pre font-mono text-xs text-foreground/85">$ {e.command}</code>
                         </dd>
                       </div>
@@ -219,7 +220,7 @@ export default async function ToolPage({ params }: { params: Promise<{ id: strin
                   <h2 id="tool-output" className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-tertiary">
                     What it prints
                   </h2>
-                  <pre className="mt-6 overflow-x-auto bg-background border border-foreground/10 p-5 font-mono text-xs leading-relaxed text-foreground/80">
+                  <pre tabIndex={0} aria-label="Sample output" className="mt-6 overflow-x-auto bg-background border border-foreground/10 p-5 font-mono text-xs leading-relaxed text-foreground/80">
                     <code>{tool.sampleOutput}</code>
                   </pre>
                 </section>
