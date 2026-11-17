@@ -196,7 +196,7 @@ The common edits:
 | Training platforms | `data/platforms.ts` |
 | A case report | `data/cases.ts` (+ `data/case-details.ts`, `data/attack.ts`) — steps in the header of `data/cases.ts` |
 | The figures at the top of a case ("By the numbers") | counted automatically — `lib/case-numbers.ts`; measured results go in `outcome` in `data/case-details.ts` |
-| A video | `data/youtube.ts` |
+| A video | automatic (`scripts/sync-youtube.mjs` → `data/youtube-feed.ts`, daily in GitHub Actions); written up by hand in `data/youtube.ts` |
 | A Wazuh rule in the detection library | `data/detection-rules.ts` |
 | A gallery photo / certificate | numbered image + `GALLERY_IMAGE_COUNT` / `ALL_GALLERY_CERTIFICATES` in `data/certifications.ts` |
 | The CV | the PDF in `public/Assets/cv/` (`CV_PDF_HREF` in `lib/shared.ts`) |

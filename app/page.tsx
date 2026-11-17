@@ -68,7 +68,7 @@ import { ContributionsGrid } from "@/components/blog/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
 import { getTryHackMeStats } from "@/lib/api/tryhackme";
 import { getContributionStats } from "@/lib/api/contributions";
-import { getRepoCards, repoFacts, type RepoCard } from "@/lib/api/github-repos";
+import { getMoreRepos, getRepoCards, repoFacts, type RepoCard } from "@/lib/api/github-repos";
 import { PROFILE } from "@/data/profile";
 import { STATIC_PLATFORMS, tryHackMePlatform } from "@/data/platforms";
 import { LIVE_COPY } from "@/data/live-copy";
@@ -246,10 +246,11 @@ function structuredData(repos: RepoCard[]) {
    `npm run build` runs, and bakes them into the page (TryHackMe falls back
    to the saved snapshot in data/platforms.ts if offline). */
 export default async function Home() {
-  const [thm, contributions, repos] = await Promise.all([
+  const [thm, contributions, repos, moreRepos] = await Promise.all([
     getTryHackMeStats(),
     getContributionStats(PROFILE.contact.github),
     getRepoCards(),
+    getMoreRepos(),
   ]);
 
   return (
@@ -289,7 +290,7 @@ export default async function Home() {
 
       {/* Projects grid — the curated list in data/portfolio-data.ts (`work`).
           Passed as a prop so the list travels in the page data, not in JS. */}
-      <WorkShowcase items={PORTFOLIO_DATA.work} repos={repoFacts(repos)} />
+      <WorkShowcase items={PORTFOLIO_DATA.work} repos={repoFacts(repos)} more={moreRepos} />
 
       {/* Upstream contributions + the GitHub year graph (right after the projects, as in Sensei-Dev) */}
       <div className="tone-blue">
@@ -331,10 +332,9 @@ export default async function Home() {
       </div>
     </main>
     {/* The last line of the page: ©, CV, security, license */}
-    <footer className="relative bg-background px-6 md:px-20 pb-12">
-      <div className="max-w-7xl mx-auto">
-        <FooterBar />
-      </div>
+    {/* Full width: the footer line runs edge to edge, on one row from lg up */}
+    <footer className="relative bg-background px-6 xl:px-10 pb-12">
+      <FooterBar />
     </footer>
     </>
   );

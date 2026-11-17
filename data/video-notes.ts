@@ -16,6 +16,13 @@
  */
 
 export const VIDEO_NOTES: Record<string, readonly string[]> = {
+  SGpeYjpzllk: [
+    "The main teams inside GRC — governance, risk and compliance — and the role of each",
+    "Governance: how the organisation's security direction is set and run",
+    "Risk management: finding the risks and deciding how to handle them",
+    "Compliance: keeping the organisation in line with laws, regulations and standards",
+    "How the three teams work together, for anyone thinking about a GRC career",
+  ],
   Zp1brJ1dQ_A: [
     "Why backups are the last line of defence against data loss, damage and ransomware",
     "The 3-2-1 rule: three copies, on two kinds of media, one of them off site",
@@ -206,6 +213,7 @@ export const GLOSSARY: Record<string, string> = {
   "Purple Team": "Red and blue working together, so every simulated attack turns into a better detection.",
   "White Team": "The referees of a security exercise: they set the rules of engagement and run it.",
   GRC: "Governance, risk and compliance: deciding how security is run, which risks matter, and proving the organisation meets its standards.",
+  Governance: "Setting how security is run: the policies, the roles, and who is accountable for what.",
   Compliance: "Meeting the requirements of a law, a regulation or a standard — and being able to prove it.",
   Auditing: "An independent check that controls exist and work as the policy says.",
   "ISO 27001": "The international standard for running an information security management system (ISMS).",

@@ -27,10 +27,9 @@ export default function PageShell({ children, className = "" }: { children: Reac
         <div className="site-texture fixed inset-0 pointer-events-none z-0" aria-hidden="true" />
         {children}
       </main>
-      <footer className="relative bg-background px-6 md:px-20 pb-12">
-        <div className="max-w-7xl mx-auto">
-          <FooterBar />
-        </div>
+      {/* Full width: the footer line runs edge to edge, on one row from lg up */}
+      <footer className="relative bg-background px-6 xl:px-10 pb-12">
+        <FooterBar />
       </footer>
     </>
   );

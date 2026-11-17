@@ -64,7 +64,11 @@ If `npm run verify` passes on your machine, it passes on GitHub. If it fails, th
 
 ## 2) A new video
 
-**File:** `data/youtube.ts` → `blogYoutubeVideos`. Copy an entry and change:
+**Nothing to do — it is added by itself.** Every morning (05:17 Cairo) GitHub Actions reads the channel's feed, adds any new upload to `data/youtube-feed.ts` (commit "videos: add new uploads from YouTube") and deploys. The video gets its card, its page `/videos/<slug>` and its sitemap entry with the title, description and hashtags from YouTube (the Arabic parts of the title are dropped; the site is in English). To get it sooner: Actions → **Deploy to Pages** → **Run workflow**.
+
+**To make its page better** (your own description, tags, a `caseId`, the "What the video covers" points): write it up in `data/youtube.ts` → `MANUAL_VIDEOS` with the same `videoId` — it then replaces the automatic one. Keep the **title as it shows on the site**, so its page address stays the same. A video that should not be on the site: put its `videoId` in `HIDDEN_VIDEOS` in the same file.
+
+**File:** `data/youtube.ts` → `MANUAL_VIDEOS`. Copy an entry and change:
 
 | Field | What goes in it |
 |---|---|
@@ -114,6 +118,7 @@ That's it — the video's page, its card on the blog and on `/videos`, and its s
 | A detection rule | `data/detection-rules.ts` |
 | A training platform | `data/platforms.ts` |
 | Numbers / your details / links | `data/profile.ts` and `data/live-copy.ts` |
+| A new GitHub repository | **nothing** — every public repo shows under "More on GitHub" (below the projects) the morning after you make it. To make it a full project card: add it to `work` in `data/portfolio-data.ts`. To keep one off the site: its name in `HIDDEN_REPOS` (same file). Forks, archived repos, the profile README and the github.io site are never listed |
 | A new profile (like Wuzzuf or LinkedIn) | its link in `data/profile.ts` → `contact`, then the icon lists in `components/layout/ContactFooter.tsx` and `components/home/HeroSection.tsx`, and `SAME_AS` in `lib/seo.ts` (tells Google it is the same person) |
 | The CV | replace `public/Assets/cv/AhmedEmadNasr_CV.pdf` (same name) **and** update `data/cv.ts` — the `/cv` page shows the same content as text |
 | A tool page (`/projects/<id>`) — what it does, how to run it, screenshots | `data/tools.ts` (the `id` must match the project in `data/portfolio-data.ts`); screenshots go in `public/Assets/projects/<id>/` as `.webp` — its share card: add a `tool-<id>` entry to `PAGES` in `scripts/og/generate-case-og.mjs`, then `npm run og:cases` |

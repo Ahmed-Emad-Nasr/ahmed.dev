@@ -138,6 +138,11 @@ const experience: Experience[] = [...knowledgeEducationItems]
 
 /* ── Selected work ──────────────────────────────────────────────────────── */
 
+/* Public repositories that must NOT show under "More on GitHub" (by name,
+   e.g. "old-homework"). Every other public repo without a project card below
+   is listed there automatically (lib/api/github-repos.ts → getMoreRepos). */
+export const HIDDEN_REPOS: string[] = [];
+
 /* A project's GitHub repository */
 const repo = (name: string) => `https://github.com/${GITHUB_USERNAME}/${name}`;
 

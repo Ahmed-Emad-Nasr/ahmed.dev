@@ -80,7 +80,7 @@ Lab scores vary by a few points between runs.
 ```mermaid
 flowchart LR
   H["/  —  Portfolio<br/>what I do · projects · experience<br/>recommendations · contact"]
-  B["/blog  —  Blog<br/>83 cases · 35 videos<br/>ATT&CK · detection rules · triage · home lab"]
+  B["/blog  —  Blog<br/>83 cases · 37 videos<br/>ATT&CK · detection rules · triage · home lab"]
   C["/blog/&lt;case&gt;<br/>one report per case"]
   T["/teaching  —  Teaching<br/>160 h diploma · where it was taught<br/>student feedback"]
   G["/gallery  —  Proof<br/>49 certificates & records · 50 photos"]
@@ -92,7 +92,7 @@ flowchart LR
 | Page | What is on it |
 | :-- | :-- |
 | [`/`](https://ahmed-emad-nasr.github.io/ahmed.dev/) | Hero, what I do (roles & services), projects (with their GitHub stars), tools, experience, the path, off the clock, LinkedIn recommendations, training platforms, contact |
-| [`/blog`](https://ahmed-emad-nasr.github.io/ahmed.dev/blog) | Searchable library of **83** cases, **35** videos, **56** ATT&CK techniques mapped, **50+** custom Wazuh rules, a triage challenge, the home lab |
+| [`/blog`](https://ahmed-emad-nasr.github.io/ahmed.dev/blog) | Searchable library of **83** cases, **37** videos (new uploads added automatically every day), **56** ATT&CK techniques mapped, **50+** custom Wazuh rules, a triage challenge, the home lab |
 | `/blog/<case>` | Goal → what happened → what I did → how to prevent it → evidence, with the PDF report |
 | [`/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/teaching) | The 160-hour SOC & Cybersecurity Diploma module by module, where it was taught, **25** student notes quoted word for word, and a training request for teams |
 | [`/cv`](https://ahmed-emad-nasr.github.io/ahmed.dev/cv) | The CV as a web page (from `data/cv.ts`), with the PDF download — indexable as "Ahmed Emad Nasr CV" |

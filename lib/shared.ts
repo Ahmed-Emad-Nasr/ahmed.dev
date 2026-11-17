@@ -78,12 +78,16 @@ export type BlogYoutubeVideo = {
   tags?: readonly string[];
   /** The case page this video walks through, when there is one */
   caseId?: string;
+  /** Added from the channel feed by scripts/sync-youtube.mjs (data/youtube-feed.ts) */
+  auto?: boolean;
 };
 
 export type FeaturedYoutubeVideo = {
   videoId: string;
   title: string;
   description?: string;
+  /** "YYYY-MM-DD" — the video page's uploadDate needs it */
+  publishedAt: string;
   sourceUrl: string;
 };
 

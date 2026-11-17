@@ -29,8 +29,11 @@ WHERE EACH THING GOES
     + case page details  → data/case-details.ts (verdict, severity, facts,
                            chain, timeline, iocs, response, detection, outcome)
     + MITRE ATT&CK       → data/attack.ts (caseAttackMapping: "<id>": ["T1566.001"])
-- Video                  → data/youtube.ts (blogYoutubeVideos). Its own page
-                           /videos/<slug> is made from the title automatically.
+- Video                  → added automatically every day from the YouTube feed
+                           (scripts/sync-youtube.mjs → data/youtube-feed.ts, generated).
+                           To write one up: data/youtube.ts (MANUAL_VIDEOS), same
+                           videoId and same title. Its own page /videos/<slug> is
+                           made from the title automatically.
                            caseId = optional id of the case it explains.
 - Playlist               → data/youtube.ts (blogYoutubePlaylists)
 - Video page text        → data/video-notes.ts: VIDEO_NOTES["<videoId>"] = 3–5

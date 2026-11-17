@@ -7,8 +7,11 @@
  * own (app/videos/[slug]/page.tsx); /blog links to them.
  *
  * Nothing to edit: the list follows data/youtube.ts (the featured video and
- * blogYoutubeVideos). The slug comes from the title, so a new video gets its
- * page automatically. Two titles that make the same slug stop the build.
+ * blogYoutubeVideos, which includes the uploads added from the channel feed).
+ * The slug comes from the title, so a new video gets its page automatically.
+ * Two hand-written titles that make the same slug stop the build; a video
+ * from the feed whose title clashes (or has no English words) gets its
+ * YouTube id added to the slug instead.
  */
 
 import { blogFeaturedYoutubeVideo, blogYoutubeVideos } from "@/data/youtube";
@@ -53,12 +56,23 @@ if (!all.some((v) => v.videoId === blogFeaturedYoutubeVideo.videoId)) {
     videoId: blogFeaturedYoutubeVideo.videoId,
     title: blogFeaturedYoutubeVideo.title,
     description: blogFeaturedYoutubeVideo.description,
-    publishedAt: "",
+    publishedAt: blogFeaturedYoutubeVideo.publishedAt,
   });
 }
 
+/* Hand-written videos claim their slugs first; a feed video never breaks the
+   build over a clash — it takes "<slug>-<id>" */
+const taken = new Set(all.filter((v) => !v.auto).map((v) => slugify(v.title)));
+const slugOf = (v: BlogYoutubeVideo): string => {
+  const base = slugify(v.title);
+  if (!v.auto) return base;
+  const slug = base === "video" || taken.has(base) ? `${base}-${v.videoId.toLowerCase()}` : base;
+  taken.add(slug);
+  return slug;
+};
+
 export const SITE_VIDEOS: readonly SiteVideo[] = all
-  .map((v) => ({ ...v, slug: slugify(v.title) }))
+  .map((v) => ({ ...v, slug: slugOf(v) }))
   .sort((a, b) => (b.publishedAt || "").localeCompare(a.publishedAt || ""));
 
 {
@@ -66,6 +80,8 @@ export const SITE_VIDEOS: readonly SiteVideo[] = all
   for (const v of SITE_VIDEOS) {
     const other = seen.get(v.slug);
     if (other) throw new Error(`[lib/videos.ts] "${v.title}" and "${other}" make the same page address /videos/${v.slug} — change one title`);
+    /* Google's video results need uploadDate (a full date) on every video page */
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(v.publishedAt)) throw new Error(`[lib/videos.ts] "${v.title}" needs publishedAt as "YYYY-MM-DD" in data/youtube.ts (found "${v.publishedAt}")`);
     seen.set(v.slug, v.title);
   }
 }

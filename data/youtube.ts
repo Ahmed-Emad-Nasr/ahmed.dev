@@ -4,10 +4,16 @@
    HOW TO ADD A VIDEO: copy an entry of blogYoutubeVideos:
      videoId     → the part after "watch?v=" (or after youtu.be/)
      title, description, tags
-     publishedAt → "YYYY-MM-DD" (videos are listed newest first)
+     publishedAt → "YYYY-MM-DD" (videos are listed newest first). Required:
+                   Google needs it for the video's page (uploadDate), and the
+                   build stops if a video has none — the featured one too.
      caseId      → optional: a case id from data/cases.ts — the video then
                    also appears on that case's page
    blogFeaturedYoutubeVideo → the big one shown first.
+   NEW UPLOADS ARE ADDED AUTOMATICALLY: scripts/sync-youtube.mjs reads the
+   channel feed every day (GitHub Actions) into data/youtube-feed.ts. Adding
+   a video here by hand is only needed to give it better text, tags or a
+   caseId — keep its title as on the site so its page address stays.
    blogYoutubePlaylists     → playlists (playlistId from the URL's list=…).
    Thumbnails are loaded from YouTube automatically. */
 
@@ -16,9 +22,20 @@ import type {
   FeaturedYoutubeVideo,
   BlogYoutubePlaylist,
 } from "@/lib/shared";
+import { YOUTUBE_FEED } from "./youtube-feed";
 
-export const blogYoutubeVideos: BlogYoutubeVideo[] = [
+/* The videos written up by hand. New uploads appear on the site by themselves
+   (data/youtube-feed.ts, merged in at the end of this file); add one here to
+   give it your own description, tags and notes. */
+const MANUAL_VIDEOS: BlogYoutubeVideo[] = [
   /* ── Cybersecurity basics series (Oct–Nov 2026) ── */
+  {
+    videoId: "SGpeYjpzllk",
+    title: "GRC Teams Explained | What Does Each GRC Team Actually Do? | Cybersecurity Basics",
+    description: "The main teams inside Governance, Risk and Compliance (GRC) and what each one does: how governance sets the direction, how risk management finds and handles risks, how compliance keeps the organisation in line with laws, regulations and standards, and how the teams work together to support security. For anyone starting in cybersecurity or thinking about a GRC career. Explained in Arabic.",
+    publishedAt: "2026-11-17",
+    tags: ["GRC", "Governance", "Risk Management", "Compliance", "Information Security", "Cybersecurity Basics"],
+  },
   {
     videoId: "Zp1brJ1dQ_A",
     title: "Backup Basics Explained | 3-2-1 Rule & 4 Types of Backup",
@@ -449,6 +466,7 @@ export const blogFeaturedYoutubeVideo: FeaturedYoutubeVideo = {
   videoId: "orw_kiHZvhU",
   title: "How to Download and Install the Wazuh SIEM",
   description: "A from-scratch walkthrough of downloading and installing Wazuh — the first step of the SOC lab series.",
+  publishedAt: "2025-10-12",
   sourceUrl: "https://youtu.be/orw_kiHZvhU?si=0D4Ri-NSCzCB-Bg_",
 };
 
@@ -526,4 +544,16 @@ export const blogYoutubePlaylists: BlogYoutubePlaylist[] = [
    * YouTube and add the two entries back to this array, in the same shape as
    * the ones above.
    */
+];
+
+/* Uploads that must NOT appear on the site (an off-topic or private video):
+   put its videoId here and the daily sync skips it. */
+export const HIDDEN_VIDEOS: string[] = [];
+
+/* Every video: the hand-written ones, plus the uploads the feed added that
+   are not written up here (the featured video counts as written up) */
+const writtenUp = new Set([...MANUAL_VIDEOS.map((v) => v.videoId), blogFeaturedYoutubeVideo.videoId, ...HIDDEN_VIDEOS]);
+export const blogYoutubeVideos: BlogYoutubeVideo[] = [
+  ...YOUTUBE_FEED.filter((v) => !writtenUp.has(v.videoId)),
+  ...MANUAL_VIDEOS,
 ];

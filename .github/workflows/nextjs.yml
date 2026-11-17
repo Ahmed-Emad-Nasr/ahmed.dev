@@ -4,15 +4,18 @@ name: Deploy to Pages
 on:
   push:
     branches: ["master"]
-  # Monthly rebuild: keeps the "Expires" date of /.well-known/security.txt
-  # ahead (RFC 9116 wants it under a year) and refreshes the TryHackMe stats
-  # and the GitHub contribution graph.
+  # Daily rebuild (05:17 Cairo): adds new YouTube uploads (scripts/sync-youtube.mjs),
+  # refreshes the TryHackMe stats, the GitHub stars and contribution graph,
+  # and keeps the "Expires" date of /.well-known/security.txt ahead.
+  # GitHub pauses scheduled runs after 60 days with no commit — the sync's
+  # own commits (below) keep it alive while videos keep coming.
   schedule:
-    - cron: "17 3 1 * *"
+    - cron: "17 3 * * *"
   workflow_dispatch:
 
 permissions:
-  contents: read
+  # write: the YouTube sync commits data/youtube-feed.ts back (below)
+  contents: write
   pages: write
   id-token: write
 
@@ -46,6 +49,21 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
       - run: npm ci
+      # New uploads from the YouTube channel → data/youtube-feed.ts. Offline or
+      # YouTube down: a warning, and the build goes on with the saved list.
+      - run: npm run videos:sync
+      # Save the list in the repo, so a video stays after it leaves the feed's
+      # latest 15. A commit made here does not start another deploy. If you
+      # pushed at the same moment, the push is skipped and retried next run.
+      - name: Commit new videos
+        run: |
+          if ! git diff --quiet -- data/youtube-feed.ts; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/youtube-feed.ts
+            git commit -m "videos: add new uploads from YouTube"
+            git push origin "HEAD:${GITHUB_REF_NAME}" || echo "::warning::could not push data/youtube-feed.ts (a newer commit landed) — the next run will"
+          fi
       # The small cover of every case image (X-thumb.webp next to X.webp):
       # made here on every deploy, so a missing one never makes a page load
       # the full-size image. Only the missing ones are made (scripts/generate-thumbs.mjs).
@@ -55,6 +73,9 @@ jobs:
       # output: "export" in next.config.mjs makes next build write out/
       - run: npm run build
         env:
+          # The GitHub API at build time (stars, new repos, contributions) with
+          # the workflow's own token: never rate-limited
+          GITHUB_TOKEN: ${{ github.token }}
           NEXT_PUBLIC_BASE_PATH: ${{ steps.pages.outputs.base_path }}
           NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
       - uses: actions/upload-pages-artifact@v3

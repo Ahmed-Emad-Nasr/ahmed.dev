@@ -8,6 +8,9 @@
  * tagline, problem, role, tech chips, metrics, the repository's live facts
  * (GitHub stars, language, licence — fetched at build time by
  * lib/api/github-repos.ts) and link buttons (Source / Live / Demo / Case study).
+ * Under the cards, "More on GitHub": every other public repository, found
+ * by itself at build time (getMoreRepos — a new repo shows up the next
+ * morning). Hide one with HIDDEN_REPOS in data/portfolio-data.ts.
  *
  * HOW TO EDIT
  *   • Add / change a project → the `work` array in data/portfolio-data.ts
@@ -34,7 +37,7 @@ import {
   FileText,
   Star,
 } from "lucide-react";
-import type { RepoFacts } from "@/lib/api/github-repos";
+import type { MoreRepo, RepoFacts } from "@/lib/api/github-repos";
 import Link from "next/link";
 import { Github } from "@/components/ui/BrandIcons";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
@@ -59,7 +62,15 @@ const TYPE_ICON = {
   platform: Server,
 } as const;
 
-export default function WorkShowcase({ items: workList, repos = {} }: { items: WorkItem[]; repos?: RepoFacts }) {
+export default function WorkShowcase({
+  items: workList,
+  repos = {},
+  more = [],
+}: {
+  items: WorkItem[];
+  repos?: RepoFacts;
+  more?: MoreRepo[];
+}) {
   /* Which filter button is active, and the projects that match it */
   const [filter, setFilter] = useState<WorkType | "all">("all");
   const items = workList.filter((w) => filter === "all" || w.type === filter);
@@ -270,6 +281,54 @@ export default function WorkShowcase({ items: workList, repos = {} }: { items: W
           <p className="mt-8 font-mono text-sm text-foreground/60">
             No items in this filter yet.
           </p>
+        )}
+
+        {/* Every other public repository, picked up from GitHub at build time */}
+        {more.length > 0 && (
+          <div className="mt-20">
+            <div className="mb-8 flex flex-wrap items-center gap-4">
+              <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
+              <h3 className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
+                More on GitHub
+              </h3>
+              <span className="font-mono text-[0.625rem] tracking-[0.2em] uppercase text-foreground/60 tabular-nums">
+                {String(more.length).padStart(2, "0")} repositories
+              </span>
+            </div>
+            <ShowMore first={6} label="Show more repositories" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {more.map((r, idx) => (
+                <FadeIn key={r.name} y={16} duration={0.55} delay={(idx % 3) * 0.06} className="flex">
+                  <a
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group spotlight w-full flex flex-col gap-3 p-5 bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300"
+                  >
+                    <span className="flex items-center justify-between gap-3">
+                      <span className="flex items-center gap-2 min-w-0 font-mono text-sm font-bold text-foreground group-hover:text-primary-ink transition-colors duration-300">
+                        <Github size={14} className="shrink-0 text-tertiary" aria-hidden="true" />
+                        <span className="truncate">{r.name}</span>
+                      </span>
+                      <ExternalLink size={13} className="shrink-0 text-foreground/40 group-hover:text-primary-ink transition-colors duration-300" aria-hidden="true" />
+                    </span>
+                    {r.description && (
+                      <span className="text-sm text-foreground/60 font-light leading-relaxed line-clamp-2">{r.description}</span>
+                    )}
+                    {(r.language || r.stars > 0) && (
+                      <span className="mt-auto flex items-center gap-3 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-foreground/60">
+                        {r.language && <span>{r.language}</span>}
+                        {r.stars > 0 && (
+                          <span className="inline-flex items-center gap-1" aria-label={`${r.stars} GitHub stars`}>
+                            <Star size={10} aria-hidden="true" /> {r.stars}
+                          </span>
+                        )}
+                      </span>
+                    )}
+                  </a>
+                </FadeIn>
+              ))}
+            </ShowMore>
+          </div>
         )}
       </div>
     </section>

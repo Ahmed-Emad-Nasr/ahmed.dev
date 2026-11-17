@@ -11,7 +11,7 @@ import type { MetadataRoute } from "next";
 import { caseEvidenceLibrary, caseScreenshotsByEvidenceId } from "@/data/cases";
 import { absoluteUrl, caseUrl, OG_IMAGE } from "@/lib/site";
 import { GALLERY_IMAGE_COUNT, galleryImagePath } from "@/data/certifications";
-import { SITE_VIDEOS, videoUrl, type SiteVideo } from "@/lib/videos";
+import { SITE_VIDEOS, uploadDate, videoUrl, type SiteVideo } from "@/lib/videos";
 import { PERSON_IMAGE, SITE_URL, youtubePlayer, youtubeThumb } from "@/lib/seo";
 import { GALLERY_LANGUAGES, TEACHING_LANGUAGES, TRAINING_LANGUAGES } from "@/lib/page-ids";
 import { ATTACK_TECHNIQUES, PLATFORM_PAGES, casesForPlatform } from "@/lib/collections";
@@ -42,7 +42,8 @@ const videoEntry = (video: SiteVideo) => ({
   thumbnail_loc: youtubeThumb(video.videoId),
   description: xml(clip(video.description ?? video.title)),
   player_loc: youtubePlayer(video.videoId),
-  ...(video.publishedAt ? { publication_date: video.publishedAt } : {}),
+  /* Same full date-time with time zone as the page's uploadDate */
+  ...(uploadDate(video.publishedAt) ? { publication_date: uploadDate(video.publishedAt) } : {}),
   family_friendly: "yes" as const,
   requires_subscription: "no" as const,
   uploader: { info: SITE_URL, content: "Ahmed Emad Nasr" },
