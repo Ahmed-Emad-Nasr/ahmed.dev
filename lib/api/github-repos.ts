@@ -7,7 +7,8 @@
  * homepage from the GitHub API. Offline or rate-limited → the same cards
  * without the live numbers, so the build never fails because of GitHub.
  *
- * Used by components/home/ProjectsGrid.tsx ("Open Source.", #projects).
+ * Shown on the project cards (components/home/WorkShowcase.tsx, #work: stars,
+ * language, licence) and listed for Google in app/page.tsx.
  */
 
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
@@ -33,6 +34,18 @@ interface GithubRepoPayload {
   language: string | null;
   license?: { spdx_id: string } | null;
 }
+
+/** What a project card shows from its repository, keyed by project title */
+export type RepoFacts = Record<string, { stars: number; language: string; license: string }>;
+
+/** Only the three facts the cards show, for the projects that have any —
+    the rest of RepoCard stays on the server */
+export const repoFacts = (repos: RepoCard[]): RepoFacts =>
+  Object.fromEntries(
+    repos
+      .filter((r) => r.stars > 0 || r.language || r.license)
+      .map((r) => [r.title, { stars: r.stars, language: r.language, license: r.license }]),
+  );
 
 const slugOf = (url: string): string => (url.replace(/\/+$/, "").split("/").pop() ?? "").toLowerCase();
 

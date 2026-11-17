@@ -14,6 +14,8 @@ import { TOOL_GROUPS as GROUPS } from "@/data/about";
 export default function ToolsSection() {
   return (
     <section id="tools" aria-labelledby="tools-title" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
+      {/* Old links to #uses (Daily Drivers, folded into these groups) land here */}
+      <span id="uses" className="absolute top-0" aria-hidden="true" />
       <KanjiWatermark chars="武器庫" side="right" />
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader

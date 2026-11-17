@@ -57,7 +57,7 @@ const found = new Map();
 
 for (const vp of VIEWPORTS) {
   for (const theme of THEMES) {
-    const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.isMobile, hasTouch: vp.hasTouch, colorScheme: theme, reducedMotion: "reduce" });
+    const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, isMobile: vp.isMobile, hasTouch: vp.hasTouch, colorScheme: theme, reducedMotion: "reduce", /* the site's CSP blocks injected scripts — axe is one */ bypassCSP: true });
     await ctx.addInitScript((t) => {
       try {
         localStorage.setItem("theme", t);

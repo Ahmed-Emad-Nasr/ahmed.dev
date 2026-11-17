@@ -1,18 +1,19 @@
 /*
- * AttackCoverage — the case library on MITRE ATT&CK: a kill-chain strip,
- * then one row per tactic with its techniques as heat-tinted tiles. Each
- * tile opens its evidence in a native popover, so the section ships almost
- * no JavaScript of its own (styles in globals.css, .attack-*; the heat
- * filling in on arrival is HeatReveal.tsx).
+ * AttackCoverage — the case library on MITRE ATT&CK, as a summary: a
+ * kill-chain strip (each stage opens its list on /attack) and the
+ * TOP_TECHNIQUES most-covered techniques as heat-tinted tiles. The full list,
+ * one page per technique, is /attack (app/attack/page.tsx) — so the blog
+ * does not repeat it. Each tile opens its evidence in a native popover, so
+ * the section ships almost no JavaScript of its own (styles in globals.css,
+ * .attack-*; the heat filling in on arrival is HeatReveal.tsx).
  *
  * ═══ components/blog/AttackCoverage.tsx — the MITRE ATT&CK section (#attack, blog part of the home page) ═══
  * Nothing to type in here: the numbers are computed from which ATT&CK
  * techniques each case uses — caseAttackMapping in data/attack.ts
  * (case id → ["T1059.001", …]). Map a new case there and its techniques
  * light up here, in the matrix and in the counts.
- *   MatrixView    → the compact grid (desktop only), one column per tactic
- *   TechniqueTile → one technique tile in the rows below; colour strength =
- *                   how many reports cover it (`max` = the highest count)
+ *   TechniqueTile → one technique tile; colour strength = how many reports
+ *                   cover it (`max` = the highest count)
  */
 
 import Link from "next/link";
@@ -23,48 +24,6 @@ import { KanjiWatermark } from "@/components/ui/kit";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CounterChip from "@/components/ui/CounterChip";
 import type { AttackCoverageData } from "@/lib/library-data";
-
-/* The whole matrix in one screen: a column per tactic, a cell per covered
-   technique, sweeping in left to right in kill-chain order the first time it
-   scrolls into view. Each cell opens the same evidence popover as the tiles
-   below, so it ships no JavaScript of its own either. */
-function MatrixView({ tactics, max }: { tactics: CoverageTactic[]; max: number }) {
-  return (
-    <div className="hidden md:block mb-14 md:mb-16">
-      <div className="mb-3 flex items-center justify-between gap-4 font-mono text-[0.625rem] uppercase tracking-[0.25em] text-foreground/60">
-        <span>Full view // one square per method</span>
-        <span>Click a square for its cases</span>
-      </div>
-      <div className="grid gap-1.5" style={{ gridTemplateColumns: `repeat(${tactics.length}, minmax(0, 1fr))` }}>
-        {tactics.map((t, col) => (
-          <div key={t.id} className="flex flex-col gap-1.5 min-w-0">
-            <a
-              href={`#tactic-${t.id}`}
-              className="px-1 py-2 border-b-2 border-primary/60 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.12em] text-foreground/70 leading-tight text-center hover:text-primary-ink transition-colors min-h-[2.25rem] flex items-center justify-center [overflow-wrap:anywhere]"
-              title={t.name}
-            >
-              {t.short}
-            </a>
-            {t.techniques.map((x, row) => (
-              <FadeIn as="button" y={-10} duration={0.45} delay={col * 0.06 + row * 0.04}
-                key={x.id}
-                type="button"
-                popoverTarget={popId(x.id)}
-                className="attack-cell"
-                style={heat(x.cases.length, max)}
-                title={`${x.id} ${x.name} — ${x.cases.length} ${x.cases.length === 1 ? "report" : "reports"}`}
-              >
-                <span className="block font-mono text-[0.5625rem] font-bold text-accent">{x.id}</span>
-                <span className="block text-[0.5625rem] leading-tight text-foreground/70 line-clamp-3">{x.name}</span>
-              </FadeIn>
-            ))}
-            {t.techniques.length === 0 && <span className="h-10 border border-dashed border-foreground/10" aria-hidden="true" />}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 type CoverageTechnique = {
   id: string;
@@ -92,7 +51,9 @@ type Props = {
 };
 
 const attackUrl = (id: string) => `https://attack.mitre.org/techniques/${id.replace(".", "/")}/`;
-const tacticUrl = (ta: string) => `https://attack.mitre.org/tactics/${ta}/`;
+/* How many techniques the blog shows; the rest are on /attack */
+const TOP_TECHNIQUES = 6;
+
 const pad = (n: number) => String(n).padStart(2, "0");
 const popId = (id: string) => `attack-pop-${id.replace(".", "-")}`;
 
@@ -179,6 +140,11 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
   const covered = tactics.filter((t) => t.techniques.length > 0);
   const max = Math.max(1, ...covered.flatMap((t) => t.techniques.map((x) => x.cases.length)));
   const maxPerTactic = Math.max(1, ...tactics.map((t) => t.techniques.length));
+  /* The most-cited techniques, each with its tactic (ties: kill-chain order) */
+  const top = tactics
+    .flatMap((tactic) => tactic.techniques.map((technique) => ({ technique, tactic })))
+    .sort((a, b) => b.technique.cases.length - a.technique.cases.length)
+    .slice(0, TOP_TECHNIQUES);
 
   return (
     <section
@@ -199,7 +165,7 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
           titleA="Mapped to"
           titleB="ATT&CK."
           size="lg"
-          description="MITRE ATT&CK is the public catalogue of the methods attackers use, grouped by the stage of an attack — from getting in to stealing data. Every tile below is one method I have handled in at least one case; open it to read that case."
+          description="MITRE ATT&CK is the public catalogue of the methods attackers use, grouped by the stage of an attack — from getting in to stealing data. Below: how many methods I have handled at each stage, and the ones with the most cases. Open a tile to read its cases; every method has its own page."
           aside={
             <CounterChip
               stats={[
@@ -220,86 +186,58 @@ export default function AttackCoverage({ coverage }: { coverage: AttackCoverageD
           <ol className="attack-strip">
             {tactics.map((t) => {
               const n = t.techniques.length;
+              const inner = (
+                <>
+                  <span className="attack-seg-n">{pad(t.order)}</span>
+                  <span className="attack-seg-count">{n === 0 ? "—" : n}</span>
+                  <span className="attack-seg-label">{t.short}</span>
+                </>
+              );
+              const title = `${t.ta} · ${t.name} — ${n} ${n === 1 ? "technique" : "techniques"}`;
               return (
                 <li key={t.id}>
-                  <a
-                    href={`#tactic-${t.id}`}
-                    className="attack-seg"
-                    data-off={n === 0 ? "" : undefined}
-                    style={heat(n, maxPerTactic)}
-                    title={`${t.ta} · ${t.name} — ${n} ${n === 1 ? "technique" : "techniques"}`}
-                  >
-                    <span className="attack-seg-n">{pad(t.order)}</span>
-                    <span className="attack-seg-count">{n === 0 ? "—" : n}</span>
-                    <span className="attack-seg-label">{t.short}</span>
-                  </a>
+                  {/* A covered stage opens its list on /attack; an empty one has nothing to open */}
+                  {n === 0 ? (
+                    <span className="attack-seg" data-off="" style={heat(n, maxPerTactic)} title={title}>
+                      {inner}
+                    </span>
+                  ) : (
+                    <Link prefetch={false} href={`/attack#tactic-${t.id}`} className="attack-seg" style={heat(n, maxPerTactic)} title={title}>
+                      {inner}
+                    </Link>
+                  )}
                 </li>
               );
             })}
           </ol>
         </FadeIn>
 
-        <MatrixView tactics={tactics} max={max} />
-
-        {/* ─── The ledger: one row per tactic ─── */}
-        <div className="border-t border-foreground/10">
-          {tactics.map((t) => {
-            const n = t.techniques.length;
-            return (
-              <FadeIn key={t.id} y={16} duration={0.5}>
-                <div
-                  id={`tactic-${t.id}`}
-                  className={`grid grid-cols-1 md:grid-cols-[260px_minmax(0,1fr)] gap-4 md:gap-8 py-6 border-b border-foreground/10 scroll-mt-28`}
-                >
-                  <div className="min-w-0">
-                    <div className="flex items-baseline gap-3">
-                      <span className="font-mono text-[0.625rem] tabular-nums text-foreground/60 w-6 shrink-0">
-                        {pad(t.order)}
-                      </span>
-                      <h3
-                        className={`font-display text-lg font-black uppercase tracking-tight leading-tight ${
-                          n === 0 ? "text-foreground/60" : "text-foreground"
-                        }`}
-                      >
-                        {t.name}
-                      </h3>
-                    </div>
-                    <p className="mt-2 pl-9 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-foreground/60">
-                      <a
-                        href={tacticUrl(t.ta)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent"
-                      >
-                        {t.ta}
-                      </a>{" "}
-                      · {n === 0 ? "not covered" : `${n} ${n === 1 ? "technique" : "techniques"}`}
-                    </p>
-                  </div>
-
-                  {n === 0 ? (
-                    <p className="attack-empty">No case covers this stage yet</p>
-                  ) : (
-                    <ul className="attack-grid">
-                      {t.techniques.map((technique) => (
-                        <TechniqueTile key={technique.id} technique={technique} tactic={t} max={max} />
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              </FadeIn>
-            );
-          })}
+        {/* ─── The most-covered methods ─── */}
+        <div className="mb-3 flex items-center justify-between gap-4 font-mono text-[0.625rem] uppercase tracking-[0.25em] text-foreground/60">
+          <span>Most covered // by number of cases</span>
+          <span className="hidden sm:inline">Click a tile for its cases</span>
         </div>
+        <FadeIn y={16} duration={0.5}>
+          <ul className="grid grid-cols-2 md:grid-cols-3 gap-2">
+            {top.map(({ technique, tactic }) => (
+              <TechniqueTile key={technique.id} technique={technique} tactic={tactic} max={max} />
+            ))}
+          </ul>
+        </FadeIn>
+
+        <Link
+          prefetch={false}
+          href="/attack"
+          className="mt-8 inline-flex items-center gap-2 px-5 py-3 border border-primary/40 font-mono text-[0.6875rem] font-bold uppercase tracking-[0.2em] text-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors duration-300"
+        >
+          All {techniqueCount} techniques, one page each →
+        </Link>
 
         <div className="mt-8 flex flex-col md:flex-row md:items-center justify-between gap-4 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-foreground/60">
           <span className="flex items-center gap-3">
             <span className="attack-pips" style={{ "--n": 1, "--max": 1 } as CSSProperties} aria-hidden="true" />
             = one report · tint = depth of evidence
           </span>
-          <Link prefetch={false} href="/attack" className="underline underline-offset-4 decoration-primary/50 hover:text-primary-ink">
-            Every technique, one page each →
-          </Link>
           <span>
             Mapping per report · ATT&amp;CK Enterprise v19 ·{" "}
             <a

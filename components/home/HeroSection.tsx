@@ -10,7 +10,7 @@
  * WHERE THE TEXT COMES FROM (edit there, not here):
  *   name, japaneseTitle, hero.specs, hero.tagline, hero.cvUrl,
  *   availability, title, focus, contact.*        → data/profile.ts
- *   the summary paragraph + "Evidence" row        → data/live-copy.ts
+ *   the summary paragraph                         → data/live-copy.ts
  *   the project count + the language codes        → app/page.tsx (props)
  *   the portrait → public/Assets/art-gallery/Images/logo/3omda-560.webp
  */
@@ -20,7 +20,7 @@ import { HeroMascot } from "@/components/home/HeroMascot";
 import { PROFILE } from "@/data/profile";
 import { normalizePublicHref } from "@/lib/shared";
 import gsap from "gsap";
-import { ArrowDown, Download, MessageCircle } from "lucide-react";
+import { ArrowDown, BriefcaseBusiness, Download, MessageCircle } from "lucide-react";
 import { Github, Linkedin, Youtube } from "@/components/ui/BrandIcons";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
@@ -46,12 +46,10 @@ const SPEC_TONES = ["text-primary-ink", "text-accent", "text-tertiary", "text-fo
 
 export default function HeroSection({
   description,
-  evidenceLabel,
   projectCount,
   languageCodes,
 }: {
   description: string;
-  evidenceLabel?: string;
   projectCount: number;
   languageCodes: string;
 }) {
@@ -93,6 +91,11 @@ export default function HeroSection({
       name: "LinkedIn",
       icon: Linkedin,
       href: `${PROFILE.contact.linkedin}`,
+    },
+    {
+      name: "Wuzzuf",
+      icon: BriefcaseBusiness,
+      href: PROFILE.contact.wuzzuf,
     },
     {
       name: "WhatsApp",
@@ -415,7 +418,6 @@ export default function HeroSection({
               <FieldRow label="Role" value={PROFILE.title} />
               <FieldRow label="Base" value={PROFILE.contact.location} />
               <FieldRow label="Focus" value={focusLabel} />
-              {evidenceLabel && <FieldRow label="Evidence" value={evidenceLabel} />}
               <FieldRow label="Shipped" value={shippedLabel} />
               <FieldRow label="Languages" value={languageCodes} />
             </dl>

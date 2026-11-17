@@ -78,7 +78,9 @@ lightbox, the command palette and the terminal.
    the Animation API.
 
 Links to other pages are plain `next/link` with `prefetch={false}`: nothing
-is downloaded until a link is clicked.
+is downloaded just because a link is on screen. `lib/perf/HoverPrefetch.tsx`
+loads a page once the mouse rests on its link (65 ms), a finger touches it or
+it gets keyboard focus, so the click opens at once; skipped on Save-Data/2G.
 
 ## Jumps
 
@@ -133,10 +135,13 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
 
 `app/fonts.ts` loads Dela Gothic One, Outfit, JetBrains Mono, Noto Sans JP and
 Yuji Syuku through `next/font/google` (self-hosted at build time, with
-size-matched fallbacks). `app/fonts-yuji-site.css` adds a tiny Yuji Syuku cut
-of exactly the characters the site uses, placed first in the Japanese stacks
-so the brush text costs one small file. Regenerate it with
-`scripts/subset-yuji-site.py` when new Japanese text is added.
+size-matched fallbacks). `app/fonts-yuji-site.css` adds the site's own Yuji
+Syuku cut of exactly the characters the site uses, placed first in the
+Japanese stacks, split into a few files by where the characters appear
+(core on every page ~23 KB, then home, blog, teaching …): a page downloads
+only the files whose characters it draws. Regenerate it with
+`scripts/subset-yuji-site.py` when Japanese text is added or removed (build
+first: it reads the groups from `out/`, then build again).
 
 ## Offline
 
@@ -151,6 +156,13 @@ fresh worker that drops the old page cache by itself; nothing to bump.
 
 A Content-Security-Policy `<meta>` (`lib/security.ts`; GitHub Pages cannot
 send headers), strict referrer policy, no third-party scripts, and YouTube embeds load only after a click.
+After every build `scripts/csp-hashes.mjs` (postbuild) replaces
+`'unsafe-inline'` in each page's `script-src` with the SHA-256 of the inline
+scripts that page really has, so an injected script is refused by the
+browser. HTTPS is enforced by github.io itself (the domain is on the browsers'
+HSTS preload list); the headers a `<meta>` cannot carry (HSTS for a custom
+domain, `frame-ancestors`, `X-Content-Type-Options`) need a proxy such as
+Cloudflare in front of a custom domain.
 
 ## Measurements
 
@@ -176,8 +188,8 @@ The common edits:
 | Footer links | `components/layout/FooterBar.tsx` |
 | Security contact / PGP key | `SECURITY.md` (steps), `data/profile.ts` → `contact.pgpFingerprint`, `app/.well-known/security.txt/route.ts` |
 | The RSS feed | nothing — `app/blog/feed.xml/route.ts` follows `data/cases.ts` |
-| The hero summary paragraph / the 4 numbers under the roles | `data/live-copy.ts` (`CV_SUMMARY`, `stats`) |
-| The "roles I fit" cards | `components/home/RolesCards.tsx` → `ROLES` |
+| The hero summary paragraph / the 4 numbers under the hero | `data/live-copy.ts` (`CV_SUMMARY`, `stats`) |
+| The "What I Do." cards (roles + hire me) | `components/home/ServicesSection.tsx` → `ROLES`, services in `data/services.ts` |
 | A project card | `data/portfolio-data.ts` → `work` |
 | A job / course in the experience timeline | `data/experience.ts` (+ `ROLE_INTRO` / `ROLE_PROOF` in `data/portfolio-data.ts`) |
 | Teaching numbers, diploma modules | `data/teaching.ts` |

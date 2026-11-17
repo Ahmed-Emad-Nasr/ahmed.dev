@@ -22,7 +22,7 @@ import { prefersReducedMotion } from "@/lib/fx";
    (tertiary) colour instead of red. Pair it with "spotlight spotlight-blue"
    and hover:border-tertiary/40 on the card itself. */
 /* topLine → also draw the line across the top of the card on hover. Only
-   the roles cards use it; every other card keeps the number and the glow. */
+   the What I Do cards use it; every other card keeps the number and the glow. */
 export function CardEffects({ index, tone = "red", topLine = false }: { index?: number; tone?: "red" | "blue"; topLine?: boolean }) {
   const blue = tone === "blue";
   return (

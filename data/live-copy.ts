@@ -5,8 +5,7 @@
  *
  * ═══ data/live-copy.ts ═══
  *   heroDescription → the hero's summary paragraph (CV_SUMMARY below)
- *   heroEvidence    → the "Evidence" row in the hero's field record
- *   stats           → the 4 tiles of StatsBar under the roles cards:
+ *   stats           → the 4 tiles of StatsBar between the hero and the What I Do cards:
  *                     target = number, suffix = "+" / "K+", label, japanese,
  *                     href = where the tile links
  */
@@ -27,13 +26,11 @@ const CV_SUMMARY =
 
 type LiveCopy = {
   heroDescription: string;
-  heroEvidence: string;
   stats: Stat[];
 };
 
 export const LIVE_COPY: LiveCopy = {
   heroDescription: CV_SUMMARY,
-  heroEvidence: `${investigationReportCount} hands-on investigations (labs & simulations) · ${coveredTechniqueCount()} attack techniques covered`,
   stats: [
     { target: investigationReportCount, suffix: "", label: "Hands-on investigations", japanese: "記録", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
     { target: PROFESSIONAL_CERTIFICATION_COUNT, suffix: "", label: "Professional certifications", japanese: "認定", href: `${normalizePublicHref("/gallery")}#all-certificates` },

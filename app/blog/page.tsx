@@ -30,7 +30,7 @@ import {
   TriageChallenge,
 } from "@/components/blog/dynamic";
 import { attackCoverage, libraryCounts } from "@/lib/library-data";
-import { blogYoutubePlaylists, blogYoutubeVideos } from "@/data/youtube";
+import { blogYoutubePlaylists } from "@/data/youtube";
 import { pageShareImage } from "@/lib/og";
 import {
   CHANNEL_ID, KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, youtubeThumb,
@@ -148,7 +148,7 @@ export default function BlogPage() {
           /* The pill links under the title: href = a section id below, n = count badge */
           links={[
             { href: "#cases", label: "Case library", n: libraryCounts.total },
-            { href: "#videos", label: "Videos", n: blogYoutubeVideos.length },
+            { href: "#videos", label: "Videos", n: SITE_VIDEOS.length },
             { href: "#attack", label: "Attack techniques covered", n: attackCoverage.techniqueCount },
             { href: "#detections", label: "My alarm rules" },
             { href: "#triage", label: "Try a real alert" },

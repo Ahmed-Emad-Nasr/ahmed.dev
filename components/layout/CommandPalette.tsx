@@ -28,7 +28,6 @@ import {
   MessageSquareQuote,
   Wrench,
   Route,
-  CircleHelp,
   Home,
   Briefcase,
   Code2,
@@ -53,6 +52,7 @@ import {
   Trophy,
   Award,
   KeyboardOff,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { Github, Linkedin } from "@/components/ui/BrandIcons";
 import { PROFILE } from "@/data/profile";
@@ -186,10 +186,9 @@ export default function CommandPalette() {
       { id: "services", group: "Go to", label: "Services — what I do", icon: Briefcase, run: () => go("#services") },
       { id: "work", group: "Go to", label: "Selected work", icon: Code2, run: () => go("#work") },
       { id: "lab", group: "Go to", label: "Home lab architecture", icon: Code2, run: () => go("#lab") },
-      { id: "projects", group: "Go to", label: "Open source — GitHub repositories", icon: Code2, run: () => go("#projects") },
       { id: "tools", group: "Go to", label: "Tools of the trade", icon: Wrench, run: () => go("#tools") },
       { id: "experience", group: "Go to", label: "Experience", icon: Briefcase, run: () => go("#experience") },
-      { id: "path", group: "Go to", label: "The path & right now", icon: Route, run: () => go("#path") },
+      { id: "path", group: "Go to", label: "The path — year by year", icon: Route, run: () => go("#path") },
       { id: "teaching", group: "Go to", label: "Teaching — the course & student feedback", icon: GraduationCap, run: () => visit("/teaching") },
       { id: "testimonials", group: "Go to", label: "Recommendations", icon: MessageSquareQuote, run: () => go("#testimonials") },
       { id: "student-feedback", group: "Go to", label: "Student feedback", icon: MessageSquareQuote, run: () => go("#student-feedback") },
@@ -202,8 +201,6 @@ export default function CommandPalette() {
       { id: "training", group: "Go to", label: "Training for teams", icon: GraduationCap, run: () => visit("/training") },
       { id: "triage", group: "Go to", label: "Triage challenge", icon: Crosshair, run: () => go("#triage") },
       { id: "wsa", group: "Go to", label: "PortSwigger Web Security Academy labs (29)", icon: FolderSearch, run: () => go("?q=PortSwigger#cases") },
-      { id: "process", group: "Go to", label: "Risk to response — how I work", icon: Route, run: () => go("#process") },
-      { id: "faq", group: "Go to", label: "FAQ — fair questions", icon: CircleHelp, run: () => go("#faq") },
       { id: "contact", group: "Go to", label: "Contact", icon: Mail, run: () => go("#contact") },
       { id: "blog-page", group: "Go to", label: "Blog — cases, ATT&CK, videos", icon: FileText, run: () => visit("/blog") },
       { id: "blog", group: "Go to", label: "Case library", icon: FolderSearch, run: () => go("#cases") },
@@ -260,6 +257,7 @@ export default function CommandPalette() {
       },
       { id: "gh", group: "Social", label: "Open GitHub", hint: c.github, icon: Github, run: () => { window.open(`https://github.com/${c.github}`, "_blank", "noopener,noreferrer"); setOpen(false); } },
       { id: "li", group: "Social", label: "Open LinkedIn", icon: Linkedin, run: () => { window.open(c.linkedin, "_blank", "noopener,noreferrer"); setOpen(false); } },
+      { id: "wuzzuf", group: "Social", label: "Open Wuzzuf", hint: "jobs profile", icon: BriefcaseBusiness, run: () => { window.open(c.wuzzuf, "_blank", "noopener,noreferrer"); setOpen(false); } },
       { id: "wa", group: "Social", label: "Open WhatsApp", icon: MessageCircle, run: () => { window.open(`https://wa.me/${c.whatsapp}`, "_blank", "noopener,noreferrer"); setOpen(false); } },
       {
         id: "terminal", group: "Extras", label: "Open the terminal", hint: "3omda", icon: SquareTerminal,

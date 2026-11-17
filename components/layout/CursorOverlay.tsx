@@ -11,9 +11,11 @@ import { useMediaQuery, useReducedMotion } from "@/lib/use-client";
  *
  * ═══ components/layout/CursorOverlay.tsx — the custom KATANA CURSOR ═══
  * Loaded by CursorMount.tsx. It follows the mouse with a spring (springConfig
- * below: lower stiffness = lazier, more trailing cursor). It turns red and
- * shows a label over links, buttons and anything with class="interactive"
- * (handleElementHover).
+ * below: lower stiffness = lazier, more trailing cursor). Over links, buttons
+ * and anything with class="interactive" (handleElementHover) the ring turns
+ * into red lock-on brackets. Kept light on purpose: one ring and one tip,
+ * no text label or trailing ghost, and React re-renders only when the
+ * hover state really flips.
  * While it's active, <body> gets the class "custom-cursor-on", which
  * app/globals.css uses to hide the normal system pointer.
  */
@@ -48,19 +50,13 @@ export default function CursorOverlay() {
       });
     };
 
+    let hovering = false;
     const handleElementHover = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName.toLowerCase() === "a" ||
-        target.tagName.toLowerCase() === "button" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        target.classList.contains("interactive")
-      ) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
+      const target = e.target as Element | null;
+      const over = Boolean(target?.closest?.("a, button, .interactive"));
+      if (over === hovering) return;
+      hovering = over;
+      setIsHovering(over);
     };
 
     window.addEventListener("mousemove", moveCursor);
@@ -97,7 +93,7 @@ export default function CursorOverlay() {
         transition={{ type: "spring", stiffness: 830, damping: 42 }}
       >
         <div
-          className={`relative w-full h-full transition-all duration-300 flex items-center justify-center
+          className={`relative w-full h-full transition-[border-radius,border-color] duration-300 flex items-center justify-center
             ${isHovering ? "rounded-none" : "rounded-full border border-accent/60"}`}
         >
           {/* Red lock-on brackets */}
@@ -118,32 +114,6 @@ export default function CursorOverlay() {
         </div>
       </motion.div>
 
-      {/* Lock-on label */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9999]"
-        style={{
-          x: smoothX,
-          y: smoothY,
-        }}
-      >
-        <motion.div
-          className="ml-8 mt-6 flex flex-col gap-0.5 bg-background/80 px-2 py-1 border-l-2 border-primary"
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: isHovering ? 1 : 0, x: isHovering ? 0 : -10 }}
-          transition={{ duration: 0.12 }}
-        >
-          <span className="font-mono text-[0.5625rem] text-primary-ink tracking-widest font-black uppercase leading-none">
-            Target
-          </span>
-          <span
-            className="brush-jp text-sm text-foreground/80 leading-none mt-0.5"
-            lang="ja"
-            aria-hidden="true"
-            data-jp="斬"
-          />
-        </motion.div>
-      </motion.div>
-
       {/* Blade tip  gold at rest, red on lock-on */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-[10000]"
@@ -155,28 +125,7 @@ export default function CursorOverlay() {
         }}
       >
         <div
-          className={`transition-all duration-300 transform rotate-45
-            ${
-              isHovering
-                ? "w-2 h-2 bg-primary"
-                : "w-2 h-2 bg-accent"
-            }`}
-        />
-      </motion.div>
-
-      {/* Trailing gold ghost */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-[9998]"
-        style={{
-          x: smoothX,
-          y: smoothY,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-      >
-        <div
-          className={`transition-all duration-300 transform rotate-45 border border-accent/40
-            ${isHovering ? "w-8 h-8 opacity-0 scale-150" : "w-4 h-4 opacity-100 scale-100"}`}
+          className={`w-2 h-2 rotate-45 transition-colors duration-300 ${isHovering ? "bg-primary" : "bg-accent"}`}
         />
       </motion.div>
     </div>

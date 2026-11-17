@@ -1,9 +1,12 @@
 /*
- * ═══ data/services.ts — "What I Do." (#services on the home page) ═══
+ * ═══ data/services.ts — the work I can be hired for ═══
  *
  * The work someone can hire me for, as fixed pieces of work: what it is,
  * what it is done with, what they get at the end, and one link to the proof
- * on this site. Shown by components/home/ServicesSection.tsx.
+ * on this site. Used by the "What I Do." cards (components/home/
+ * ServicesSection.tsx: a role card with `service: "<id>"` takes its Japanese
+ * label and e-mail subject from here) and listed for Google as the
+ * OfferCatalog in app/page.tsx.
  *
  * TO EDIT: change the text of an entry. TO ADD: copy a whole { … } entry.
  *   japanese    → the small label in the card's corner

@@ -15,21 +15,15 @@
  *   ─────────────────────  ───────────────────────────────  ──────────────────────────
  *   Hero (top)             components/home/HeroSection      data/portfolio-data.ts, data/live-copy.ts
  *   Numbers strip          components/home/StatsBar         data/live-copy.ts (stats)
- *   Roles cards  #roles    components/home/RolesCards       inside the component (ROLES)
- *   Services     #services components/home/ServicesSection  data/services.ts
+ *   What I do    #services components/home/ServicesSection  roles inside the component (ROLES) + data/services.ts
  *   Projects     #work     components/home/WorkShowcase     data/portfolio-data.ts (`work`)
- *   Open source  #projects components/home/ProjectsGrid     data/portfolio-data.ts + GitHub API (build time)
  *   Contributions #contributions components/home/ContributionsGrid GitHub calendar (build time)
  *   Tools        #tools    components/home/ToolsSection     data/about.ts (from data/skills.ts)
- *   Daily drivers #uses    components/home/UsesSection      data/about.ts
  *   Experience   #experience components/home/ExperienceTimeline  data/experience.ts
  *   The path     #path     components/home/PathSection      data/about.ts
- *   Right now    #now      components/home/NowSection       data/about.ts
  *   Off the clock #athlete components/home/AthleteSection   data/about.ts (ATHLETICS)
  *   Recommendations #testimonials components/home/Testimonials data/testimonials.ts
  *   Platforms    #platforms components/home/PlatformsSection data/platforms.ts (+ TryHackMe API)
- *   Process      #process  components/home/ProcessSection   data/about.ts
- *   FAQ          #faq      components/home/FaqSection       data/about.ts
  *   Contact      #contact  components/layout/ContactFooter
  *   Footer line            components/layout/FooterBar
  *
@@ -52,7 +46,7 @@
  */
 
 import type { Metadata } from "next";
-import { RolesCards } from "@/components/home/RolesCards";
+import { ServicesSection } from "@/components/home/ServicesSection";
 import StatsBar from "@/components/home/StatsBar";
 import SiteNav from "@/components/layout/SiteNav";
 import PageEffects from "@/lib/perf/PageEffects";
@@ -64,15 +58,9 @@ import {
   ExperienceTimeline,
   Testimonials,
   PlatformsSection,
-  ServicesSection,
   ToolsSection,
-  UsesSection,
   PathSection,
-  NowSection,
   AthleteSection,
-  FaqSection,
-  ProcessSection,
-  ProjectsGrid,
   ContactFooter,
   SectionRail,
 } from "@/components/home/dynamic";
@@ -80,8 +68,7 @@ import { ContributionsGrid } from "@/components/blog/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
 import { getTryHackMeStats } from "@/lib/api/tryhackme";
 import { getContributionStats } from "@/lib/api/contributions";
-import { getRepoCards, type RepoCard } from "@/lib/api/github-repos";
-import { FAQ } from "@/data/about";
+import { getRepoCards, repoFacts, type RepoCard } from "@/lib/api/github-repos";
 import { PROFILE } from "@/data/profile";
 import { STATIC_PLATFORMS, tryHackMePlatform } from "@/data/platforms";
 import { LIVE_COPY } from "@/data/live-copy";
@@ -172,34 +159,19 @@ function structuredData(repos: RepoCard[]) {
         image: [PERSON_IMAGE, OG_IMAGE.url],
         hasPart: [
           { "@id": `${SITE_URL}#experience-list` },
-          ...(repos.length ? [{ "@id": `${SITE_URL}#projects` }] : []),
+          ...(repos.length ? [{ "@id": `${SITE_URL}#work` }] : []),
           { "@id": BLOG_ID },
           { "@id": TEACHING_ID },
-          { "@id": `${SITE_URL}#faq` },
           { "@id": GALLERY_ID },
         ],
       },
-      /* ── The questions section (data/about.ts → FAQ) ── */
-      {
-        "@type": "FAQPage",
-        "@id": `${SITE_URL}#faq`,
-        url: `${SITE_URL}#faq`,
-        name: "Fair questions — Ahmed Emad Nasr",
-        inLanguage: "en",
-        about: PERSON_REF,
-        mainEntity: FAQ.map((f) => ({
-          "@type": "Question",
-          name: f.q,
-          acceptedAnswer: { "@type": "Answer", text: f.a },
-        })),
-      },
-      /* ── The open-source repositories (lib/api/github-repos.ts) ── */
+      /* ── The projects' repositories (lib/api/github-repos.ts) ── */
       ...(repos.length
         ? [
             {
               "@type": "ItemList",
-              "@id": `${SITE_URL}#projects`,
-              name: "Open-source repositories by Ahmed Emad Nasr",
+              "@id": `${SITE_URL}#work`,
+              name: "Projects by Ahmed Emad Nasr",
               itemListElement: repos.map((repo, index) => ({
                 "@type": "ListItem",
                 position: index + 1,
@@ -302,7 +274,6 @@ export default async function Home() {
       {/* Hero: name, title, CTA buttons (Sensei-Dev's hero, GSAP entrance). Text comes from data/profile.ts + data/live-copy.ts */}
       <HeroSection
         description={LIVE_COPY.heroDescription}
-        evidenceLabel={LIVE_COPY.heroEvidence}
         projectCount={PORTFOLIO_DATA.work.length}
         languageCodes={PORTFOLIO_DATA.languages.map((l) => l.code).join(" · ")}
       />
@@ -312,30 +283,22 @@ export default async function Home() {
       <div className="tone-blue">
         <StatsBar stats={LIVE_COPY.stats} />
       </div>
-      <RolesCards />
+      {/* What I do: the roles I fit and the work I can be hired for, in one
+          grid (components/home/ServicesSection.tsx, data/services.ts) */}
+      <ServicesSection />
 
       {/* Projects grid — the curated list in data/portfolio-data.ts (`work`).
           Passed as a prop so the list travels in the page data, not in JS. */}
-      <WorkShowcase items={PORTFOLIO_DATA.work} />
+      <WorkShowcase items={PORTFOLIO_DATA.work} repos={repoFacts(repos)} />
 
-      {/* The GitHub repositories behind the projects (lib/api/github-repos.ts) */}
-      <ProjectsGrid repos={repos} />
-
-      {/* What I can be hired for, right after the work that proves it:
-          four services, each with a deliverable (data/services.ts) */}
-      <div className="tone-blue">
-        <ServicesSection />
-      </div>
-
-      {/* Upstream contributions + the GitHub year graph (right after the repos, as in Sensei-Dev) */}
+      {/* Upstream contributions + the GitHub year graph (right after the projects, as in Sensei-Dev) */}
       <div className="tone-blue">
         <ContributionsGrid stats={contributions} />
       </div>
 
-      {/* What the work is done with: skill groups, then the daily tools (data/about.ts) */}
+      {/* What the work is done with: the skill groups (data/about.ts) */}
       <div className="tone-blue">
         <ToolsSection />
-        <UsesSection />
       </div>
 
       {/* The id is on this wrapper because ExperienceTimeline's own <section> has none */}
@@ -345,7 +308,6 @@ export default async function Home() {
 
       {/* One line per year, then what's happening now (data/about.ts) */}
       <PathSection />
-      <NowSection />
       {/* The athlete: Al Ahly SC, modern pentathlon (data/about.ts → ATHLETICS) */}
       <AthleteSection />
 
@@ -361,14 +323,10 @@ export default async function Home() {
         <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
       </div>
 
-      {/* How a security job runs: govern → protect → detect → respond */}
-      <ProcessSection />
-
-      {/* The questions recruiters ask first — an accordion (data/about.ts) */}
-      <FaqSection />
-
       {/* Contact section + form */}
-      <div id="contact" className="mt-20">
+      <div id="contact" className="relative mt-20">
+        {/* Old links to #faq (the questions section, removed) land here */}
+        <span id="faq" className="absolute top-0" aria-hidden="true" />
         <ContactFooter />
       </div>
     </main>

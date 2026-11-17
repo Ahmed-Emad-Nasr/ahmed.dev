@@ -250,6 +250,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
           printAll([
             `email     ${PROFILE.contact.email}`,
             `linkedin  ${PROFILE.contact.linkedin.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, "")}`,
+            `wuzzuf    ${PROFILE.contact.wuzzuf.replace(/^https:\/\//, "")}`,
             `github    github.com/${PROFILE.contact.github}`,
           ]);
           break;

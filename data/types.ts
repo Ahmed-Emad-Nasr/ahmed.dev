@@ -17,6 +17,8 @@ interface ContactInfo {
   phone: string;
   github: string;
   linkedin: string;
+  /** Wuzzuf profile (Egypt's job board) */
+  wuzzuf: string;
   location: string;
   whatsapp: string;
   youtube: string;

@@ -5,8 +5,9 @@
  *
  * Title "Built & Tested.", a row of filter buttons (All / Labs / Research /
  * Tools / Platforms) and one card per project: type, year, status, title,
- * tagline, problem, role, tech chips, metrics and link buttons
- * (GitHub / Live / Demo / Case study).
+ * tagline, problem, role, tech chips, metrics, the repository's live facts
+ * (GitHub stars, language, licence — fetched at build time by
+ * lib/api/github-repos.ts) and link buttons (Source / Live / Demo / Case study).
  *
  * HOW TO EDIT
  *   • Add / change a project → the `work` array in data/portfolio-data.ts
@@ -31,7 +32,9 @@ import {
   Lock,
   PlayCircle,
   FileText,
+  Star,
 } from "lucide-react";
+import type { RepoFacts } from "@/lib/api/github-repos";
 import Link from "next/link";
 import { Github } from "@/components/ui/BrandIcons";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
@@ -56,7 +59,7 @@ const TYPE_ICON = {
   platform: Server,
 } as const;
 
-export default function WorkShowcase({ items: workList }: { items: WorkItem[] }) {
+export default function WorkShowcase({ items: workList, repos = {} }: { items: WorkItem[]; repos?: RepoFacts }) {
   /* Which filter button is active, and the projects that match it */
   const [filter, setFilter] = useState<WorkType | "all">("all");
   const items = workList.filter((w) => filter === "all" || w.type === filter);
@@ -66,6 +69,8 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
       id="work"
       className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden"
     >
+      {/* Old links to #projects (the Open Source section, now part of these cards) land here */}
+      <span id="projects" className="absolute top-0" aria-hidden="true" />
       <KanjiWatermark chars="仕事" side="right" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -109,6 +114,7 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
         <ShowMore key={filter} first={4} label="Show more projects" className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {items.map((w, idx) => {
             const Icon = TYPE_ICON[w.type];
+            const repo = repos[w.title];
             return (
               <FadeIn y={32} duration={0.7} delay={(idx % 2) * 0.1} key={w.id}>
                 <TiltCard className="spotlight group relative bg-surface/60 border border-foreground/5 p-8 hover:border-primary/40 transition-colors duration-300 flex flex-col h-full">
@@ -166,6 +172,16 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
                     ))}
                   </div>
                   <div className="flex flex-wrap gap-2 mb-6">
+                    {repo?.language && (
+                      <span className="px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-foreground/70 bg-foreground/[0.04] border border-foreground/10">
+                        {repo.language}
+                      </span>
+                    )}
+                    {repo?.license && (
+                      <span className="px-2.5 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-foreground/70 bg-foreground/[0.04] border border-foreground/10">
+                        {repo.license}
+                      </span>
+                    )}
                     {w.metrics.map((m) => (
                       <span
                         key={m}
@@ -185,6 +201,12 @@ export default function WorkShowcase({ items: workList }: { items: WorkItem[] })
                         className="btn-sheen flex items-center gap-2 px-4 py-2.5 bg-primary text-white font-mono text-[0.625rem] font-bold uppercase tracking-[0.2em] hover:bg-foreground hover:text-background transition-colors"
                       >
                         <Github size={13} /> Source
+                        {repo && repo.stars > 0 && (
+                          <span className="inline-flex items-center gap-1 ml-1 pl-2 border-l border-white/30" aria-label={`${repo.stars} GitHub stars`}>
+                            <Star size={11} aria-hidden="true" />
+                            {repo.stars}
+                          </span>
+                        )}
                       </a>
                     )}
                     {w.links.live && (

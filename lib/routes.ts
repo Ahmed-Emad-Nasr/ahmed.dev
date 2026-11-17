@@ -1,8 +1,8 @@
 /*
  * lib/routes.ts — the site's pages, and which page each section lives on.
  *
- *   /             the portfolio: hero, roles, projects, experience, the path,
- *                 recommendations, platforms, process, FAQ, contact
+ *   /             the portfolio: hero, what I do, projects, tools, experience,
+ *                 the path, recommendations, platforms, contact
  *   /blog         the case library, videos, ATT&CK, detection rules, triage,
  *                 home lab (app/blog/page.tsx)
  *   /blog/<id>    one page per case (app/blog/[slug]/page.tsx)
@@ -38,8 +38,8 @@ const pageOfSection = (id: string): string => SECTION_PAGE[id] ?? "/";
 
 /* The home page's sections (components/home/*) */
 const HOME_SECTIONS = new Set([
-  "home", "roles", "work", "projects", "services", "contributions", "tools", "uses", "experience",
-  "path", "now", "athlete", "testimonials", "platforms", "process", "faq", "contact",
+  "home", "services", "roles", "process", "work", "projects", "contributions", "tools", "uses",
+  "experience", "path", "now", "athlete", "testimonials", "platforms", "faq", "contact",
 ]);
 
 /** The page of a KNOWN section or case card (#case-…), or null for any other id */

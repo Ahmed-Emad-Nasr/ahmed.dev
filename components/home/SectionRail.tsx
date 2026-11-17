@@ -22,20 +22,14 @@ import { scrollToTop } from "@/lib/scroll";
 
 const SECTIONS = [
   { id: "home", label: "Intro" },
-  { id: "roles", label: "Roles" },
+  { id: "services", label: "What I do" },
   { id: "work", label: "Projects" },
-  { id: "projects", label: "Open source" },
-  { id: "services", label: "Services" },
   { id: "tools", label: "Tools" },
-  { id: "uses", label: "Daily drivers" },
   { id: "experience", label: "Experience" },
   { id: "path", label: "The path" },
-  { id: "now", label: "Right now" },
   { id: "athlete", label: "Off the clock" },
   { id: "testimonials", label: "Recommendations" },
   { id: "platforms", label: "Platforms" },
-  { id: "process", label: "Process" },
-  { id: "faq", label: "FAQ" },
   { id: "contact", label: "Contact" },
 ];
 /* Numbered in page order: 00, 01, 02 … */

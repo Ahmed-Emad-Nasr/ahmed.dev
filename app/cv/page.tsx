@@ -11,7 +11,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Download, ExternalLink, Mail, Phone } from "lucide-react";
+import { BriefcaseBusiness, Download, ExternalLink, Mail, Phone } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import PageShell from "@/components/layout/PageShell";
 import { Github, Linkedin } from "@/components/ui/BrandIcons";
@@ -167,6 +167,11 @@ export default function CvPage() {
               <li>
                 <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-6 items-center gap-2 hover:text-primary-ink transition-colors">
                   <Linkedin size={14} /> linkedin.com/in/ahmed-emad-nasr
+                </a>
+              </li>
+              <li>
+                <a href={contact.wuzzuf} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-6 items-center gap-2 hover:text-primary-ink transition-colors">
+                  <BriefcaseBusiness size={14} aria-hidden="true" /> wuzzuf.net/me/ahmed-emad-nasr
                 </a>
               </li>
               <li>

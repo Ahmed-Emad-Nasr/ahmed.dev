@@ -12,7 +12,7 @@
  * message filled in, and offers Gmail / "copy message" when none opens.
  *
  * HOW TO EDIT
- *   • E-mail, GitHub, LinkedIn, WhatsApp, YouTube… → PROFILE.contact
+ *   • E-mail, GitHub, LinkedIn, Wuzzuf, WhatsApp, YouTube… → PROFILE.contact
  *     in data/profile.ts.
  *   • Add / remove a social icon → the socialLinks array in ContactFooter.
  *   • Footer links → components/layout/FooterBar.tsx.
@@ -20,7 +20,7 @@
 
 import { useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, ArrowUpRight, Mail, Copy, Check } from "lucide-react";
+import { MessageCircle, ArrowUpRight, Mail, Copy, Check, BriefcaseBusiness } from "lucide-react";
 import { Github, Linkedin, Youtube, Instagram, XLogo } from "@/components/ui/BrandIcons";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { PROFILE } from "@/data/profile";
@@ -55,6 +55,7 @@ export default function ContactFooter() {
   const socialLinks = [
     { name: "GitHub", icon: Github, href: `https://github.com/${PROFILE.contact.github}`, color: "text-primary-ink" },
     { name: "LinkedIn", icon: Linkedin, href: `${PROFILE.contact.linkedin}`, color: "text-[#0077b5]" },
+    { name: "Wuzzuf", icon: BriefcaseBusiness, href: PROFILE.contact.wuzzuf, color: "text-[#0055d9]" },
     { name: "WhatsApp", icon: MessageCircle, href: `https://wa.me/${PROFILE.contact.whatsapp}`, color: "text-[#25d366]" },
     { name: "YouTube", icon: Youtube, href: PROFILE.contact.youtube, color: "text-[#ff0000]" },
     { name: "Instagram", icon: Instagram, href: PROFILE.contact.instagram, color: "text-[#e1306c]" },

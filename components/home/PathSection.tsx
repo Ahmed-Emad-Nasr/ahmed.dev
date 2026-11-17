@@ -12,6 +12,8 @@ import { PATH } from "@/data/about";
 export default function PathSection() {
   return (
     <section id="path" aria-labelledby="path-title" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
+      {/* Old links to #now (the Right Now section, removed) land here */}
+      <span id="now" className="absolute top-0" aria-hidden="true" />
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
           id="path-title"

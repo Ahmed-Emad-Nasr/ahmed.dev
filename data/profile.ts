@@ -32,6 +32,7 @@ export const PROFILE: Profile = {
     phone: "+201013972690",
     github: GITHUB_USERNAME,
     linkedin: "https://www.linkedin.com/in/ahmed-emad-nasr/",
+    wuzzuf: "https://wuzzuf.net/me/ahmed-emad-nasr",
     location: HOME_LOCATION.workArea,
     whatsapp: "201013972690",
     youtube: YOUTUBE_CHANNEL_URL,

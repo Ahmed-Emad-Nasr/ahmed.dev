@@ -7,7 +7,8 @@
  *
  * ═══ components/blog/MediaSections.tsx (#videos, blog part of the home page) ═══
  * Videos and playlists → data/youtube.ts (blogFeaturedYoutubeVideo first,
- * then blogYoutubeVideos newest first). VIDEO_PAGE = videos per "show more".
+ * then blogYoutubeVideos newest first). The blog shows the first VIDEO_PAGE;
+ * every video is on /videos (app/videos/page.tsx), so it is not repeated here.
  * Thumbnails come from YouTube (lib/seo.ts → youtubeThumb).
  */
 
@@ -15,7 +16,7 @@ import { memo, useCallback, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { videoById, videoPath } from "@/lib/videos";
-import { Play, ExternalLink, ListVideo, ChevronDown, FileText } from "lucide-react";
+import { Play, ExternalLink, ListVideo, FileText, ArrowRight } from "lucide-react";
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import { CountUp } from "@/components/ui/CountUp";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -27,7 +28,7 @@ import { KanjiWatermark, btnOutline } from "@/components/ui/kit";
 import CounterChip from "@/components/ui/CounterChip";
 import FadeIn from "@/components/ui/FadeIn";
 
-/* Videos shown at first and added per "show more" */
+/* Videos shown on the blog; the rest are on /videos */
 const VIDEO_PAGE = 6;
 
 /* The featured video first, then the rest newest first */
@@ -93,7 +94,6 @@ const Embed = memo(function Embed({
 
 export default function MediaSections({ counts }: { counts: LibraryCounts }) {
   const stats = statsOf(counts);
-  const [visible, setVisible] = useState(VIDEO_PAGE);
   /* Which embeds were clicked (the iframe replaces the thumbnail) */
   const [activeEmbeds, setActiveEmbeds] = useState<Record<string, boolean>>({});
   const onActivateEmbed = useCallback((key: string) => {
@@ -146,7 +146,7 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {videos.slice(0, visible).map((video, idx) => (
+              {videos.slice(0, VIDEO_PAGE).map((video, idx) => (
                 <FadeIn y={32} duration={0.7} delay={(idx % 3) * 0.1} key={video.videoId} className="flex">
                   <TiltCard className="spotlight group relative w-full flex flex-col bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300 overflow-hidden">
                     <CardEffects index={idx + 1} />
@@ -204,19 +204,16 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
               ))}
           </div>
 
-          {visible < videos.length && (
+          {videos.length > VIDEO_PAGE && (
             <div className="mt-14 flex justify-center">
-              <button
-                type="button"
-                onClick={() => setVisible((n) => Math.min(videos.length, n + VIDEO_PAGE))}
-                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10 hover:-translate-y-[1.7px]"
+              <Link
+                prefetch={false}
+                href="/videos"
+                className="group flex items-center gap-3 px-8 py-4 border border-foreground/15 border-l-2 border-l-primary bg-foreground/[0.02] text-foreground font-mono font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:border-primary hover:bg-primary/10"
               >
-                <ChevronDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-[1.7px]" />
-                Show more
-                <span className="font-mono text-[0.625rem] text-foreground/60 tabular-nums">
-                  {visible}/{videos.length}
-                </span>
-              </button>
+                All {videos.length} videos
+                <ArrowRight size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-x-[1.7px]" aria-hidden="true" />
+              </Link>
             </div>
           )}
 

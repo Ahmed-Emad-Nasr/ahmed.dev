@@ -113,7 +113,7 @@ function measure() {
 
 const findings = [];
 async function check(w, h, font) {
-  const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: Math.min(w, h) < 600, hasTouch: w < 1024, reducedMotion: "reduce", colorScheme: "dark" });
+  const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: Math.min(w, h) < 600, hasTouch: w < 1024, reducedMotion: "reduce", colorScheme: "dark", /* the site's CSP blocks injected scripts */ bypassCSP: true });
   await ctx.addInitScript(() => {
     try {
       localStorage.setItem("guide:all", "1");

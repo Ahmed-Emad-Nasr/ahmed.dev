@@ -45,7 +45,7 @@ WHERE EACH THING GOES
 - A place I taught       → data/teaching.ts (TEACHING_ROLES) AND the same in
                            Arabic in data/teaching-ar.ts
 - Project                → data/portfolio-data.ts (work)
-- Service ("What I Do.") → data/services.ts
+- "What I Do." card (role + hire me) → ROLES in components/home/ServicesSection.tsx; the services behind them → data/services.ts
 - Tool page /projects/<id> → data/tools.ts (id = the project's id; screenshots
                            in public/Assets/projects/<id>/*.webp) and set
                            links.docs: "/projects/<id>" on the project

@@ -31,6 +31,7 @@ export const PERSON_REF = { "@id": PERSON_ID } as const;
  */
 export const SAME_AS = [
   "https://www.linkedin.com/in/ahmed-emad-nasr/",
+  "https://wuzzuf.net/me/ahmed-emad-nasr",
   "https://github.com/Ahmed-Emad-Nasr",
   YOUTUBE_CHANNEL_URL,
   "https://x.com/0x3omda",
@@ -52,6 +53,7 @@ export const KEYWORDS = {
     "Ahmed Nasr",
     "3omda",
     "0x3omda",
+    "Ahmed Emad Nasr Wuzzuf",
   ],
   roles: [
     "Information Security Officer",

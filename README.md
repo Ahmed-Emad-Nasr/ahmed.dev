@@ -79,7 +79,7 @@ Lab scores vary by a few points between runs.
 
 ```mermaid
 flowchart LR
-  H["/  —  Portfolio<br/>roles · projects · experience<br/>recommendations · FAQ · contact"]
+  H["/  —  Portfolio<br/>what I do · projects · experience<br/>recommendations · contact"]
   B["/blog  —  Blog<br/>83 cases · 35 videos<br/>ATT&CK · detection rules · triage · home lab"]
   C["/blog/&lt;case&gt;<br/>one report per case"]
   T["/teaching  —  Teaching<br/>160 h diploma · where it was taught<br/>student feedback"]
@@ -91,7 +91,7 @@ flowchart LR
 
 | Page | What is on it |
 | :-- | :-- |
-| [`/`](https://ahmed-emad-nasr.github.io/ahmed.dev/) | Hero, roles, services, projects, open source, tools, experience, the path, LinkedIn recommendations, training platforms, process, FAQ, contact |
+| [`/`](https://ahmed-emad-nasr.github.io/ahmed.dev/) | Hero, what I do (roles & services), projects (with their GitHub stars), tools, experience, the path, off the clock, LinkedIn recommendations, training platforms, contact |
 | [`/blog`](https://ahmed-emad-nasr.github.io/ahmed.dev/blog) | Searchable library of **83** cases, **35** videos, **56** ATT&CK techniques mapped, **50+** custom Wazuh rules, a triage challenge, the home lab |
 | `/blog/<case>` | Goal → what happened → what I did → how to prevent it → evidence, with the PDF report |
 | [`/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/teaching) | The 160-hour SOC & Cybersecurity Diploma module by module, where it was taught, **25** student notes quoted word for word, and a training request for teams |
@@ -151,7 +151,7 @@ Every push to `master` runs the same gates in GitHub Actions before it deploys:
 
 ```mermaid
 flowchart LR
-  A[lint] --> B[type-check] --> C[check:data] --> D[check:assets] --> E[build] --> F[check:links] --> G((deploy))
+  A[lint] --> B[type-check] --> C[check:data] --> D[check:assets] --> I[check:images] --> E[build] --> F[check:links] --> G((deploy))
 ```
 
 ```bash
@@ -159,6 +159,7 @@ npm run lint          # ESLint
 npm run type-check    # TypeScript, strict
 npm run check:data    # every case, ATT&CK id, video id and date is consistent
 npm run check:assets  # every image / PDF the data points at exists
+npm run check:images  # warns about any image over 300 KB (never fails)
 npm run build         # static export to out/
 npm run check:links   # every internal link in out/ resolves
 npm run check:a11y    # axe-core, WCAG 2.2 AA (needs Playwright)

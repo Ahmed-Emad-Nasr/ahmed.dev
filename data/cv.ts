@@ -33,6 +33,7 @@ export const CV = {
     phone: "+20 101 397 2690",
     email: "ahmed.em.nasr@gmail.com",
     linkedin: "https://linkedin.com/in/ahmed-emad-nasr",
+    wuzzuf: "https://wuzzuf.net/me/ahmed-emad-nasr",
     github: `https://github.com/${GITHUB_USERNAME}`,
   },
   education: {

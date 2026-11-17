@@ -34,15 +34,9 @@ export const Testimonials = dynamic(() => import("@/components/home/Testimonials
 export const StudentFeedback = dynamic(() => import("@/components/home/StudentFeedback"), { loading: () => <SectionSkeleton lines={3} /> });
 export const PlatformsSection = dynamic(() => import("@/components/home/PlatformsSection"), { loading: () => <SectionSkeleton lines={3} /> });
 /* The sections from Sensei-Dev's layout (data/about.ts) */
-export const ServicesSection = dynamic(() => import("@/components/home/ServicesSection"), { loading: () => <SectionSkeleton lines={2} /> });
 export const ToolsSection = dynamic(() => import("@/components/home/ToolsSection"), { loading: () => <SectionSkeleton lines={2} /> });
-export const UsesSection = dynamic(() => import("@/components/home/UsesSection"), { loading: () => <SectionSkeleton lines={1} /> });
 export const PathSection = dynamic(() => import("@/components/home/PathSection"), { loading: () => <SectionSkeleton lines={3} /> });
 export const AthleteSection = dynamic(() => import("@/components/home/AthleteSection"), { loading: () => <SectionSkeleton lines={2} /> });
-export const NowSection = dynamic(() => import("@/components/home/NowSection"), { loading: () => <SectionSkeleton lines={1} /> });
-export const ProcessSection = dynamic(() => import("@/components/home/ProcessSection"), { loading: () => <SectionSkeleton lines={2} /> });
-export const ProjectsGrid = dynamic(() => import("@/components/home/ProjectsGrid"), { loading: () => <SectionSkeleton lines={3} /> });
-export const FaqSection = dynamic(() => import("@/components/home/FaqSection"), { loading: () => <SectionSkeleton lines={2} /> });
 export const ContactFooter = dynamic(() => import("@/components/layout/ContactFooter"), { loading: () => <SectionSkeleton lines={2} /> });
 /* Overlays: client only */
 /* The chapter rail (wide screens) + back-to-top button */

@@ -50,6 +50,8 @@ jobs:
       # made here on every deploy, so a missing one never makes a page load
       # the full-size image. Only the missing ones are made (scripts/generate-thumbs.mjs).
       - run: npm run thumbs
+      # Warns (never fails) about any image over 300 KB — see scripts/check-image-size.mjs
+      - run: npm run check:images
       # output: "export" in next.config.mjs makes next build write out/
       - run: npm run build
         env:

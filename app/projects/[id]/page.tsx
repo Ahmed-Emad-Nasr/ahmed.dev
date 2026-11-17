@@ -110,7 +110,7 @@ export default async function ToolPage({ params }: { params: Promise<{ id: strin
         : []),
       breadcrumbs([
         ["Ahmed Emad Nasr", absoluteUrl("/")],
-        ["Projects", absoluteUrl("/#projects")],
+        ["Projects", absoluteUrl("/#work")],
         [project.title, url],
       ]),
     ],
@@ -127,7 +127,7 @@ export default async function ToolPage({ params }: { params: Promise<{ id: strin
       <article className="relative px-6 md:px-20 pt-36 md:pt-44 pb-24 overflow-hidden">
         <KanjiWatermark chars={tool.japanese} side="right" />
         <div className="max-w-6xl mx-auto relative z-10">
-          <BackCrumb href="/#projects" label="All projects" current="Tool" />
+          <BackCrumb href="/#work" label="All projects" current="Tool" />
           <SectionHeader
             as="h1"
             eyebrow={`Ahmed Emad Nasr // Open-source tool · ${project.platform} · ${project.year}`}

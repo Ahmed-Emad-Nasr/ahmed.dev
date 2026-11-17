@@ -108,11 +108,13 @@ That's it — the video's page, its card on the blog and on `/videos`, and its s
 | The note that explains each page (bottom corner, once per page) | `data/page-guides.ts` — change its `id` to show an edited note again |
 | Sports ("Off the Clock." on the home page) | `data/about.ts` → `ATHLETICS` |
 | The loader's timing (full on the first page, short after) | `DURATION` / `QUICK` / `READY_WAIT` in `components/layout/AppLoader.tsx` |
-| A service ("What I Do." on the home page) | `data/services.ts` — a fifth one also needs an icon in `components/home/ServicesSection.tsx` (`ICONS`) |
+| A role card ("What I Do." on the home page) | `components/home/ServicesSection.tsx` → `ROLES` (its `service:` picks the e-mail subject and Japanese label) |
+| A service (the e-mail subject, and the list Google reads) | `data/services.ts` — then point a role card at it with `service: "<id>"` |
 | A student note / recommendation | `data/testimonials.ts` — **copy it word for word**; Arabic ones get `lang: "ar"` |
 | A detection rule | `data/detection-rules.ts` |
 | A training platform | `data/platforms.ts` |
 | Numbers / your details / links | `data/profile.ts` and `data/live-copy.ts` |
+| A new profile (like Wuzzuf or LinkedIn) | its link in `data/profile.ts` → `contact`, then the icon lists in `components/layout/ContactFooter.tsx` and `components/home/HeroSection.tsx`, and `SAME_AS` in `lib/seo.ts` (tells Google it is the same person) |
 | The CV | replace `public/Assets/cv/AhmedEmadNasr_CV.pdf` (same name) **and** update `data/cv.ts` — the `/cv` page shows the same content as text |
 | A tool page (`/projects/<id>`) — what it does, how to run it, screenshots | `data/tools.ts` (the `id` must match the project in `data/portfolio-data.ts`); screenshots go in `public/Assets/projects/<id>/` as `.webp` — its share card: add a `tool-<id>` entry to `PAGES` in `scripts/og/generate-case-og.mjs`, then `npm run og:cases` |
 | A platform write-ups page (`/writeups/<platform>`) | `lib/collections.ts` → `PLATFORM_PAGES` (`platform` = the exact text the cases use) |
@@ -130,4 +132,6 @@ That's it — the video's page, its card on the blog and on `/videos`, and its s
 - **`check:data` says an id does not exist** → the id you wrote in `case-details` / `attack` / `youtube` does not match the one in `cases.ts`.
 - **`technique Txxxx is not in TECHNIQUES`** → add the parent technique to `TECHNIQUES` in `data/attack.ts` (the top of that file explains how).
 - **An image does not show** → the file name or path is wrong (upper/lower case and spaces matter) — `npm run check:assets` names it.
+- **A yellow "over 300 KB" warning on the GitHub Actions run** → that image is heavy for phones; convert it with the WebP tool (quality ~80) or resize it to ~1600 px wide. `npm run check:images` lists them. It never blocks the deploy.
+- **After adding or removing Japanese text** → update the site's small font cut, or the new characters cost extra font downloads (they still show, in the same brush): `npm run build`, then `python3 scripts/subset-yuji-site.py <YujiSyuku_400Regular.ttf>` (steps at the top of that file), then build again.
 - **The GitHub Action is red** → open it; the red step shows the line with the problem.
