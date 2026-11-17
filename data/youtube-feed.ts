@@ -6,4 +6,20 @@
  */
 import type { BlogYoutubeVideo } from "@/lib/shared";
 
-export const YOUTUBE_FEED: BlogYoutubeVideo[] = [];
+export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
+  {
+    "videoId": "F4REdKpJJ-4",
+    "title": "3 Way Handshake",
+    "description": "في الفيديو ده هنتعلم إزاي الأجهزة بتبدأ وتنهي الاتصال بينها عن طريق الـ TCP 3-Way Handshake & 4-Way Handshake بطريقة بسيطة وعملية، مع التركيز على أهميتها في الـ Cybersecurity وتحليل الشبكات. 🌐 لو بتدرس Networking، Packet Analysis، أو SOC Operations، لازم تفهم العمليات دي لأنها الأساس لفهم حركة الترافيك (Traffic) واكتشاف الهجمات على الشبكة. 📌 What You'll…",
+    "publishedAt": "2026-11-01",
+    "tags": [
+      "CyberSecurity",
+      "Networking",
+      "SOCAnalyst",
+      "BlueTeam",
+      "TCP",
+      "PacketAnalysis"
+    ],
+    "auto": true
+  }
+];
