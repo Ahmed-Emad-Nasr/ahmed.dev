@@ -116,7 +116,7 @@ async function check(w, h, font) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, isMobile: Math.min(w, h) < 600, hasTouch: w < 1024, reducedMotion: "reduce", colorScheme: "dark" });
   await ctx.addInitScript(() => {
     try {
-      localStorage.setItem("palette-hint-seen", "1");
+      localStorage.setItem("guide:all", "1");
     } catch {}
   });
   for (const path of pages) {

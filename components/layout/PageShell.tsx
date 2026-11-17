@@ -8,6 +8,8 @@
 
 import type { ReactNode } from "react";
 import SiteNav from "@/components/layout/SiteNav";
+import AppLoader from "@/components/layout/AppLoader";
+import { INTRO_SEEN_SCRIPT } from "@/lib/intro";
 import FooterBar from "@/components/layout/FooterBar";
 
 /* Page frame for every route except the home page: the floating nav, the
@@ -16,6 +18,10 @@ import FooterBar from "@/components/layout/FooterBar";
 export default function PageShell({ children, className = "" }: { children: ReactNode; className?: string }) {
   return (
     <>
+      {/* The loader on every page (AppLoader.tsx); the script before it
+          hides it before the first paint when Back brings the page back */}
+      <script dangerouslySetInnerHTML={{ __html: INTRO_SEEN_SCRIPT }} />
+      <AppLoader />
       <SiteNav />
       <main id="main-content" className={`relative w-full bg-background text-foreground overflow-x-clip ${className}`}>
         <div className="site-texture fixed inset-0 pointer-events-none z-0" aria-hidden="true" />

@@ -10,14 +10,14 @@
  *                        is no intro on screen (another page, or the
  *                        home page after the intro already played).
  *   markIntroDone()    → called by AppLoader the moment it starts leaving.
+ *   introStarting()    → called by AppLoader when it appears on a page opened
+ *                        by a link, so that page's entrances wait for it too.
  *
- * WHEN IT PLAYS: on every full load of the home page — first visit, reload,
- * typing the address. It is skipped only on the browser's Back / Forward
- * button after it already played in this tab: then INTRO_SEEN_SCRIPT (inline
- * in the home page, before the loader's markup) marks <html data-intro-seen>
- * and globals.css hides the loader before the first paint — no flash.
- * Coming back through the site's own links (no full load) skips it too
- * (AppLoader's introPlayed).
+ * WHEN IT PLAYS: every time a page is entered (see AppLoader.tsx). It is
+ * skipped only on the browser's Back / Forward button after a full load in
+ * this tab: then INTRO_SEEN_SCRIPT (inline on every page, before the
+ * loader's markup) marks <html data-intro-seen> and globals.css hides the
+ * loader before the first paint — no flash.
  */
 
 export const INTRO_SEEN_KEY = "intro-seen";
@@ -40,6 +40,14 @@ export function whenIntroDone(cb: () => void): () => void {
   return () => {
     waiting.delete(cb);
   };
+}
+
+export function introStarting(): void {
+  done = false;
+  /* A Back-button visit earlier in this tab marked the intro as seen; a page
+     opened by a link plays it again, so clear the mark (it also hides the
+     loader in globals.css) */
+  document.documentElement.removeAttribute("data-intro-seen");
 }
 
 export function markIntroDone(): void {

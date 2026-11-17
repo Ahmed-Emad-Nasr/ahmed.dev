@@ -39,7 +39,7 @@ const pageOfSection = (id: string): string => SECTION_PAGE[id] ?? "/";
 /* The home page's sections (components/home/*) */
 const HOME_SECTIONS = new Set([
   "home", "roles", "work", "projects", "services", "contributions", "tools", "uses", "experience",
-  "path", "now", "testimonials", "platforms", "process", "faq", "contact",
+  "path", "now", "athlete", "testimonials", "platforms", "process", "faq", "contact",
 ]);
 
 /** The page of a KNOWN section or case card (#case-…), or null for any other id */

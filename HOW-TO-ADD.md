@@ -105,6 +105,9 @@ That's it — the video's page, its card on the blog and on `/videos`, and its s
 | To add | File |
 |---|---|
 | A project | `data/portfolio-data.ts` → `work` |
+| The note that explains each page (bottom corner, once per page) | `data/page-guides.ts` — change its `id` to show an edited note again |
+| Sports ("Off the Clock." on the home page) | `data/about.ts` → `ATHLETICS` |
+| The loader's timing (full on the first page, short after) | `DURATION` / `QUICK` / `READY_WAIT` in `components/layout/AppLoader.tsx` |
 | A service ("What I Do." on the home page) | `data/services.ts` — a fifth one also needs an icon in `components/home/ServicesSection.tsx` (`ICONS`) |
 | A student note / recommendation | `data/testimonials.ts` — **copy it word for word**; Arabic ones get `lang: "ar"` |
 | A detection rule | `data/detection-rules.ts` |

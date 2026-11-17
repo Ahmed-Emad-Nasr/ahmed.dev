@@ -58,12 +58,38 @@ export const NOW = [
   { label: "Open to", detail: "InfoSec roles: Officer, Engineer, GRC, SOC, IR/DFIR, IAM and Security Education." },
 ] as const;
 
+/* "Off the Clock." (#athlete, components/home/AthleteSection.tsx): the
+   sports, newest first. `years` is shown as written; `events` are the chips. */
+export const ATHLETICS = [
+  {
+    id: "ahly",
+    club: "Al Ahly SC",
+    sport: "Athletics — middle & long distance",
+    years: "6 years · contract renewed",
+    current: true,
+    japanese: "陸上",
+    detail: "Running for Al Ahly, Egypt's most decorated club, for six years — and the contract was just renewed. Middle and long distance.",
+    events: ["800 m", "1500 m", "5K", "10K (raced once)"],
+  },
+  {
+    id: "pentathlon",
+    club: "Benha Club",
+    sport: "Modern pentathlon",
+    years: "2016 – 2022",
+    current: false,
+    japanese: "五種",
+    detail: "Six years of the five-sport Olympic event at Benha Club: swim, fence, ride, then shoot and run in one race.",
+    events: ["Swimming", "Fencing", "Riding", "Laser shooting", "Running"],
+  },
+] as const;
+
 export const FAQ = [
   { q: "Which roles are you open to?", a: "Information security roles — Officer, Engineer, GRC, SOC, IR/DFIR, IAM and security education." },
   { q: "Where are you based?", a: "In Cairo, Egypt — and I can work on site in both Cairo and Benha." },
   { q: "Where is the proof of the work?", a: "In the case library: every case opens with a plain summary, with the reports, screenshots and MITRE ATT&CK mapping underneath." },
   { q: "Do you teach?", a: "Yes — 300+ students at AMIT Learning and NTI, plus 35+ sessions and 10+ CTF challenges with GDG." },
   { q: "Which certifications do you hold?", a: "eJPT v2, CCNA, HCIA-Datacom, HCIA-Cloud, CCEP and more — every scan is in the proof gallery." },
+  { q: "What do you do outside security?", a: "I'm a competitive runner — six years with Al Ahly SC in the 800 m, 1500 m and 5K, contract just renewed — and before that a modern pentathlete at Benha Club (2016–2022)." },
   { q: "How do I reach you?", a: "Email, WhatsApp or LinkedIn — all linked in the contact section below." },
 ] as const;
 

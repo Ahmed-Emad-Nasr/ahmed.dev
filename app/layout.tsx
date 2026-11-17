@@ -48,6 +48,7 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ThemeFxProvider } from "@/components/layout/ThemeFxProvider";
 import PaletteMount from "@/components/layout/PaletteMount";
 import CursorMount from "@/components/layout/CursorMount";
+import PageGuideMount from "@/components/layout/PageGuideMount";
 import MotionProvider from "@/components/layout/MotionProvider";
 import { CONTENT_SECURITY_POLICY } from "@/lib/security";
 import KeyboardShortcuts from "@/components/layout/KeyboardShortcuts";
@@ -209,7 +210,7 @@ const STRUCTURED_DATA_JSON = jsonLd({
       /* The standard occupation (O*NET 15-1212.00) plus the skills behind it —
          how Google matches a person to job-related searches. */
       hasOccupation: { ...OCCUPATION, skills: skillGroups.flatMap((group) => group.items).join(", ") },
-      knowsAbout: [...new Set([...KEYWORDS.grc, ...KEYWORDS.operations, ...KEYWORDS.response, ...KEYWORDS.identityData, ...skillGroups.flatMap((group) => group.items)])],
+      knowsAbout: [...new Set([...KEYWORDS.grc, ...KEYWORDS.operations, ...KEYWORDS.response, ...KEYWORDS.identityData, ...skillGroups.flatMap((group) => group.items), "Middle-distance running", "Modern pentathlon"])],
       knowsLanguage: [
         { "@type": "Language", name: "Arabic", alternateName: "ar" },
         { "@type": "Language", name: "English", alternateName: "en" },
@@ -224,6 +225,22 @@ const STRUCTURED_DATA_JSON = jsonLd({
          current roles are the ones without an endDate. */
       worksFor: currentOrgs.map(orgNode),
       alumniOf: alumniOrgs.map(orgNode),
+      /* The athlete (data/about.ts → ATHLETICS): each club as a role with
+         its sport and years — the current one has no endDate */
+      memberOf: [
+        {
+          "@type": "OrganizationRole",
+          roleName: "Middle- and long-distance runner (800 m, 1500 m, 5K)",
+          memberOf: { "@type": "SportsOrganization", name: "Al Ahly SC", sport: "Athletics", url: "https://www.alahlyegypt.com/" },
+        },
+        {
+          "@type": "OrganizationRole",
+          roleName: "Modern pentathlete",
+          startDate: "2016",
+          endDate: "2022",
+          memberOf: { "@type": "SportsOrganization", name: "Benha Club", sport: "Modern pentathlon", address: { "@type": "PostalAddress", addressLocality: "Benha", addressCountry: "EG" } },
+        },
+      ],
       nationality: { "@type": "Country", name: "Egypt" },
       homeLocation: { "@type": "Place", name: HOME_LOCATION.label, address: { "@type": "PostalAddress", addressLocality: HOME_LOCATION.city, addressRegion: HOME_LOCATION.region, addressCountry: HOME_LOCATION.country } },
       email: "mailto:ahmed.em.nasr@gmail.com",
@@ -330,6 +347,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <KeyboardShortcuts />
             <DeferredGlobalEffects />
             <CursorMount />
+            {/* The "what's on this page" note (data/page-guides.ts), once per page */}
+            <PageGuideMount />
             {children}
             {/* Registers public/sw.js (offline cache) in production */}
             <ServiceWorkerRegister />

@@ -31,6 +31,7 @@ const SECTIONS = [
   { id: "experience", label: "Experience" },
   { id: "path", label: "The path" },
   { id: "now", label: "Right now" },
+  { id: "athlete", label: "Off the clock" },
   { id: "testimonials", label: "Recommendations" },
   { id: "platforms", label: "Platforms" },
   { id: "process", label: "Process" },

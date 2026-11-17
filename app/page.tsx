@@ -25,6 +25,7 @@
  *   Experience   #experience components/home/ExperienceTimeline  data/experience.ts
  *   The path     #path     components/home/PathSection      data/about.ts
  *   Right now    #now      components/home/NowSection       data/about.ts
+ *   Off the clock #athlete components/home/AthleteSection   data/about.ts (ATHLETICS)
  *   Recommendations #testimonials components/home/Testimonials data/testimonials.ts
  *   Platforms    #platforms components/home/PlatformsSection data/platforms.ts (+ TryHackMe API)
  *   Process      #process  components/home/ProcessSection   data/about.ts
@@ -68,11 +69,11 @@ import {
   UsesSection,
   PathSection,
   NowSection,
+  AthleteSection,
   FaqSection,
   ProcessSection,
   ProjectsGrid,
   ContactFooter,
-  PaletteHint,
   SectionRail,
 } from "@/components/home/dynamic";
 import { ContributionsGrid } from "@/components/blog/dynamic";
@@ -115,6 +116,7 @@ export const metadata: Metadata = {
     "Wazuh SIEM tutorials",
     "eJPT certified",
     ...KEYWORDS.place,
+    ...KEYWORDS.athlete,
   ],
   alternates: {
     canonical: "/",
@@ -293,8 +295,6 @@ export default async function Home() {
       <PageEffects />
       {/* Top navigation bar */}
       <SiteNav />
-      {/* One-time "press Ctrl+K" hint toast (keyboard/mouse devices only) */}
-      <PaletteHint />
       {/* Chapter rail on the right edge (1280px+) and the back-to-top button */}
       <SectionRail />
 
@@ -346,6 +346,8 @@ export default async function Home() {
       {/* One line per year, then what's happening now (data/about.ts) */}
       <PathSection />
       <NowSection />
+      {/* The athlete: Al Ahly SC, modern pentathlon (data/about.ts → ATHLETICS) */}
+      <AthleteSection />
 
 
       {/* What others wrote: the LinkedIn recommendations (data/testimonials.ts);

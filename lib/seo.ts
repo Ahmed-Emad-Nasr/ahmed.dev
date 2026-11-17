@@ -212,6 +212,15 @@ export const KEYWORDS = {
     "Wazuh tutorial",
     "blue team videos",
   ],
+  /* The athlete (#athlete on the home page, data/about.ts → ATHLETICS) */
+  athlete: [
+    "Ahmed Emad Nasr athlete",
+    "Ahmed Emad Nasr Al Ahly",
+    "Al Ahly SC athletics",
+    "Al Ahly runner",
+    "800m 1500m runner Egypt",
+    "modern pentathlon Benha",
+  ],
   /* The ATT&CK pages (/attack, /attack/<T-id>) */
   attack: [
     "MITRE ATT&CK",

@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/fx";
-import { INTRO_SEEN_KEY, introSeen, markIntroDone } from "@/lib/intro";
+import { INTRO_SEEN_KEY, introSeen, introStarting, markIntroDone } from "@/lib/intro";
 
 /*
  * ═══ components/layout/AppLoader.tsx — the INTRO BOOT SCREEN ═══
  *
  * Sensei-Dev's boot screen: cycling kanji, the monogram, a hairline progress
- * bar with a 000% → 100% counter, then the whole screen slides up. Used on
- * the home page only (app/page.tsx).
+ * bar with a 000% → 100% counter, then the whole screen slides up. On every page: the home page
+ * (app/page.tsx) and every other page through components/layout/PageShell.tsx.
  *
  * TIMING (milliseconds):
  *   DURATION 1900 → how long the bar takes to fill (600 with reduced motion);
@@ -22,9 +22,14 @@ import { INTRO_SEEN_KEY, introSeen, markIntroDone } from "@/lib/intro";
  *   The slide-up exit animation is the `exit` prop on the motion.div below.
  * Click anywhere on it to skip.
  *
- * WHEN: on every full load of the home page, reloads included. Skipped when
- * coming back with the browser's Back button or through the site's own links
- * after it already played (see lib/intro.ts).
+ * WHEN: every time a page is entered — a full load, a reload, or a click on
+ * one of the site's own links.
+ *   • The first page of a visit gets the full intro (1.9 s).
+ *   • Every page after it gets a short one (QUICK, 0.9 s).
+ *   • Either way it then waits (up to READY_WAIT) until the fonts and the
+ *     images on the first screen have arrived, so the page appears whole.
+ * Skipped only on the browser's Back button after a full load, where the
+ * page comes back from the cache already drawn (see lib/intro.ts).
  *
  * SMOOTHNESS: the page is busiest exactly while this screen is up (React is
  * waking the page underneath). So the bar is a compositor animation
@@ -42,20 +47,55 @@ const BOOT_WORDS = ["起動中", "武士道", "鍛錬", "技術調整", "出陣"
 /* easeOutCubic — the same curve as the counter's 1 - (1 - t)³ */
 const BAR_EASING = "cubic-bezier(0.215, 0.61, 0.355, 1)";
 
-/* Set to true the first time the loader starts. It lives as long as the
-   page's JavaScript does, so in-site navigation (which keeps the JS) sees it,
-   while a reload or a new tab starts fresh with false. The first render
-   after a full load still starts visible, exactly as in the HTML — so React
-   finds the same markup it expects and nothing flickers. */
+/* Set to true once the first intro of this visit started. It lives as long
+   as the page's JavaScript does: pages opened through the site's own links
+   (which keep the JS) see it and get the short loader; a reload or a new
+   tab starts fresh with the full one. */
 let introPlayed = false;
 const noSubscribe = () => () => {};
+
+/* The short loader on every page after the first, and the most it waits
+   on top of the bar for the fonts and the first screen's images */
+const QUICK = 900;
+const READY_WAIT = 900;
+
+/* Resolves when the fonts are ready and every image on the first screen has
+   loaded (or failed) — or after `max` ms, whichever comes first */
+function pageReady(max: number): Promise<void> {
+  const images = [...document.images].filter((img) => {
+    if (img.complete) return false;
+    const r = img.getBoundingClientRect();
+    return r.width > 0 && r.top < window.innerHeight && r.bottom > 0;
+  });
+  const loaded = images.map(
+    (img) =>
+      new Promise<void>((done) => {
+        img.addEventListener("load", () => done(), { once: true });
+        img.addEventListener("error", () => done(), { once: true });
+      }),
+  );
+  const fonts = document.fonts ? document.fonts.ready.then(() => undefined) : Promise.resolve();
+  return Promise.race([
+    Promise.all([fonts, ...loaded]).then(() => undefined),
+    new Promise<void>((done) => setTimeout(done, max)),
+  ]);
+}
 
 export default function AppLoader() {
   /* Played earlier in this tab and we came Back to it: the inline script
      already hid it with CSS; drop it right after hydration */
-  const seen = useSyncExternalStore(noSubscribe, introSeen, () => false);
-  /* Already played during this visit → start (and stay) hidden */
-  const [loading, setLoading] = useState(() => !introPlayed);
+  /* Every page plays it; `quick` = not the first page of this visit */
+  const [loading, setLoading] = useState(true);
+  const [quick] = useState(() => introPlayed);
+  /* "Seen" only counts for the page the Back button brought back from the
+     cache — never for a page opened afterwards by a link */
+  const seen = useSyncExternalStore(noSubscribe, introSeen, () => false) && !quick;
+
+  /* A page opened by a link: the entrances underneath must wait for this
+     screen again (lib/intro.ts). Before paint, so none starts unseen. */
+  useLayoutEffect(() => {
+    if (!seen) introStarting();
+  }, [seen]);
   const [wordIndex, setWordIndex] = useState(0);
   const barRef = useRef<HTMLDivElement>(null);
   const countRef = useRef<HTMLSpanElement>(null);
@@ -63,6 +103,7 @@ export default function AppLoader() {
   useEffect(() => {
     if (!loading || seen) {
       /* Already played, skipped, or just finished: the page may come in */
+      introPlayed = true;
       markIntroDone();
       return;
     }
@@ -80,7 +121,12 @@ export default function AppLoader() {
        of a longer wait (it also keeps the Speed Index down). Never past the
        CSS safety net (globals.css, 6 s) either — no two exits fighting. */
     const LATEST_END = 2600;
-    const DURATION = Math.max(300, Math.min(prefersReducedMotion() ? 600 : 1900, LATEST_END - start));
+    const DURATION = quick
+      ? prefersReducedMotion()
+        ? 400
+        : QUICK
+      : Math.max(300, Math.min(prefersReducedMotion() ? 600 : 1900, LATEST_END - start));
+    let cancelled = false;
     let raf = 0;
     let doneTimer: ReturnType<typeof setTimeout> | undefined;
     let shown = -1;
@@ -103,21 +149,25 @@ export default function AppLoader() {
       if (t < 1) {
         raf = requestAnimationFrame(tick);
       } else {
-        doneTimer = setTimeout(() => setLoading(false), 200);
+        /* Bar full: leave once the first screen is ready (fonts + images) */
+        void pageReady(READY_WAIT).then(() => {
+          if (!cancelled) doneTimer = setTimeout(() => setLoading(false), 150);
+        });
       }
     };
     raf = requestAnimationFrame(tick);
 
     // Safety: never trap the user
-    const fallback = setTimeout(() => setLoading(false), 3500);
+    const fallback = setTimeout(() => setLoading(false), DURATION + READY_WAIT + 1200);
 
     return () => {
+      cancelled = true;
       cancelAnimationFrame(raf);
       clearTimeout(fallback);
       if (doneTimer) clearTimeout(doneTimer);
       bar?.cancel();
     };
-  }, [loading, seen]);
+  }, [loading, seen, quick]);
 
   const word = BOOT_WORDS[wordIndex] ?? "起動中";
 

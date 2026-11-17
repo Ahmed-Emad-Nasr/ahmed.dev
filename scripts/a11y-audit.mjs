@@ -61,7 +61,7 @@ for (const vp of VIEWPORTS) {
     await ctx.addInitScript((t) => {
       try {
         localStorage.setItem("theme", t);
-        localStorage.setItem("palette-hint-seen", "1");
+        localStorage.setItem("guide:all", "1");
       } catch {}
     }, theme);
     for (const path of pages) {

@@ -1153,12 +1153,13 @@ html[data-intro-seen] [data-app-loader] {
 }
 
 /* ── Palette hint: the top line runs down like a timer while it is open ── */
-.hint-timer {
+/* The page note's countdown line (components/layout/PageGuide.tsx) */
+.guide-timer {
   transform: scaleX(1);
 }
-.hint-timer[data-on="true"] {
+.guide-timer[data-on="true"] {
   transform: scaleX(0);
-  transition: transform 9s linear;
+  transition: transform 10s linear;
 }
 
 /* ── Detection library: rows cascade in (again on every filter), radar spins ── */
