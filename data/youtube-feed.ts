@@ -8,6 +8,36 @@ import type { BlogYoutubeVideo } from "@/lib/shared";
 
 export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
   {
+    "videoId": "EF5pQLGsi38",
+    "title": "Risk Management Explained | Inherent Risk, Residual Risk, Risk Appetite, Tolerance, Capacity & KRI 🤔",
+    "description": "في الفيديو ده هنتعرف على مجموعة من أهم المفاهيم الأساسية في **Cybersecurity Risk Management & GRC**، وهنفهم الفرق بينهم بطريقة مبسطة وعملية. 📌 **Topics Covered:** - **Inherent Risk:** مستوى المخاطر قبل تطبيق أي Controls. - **Residual Risk:** مستوى المخاطر المتبقي بعد تطبيق Controls. - **Risk Appetite:** مستوى المخاطر اللي المؤسسة مستعدة تقبله لتحقيق…",
+    "publishedAt": "2026-11-19",
+    "tags": [
+      "CyberSecurity",
+      "GRC",
+      "RiskManagement",
+      "ISO27001",
+      "KRI",
+      "InformationSecurity"
+    ],
+    "auto": true
+  },
+  {
+    "videoId": "lrCpQbxw-9o",
+    "title": "Regulations vs Standards in Info Sec – What's the Difference? | Cybersecurity Basics",
+    "description": "في الفيديو ده هنتعرف على الفرق بين **Regulations** و **Standards** في مجال Cybersecurity و Information Security. هنفهم - What are Regulations? - What are Standards? - The key differences between Regulations and Standards. - Are Standards mandatory or voluntary? - Real-world examples - GDPR – Regulation - PCI DSS – Security Standard - ISO/IEC 27001…",
+    "publishedAt": "2026-11-19",
+    "tags": [
+      "CyberSecurity",
+      "GRC",
+      "InformationSecurity",
+      "Compliance",
+      "ISO27001",
+      "PCI"
+    ],
+    "auto": true
+  },
+  {
     "videoId": "F4REdKpJJ-4",
     "title": "3 Way Handshake",
     "description": "في الفيديو ده هنتعلم إزاي الأجهزة بتبدأ وتنهي الاتصال بينها عن طريق الـ TCP 3-Way Handshake & 4-Way Handshake بطريقة بسيطة وعملية، مع التركيز على أهميتها في الـ Cybersecurity وتحليل الشبكات. 🌐 لو بتدرس Networking، Packet Analysis، أو SOC Operations، لازم تفهم العمليات دي لأنها الأساس لفهم حركة الترافيك (Traffic) واكتشاف الهجمات على الشبكة. 📌 What You'll…",
