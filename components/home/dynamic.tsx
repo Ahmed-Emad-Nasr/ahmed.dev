@@ -1,19 +1,18 @@
-"use client";
-
 /*
- * The home page's dynamic imports (next/dynamic only code-splits when called
- * from a Client Component, not from app/page.tsx).
- *
- *   Every section is its own chunk (JS file) and is rendered into the
- *   page's HTML, as on Sensei-Dev — the whole page is there from the start.
+ * The home page's dynamic imports — as on Sensei-Dev, this file is NOT a
+ * client module: the sections stay Server Components, rendered into the
+ * page's HTML on the server, so their code and the data they read (cases,
+ * platforms, experience …) never ship to the browser as JavaScript. Only the
+ * sections that are client components themselves ("use client" at their
+ * top: hero, projects, contact …) send code, each in its own chunk.
  *
  * `dynamic(() => import(path), { loading })`:
  *   • import(path)  → that component becomes a separate JS file (chunk).
  *   • loading       → the grey skeleton shown while that file downloads
  *                     (components/ui/SectionSkeleton.tsx; `lines` = how many
  *                     grey bars, `tall` = taller placeholder).
- *   • ssr: false    → never rendered into the HTML, browser only (overlays
- *                     that depend on window size / localStorage).
+ *   • ssr: false is not allowed here (server module): browser-only parts go
+ *     in components/home/client-only.tsx.
  *
  * HOW TO ADD a home section: add one line here, e.g.
  *   export const MySection = dynamic(() => import("@/components/home/MySection"),
@@ -38,6 +37,3 @@ export const ToolsSection = dynamic(() => import("@/components/home/ToolsSection
 export const PathSection = dynamic(() => import("@/components/home/PathSection"), { loading: () => <SectionSkeleton lines={3} /> });
 export const AthleteSection = dynamic(() => import("@/components/home/AthleteSection"), { loading: () => <SectionSkeleton lines={2} /> });
 export const ContactFooter = dynamic(() => import("@/components/layout/ContactFooter"), { loading: () => <SectionSkeleton lines={2} /> });
-/* Overlays: client only */
-/* The chapter rail (wide screens) + back-to-top button */
-export const SectionRail = dynamic(() => import("@/components/home/SectionRail"), { ssr: false });

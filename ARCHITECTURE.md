@@ -32,7 +32,7 @@ server. A client component pulls everything it imports into the browser, so:
   (`AttackCoverage coverage={attackCoverage}`) or, when it is large,
   writes it to a static JSON file the section fetches together with its
   code (`app/library.json/route.ts` → `CaseLibrary` in
-  `components/blog/dynamic.tsx` — ~100 KB the home HTML no longer carries). Client files may only
+  `components/blog/CaseLibraryLoader.tsx` — ~100 KB the home HTML no longer carries). Client files may only
   `import type` from `lib/library-data.ts`: a value import would bundle every
   case file, IOC and timeline into the browser. The one exception is the
   hidden terminal, a chunk that loads only when someone opens it;
@@ -59,8 +59,12 @@ lightbox, the command palette and the terminal.
 2. **Split per section:** every section is its own JavaScript chunk —
    `next/dynamic` imports in `components/home/dynamic.tsx`,
    `components/blog/dynamic.tsx` and `components/gallery/dynamic.tsx`.
-   (`next/dynamic` only code-splits when called from a Client Component,
-   which is why those files exist.) Global visual effects that are not needed
+   As on Sensei-Dev those files are NOT client modules: a section that is a
+   Server Component stays one — rendered on the server, its code and the data
+   it reads never shipped as JavaScript. Only sections that say "use client"
+   themselves send code. Browser-only parts (`ssr: false`) live in client
+   files of their own: `components/home/client-only.tsx` (section rail) and
+   `components/blog/CaseLibraryLoader.tsx` (the case library). Global visual effects that are not needed
    for first paint are deferred by `components/layout/DeferredGlobalEffects.tsx`
    until the browser is idle.
 3. **Ahead of time, only what is opened on demand:** the command palette,

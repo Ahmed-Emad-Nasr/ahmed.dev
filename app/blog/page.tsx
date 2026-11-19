@@ -24,11 +24,11 @@ import PageEffects from "@/lib/perf/PageEffects";
 import {
   AreaIntro,
   AttackCoverage,
-  CaseLibrary,
   DetectionLibrary,
   HomeLab,
   TriageChallenge,
 } from "@/components/blog/dynamic";
+import { CaseLibrary } from "@/components/blog/CaseLibraryLoader";
 import { attackCoverage, libraryCounts } from "@/lib/library-data";
 import { blogYoutubePlaylists } from "@/data/youtube";
 import { pageShareImage } from "@/lib/og";

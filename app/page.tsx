@@ -62,8 +62,8 @@ import {
   PathSection,
   AthleteSection,
   ContactFooter,
-  SectionRail,
 } from "@/components/home/dynamic";
+import { SectionRail } from "@/components/home/client-only";
 import { ContributionsGrid } from "@/components/blog/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
 import { getTryHackMeStats } from "@/lib/api/tryhackme";

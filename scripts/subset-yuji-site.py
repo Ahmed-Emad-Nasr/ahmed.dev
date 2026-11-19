@@ -14,8 +14,9 @@ characters, and never the Google slices for them. A character not in any
 group falls through to next/font's slices (same font, just more requests).
 
 Groups (worked out from the built pages in out/):
-  core     — on every page (loader, cursor, nav) or on 2+ sections, plus the
-             groups too small to be worth their own file
+  core     — on every page (loader, cursor, nav), on 2+ sections, or on the
+             home page and one other section, plus the groups too small to
+             be worth their own file
   home     — only on the home page
   <name>   — only on one other section (blog, teaching, gallery …)
   extra    — in the source but not in any built page: client-only states
@@ -123,7 +124,9 @@ def group(chars: set[int]) -> dict[str, set[int]]:
     for c in chars:
         seen = where.get(c, set())
         others = seen - {"home"}
-        if c in chrome or seen == sections or len(others) >= 2:
+        # On the home page and anywhere else → core: otherwise the home page
+        # (the most visited) would fetch a whole section file for 2-3 glyphs
+        if c in chrome or seen == sections or len(others) >= 2 or ("home" in seen and others):
             groups["core"].add(c)
         elif len(others) == 1:
             groups[next(iter(others))].add(c)
