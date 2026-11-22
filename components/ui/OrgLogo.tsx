@@ -60,7 +60,7 @@ export default function OrgLogo({
 
   if (file) {
     return (
-      <span className={`${box} overflow-hidden bg-white p-1`}>
+      <span className={`grid place-items-center shrink-0 overflow-hidden bg-white ${BOX[size]} ${className}`}>
         <Image
           src={normalizePublicHref(file)}
           alt={`${name} logo`}

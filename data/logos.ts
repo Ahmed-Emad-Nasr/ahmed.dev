@@ -23,9 +23,33 @@
 
 /** Image files you added: "Name as written in the data" → path under public/ */
 export const LOGO_FILES: Record<string, string> = {
-  // "AMIT Learning": "Assets/logos/amit.webp",
-  // "National Telecommunication Institute (NTI)": "Assets/logos/nti.webp",
-  // "Banque Misr": "Assets/logos/banque-misr.webp",
+  // ── Employers and programmes ──
+  "AMIT Learning": "Assets/logos/amit.webp",
+  "National Telecommunication Institute (NTI)": "Assets/logos/nti.webp",
+  "Banque Misr": "Assets/logos/banque-misr.webp",
+  "iSchool": "Assets/logos/ischool.webp",
+  // DEPI — the same logo for every way the name is written in the data
+  "Digital Egypt Pioneers Initiative (DEPI)": "Assets/logos/depi.webp",
+  "DEPI": "Assets/logos/depi.webp",
+  "OTO Courses & DEPI": "Assets/logos/depi.webp",
+  // ITI — likewise
+  "Information Technology Institute (ITI)": "Assets/logos/iti.webp",
+  "Mahara-Tech (ITI)": "Assets/logos/iti.webp",
+  "CyberTalents & ITI": "Assets/logos/iti.webp",
+  // ── University and student communities ──
+  "Benha University": "Assets/logos/fci.webp", // Faculty of Computers & AI, Benha University
+  "Google Developer Groups (GDG)": "Assets/logos/gdg.webp", // GDG on Campus — Benha University
+  "IEEE Benha": "Assets/logos/ieee-benha.webp", // IEEE Benha Student Branch
+  "IEEE": "Assets/logos/ieee-benha.webp", // the volunteer role in data/experience.ts
+  // ── Training providers and platforms ──
+  "CyberTalents": "Assets/logos/cybertalents.webp",
+  "INE": "Assets/logos/ine.webp",
+  "INE Security": "Assets/logos/ine.webp",
+  "NetRiders": "Assets/logos/netriders.webp",
+  "NetRiders Academy": "Assets/logos/netriders.webp",
+  "Red Team Leaders": "Assets/logos/red-team-leaders.webp",
+  "arcX": "Assets/logos/arcx.webp",
+  "Microsoft": "Assets/logos/microsoft.webp",
 };
 
 /** One-colour brand marks: key → the brand's name. The drawings (one
