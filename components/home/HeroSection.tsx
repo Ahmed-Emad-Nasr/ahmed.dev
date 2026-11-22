@@ -116,7 +116,7 @@ export default function HeroSection({
     <section
       id="home"
       ref={containerRef}
-      className="relative min-h-screen flex items-center px-6 overflow-hidden pt-32 pb-24 bg-background"
+      className="relative min-h-screen flex items-center px-6 overflow-hidden pt-28 pb-24 bg-background"
     >
       {/* ─── Speed lines ─── */}
       <div
@@ -160,7 +160,7 @@ export default function HeroSection({
       {/* ─── Flow ─── */}
       <div className="hero-content relative z-10 w-full max-w-[90rem] mx-auto flex flex-col items-start">
         {/* Badge */}
-        <div className="flex max-w-full items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8">
+        <div className="flex max-w-full items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8 self-center md:self-start">
           <div className="w-2 h-2 shrink-0 bg-primary" />
           <span className="min-w-0 sm:whitespace-nowrap text-[0.5rem] font-mono font-bold uppercase tracking-[0.15em] text-on-surface-variant sm:text-xs sm:tracking-[0.16em]">
             {PROFILE.title}
