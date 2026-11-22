@@ -3,7 +3,7 @@
 /*
  * ═══ components/home/HeroMascot.tsx — the little mascot next to the portrait ═══
  *
- * Three hand-drawn SVG characters (owl, fox, shield). A random one shows on
+ * Two hand-drawn SVG characters (owl, fox). A random one shows on
  * each visit; clicking it switches to the next one with a bounce, and it
  * floats gently up and down.
  *
@@ -26,7 +26,7 @@ interface Mascot {
 /*
  * Original artwork, drawn for this site as inline SVG (no image requests).
  * Same idea as the Sensei-Dev language mascots, but for the blue team:
- * the night-shift owl, the threat-hunting fox, and the shield.
+ * the night-shift owl and the threat-hunting fox.
  */
 const OWL = (
   <svg viewBox="0 0 100 100" className="h-auto w-full" aria-hidden="true">
@@ -85,40 +85,10 @@ const FOX = (
   </svg>
 );
 
-const SHIELD = (
-  <svg viewBox="0 0 100 100" className="h-auto w-full" aria-hidden="true">
-    <path d="M50 6 L86 18 V48 Q86 78 50 94 Q14 78 14 48 V18 Z" fill="#BC002D" />
-    <path
-      d="M50 14 L78 24 V48 Q78 72 50 85 Q22 72 22 48 V24 Z"
-      fill="#8f0022"
-    />
-    <path d="M50 14 L78 24 V48 Q78 72 50 85 Z" fill="#a8002a" />
-    <circle cx="39" cy="46" r="7" fill="#f4f1ea" />
-    <circle cx="61" cy="46" r="7" fill="#f4f1ea" />
-    <circle cx="40" cy="47" r="3.5" fill="#111" />
-    <circle cx="62" cy="47" r="3.5" fill="#111" />
-    <path
-      d="M42 60 q8 7 16 0"
-      stroke="#f4f1ea"
-      strokeWidth="3"
-      fill="none"
-      strokeLinecap="round"
-    />
-    <path
-      d="M30 30 L42 26"
-      stroke="#FFD700"
-      strokeWidth="3"
-      strokeLinecap="round"
-    />
-    <circle cx="50" cy="20" r="3" fill="#FFD700" />
-  </svg>
-);
-
 /* The mascots in click order. name + role appear in the hover label. */
 const MASCOTS: Mascot[] = [
   { id: "owl", name: "Fukurou", role: "Night shift", art: OWL },
   { id: "fox", name: "Kitsune", role: "Threat hunt", art: FOX },
-  { id: "shield", name: "Tate", role: "Blue team", art: SHIELD },
 ];
 
 /**
