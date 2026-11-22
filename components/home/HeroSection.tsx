@@ -264,21 +264,6 @@ export default function HeroSection({
               </div>
             </a>
 
-            {/* Hanko seal  the maker's stamp */}
-            <div
-              className="absolute bottom-5 right-5 z-20 w-12 h-12 lg:w-14 lg:h-14 bg-primary rotate-6 hover:rotate-0 transition-transform duration-300 flex items-center justify-center"
-              role="img"
-              aria-label="Maker's seal"
-            >
-              <div className="absolute inset-1.5 border border-foreground/40 pointer-events-none" />
-              <span
-                className="brush-jp text-xl lg:text-2xl text-foreground leading-none"
-                lang="ja"
-                aria-hidden="true"
-                data-jp="村長"
-              />
-            </div>
-
             {/* Outer decorative ring with dashes */}
             <div
               className="absolute inset-[-4px] rounded-full pointer-events-none"
