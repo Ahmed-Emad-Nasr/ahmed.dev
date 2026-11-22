@@ -61,16 +61,8 @@ export default function TeachingSection({ content = TEACHING_EN }: { content?: T
                 key={s.label}
                 className="flex flex-wrap items-center gap-x-4 gap-y-1 px-4 sm:px-6 py-5 bg-background min-w-0"
               >
-                <dt className="order-2 flex flex-col min-w-0">
-                  <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
-                    {s.label}
-                  </span>
-                  <span
-                    className="jp-eyebrow text-[0.5625rem] text-foreground/25"
-                    lang="ja"
-                    aria-hidden="true"
-                    data-jp={s.japanese}
-                  />
+                <dt className="order-2 min-w-0 font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
+                  {s.label}
                 </dt>
                 <dd dir="auto" className="order-1 font-mono text-xl md:text-2xl font-black tabular-nums text-accent">
                   {s.value}
@@ -92,17 +84,9 @@ export default function TeachingSection({ content = TEACHING_EN }: { content?: T
               aria-hidden="true"
             />
 
-            <div className="flex items-center justify-between gap-4">
-              <span className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
-                {ui.curriculumLabel}
-              </span>
-              <span
-                className="jp-eyebrow text-[0.625rem] text-foreground/30"
-                lang="ja"
-                aria-hidden="true"
-                data-jp={diploma.japanese}
-              />
-            </div>
+            <span className="block font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
+              {ui.curriculumLabel}
+            </span>
             <h3 className="mt-5 font-display text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight leading-[0.95]">
               {diploma.title}
             </h3>

@@ -93,8 +93,6 @@ export default function FooterBar({ className = "" }: { className?: string }) {
             Ahmed Emad Nasr
           </a>
         </span>
-        <span className="text-primary-ink">•</span>
-        <span lang="ja" aria-hidden="true" data-jp="次のレベル" />
       </div>
     </div>
   );

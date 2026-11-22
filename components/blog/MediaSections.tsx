@@ -41,9 +41,9 @@ const videos: ChannelVideo[] = [
 
 /* The library's numbers strip (counts computed at build time, passed in) */
 const statsOf = (counts: LibraryCounts) => [
-  { value: counts.total, label: "Total cases", japanese: "事件" },
-  { value: counts.withScreenshots, label: "With screenshots", japanese: "証拠" },
-  { value: counts.screenshots, label: "Screenshot assets", japanese: "画像" },
+  { value: counts.total, label: "Total cases" },
+  { value: counts.withScreenshots, label: "With screenshots" },
+  { value: counts.screenshots, label: "Screenshot assets" },
 ];
 
 const Embed = memo(function Embed({
@@ -110,10 +110,7 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
               <span className="font-mono text-xl md:text-2xl font-black text-accent tabular-nums">
                 <CountUp target={s.value} />
               </span>
-              <span className="flex flex-col">
-                <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">{s.label}</span>
-                <span className="jp-eyebrow text-[0.5625rem] text-foreground/25" lang="ja" aria-hidden="true" data-jp={s.japanese} />
-              </span>
+              <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">{s.label}</span>
             </FadeIn>
           ))}
         </div>
@@ -224,7 +221,6 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                 <h3 id="blog-playlists-title" className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">
                   Playlists
                 </h3>
-                <span className="brush-jp text-lg text-foreground/30" lang="ja" aria-hidden="true" data-jp="連続" />
               </div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {playlists.map((playlist, idx) => (

@@ -9,7 +9,6 @@
  * OfferCatalog in app/page.tsx.
  *
  * TO EDIT: change the text of an entry. TO ADD: copy a whole { … } entry.
- *   japanese    → the small label in the card's corner
  *   deliverable → what the client holds at the end (one short line)
  *   proof       → a page or section that shows I have done it:
  *                 "/blog/<case-id>", "/training", "#experience" …
@@ -19,7 +18,6 @@
 export type Service = {
   id: string;
   title: string;
-  japanese: string;
   description: string;
   stack: string[];
   deliverable: string;
@@ -31,7 +29,6 @@ export const SERVICES: Service[] = [
   {
     id: "grc",
     title: "GRC Gap Assessment",
-    japanese: "監査",
     description:
       "Your controls measured against ISO 27001, PCI DSS or NIST CSF: what is in place, what is missing, and what to fix first — written so management can act on it.",
     stack: ["ISO 27001", "PCI DSS", "NIST CSF", "Risk register", "Policies"],
@@ -42,7 +39,6 @@ export const SERVICES: Service[] = [
   {
     id: "soc",
     title: "SOC on Wazuh",
-    japanese: "監視",
     description:
       "A working open-source SOC for a small team: Wazuh SIEM, Suricata and Sysmon, with detection rules written for your own logs instead of noise.",
     stack: ["Wazuh", "Suricata", "Sysmon", "Custom rules", "MITRE ATT&CK"],
@@ -53,7 +49,6 @@ export const SERVICES: Service[] = [
   {
     id: "dfir",
     title: "Incident Investigation",
-    japanese: "調査",
     description:
       "A suspicious alert, e-mail, file or machine looked at properly: what happened, how far it got, what it touched, and how to close the door.",
     stack: ["Alert triage", "Memory & disk", "Malware analysis", "IOCs", "YARA"],
@@ -64,7 +59,6 @@ export const SERVICES: Service[] = [
   {
     id: "training",
     title: "Training & Workshops",
-    japanese: "研修",
     description:
       "The SOC & Cybersecurity Diploma, one module of it, or a short workshop — for a company team, a university or a training centre, in English or Arabic.",
     stack: ["SOC", "Security+", "SIEM labs", "English / Arabic"],

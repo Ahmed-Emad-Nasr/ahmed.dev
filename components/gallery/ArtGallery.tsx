@@ -170,7 +170,7 @@ export default function ArtGallery({ copy = GALLERY_EN }: { copy?: GalleryCopy }
           className="relative mb-28 scroll-mt-28"
           aria-labelledby="all-certificates-title"
         >
-          <Eyebrow japanese="認定">{copy.listEyebrow}</Eyebrow>
+          <Eyebrow>{copy.listEyebrow}</Eyebrow>
           <h2
             id="all-certificates-title"
             className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"
@@ -280,7 +280,7 @@ export default function ArtGallery({ copy = GALLERY_EN }: { copy?: GalleryCopy }
           className="relative scroll-mt-28"
           aria-labelledby="visual-archive-title"
         >
-          <Eyebrow japanese="証拠">{copy.archiveEyebrow}</Eyebrow>
+          <Eyebrow>{copy.archiveEyebrow}</Eyebrow>
           <h2
             id="visual-archive-title"
             className="font-display text-3xl md:text-5xl font-black uppercase tracking-tight text-foreground mb-3"

@@ -59,14 +59,13 @@ function useCopy() {
 }
 
 /* hint = one plain sentence under the title, before the technical content */
-function SectionTitle({ icon, children, japanese, id, hint }: { icon: ReactNode; children: ReactNode; japanese: string; id?: string; hint?: string }) {
+function SectionTitle({ icon, children, id, hint }: { icon: ReactNode; children: ReactNode; id?: string; hint?: string }) {
   return (
     <div className="mb-6">
       <div className="flex items-center gap-3">
         <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
         <span className="text-primary-ink" aria-hidden="true">{icon}</span>
         <h3 id={id} className="font-mono text-[0.625rem] text-primary-ink tracking-[0.35em] uppercase font-bold">{children}</h3>
-        <span className="brush-jp text-base text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />
         <span className="flex-1 h-px bg-gradient-to-r from-foreground/10 to-transparent" aria-hidden="true" />
       </div>
       {hint && <p className="mt-2 max-w-2xl text-sm text-foreground/60 font-light leading-relaxed">{hint}</p>}
@@ -350,7 +349,7 @@ export default function CaseFile({ detail, href, title, part }: { detail?: CaseD
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-10">
             {detail.facts?.length ? (
               <div>
-                <SectionTitle icon={<Fingerprint size={13} />} japanese="概要" hint="Who and what was involved.">Key facts</SectionTitle>
+                <SectionTitle icon={<Fingerprint size={13} />} hint="Who and what was involved.">Key facts</SectionTitle>
                 <Facts facts={detail.facts} />
               </div>
             ) : null}
@@ -358,7 +357,6 @@ export default function CaseFile({ detail, href, title, part }: { detail?: CaseD
               <div>
                 <SectionTitle
                   icon={<GitBranch size={13} />}
-                  japanese="連鎖"
                   hint="The attacker's moves, one after another. The T-codes link to MITRE ATT&CK, the public catalogue of attack techniques."
                 >
                   How the attack unfolded
@@ -371,7 +369,7 @@ export default function CaseFile({ detail, href, title, part }: { detail?: CaseD
 
         {detail.timeline?.length ? (
           <div>
-            <SectionTitle icon={<History size={13} />} japanese="時系列" hint="The same events with their dates and times.">When it happened</SectionTitle>
+            <SectionTitle icon={<History size={13} />} hint="The same events with their dates and times.">When it happened</SectionTitle>
             <Timeline timeline={detail.timeline} />
           </div>
         ) : null}
@@ -388,7 +386,6 @@ export default function CaseFile({ detail, href, title, part }: { detail?: CaseD
           <div>
             <SectionTitle
               icon={<ShieldCheck size={13} />}
-              japanese="対応"
               hint="What was done — or should be done — to stop the damage and close the gap."
             >
               Fixes and safeguards
@@ -408,7 +405,6 @@ export default function CaseFile({ detail, href, title, part }: { detail?: CaseD
           <div>
             <SectionTitle
               icon={<Code2 size={13} />}
-              japanese="検知"
               hint="Rules a monitoring system can run so the same behaviour raises an alarm next time. This part is technical — copy the code as it is."
             >
               Detection rules
@@ -419,7 +415,7 @@ export default function CaseFile({ detail, href, title, part }: { detail?: CaseD
 
         {detail.lessons && (
           <div>
-            <SectionTitle icon={<BookOpen size={13} />} japanese="教訓">What I&apos;d do differently</SectionTitle>
+            <SectionTitle icon={<BookOpen size={13} />}>What I&apos;d do differently</SectionTitle>
             <p className="text-base text-foreground/80 leading-relaxed border-l-2 border-accent pl-5">{detail.lessons}</p>
           </div>
         )}
@@ -434,7 +430,6 @@ export default function CaseFile({ detail, href, title, part }: { detail?: CaseD
         <div>
           <SectionTitle
             icon={<Fingerprint size={13} />}
-            japanese="痕跡"
             hint="The traces the attacker left behind — addresses, files and fingerprints other defenders can search for (called indicators of compromise, or IOCs)."
           >
             Traces left behind — {detail.iocs.length}
@@ -445,7 +440,7 @@ export default function CaseFile({ detail, href, title, part }: { detail?: CaseD
 
       {detail?.attachments?.length ? (
         <div>
-          <SectionTitle icon={<Paperclip size={13} />} japanese="添付" hint="Extra documents that belong to this case.">Supporting files</SectionTitle>
+          <SectionTitle icon={<Paperclip size={13} />} hint="Extra documents that belong to this case.">Supporting files</SectionTitle>
           <ul className="flex flex-wrap gap-3">
             {detail.attachments.map((a) => (
               <li key={a.href}>
@@ -467,7 +462,6 @@ export default function CaseFile({ detail, href, title, part }: { detail?: CaseD
         <div>
           <SectionTitle
             icon={<FileText size={13} />}
-            japanese="報告書"
             hint="The original report, with every command, screenshot and finding."
           >
             The full technical report{detail?.pages ? ` — ${detail.pages} pages` : ""}

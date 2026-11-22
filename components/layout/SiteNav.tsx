@@ -12,8 +12,7 @@
  *   • Phones and tablets under 1024px: a full-screen menu.
  *
  * Add / rename / reorder a link → navItems below (the #id must exist on the
- * home page; icon = any lucide-react icon; katakana = the small word under
- * it in the phone menu).
+ * home page; icon = any lucide-react icon).
  */
 
 import { AnimatePresence, m as motion } from "framer-motion";
@@ -39,14 +38,14 @@ import {
    section rail on the right (components/home/SectionRail.tsx), the footer
    and the command palette (Ctrl+K). */
 const navItems = [
-  { name: "Home", href: "#home", icon: Home, katakana: "ホーム" },
-  { name: "Projects", href: "#work", icon: Code2, katakana: "仕事" },
-  { name: "Services", href: "#services", icon: Handshake, katakana: "役務" },
-  { name: "Experience", href: "#experience", icon: Briefcase, katakana: "経験" },
+  { name: "Home", href: "#home", icon: Home },
+  { name: "Projects", href: "#work", icon: Code2 },
+  { name: "Services", href: "#services", icon: Handshake },
+  { name: "Experience", href: "#experience", icon: Briefcase },
   /* Pages of their own (lib/routes.ts) */
-  { name: "Blog", href: "/blog", icon: BookOpen, katakana: "記録" },
-  { name: "Teaching", href: "/teaching", icon: GraduationCap, katakana: "指導" },
-  { name: "Contact", href: "#contact", icon: Mail, katakana: "連絡" },
+  { name: "Blog", href: "/blog", icon: BookOpen },
+  { name: "Teaching", href: "/teaching", icon: GraduationCap },
+  { name: "Contact", href: "#contact", icon: Mail },
 ];
 
 /* "/blog" → that page. "#work" → the section on the home page: a plain
@@ -263,15 +262,10 @@ export default function SiteNav() {
                       className="shrink-0 text-foreground/15 group-hover:text-primary-ink transition-colors duration-300"
                     />
 
-                    {/* Name - large katakana style */}
-                    <div className="flex flex-col min-w-0">
-                      <span className="font-display text-[clamp(1.375rem,7.2vw,1.875rem)] font-black text-foreground uppercase tracking-tight group-hover:text-primary-ink transition-colors duration-300">
-                        {item.name}
-                      </span>
-                      <span className="font-mono text-[11px] text-foreground/60 tracking-[0.16em]" lang="ja">
-                        {item.katakana}
-                      </span>
-                    </div>
+                    {/* Name */}
+                    <span className="min-w-0 font-display text-[clamp(1.375rem,7.2vw,1.875rem)] font-black text-foreground uppercase tracking-tight group-hover:text-primary-ink transition-colors duration-300">
+                      {item.name}
+                    </span>
 
                     {/* Red accent on hover */}
                     <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0 h-[2px] bg-primary group-hover:w-6 transition-all duration-300" />

@@ -50,7 +50,6 @@ export default function AthleteSection() {
                 </div>
                 <p className="relative font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
                   {a.sport}
-                  <span className="jp-eyebrow ms-3 text-foreground/30" lang="ja" aria-hidden="true" data-jp={a.japanese} />
                 </p>
                 <h3 className="relative mt-3 font-display text-2xl md:text-3xl font-black uppercase tracking-tight leading-tight">{a.club}</h3>
                 <p className="relative mt-4 max-w-xl text-sm md:text-[0.9375rem] text-foreground/65 font-light leading-relaxed">{a.detail}</p>

@@ -23,7 +23,6 @@ import { CV_PDF_HREF, GITHUB_USERNAME, HOME_LOCATION, YOUTUBE_CHANNEL_URL, norma
 export const PROFILE: Profile = {
   name: "Ahmed Emad Nasr",
   title: "Information Security Officer",
-  japaneseTitle: "情報セキュリティ担当 • Information Security Officer",
   availability: "Open to InfoSec roles: Officer, Engineer, GRC, SOC, IR/DFIR, IAM and Security Education",
   /* The areas shown on the hero's "Focus" row */
   focus: ["GRC", "SOC", "IR & DFIR", "Malware", "IAM", "Data Security"],

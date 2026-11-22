@@ -24,8 +24,7 @@ export default function CaseNumbers({ numbers, prevented }: { numbers: readonly 
   return (
     <FadeIn y={16} duration={0.6} className="mb-10">
       <p className="mb-3 font-mono text-[0.625rem] font-bold uppercase tracking-[0.35em] text-foreground/60">
-        By the numbers{" "}
-        <span className="jp-eyebrow ml-2 text-[0.6875rem] tracking-normal text-foreground/30" lang="ja" aria-hidden="true" data-jp="指標" />
+        By the numbers
       </p>
       {numbers.length >= 2 && (
         /* gap-px over a tinted background = hairlines between the tiles */

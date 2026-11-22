@@ -51,7 +51,7 @@ export default function ExperienceTimeline() {
 
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
-          eyebrow="Professional Path // 職歴"
+          eyebrow="Professional Path"
           titleA="Professional"
           titleB="Experience."
           size="lg"
@@ -108,14 +108,6 @@ export default function ExperienceTimeline() {
                   <MapPin size={12} strokeWidth={2} />
                   <span className="text-xs">{item.location}</span>
                 </div>
-
-                {/* Japanese Role Tag */}
-                {item.japaneseRole && (
-                  <div className="mt-2 inline-flex items-center gap-2 px-3 py-1.5 bg-foreground/[0.03] border-l-2 border-primary text-[0.625rem] font-mono font-bold text-foreground/60 tracking-[0.15em] w-fit">
-                    <span className="text-primary-ink">JP</span>
-                    <span>{item.japaneseRole}</span>
-                  </div>
-                )}
               </div>
 
               {/* Right Column: Service Record Panel */}

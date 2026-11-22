@@ -8,7 +8,7 @@
  *                        refresh them now and then (and asOf)
  *   tryHackMePlatform  → the text of the big TryHackMe card
  *   STATIC_PLATFORMS   → the other cards. Add one by copying an entry:
- *                        id, name, mark (2–3 letters), japanese, handle, url,
+ *                        id, name, mark (2–3 letters), handle, url,
  *                        focus (one sentence), stats [{ value, label }]
  */
 
@@ -37,7 +37,6 @@ export type Platform = {
   name: string;
   /** Short monogram, shown when the platform has no logo in data/logos.ts */
   mark: string;
-  japanese: string;
   handle: string;
   url: string;
   /** What this platform was used for — one line */
@@ -55,7 +54,6 @@ export const tryHackMePlatform = (s: TryHackMeStats): Platform => ({
   id: "tryhackme",
   name: "TryHackMe",
   mark: "THM",
-  japanese: "修練",
   handle: TRYHACKME_USERNAME,
   url: `https://tryhackme.com/p/${TRYHACKME_USERNAME}`,
   focus: "Blue-team paths — SOC Level 1 & 2 completed — plus the rooms behind most of the library's write-ups.",
@@ -73,7 +71,6 @@ export const STATIC_PLATFORMS: Platform[] = [
     id: "hackthebox",
     name: "Hack The Box",
     mark: "HTB",
-    japanese: "攻略",
     handle: "AhmedEmadNasr",
     url: "https://profile.hackthebox.com/profile/01a13b5b-f63f-737f-9adc-91a78153a84f",
     focus: "Offensive labs from the ITI penetration-testing track — enumeration, exploitation and privilege escalation.",
@@ -83,7 +80,6 @@ export const STATIC_PLATFORMS: Platform[] = [
     id: "cyberdefenders",
     name: "CyberDefenders",
     mark: "CD",
-    japanese: "防御",
     handle: "ahmed.em.nasr",
     url: "https://cyberdefenders.org/p/ahmed.em.nasr",
     focus: "Blue-team DFIR labs, investigated the way a real incident would be.",
@@ -93,7 +89,6 @@ export const STATIC_PLATFORMS: Platform[] = [
     id: "cybertalents",
     name: "CyberTalents",
     mark: "CT",
-    japanese: "競技",
     handle: "3omdaa",
     url: "https://cybertalents.com/members/3omdaa",
     focus: "CTF competitions and the Introduction to Cybersecurity bootcamp.",

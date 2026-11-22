@@ -112,7 +112,7 @@ That's it — the video's page, its card on the blog and on `/videos`, and its s
 | The note that explains each page (bottom corner, once per page) | `data/page-guides.ts` — change its `id` to show an edited note again |
 | Sports ("Off the Clock." on the home page) | `data/about.ts` → `ATHLETICS` |
 | The loader's timing (full on the first page, short after) | `DURATION` / `QUICK` / `READY_WAIT` in `components/layout/AppLoader.tsx` |
-| A role card ("What I Do." on the home page) | `components/home/ServicesSection.tsx` → `ROLES` (its `service:` picks the e-mail subject and Japanese label) |
+| A role card ("What I Do." on the home page) | `components/home/ServicesSection.tsx` → `ROLES` (its `service:` picks the e-mail subject) |
 | A service (the e-mail subject, and the list Google reads) | `data/services.ts` — then point a role card at it with `service: "<id>"` |
 | A student note / recommendation | `data/testimonials.ts` — **copy it word for word**; Arabic ones get `lang: "ar"` |
 | A detection rule | `data/detection-rules.ts` |

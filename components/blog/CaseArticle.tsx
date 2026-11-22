@@ -120,13 +120,11 @@ const PLAIN_GOAL: Record<CaseKind, string> = {
 
 function BlockTitle({
   children,
-  japanese,
   id,
   hint,
   as: Heading = "h3",
 }: {
   children: ReactNode;
-  japanese: string;
   id?: string;
   hint?: string;
   as?: "h2" | "h3";
@@ -141,12 +139,6 @@ function BlockTitle({
         >
           {children}
         </Heading>
-        <span
-          className="brush-jp text-base text-foreground/30"
-          lang="ja"
-          aria-hidden="true"
-          data-jp={japanese}
-        />
       </div>
       {hint && (
         <p className="mt-2 max-w-2xl text-sm text-foreground/60 font-light leading-relaxed">
@@ -314,12 +306,6 @@ export default function CaseArticle({
                 {kindLabel}
               </span>
             )}
-            <span
-              className="jp-eyebrow text-[0.6875rem] text-foreground/30"
-              lang="ja"
-              aria-hidden="true"
-              data-jp="事件"
-            />
           </div>
           {/* Shares its name with the title on the library card it was opened from */}
           <ViewTransition name={`case-title-${item.id}`}>
@@ -366,7 +352,7 @@ export default function CaseArticle({
 
         {/* ── The goal ── */}
         <section className="mb-16 md:mb-20" aria-labelledby="case-goal-title">
-          <Chapter n={chapter()} title="The goal" japanese="目的" id="case-goal-title">
+          <Chapter n={chapter()} title="The goal" id="case-goal-title">
             Why this work was done, in one sentence — no technical background
             needed.
           </Chapter>
@@ -476,7 +462,6 @@ export default function CaseArticle({
             <Chapter
               n={chapter()}
               title={kind === "lab" || kind === "note" ? "How the attack works" : "What happened?"}
-              japanese="経緯"
               id="case-happened-title"
             >
               {kind === "lab" || kind === "note"
@@ -489,7 +474,7 @@ export default function CaseArticle({
 
         {/* ── What I did ── */}
         <section className="mb-16 md:mb-20" aria-labelledby="case-did-title">
-          <Chapter n={chapter()} title="What I did" japanese="対応" id="case-did-title">
+          <Chapter n={chapter()} title="What I did" id="case-did-title">
             My own work on this case, step by step, and the tools I used for
             it.
           </Chapter>
@@ -497,7 +482,7 @@ export default function CaseArticle({
             <CaseSummary summary={summary} part="work" />
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               <div>
-                <BlockTitle japanese="道具" hint="The software used in this case.">Tools I used</BlockTitle>
+                <BlockTitle hint="The software used in this case.">Tools I used</BlockTitle>
                 <div className="flex flex-wrap gap-2">
                   {item.tools.map((tool) => (
                     <span key={tool} className={chipTertiary}>
@@ -507,7 +492,7 @@ export default function CaseArticle({
                 </div>
               </div>
               <div>
-                <BlockTitle japanese="技能" hint="What this work shows I can do.">Skills it shows</BlockTitle>
+                <BlockTitle hint="What this work shows I can do.">Skills it shows</BlockTitle>
                 <div className="flex flex-wrap gap-2">
                   {item.skillsGained.map((skill) => (
                     <span key={skill} className={chipAccent}>
@@ -523,7 +508,7 @@ export default function CaseArticle({
         {/* ── How to stop it happening again ── */}
         {has.prevent && (
           <section className="mb-16 md:mb-20" aria-labelledby="case-prevent-title">
-            <Chapter n={chapter()} title="How to stop it happening again" japanese="予防" id="case-prevent-title">
+            <Chapter n={chapter()} title="How to stop it happening again" id="case-prevent-title">
               The fixes, and the alarms that would catch the same attack next
               time.
             </Chapter>
@@ -533,14 +518,14 @@ export default function CaseArticle({
 
         {/* ── Evidence & supporting files ── */}
         <section className="mb-16 md:mb-20" aria-labelledby="case-evidence-title">
-          <Chapter n={chapter()} title="Evidence & supporting files" japanese="証拠" id="case-evidence-title">
+          <Chapter n={chapter()} title="Evidence & supporting files" id="case-evidence-title">
             The proof behind everything above: screenshots, technical
             identifiers and the full report.
           </Chapter>
           <div className="space-y-14">
             {screenshots.length > 0 && (
               <div>
-                <BlockTitle japanese="画像" hint="Taken while doing the work. Click one to enlarge it.">
+                <BlockTitle hint="Taken while doing the work. Click one to enlarge it.">
                   Screenshots — {screenshots.length}
                 </BlockTitle>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -567,7 +552,6 @@ export default function CaseArticle({
             {techniques.length > 0 && (
               <div>
                 <BlockTitle
-                  japanese="戦術"
                   hint="MITRE ATT&CK is the public catalogue security teams use to name attacker techniques. These are the ones seen in this case — click one to see every other case that shows it."
                 >
                   Attack techniques (MITRE ATT&amp;CK) — {techniques.length}
@@ -598,7 +582,7 @@ export default function CaseArticle({
             )}
 
             <div>
-              <BlockTitle japanese="標識" hint="Click a topic to see every other case about it.">Topics</BlockTitle>
+              <BlockTitle hint="Click a topic to see every other case about it.">Topics</BlockTitle>
               <div className="flex flex-wrap gap-2">
                 {item.tags.map((tag) => (
                   <Link
@@ -617,7 +601,7 @@ export default function CaseArticle({
 
         {relatedVideos.length > 0 && (
           <section className="mb-16" aria-labelledby="case-videos-title">
-            <BlockTitle id="case-videos-title" japanese="動画" as="h2">
+            <BlockTitle id="case-videos-title" as="h2">
               Watch it explained
             </BlockTitle>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -654,7 +638,7 @@ export default function CaseArticle({
 
         {related.length > 0 && (
           <section className="mb-16" aria-labelledby="case-related-title">
-            <BlockTitle id="case-related-title" japanese="関連" as="h2">
+            <BlockTitle id="case-related-title" as="h2">
               Similar cases
             </BlockTitle>
             <ul className="grid grid-cols-1 md:grid-cols-3 gap-6">

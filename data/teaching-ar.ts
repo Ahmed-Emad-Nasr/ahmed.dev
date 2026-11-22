@@ -14,14 +14,13 @@ import { DIPLOMA, type TeachingContent } from "@/data/teaching";
 export const TEACHING_AR: TeachingContent = {
   lang: "ar",
   stats: [
-    { value: "300+", label: "متدرب في AMIT و NTI", japanese: "受講生" },
-    { value: String(TESTIMONIALS.length), label: "رأي مكتوب", japanese: "推薦" },
-    { value: "الأول", label: "من بين 250 مدربًا · GDG", japanese: "首位" },
-    { value: "60K+", label: "مشاهدة على يوتيوب", japanese: "視聴" },
+    { value: "300+", label: "متدرب في AMIT و NTI" },
+    { value: String(TESTIMONIALS.length), label: "رأي مكتوب" },
+    { value: "الأول", label: "من بين 250 مدربًا · GDG" },
+    { value: "60K+", label: "مشاهدة على يوتيوب" },
   ],
   diploma: {
     title: "دبلومة SOC والأمن السيبراني",
-    japanese: DIPLOMA.japanese,
     hours: DIPLOMA.hours,
     summary:
       "مسار عملي كامل مدته 160 ساعة: من أساسيات الشبكات وأنظمة التشغيل، إلى اختبار الاختراق، والتعامل مع الحوادث الأمنية، وتحليل تنبيهات SIEM داخل مركز عمليات أمنية (SOC) حقيقي. كتبته ودرّسته كمسار واحد متصل، وبعد كل محاضرة لاب عملي.",

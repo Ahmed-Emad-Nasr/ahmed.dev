@@ -167,7 +167,7 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
 
           {/* The video — the main content of the page */}
           <div className="mt-10 relative aspect-video w-full overflow-hidden border border-foreground/10 bg-surface">
-            {/* Thumbnail first; the YouTube player loads on "Play" */}
+            {/* The real player from the start: a watch page must not need a click (components/videos/VideoPlayer.tsx) */}
             <VideoPlayer videoId={video.videoId} title={video.title} />
           </div>
 

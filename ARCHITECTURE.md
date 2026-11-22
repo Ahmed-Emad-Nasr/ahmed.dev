@@ -159,7 +159,7 @@ fresh worker that drops the old page cache by itself; nothing to bump.
 ## Security
 
 A Content-Security-Policy `<meta>` (`lib/security.ts`; GitHub Pages cannot
-send headers), strict referrer policy, no third-party scripts, and YouTube embeds load only after a click.
+send headers), strict referrer policy, no third-party scripts, and YouTube embeds load only after a click — except the player on a video page (`/videos/<slug>`), which is there from the start because Google indexes a video only when its watch page shows it without a click (youtube-nocookie, so no YouTube cookies until play).
 After every build `scripts/csp-hashes.mjs` (postbuild) replaces
 `'unsafe-inline'` in each page's `script-src` with the SHA-256 of the inline
 scripts that page really has, so an injected script is refused by the

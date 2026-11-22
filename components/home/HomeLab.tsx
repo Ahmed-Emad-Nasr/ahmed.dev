@@ -75,7 +75,6 @@ export default function HomeLab() {
 
         <PlainNotes
           title="How I test security"
-          japanese="試験"
           items={[
             { title: "Attack", text: "I launch a known attack against my own Windows and Linux machines (from Kali Linux, with Atomic Red Team)." },
             { title: "Watch", text: "Sensors on the machines and the network record everything that happens (Sysmon, auditd, Suricata, Zeek)." },

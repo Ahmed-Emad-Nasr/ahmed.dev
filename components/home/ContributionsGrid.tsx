@@ -27,7 +27,6 @@ export default function ContributionsGrid({ stats }: { stats: ContributionStats 
           <h2 className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.16em] uppercase">
             Upstream // Contributed
           </h2>
-          <span className="brush-jp text-lg text-foreground/30" lang="ja" aria-hidden="true" data-jp="貢献" />
           {stats.status === "ready" && (
             <span className="ml-auto flex items-center gap-3 border border-foreground/10 bg-surface/60 px-4 py-2">
               <span className="font-mono text-lg font-black text-accent tabular-nums">

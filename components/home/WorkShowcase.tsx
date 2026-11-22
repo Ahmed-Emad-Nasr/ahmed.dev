@@ -46,12 +46,12 @@ import { KanjiWatermark } from "@/components/ui/kit";
 import { BrandGlyph } from "@/components/ui/OrgLogo";
 
 /* The filter buttons, in order. id must be a WorkType (or "all"). */
-const FILTERS: { id: WorkType | "all"; label: string; japanese: string }[] = [
-  { id: "all", label: "All", japanese: "全部" },
-  { id: "lab", label: "Labs", japanese: "実験" },
-  { id: "research", label: "Research", japanese: "研究" },
-  { id: "tool", label: "Tools", japanese: "道具" },
-  { id: "platform", label: "Platforms", japanese: "基盤" },
+const FILTERS: { id: WorkType | "all"; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "lab", label: "Labs" },
+  { id: "research", label: "Research" },
+  { id: "tool", label: "Tools" },
+  { id: "platform", label: "Platforms" },
 ];
 
 /* The small icon shown on a card for each project type */
@@ -110,13 +110,7 @@ export default function WorkShowcase({
                   : "bg-foreground/[0.03] text-foreground/70 border-foreground/10 hover:border-primary/50 hover:text-foreground"
               }`}
             >
-              {f.label}{" "}
-              <span
-                className="ml-2 text-[0.5625rem]"
-                lang="ja"
-                aria-hidden="true"
-                data-jp={f.japanese}
-              />
+              {f.label}
             </button>
           ))}
         </div>

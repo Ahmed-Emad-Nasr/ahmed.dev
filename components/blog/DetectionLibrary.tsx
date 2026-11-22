@@ -53,7 +53,6 @@ export default function DetectionLibrary() {
 
         <PlainNotes
           title="How to read the list"
-          japanese="読み方"
           items={[
             { title: "Rule", text: "Each row is one alarm, with its number. The sentence next to it says what makes it ring." },
             { title: "Level", text: "How serious the alarm is, from 0 to 15. Anything from 12 up needs a person to look at it straight away." },

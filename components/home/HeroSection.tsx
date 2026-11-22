@@ -8,7 +8,7 @@
  * for the intro screen to lift (lib/intro.ts) so it is actually seen.
  *
  * WHERE THE TEXT COMES FROM (edit there, not here):
- *   name, japaneseTitle, hero.specs, hero.tagline, hero.cvUrl,
+ *   name, title, hero.specs, hero.tagline, hero.cvUrl,
  *   availability, title, focus, contact.*        → data/profile.ts
  *   the summary paragraph                         → data/live-copy.ts
  *   the project count + the language codes        → app/page.tsx (props)
@@ -163,7 +163,7 @@ export default function HeroSection({
         <div className="flex max-w-full items-center gap-3 px-4 py-2 bg-foreground/[0.03] border border-foreground/10 mb-8">
           <div className="w-2 h-2 shrink-0 bg-primary" />
           <span className="min-w-0 sm:whitespace-nowrap text-[0.5rem] font-mono font-bold uppercase tracking-[0.15em] text-on-surface-variant sm:text-xs sm:tracking-[0.16em]">
-            {PROFILE.japaneseTitle}
+            {PROFILE.title}
           </span>
         </div>
 
@@ -172,7 +172,7 @@ export default function HeroSection({
           {/* Name */}
           <div className="text-center md:text-left order-2 md:order-1 w-full md:w-auto md:flex-1 min-w-0">
             <p className="font-mono text-[0.6875rem] md:text-xs font-bold uppercase tracking-[0.16em] text-primary-ink mb-3">
-              Portfolio · 履歴書
+              Portfolio
             </p>
             {/* The size follows the room left beside the portrait, so "EMAD NASR"
                 (about 8.3 times the font size wide) always fits on ONE line:
@@ -230,7 +230,7 @@ export default function HeroSection({
                 </defs>
                 <text fontSize="8" letterSpacing="2.5" className="fill-foreground/30 font-mono uppercase">
                   <textPath href="#hero-orbit">
-                    SOC • IR • GRC • ISO 27001 • SOAR • Splunk • YARA • IAM • PAM • 侍 •
+                    SOC • IR • GRC • ISO 27001 • SOAR • Splunk • YARA • IAM • PAM • DFIR •
                   </textPath>
                 </text>
               </svg>
@@ -344,12 +344,6 @@ export default function HeroSection({
                   <Download size={16} aria-hidden="true" className="transition-transform duration-300 group-hover:translate-y-0.5" />
                   Download CV
                   <span className="sr-only"> (download)</span>
-                  <span
-                    className="brush-jp text-base normal-case tracking-normal opacity-70"
-                    lang="ja"
-                    aria-hidden="true"
-                    data-jp="履歴書"
-                  />
                 </a>
                 <a
                   href="#work"
@@ -357,12 +351,6 @@ export default function HeroSection({
                 >
                   <ArrowDown size={14} className="text-primary-ink transition-transform duration-300 group-hover:translate-y-0.5" />
                   View Work
-                  <span
-                    className="brush-jp text-base normal-case tracking-normal text-foreground/50"
-                    lang="ja"
-                    aria-hidden="true"
-                    data-jp="仕事"
-                  />
                 </a>
               </div>
 
@@ -406,12 +394,6 @@ export default function HeroSection({
               <span className="font-mono text-[0.625rem] font-bold tracking-[0.16em] uppercase text-primary-ink">
                 Field Record
               </span>
-              <span
-                className="brush-jp text-base text-foreground/30"
-                lang="ja"
-                aria-hidden="true"
-                data-jp="記録"
-              />
             </div>
             <dl className="flex flex-col">
               <FieldRow label="Status" value={PROFILE.availability} hot />

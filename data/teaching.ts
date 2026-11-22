@@ -11,20 +11,19 @@
 import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { TESTIMONIALS } from "@/data/testimonials";
 
-type TeachingStat = { value: string; label: string; japanese: string };
+type TeachingStat = { value: string; label: string };
 
 export const TEACHING_STATS: TeachingStat[] = [
-  { value: "300+", label: "Students at AMIT & NTI (combined)", japanese: "受講生" },
+  { value: "300+", label: "Students at AMIT & NTI (combined)" },
   /* Counted from data/testimonials.ts — the recommendations are quoted on the home page, the students on /teaching */
-  { value: String(TESTIMONIALS.length), label: "Written testimonials", japanese: "推薦" },
-  { value: "1st", label: "Of 250 instructors · GDG", japanese: "首位" },
-  { value: "60K+", label: "YouTube views", japanese: "視聴" },
+  { value: String(TESTIMONIALS.length), label: "Written testimonials" },
+  { value: "1st", label: "Of 250 instructors · GDG" },
+  { value: "60K+", label: "YouTube views" },
 ];
 
 /* The SOC & Cybersecurity Diploma — the curriculum taught end to end */
 export const DIPLOMA = {
   title: "SOC & Cybersecurity Diploma",
-  japanese: "課程",
   hours: 160,
   summary:
     "A complete 160-hour practitioner path from network & OS foundations to offensive exploitation, incident handling, and live SIEM/SOC alert triage. Written and taught as one structured track with hands-on labs after every session.",

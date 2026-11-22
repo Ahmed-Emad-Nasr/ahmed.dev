@@ -188,7 +188,7 @@ export default function ContactFooter() {
                   transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                   className="pointer-events-none absolute right-6 top-6 z-20 border-2 border-primary px-4 py-2 font-mono text-[0.6875rem] font-black uppercase tracking-[0.35em] text-primary-ink bg-background/80"
                 >
-                  Ready to send <span className="brush-jp ml-2 text-base tracking-normal" lang="ja">送信</span>
+                  Ready to send
                 </motion.div>
               )}
             </AnimatePresence>
@@ -202,7 +202,7 @@ export default function ContactFooter() {
             <div className="flex items-center gap-3 mb-2">
               <div className="w-6 h-[2px] bg-primary" aria-hidden="true" />
               <span className="font-mono text-[0.6875rem] text-primary-ink tracking-[0.16em] uppercase font-bold">
-                Send a message // 依頼
+                Send a message
               </span>
             </div>
             <h3 className="font-display text-3xl font-black mb-3 uppercase tracking-tight text-foreground">

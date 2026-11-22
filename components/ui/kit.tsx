@@ -22,7 +22,7 @@
  *   <PlainNotes title items>                → a strip of short numbered notes that
  *                                             explain a technical section in plain
  *                                             words, before the technical part
- *   <Chapter n title japanese>              → a numbered plain-language part of a
+ *   <Chapter n title>                       → a numbered plain-language part of a
  *                                             case page ("02 — What happened?")
  *   <KanjiWatermark>                        → huge faded kanji behind a section
  *
@@ -65,14 +65,11 @@ export const cardSurface =
   "spotlight group relative bg-surface/60 border border-foreground/5 hover:border-primary/40 transition-colors duration-300";
 
 /* Small label row — the "eyebrow" inside cards and blocks */
-export function Eyebrow({ children, japanese }: { children: ReactNode; japanese?: string }) {
+export function Eyebrow({ children }: { children: ReactNode }) {
   return (
     <div className="flex items-center gap-4 mb-6">
       <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
       <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">{children}</span>
-      {japanese && (
-        <span className="jp-eyebrow text-[0.6875rem] text-foreground/30 uppercase" lang="ja" aria-hidden="true" data-jp={japanese} />
-      )}
     </div>
   );
 }
@@ -82,11 +79,9 @@ export function Eyebrow({ children, japanese }: { children: ReactNode; japanese?
    the site's other panels. */
 export function PlainNotes({
   title,
-  japanese,
   items,
 }: {
   title: string;
-  japanese?: string;
   items: readonly { title: string; text: string }[];
 }) {
   return (
@@ -94,7 +89,6 @@ export function PlainNotes({
       <div className="flex items-center gap-3 px-5 py-3 border-b border-foreground/10">
         <div className="w-2 h-2 bg-accent" aria-hidden="true" />
         <span className="font-mono text-[0.5625rem] uppercase tracking-[0.3em] text-foreground/60">{title}</span>
-        {japanese && <span className="brush-jp text-sm text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />}
       </div>
       <ol className={`grid grid-cols-1 sm:grid-cols-2 gap-px bg-foreground/5 ${items.length >= 4 ? "lg:grid-cols-4" : "lg:grid-cols-3"}`}>
         {items.map((item, i) => (
@@ -115,13 +109,11 @@ export function PlainNotes({
 export function Chapter({
   n,
   title,
-  japanese,
   id,
   children,
 }: {
   n: number;
   title: string;
-  japanese: string;
   id: string;
   children: ReactNode;
 }) {
@@ -132,7 +124,6 @@ export function Chapter({
           {String(n).padStart(2, "0")}
         </span>
         <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-        <span className="brush-jp text-lg text-foreground/30" lang="ja" aria-hidden="true" data-jp={japanese} />
         <span className="flex-1 h-px bg-gradient-to-r from-foreground/10 to-transparent" aria-hidden="true" />
       </div>
       <h2

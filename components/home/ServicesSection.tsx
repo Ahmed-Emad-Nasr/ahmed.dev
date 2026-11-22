@@ -284,9 +284,6 @@ export function ServicesSection() {
                       className="text-tertiary transition-transform duration-300 group-hover:scale-110"
                     />
                   </div>
-                  {service && (
-                    <span className="jp-eyebrow text-[0.6875rem] text-foreground/25" lang="ja" aria-hidden="true" data-jp={service.japanese} />
-                  )}
                 </div>
                 <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-tertiary mb-1.5">
                   {r.serviceArea}
