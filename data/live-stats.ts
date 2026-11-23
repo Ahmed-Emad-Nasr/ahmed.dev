@@ -38,11 +38,54 @@ export interface LiveStats {
 export const LIVE_STATS: LiveStats = {
   "checked": "2026-11-23",
   "youtube": {
-    "subscribers": 610,
-    "views": 60000,
+    "subscribers": 611,
+    "views": 40517,
     "videos": 86
   },
-  "playlists": [],
+  "playlists": [
+    {
+      "id": "PLWgsM4fK9Xls",
+      "title": "Cybersecurity Basics",
+      "description": "مصطلحات Cybersecurity ببساطة | Cybersecurity Terms Explained\n\nفي الـPlaylist دي هنتكلم عن أهم **Cybersecurity Terms & Concepts** اللي لازم تكون فاهمها لو بتبدأ أو بتطور نفسك في مجال الـCybersecurity.\n\nكل فيديو بيركز على **مصطلح أو Concept مهم**، وبيشرحه بطريقة بسيطة وعملية، مع توضيح معناه، بيستخدم فين، وليه مهم في عالم الـCybersecurity.\n\nهنتكلم عن مواضيع ومص",
+      "count": 22
+    },
+    {
+      "id": "PLPDYYur6-Ax4",
+      "title": "VerifAI360 Complaince Framework",
+      "description": "",
+      "count": 1
+    },
+    {
+      "id": "PLLzq933rD6WE",
+      "title": "SOC Environment",
+      "description": "",
+      "count": 10
+    },
+    {
+      "id": "PLcw8B9lEwARs",
+      "title": "Enterprise Vulnerability Assessment & Attack Lifecycle Simulation",
+      "description": "penetration testing And Threat Emulation Training , Enterprise Vulnerability Assessment & Attack Lifecycle Simulation Project",
+      "count": 18
+    },
+    {
+      "id": "PLO1VSSKnwZUgGaiDZXU-mKuh8CUZx-gAd",
+      "title": "Malware Analysis",
+      "description": "My Malware Analysis Project",
+      "count": 11
+    },
+    {
+      "id": "PLO1VSSKnwZUgbiE0ev1TUr5wPI9kxxbgL",
+      "title": "Wazuh.",
+      "description": "",
+      "count": 14
+    },
+    {
+      "id": "PLO1VSSKnwZUgdrITjagQD0mikt6Xk64yX",
+      "title": "Wazuh Threat Emulation",
+      "description": "Depi Project & All Proof Of Concept Of Wazuh. and Threat Emulation",
+      "count": 16
+    }
+  ],
   "tryhackme": {
     "rank": 10427,
     "topPercentage": 1,
