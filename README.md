@@ -20,8 +20,8 @@
 [![TryHackMe](https://img.shields.io/badge/TryHackMe-profile-212C42?style=flat-square&logo=tryhackme&logoColor=white)](https://tryhackme.com/p/Ahmed.Emad.Nasr)
 [![Email](https://img.shields.io/badge/Email-ahmed.em.nasr%40gmail.com-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:ahmed.em.nasr@gmail.com)
 
-[![PageSpeed mobile](https://img.shields.io/badge/PageSpeed_mobile-94-0CCE6B?style=flat-square&logo=pagespeedinsights&logoColor=white)](#-pagespeed---report)
-[![PageSpeed desktop](https://img.shields.io/badge/PageSpeed_desktop-97-0CCE6B?style=flat-square&logo=pagespeedinsights&logoColor=white)](#-pagespeed---report)
+[![PageSpeed mobile](https://img.shields.io/badge/PageSpeed_mobile-97-0CCE6B?style=flat-square&logo=pagespeedinsights&logoColor=white)](#-pagespeed---report)
+[![PageSpeed desktop](https://img.shields.io/badge/PageSpeed_desktop-99-0CCE6B?style=flat-square&logo=pagespeedinsights&logoColor=white)](#-pagespeed---report)
 [![Accessibility](https://img.shields.io/badge/Accessibility-100-0CCE6B?style=flat-square&logo=accessibleicon&logoColor=white)](#-pagespeed---report)
 [![SEO](https://img.shields.io/badge/SEO-100-0CCE6B?style=flat-square&logo=google&logoColor=white)](#-pagespeed---report)
 [![License: GPL-3.0](https://img.shields.io/badge/code-GPL--3.0-555555?style=flat-square)](./LICENSE)
@@ -52,26 +52,26 @@ MITRE ATT&CK mapping underneath for the technical reader.
 ## `> pagespeed --report`
 
 Measured with [PageSpeed Insights](https://pagespeed.web.dev/) on the live home page.
-Lab scores vary by a few points between runs.
+Captured on Nov 23, 2026 (Lighthouse 13.6.0; mobile = emulated Moto G Power on slow 4G, desktop = emulated desktop). Lab scores vary by a few points between runs.
 
 <table>
   <tr>
-    <th align="center">📱 Mobile — 94</th>
-    <th align="center">🖥️ Desktop — 97</th>
+    <th align="center">📱 Mobile — 97</th>
+    <th align="center">🖥️ Desktop — 99</th>
   </tr>
   <tr>
-    <td><img src="./screenshots/pagespeed-mobile.webp" alt="PageSpeed Insights, mobile: Performance 94, Accessibility 100, Best Practices 100, SEO 100" width="100%"></td>
-    <td><img src="./screenshots/pagespeed-desktop.webp" alt="PageSpeed Insights, desktop: Performance 97, Accessibility 100, Best Practices 100, SEO 100" width="100%"></td>
+    <td><img src="./screenshots/pagespeed-mobile.webp" alt="PageSpeed Insights, mobile: Performance 97, Accessibility 100, Best Practices 100, SEO 100" width="100%"></td>
+    <td><img src="./screenshots/pagespeed-desktop.webp" alt="PageSpeed Insights, desktop: Performance 99, Accessibility 100, Best Practices 100, SEO 100" width="100%"></td>
   </tr>
 </table>
 
 | Metric | Mobile | Desktop | What it means |
 | :-- | :--: | :--: | :-- |
 | Largest Contentful Paint | **1.8 s** | **0.4 s** | the main content is on screen |
-| Total Blocking Time | **40 ms** | **50 ms** | the page never freezes while it loads |
-| Cumulative Layout Shift | **0.005** | **0.003** | nothing jumps around |
+| Total Blocking Time | **70 ms** | **10 ms** | the page never freezes while it loads |
+| Cumulative Layout Shift | **0** | **0.003** | nothing jumps around |
 | First Contentful Paint | 1.8 s | **0.4 s** | first pixels |
-| Speed Index | 5.2 s | 1.7 s | held back on purpose by the intro screen and the entrance animations |
+| Speed Index | 3.5 s | 1.4 s | held back on purpose by the intro screen and the entrance animations |
 
 ---
 
