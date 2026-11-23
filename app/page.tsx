@@ -256,8 +256,6 @@ export default async function Home() {
   return (
     <>
     <main id="main-content" className="relative w-full bg-background text-foreground overflow-x-clip">
-      {/* The subtle background texture behind the whole page (globals.css .site-texture) */}
-      <div className="site-texture fixed inset-0 pointer-events-none z-0" aria-hidden="true" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData(repos) }} />
       {/* Intro boot screen (covers the page for ~2s, then slides away) — on
           every full load; the script before it hides it when coming Back,

@@ -16,7 +16,7 @@
  */
 
 import { RevealText } from "@/components/ui/RevealText";
-import { HeroMascot } from "@/components/home/HeroMascot";
+import { HeroMascots } from "@/components/home/HeroMascot";
 import { PROFILE } from "@/data/profile";
 import { normalizePublicHref } from "@/lib/shared";
 import gsap from "gsap";
@@ -118,25 +118,6 @@ export default function HeroSection({
       ref={containerRef}
       className="relative min-h-screen flex items-center px-6 overflow-hidden pt-28 pb-24 bg-background"
     >
-      {/* ─── Speed lines ─── */}
-      <div
-        className="absolute inset-0 pointer-events-none overflow-hidden"
-        aria-hidden="true"
-      >
-        {Array.from({ length: 8 }).map((_, i) => (
-          <div
-            key={i}
-            className="speed-line absolute h-[1px] bg-gradient-to-r from-primary/20 via-primary/5 to-transparent"
-            style={{
-              top: `${15 + i * 10}%`,
-              left: 0,
-              width: `${40 + i * 8}%`,
-              transform: `rotate(${-2 + i * 0.5}deg)`,
-            }}
-          />
-        ))}
-      </div>
-
       {/* ─── Background Japanese watermark ─── */}
       <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <div
@@ -236,12 +217,6 @@ export default function HeroSection({
               </svg>
             </div>
 
-            {/* Camera Viewfinder Brackets */}
-            <div className="absolute top-2 left-2 w-7 h-7 border-l-2 border-t-2 border-foreground/20 pointer-events-none" />
-            <div className="absolute top-2 right-2 w-7 h-7 border-r-2 border-t-2 border-foreground/20 pointer-events-none" />
-            <div className="absolute bottom-2 left-2 w-7 h-7 border-l-2 border-b-2 border-foreground/20 pointer-events-none" />
-            <div className="absolute bottom-2 right-2 w-7 h-7 border-r-2 border-b-2 border-foreground/20 pointer-events-none" />
-
             {/* The Photo */}
             <a
               href={PROFILE.contact.youtube}
@@ -272,9 +247,10 @@ export default function HeroSection({
               }}
             />
 
-            {/* Mascot companion — a random blue-team mascot per visit
-                (components/home/HeroMascot.tsx); click it for the next one */}
-            <HeroMascot className="absolute -bottom-3 -left-4 z-20 lg:-left-8" />
+            {/* Two mascots beside the portrait, one on each side — a random one
+                of three per side, click for the next
+                (components/home/HeroMascot.tsx) */}
+            <HeroMascots />
           </div>
         </div>
 

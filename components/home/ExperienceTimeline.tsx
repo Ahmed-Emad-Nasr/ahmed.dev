@@ -39,16 +39,6 @@ export default function ExperienceTimeline() {
     <section className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
       <KanjiWatermark chars="職歴経験" side="right" />
 
-      {/* ─── Scanline Overlay ─── */}
-      <div
-        className="absolute inset-0 pointer-events-none z-0 opacity-[0.02]"
-        aria-hidden="true"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.04) 2px, rgba(255,255,255,0.04) 4px)",
-        }}
-      />
-
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
           eyebrow="Professional Path"

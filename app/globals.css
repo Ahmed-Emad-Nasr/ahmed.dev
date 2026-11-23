@@ -21,7 +21,7 @@
  *   @layer base  html/body/…       → page defaults: scroll, cursor, focus ring,
  *                                     skip link, scrollbar, text selection
  *   ─── Neo-Samurai Components ─── → vertical text, brush font, button sheen,
- *                                     .jp-eyebrow (Japanese labels), .site-texture,
+ *                                     .jp-eyebrow (Japanese labels),
  *                                     .spotlight cards
  *   Contribution cells / theme morph / loader → animations for those parts
  *   @media print                   → how a page looks when printed
@@ -434,33 +434,6 @@
   line-height: 1;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-}
-
-/* The faint diagonal hatching behind a section's eyebrow */
-.speed-lines {
-  background-image: repeating-linear-gradient(45deg,
-      transparent,
-      transparent 10px,
-      color-mix(in srgb, var(--foreground) 3%, transparent) 10px,
-      color-mix(in srgb, var(--foreground) 3%, transparent) 11px);
-}
-
-.site-texture {
-  background-image:
-    radial-gradient(
-      circle at 1px 1px,
-      color-mix(in srgb, var(--foreground) 5%, transparent) 1px,
-      transparent 0
-    ),
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--primary) 2%, transparent),
-      transparent 42%
-    );
-  background-size:
-    36px 36px,
-    100% 100%;
-  opacity: 0.35;
 }
 
 /* ─── .tone-blue, dark theme: text ON a blue fill ─────────────────────

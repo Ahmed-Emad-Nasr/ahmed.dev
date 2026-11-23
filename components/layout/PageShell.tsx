@@ -24,7 +24,6 @@ export default function PageShell({ children, className = "" }: { children: Reac
       <AppLoader />
       <SiteNav />
       <main id="main-content" className={`relative w-full bg-background text-foreground overflow-x-clip ${className}`}>
-        <div className="site-texture fixed inset-0 pointer-events-none z-0" aria-hidden="true" />
         {children}
       </main>
       {/* Full width: the footer line runs edge to edge, on one row from lg up */}

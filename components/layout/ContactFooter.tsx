@@ -73,14 +73,6 @@ export default function ContactFooter() {
 
       <KanjiWatermark chars="終わり" side="edge" size="large" />
 
-      {/* Decorative speed lines */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-[15%] left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/5 to-transparent" />
-        <div className="absolute top-[30%] left-0 w-full h-px bg-gradient-to-r from-transparent via-foreground/3 to-transparent" />
-        <div className="absolute top-[60%] left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/5 to-transparent" />
-        <div className="absolute top-[85%] left-0 w-full h-px bg-gradient-to-r from-transparent via-foreground/3 to-transparent" />
-      </div>
-
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
           {/* Brand Column */}

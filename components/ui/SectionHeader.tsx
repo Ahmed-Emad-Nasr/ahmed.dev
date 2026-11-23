@@ -75,13 +75,6 @@ export default function SectionHeader({
         .filter(Boolean)
         .join(" ")}
     >
-      {eyebrow ? (
-        <div aria-hidden="true" className="pointer-events-none absolute left-0 top-0 h-7 w-[60%] max-w-[26.25rem]">
-          <div className="speed-lines absolute inset-0 opacity-70" />
-          <div className="absolute bottom-0 left-0 h-px w-full bg-primary/35" />
-        </div>
-      ) : null}
-
       <div className={split ? "min-w-0 flex-1" : undefined}>
         {eyebrow ? (
           <div className="relative flex items-center gap-4 mb-6">
