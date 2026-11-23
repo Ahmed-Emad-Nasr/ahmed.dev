@@ -51,14 +51,14 @@ jobs:
       # "/<repo>" in a project repo; base_url is the full live address.
       - id: pages
         uses: actions/configure-pages@v6
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: .next/cache
           key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
       - run: npm ci
       # Python for the PDF tools (CV metadata and reading the CV)
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip
@@ -119,7 +119,7 @@ jobs:
       # redraw the ones whose numbers changed (only those — the manifest
       # skips the rest). They are deployed, not committed. Chromium comes
       # from the cache after the first run. Never blocks the deploy.
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
