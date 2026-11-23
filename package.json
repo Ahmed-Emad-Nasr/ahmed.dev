@@ -28,7 +28,9 @@
     "icons": "node scripts/generate-icons.cjs",
     "og:cases": "node scripts/og/generate-case-og.mjs",
     "og:site": "node scripts/og/generate-site-og.mjs",
-    "videos:sync": "node scripts/sync-youtube.mjs"
+    "videos:sync": "node scripts/sync-youtube.mjs",
+    "stats:sync": "node scripts/sync-stats.mjs",
+    "cv:sync": "node scripts/sync-cv.mjs"
   },
   "dependencies": {
     "focus-trap": "8.2.5",

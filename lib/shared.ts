@@ -14,6 +14,8 @@
  *   defang() → shows IOCs safely (1.2.3[.]4, hxxp://…).
  */
 
+import { LIVE_STATS } from "@/data/live-stats";
+
 export type PdfResource = {
   id: string;
   title: string;
@@ -152,23 +154,28 @@ export const TIKTOK_URL = "https://www.tiktok.com/@ahmed.emadnasr";
 export const MEDIUM_URL = "https://medium.com/@ahmed.em.nasr";
 export const INSTAGRAM_URL = "https://www.instagram.com/ahmed_emad_nasr/";
 
-/* The audience — the ONE place these counts are written. When they grow,
-   change the numbers here: the stats tiles, the teaching
-   and YouTube cards, the CV line, the footer chips, the meta descriptions
-   and the JSON-LD (interactionStatistic) all read them. Write the floor:
-   14_000 shows as "14K+" — at least 14,000. */
+/* The audience. YouTube's numbers update themselves every morning
+   (scripts/sync-stats.mjs → data/live-stats.ts); LinkedIn has no public way
+   to read a follower count, so that one is written here by hand. The stats
+   tiles, the teaching and YouTube cards, the CV line, the footer chips, the
+   meta descriptions and the JSON-LD (interactionStatistic) all read AUDIENCE. */
 export const AUDIENCE = {
   linkedinFollowers: 14_000,
-  youtubeSubscribers: 600,
-  youtubeViews: 60_000,
+  youtubeSubscribers: LIVE_STATS.youtube.subscribers,
+  youtubeViews: LIVE_STATS.youtube.views,
+  youtubeVideos: LIVE_STATS.youtube.videos,
 } as const;
 
-/** 14000 → "14K+", 600 → "600+" */
-export const compactCount = (n: number): string =>
-  n >= 1000 ? `${Math.floor(n / 1000)}K+` : `${n}+`;
+/** Rounded down, so the "+" after it is always true: 610 → 600, 1,234 → 1,200, 61,234 → 61,000 */
+export const roundDown = (n: number): number =>
+  n < 100 ? n : n < 1000 ? Math.floor(n / 50) * 50 : n < 10_000 ? Math.floor(n / 100) * 100 : Math.floor(n / 1000) * 1000;
 
-/** 14000 → "14,000+" */
-export const fullCount = (n: number): string => `${n.toLocaleString("en-US")}+`;
+/** 14,000 → "14K+", 1,234 → "1.2K+", 610 → "600+" */
+export const compactCount = (n: number): string =>
+  n >= 10_000 ? `${Math.floor(n / 1000)}K+` : n >= 1000 ? `${Math.floor(n / 100) / 10}K+` : `${roundDown(n)}+`;
+
+/** 14,000 → "14,000+", 61,234 → "61,000+", 610 → "600+" */
+export const fullCount = (n: number): string => `${roundDown(n).toLocaleString("en-US")}+`;
 
 /** The counts as the site shows them */
 export const AUDIENCE_LABEL = {
@@ -180,7 +187,7 @@ export const AUDIENCE_LABEL = {
 /** One line for descriptions: "14K+ LinkedIn followers · 600+ YouTube subscribers" */
 export const AUDIENCE_LINE = `${AUDIENCE_LABEL.linkedinFollowers} LinkedIn followers · ${AUDIENCE_LABEL.youtubeSubscribers} YouTube subscribers`;
 /** The same in Arabic */
-export const AUDIENCE_LINE_AR = `أكثر من ${AUDIENCE.linkedinFollowers.toLocaleString("en-US")} متابع على لينكدإن · أكثر من ${AUDIENCE.youtubeSubscribers} مشترك على يوتيوب`;
+export const AUDIENCE_LINE_AR = `أكثر من ${roundDown(AUDIENCE.linkedinFollowers).toLocaleString("en-US")} متابع على لينكدإن · أكثر من ${roundDown(AUDIENCE.youtubeSubscribers).toLocaleString("en-US")} مشترك على يوتيوب`;
 
 /* Where he lives — the ONE place the personal location is written. The
    profile, the terminal, the JSON-LD and the geo meta tags all read

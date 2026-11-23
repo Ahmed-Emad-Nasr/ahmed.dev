@@ -105,17 +105,17 @@ const ROLE_INTRO: Record<string, { intro: string; location: string }> = {
 
 /* Newest start date first, education last — the same order as the CV PDF */
 const experience: Experience[] = [...knowledgeEducationItems]
-  .filter((item) => !("hidden" in item && item.hidden))
+  .filter((item) => !item.hidden)
   .filter((item) => item.kind !== "education" || item.subTag === "Benha University")
   .sort((a, b) => Number(a.kind === "education") - Number(b.kind === "education") || b.startDate.localeCompare(a.startDate))
   .map((item) => {
     const meta = ROLE_INTRO[item.subTag];
-    const end = "endDate" in item ? monthYear(item.endDate) : "Present";
+    const end = item.endDate ? monthYear(item.endDate) : "Present";
     return {
       company: item.subTag,
       link: item.subTagHyperlink,
       role: item.tag,
-      location: meta?.location ?? "Egypt",
+      location: meta?.location ?? (item.place || "Egypt"),
       period: `${monthYear(item.startDate)} – ${end}`,
       description: meta?.intro ?? item.desc.split("•")[0].trim(),
       details: item.desc.split("•").map((line) => line.trim()).filter(Boolean),

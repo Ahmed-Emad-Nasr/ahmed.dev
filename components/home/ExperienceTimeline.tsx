@@ -77,21 +77,25 @@ export default function ExperienceTimeline() {
                     file, or the organisation's initials) */}
                 <OrgLogo name={item.company} className="group-hover:border-primary" />
 
-                {/* Company Name */}
-                <a
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group/link flex items-center gap-3 w-fit"
-                >
-                  <h3 className="font-display text-3xl md:text-5xl font-black text-foreground group-hover/link:text-primary transition-colors duration-300">
-                    {item.company}
-                  </h3>
-                  <ExternalLink
-                    size={18}
-                    className="text-foreground/15 group-hover/link:text-primary-ink transition-colors duration-300"
-                  />
-                </a>
+                {/* Company Name (a role added from the CV may have no website yet) */}
+                {item.link ? (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group/link flex items-center gap-3 w-fit"
+                  >
+                    <h3 className="font-display text-3xl md:text-5xl font-black text-foreground group-hover/link:text-primary transition-colors duration-300">
+                      {item.company}
+                    </h3>
+                    <ExternalLink
+                      size={18}
+                      className="text-foreground/15 group-hover/link:text-primary-ink transition-colors duration-300"
+                    />
+                  </a>
+                ) : (
+                  <h3 className="font-display text-3xl md:text-5xl font-black text-foreground w-fit">{item.company}</h3>
+                )}
 
                 {/* Location */}
                 <div className="flex items-center gap-2 text-on-surface-variant text-sm font-mono">

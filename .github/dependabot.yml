@@ -1,6 +1,8 @@
 # Dependabot: weekly pull requests for outdated or vulnerable packages.
-# Security updates are opened as soon as an advisory is published; the
-# Verify workflow runs on each pull request before anything is merged.
+# Security updates are opened as soon as an advisory is published. Each pull
+# request is checked and — when it is a minor/patch update that passes —
+# merged and deployed by itself (.github/workflows/dependabot-auto-merge.yml);
+# major versions wait for you.
 version: 2
 updates:
   - package-ecosystem: "npm"
@@ -27,4 +29,9 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "weekly"
+      day: "monday"
+    groups:
+      # All Action bumps in one pull request
+      actions:
+        patterns: ["*"]

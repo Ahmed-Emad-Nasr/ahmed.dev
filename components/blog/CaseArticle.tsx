@@ -46,7 +46,7 @@ import type { CaseNumber } from "@/lib/case-numbers";
 import CaseNumbers from "@/components/blog/CaseNumbers";
 import CaseSummary from "@/components/blog/CaseSummary";
 import { parseCaseSummary } from "@/lib/case-summary";
-import CaseFile, { VerdictBar, caseFileHas } from "@/components/blog/CaseFile";
+import CaseFile, { Answers, VerdictBar, caseFileHas } from "@/components/blog/CaseFile";
 import type { CaseDetail } from "@/data/case-details";
 import {
   btnOutline,
@@ -478,6 +478,14 @@ export default function CaseArticle({
           </Chapter>
           <div className="space-y-12">
             <CaseSummary summary={summary} part="work" />
+            {detail?.answers?.length ? (
+              <div>
+                <BlockTitle hint="Every question the room asks, in order, with the answer I found. Click an answer to copy it.">
+                  The room&apos;s questions — answered ({detail.answers.length})
+                </BlockTitle>
+                <Answers answers={detail.answers} />
+              </div>
+            ) : null}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
               <div>
                 <BlockTitle hint="The software used in this case.">Tools I used</BlockTitle>

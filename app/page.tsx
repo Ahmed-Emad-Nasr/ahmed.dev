@@ -212,7 +212,7 @@ function structuredData(repos: RepoCard[]) {
                   "@type": "EducationalOccupationalCredential",
                   name: item.tag,
                   credentialCategory: /bachelor|degree/i.test(item.tag) ? "degree" : "certificate",
-                  recognizedBy: { "@type": "EducationalOrganization", name: item.subTag, url: item.subTagHyperlink },
+                  recognizedBy: { "@type": "EducationalOrganization", name: item.subTag, ...(item.subTagHyperlink ? { url: item.subTagHyperlink } : {}) },
                   validFrom: item.startDate,
                   ...("endDate" in item && item.endDate ? { validUntil: item.endDate } : {}),
                 }
@@ -221,7 +221,7 @@ function structuredData(repos: RepoCard[]) {
                   roleName: item.tag,
                   startDate: item.startDate,
                   ...("endDate" in item && item.endDate ? { endDate: item.endDate } : {}),
-                  memberOf: { "@type": "Organization", name: item.subTag, url: item.subTagHyperlink },
+                  memberOf: { "@type": "Organization", name: item.subTag, ...(item.subTagHyperlink ? { url: item.subTagHyperlink } : {}) },
                 },
         })),
       },

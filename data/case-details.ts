@@ -50,6 +50,9 @@ export type CaseDetail = {
   attachments?: readonly { label: string; href: string }[];
   /** "What I'd do differently" — written by the author */
   lessons?: string;
+  /** A room / lab's own questions with the answers found, in order. `task`
+   *  groups them under the room's task name (shown once per group). */
+  answers?: readonly { task?: string; q: string; a: string }[];
   /** MEASURED results, shown first in the "By the numbers" strip. Fill these
    *  in only for a case where they were really measured — never an estimate:
    *    detectedIn:  "4 min"    alert → confirmed
@@ -62,6 +65,176 @@ export type CaseDetail = {
 const LD = "LetsDefend SOC simulator";
 
 export const caseDetails: Record<string, CaseDetail> = {
+  "file-and-hash-threat-intel": {
+    verdict: "All four files in 'CTI Files' are malicious: bl0gger.exe (BlackMoon trojan that runs a silent regsvr32), Morse-Code-Analyzer.exe (IcedID / Slepak loader using DLL side-loading), payroll.pdf.exe (Gh0st RAT hiding behind a double extension and the name svchost.dll) and Challenge.bin.sample (Akira ransomware that deletes every shadow copy)",
+    severity: "Critical",
+    facts: [
+      { label: "Platform", value: "TryHackMe · SOC Level 1 (Threat Analysis Tools) — 6 tasks, 144 points" },
+      { label: "Workstation", value: "Windows analyst VM, user matthew.collins — folder Desktop\\CTI Files (4 files)" },
+      { label: "Method", value: "Enrich by name, path and hash only — nothing was executed" },
+      { label: "Hashing", value: "PowerShell: Get-FileHash -Algorithm sha256 <file>" },
+      { label: "Lookups", value: "VirusTotal · MalwareBazaar · Hybrid Analysis · TryDetectThis 2.0 (trydetectthis.thm:8080)" },
+      { label: "bl0gger.exe", value: "51/61 VirusTotal · Hybrid Analysis 100/100 · BlackMoon / VirTool / FlyStudio" },
+      { label: "Morse-Code-Analyzer.exe", value: "60/71 VirusTotal (Slepak) · MalwareBazaar signature IcedID · CyberFortress: clean" },
+      { label: "payroll.pdf.exe", value: "63/71 VirusTotal · Gh0st RAT (Farfli / Redosdru) · real name server.exe / svchost.dll" },
+      { label: "Challenge.bin.sample", value: "60/70 VirusTotal · 61 malicious on TryDetectThis · Akira ransomware (PUNK SPIDER)" },
+    ],
+    chain: [
+      { step: "Turned on 'File name extensions' in Explorer: payroll.pdf is really payroll.pdf.exe — an executable dressed as a PDF", technique: "T1036.007" },
+      { step: "Hashed all four files with Get-FileHash (SHA256) and looked each one up instead of opening it" },
+      { step: "bl0gger.exe on VirusTotal: 51/61 engines, BlackMoon / VirTool labels, built with Visual C++ 6.0, first submitted 2025-05-15 12:03:49 UTC" },
+      { step: "bl0gger.exe in the Hybrid Analysis sandbox: it registers a fake ActiveX control silently — regsvr32 %WINDIR%\\Media\\ActiveX.ocx /s — a signed Windows binary used to run its code", technique: "T1218.010" },
+      { step: "The same process tree shows werfault.exe started twice (the Windows error reporter) with its own mutexes" },
+      { step: "Morse-Code-Analyzer.exe: a packed loader / crypter (VirusTotal 'trojan.slepak', MalwareBazaar 'IcedID'); only CyberFortress called it clean, so one 'clean' verdict is not enough" },
+      { step: "Morse-Code-Analyzer.exe is flagged for persistence and privilege escalation through DLL side-loading", technique: "T1574.001" },
+      { step: "payroll.pdf.exe: a Gh0st RAT variant whose real names are server.exe and svchost.dll — a system file name to look harmless", technique: "T1036" },
+      { step: "payroll.pdf.exe is linked to the download URL hxxp://121.182.174.27:3000/server.exe; the sandbox pulled 454 strings out of it" },
+      { step: "Challenge.bin.sample: MalwareBazaar signature Akira, VirusTotal 'ransomware.akira/dump', Hybrid Analysis Ransom.Akira.Generic (PUNK SPIDER)" },
+      { step: "TryDetectThis: Akira deletes every Volume Shadow Copy with PowerShell and WMI so the victim cannot restore files", technique: "T1490" },
+      { step: "The deletion runs through PowerShell (Get-WmiObject Win32_Shadowcopy | Remove-WmiObject)", technique: "T1059.001" },
+      { step: "…using Windows Management Instrumentation", technique: "T1047" },
+      { step: "It walks folders and processes to find what to encrypt", technique: "T1083" },
+      { step: "Files are encrypted and akira_readme.txt — payment instructions and Tor links — is dropped in every encrypted folder", technique: "T1486" },
+    ],
+    timeline: [
+      { time: "23 Nov 2026 · 17:51", event: "VM started — CTI Files folder with four files, TryDetectThis on the desktop" },
+      { time: "17:52", event: "Extensions shown in Explorer — payroll.pdf.exe found (double extension)" },
+      { time: "17:54", event: "SHA256 of bl0gger.exe taken with Get-FileHash" },
+      { time: "17:56 – 17:57", event: "bl0gger.exe on VirusTotal: 51/61, details and first submission date" },
+      { time: "17:58", event: "Morse-Code-Analyzer.exe hashed — 60/71 on VirusTotal" },
+      { time: "17:59", event: "MalwareBazaar: IcedID signature, CyberFortress the one 'clean' vendor" },
+      { time: "18:08 – 18:14", event: "Hybrid Analysis on bl0gger.exe: tags, process tree, regsvr32 command line, werfault.exe mutexes" },
+      { time: "18:14 – 18:16", event: "payroll.pdf.exe hashed — Hybrid Analysis 100/100, VirusTotal 63/71 Gh0st RAT (svchost.dll)" },
+      { time: "18:23 – 18:25", event: "Challenge.bin.sample hashed — MalwareBazaar, VirusTotal and Hybrid Analysis all say Akira" },
+      { time: "18:29 – 18:32", event: "TryDetectThis 2.0 report: YARA hits, dropped file, shadow-copy command, technique mapping" },
+      { time: "18:32", event: "Last answer (T1490) — room completed, 6 tasks, 144 points" },
+    ],
+    iocs: [
+      { type: "hash", value: "2672b6688d7b32a90f9153d2ff607d6801e6cbde61f509ed36d0450745998d58", note: "bl0gger.exe — SHA256 (BlackMoon)" },
+      { type: "hash", value: "de30aa2610c11376251cba21a9323c83", note: "bl0gger.exe — MD5" },
+      { type: "hash", value: "eff8ed1e41e81933909f201ccb1ca7461841684e", note: "bl0gger.exe — SHA1" },
+      { type: "hash", value: "0a16a06cf586b598d76b4843b67cf2de", note: "bl0gger.exe — imphash" },
+      { type: "hash", value: "1f8806869616c18cbae9ffcf581c0428915d32fb70119df16d08078d92d1a5e3", note: "Morse-Code-Analyzer.exe / sc.exe — SHA256 (IcedID / Slepak loader)" },
+      { type: "hash", value: "d202ed020ed8e36bd8a0f5b571a19d386c12abecb2a28c989d50bbf92c78f54e", note: "payroll.pdf.exe / server.exe / svchost.dll — SHA256 (Gh0st RAT)" },
+      { type: "hash", value: "43b0ac119ff957bb209d86ec206ea1ec3c51dd87bebf7b4a649c7e6c7f3756e7", note: "Challenge.bin.sample — SHA256 (Akira ransomware)" },
+      { type: "hash", value: "e58ed2788bada8d807ebb29e18d86f86", note: "Challenge.bin.sample — MD5" },
+      { type: "hash", value: "d56cb4d7566c0685c607ebf5f3ba752d36e4346e", note: "Challenge.bin.sample — SHA1" },
+      { type: "url", value: "http://121.182.174.27:3000/server.exe", note: "Download URL linked to payroll.pdf.exe" },
+      { type: "ip", value: "121.196.49.217", note: "Gh0st RAT C2 named in VirusTotal Code Insights (port 12358)" },
+      { type: "file", value: "payroll.pdf.exe", note: "Double extension — shows as payroll.pdf when extensions are hidden" },
+      { type: "file", value: "%WINDIR%\\Media\\ActiveX.ocx", note: "Registered silently by bl0gger.exe with regsvr32 /s" },
+      { type: "file", value: "akira_readme.txt", note: "Akira ransom note, dropped in every encrypted folder" },
+      { type: "other", value: "regsvr32 %WINDIR%\\Media\\ActiveX.ocx /s", note: "Stealth command line of bl0gger.exe" },
+      { type: "other", value: "Get-WmiObject Win32_Shadowcopy | Remove-WmiObject", note: "Akira deleting all shadow copies" },
+    ],
+    response: [
+      "Block the four SHA256 hashes in EDR / antivirus and search every endpoint for them",
+      "Show file extensions on every workstation (Group Policy) so names like payroll.pdf.exe are visible",
+      "Allow system binaries such as svchost only from their real folders (C:\\Windows\\System32), not by name",
+      "Alert on regsvr32 registering a file outside System32 with /s, and on .ocx files in %WINDIR%\\Media",
+      "Block the download URL and the C2 address at the proxy and firewall",
+      "Alert on any deletion of shadow copies (WMI Win32_Shadowcopy, vssadmin delete shadows, wmic shadowcopy delete)",
+      "Keep offline / immutable backups — Akira deletes the local restore points first",
+      "Never trust a single 'clean' verdict: compare several sources (one vendor called the IcedID loader clean)",
+      "Share the hashes with the security community (Hybrid Analysis comment, MISP) so others can block them",
+    ],
+    detection: [
+      {
+        title: "Sigma — shadow copies deleted with PowerShell / WMI (Akira)",
+        lang: "yaml",
+        code: `title: Shadow Copy Deletion via PowerShell WMI
+status: experimental
+description: Akira-style deletion of every Volume Shadow Copy before encryption (T1490)
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection_cmd:
+    CommandLine|contains|all:
+      - 'Win32_Shadowcopy'
+      - 'Remove-WmiObject'
+  selection_alt:
+    CommandLine|contains:
+      - 'vssadmin delete shadows'
+      - 'wmic shadowcopy delete'
+  condition: 1 of selection_*
+level: critical
+tags:
+  - attack.impact
+  - attack.t1490`,
+      },
+      {
+        title: "Sigma — silent regsvr32 of a control outside System32 (bl0gger)",
+        lang: "yaml",
+        code: `title: Silent Regsvr32 Registration From Unusual Folder
+status: experimental
+description: regsvr32 /s registering a DLL/OCX from a non-system folder, as bl0gger.exe does with %WINDIR%\\Media\\ActiveX.ocx (T1218.010)
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection:
+    Image|endswith: '\\regsvr32.exe'
+    CommandLine|contains: ' /s'
+  unusual:
+    CommandLine|contains:
+      - '\\Media\\'
+      - '\\Users\\Public\\'
+      - '\\AppData\\'
+      - '\\Temp\\'
+  condition: selection and unusual
+level: high
+tags:
+  - attack.stealth
+  - attack.t1218.010`,
+      },
+      {
+        title: "Sigma — executable with a document double extension",
+        lang: "yaml",
+        code: `title: Executable With Document Double Extension
+status: experimental
+description: A process started from a file like payroll.pdf.exe (T1036.007)
+logsource:
+  product: windows
+  category: process_creation
+detection:
+  selection:
+    Image|endswith:
+      - '.pdf.exe'
+      - '.doc.exe'
+      - '.docx.exe'
+      - '.xls.exe'
+      - '.xlsx.exe'
+      - '.jpg.exe'
+      - '.txt.exe'
+  condition: selection
+level: high
+tags:
+  - attack.stealth
+  - attack.t1036.007`,
+      },
+    ],
+    answers: [
+      { task: "Task 2 · Filenames and Paths", q: "One of the files in the CTI Files folder on the Desktop shows one of the indicators mentioned. Identify the file and the indicator (file, property)", a: "payroll.pdf, Double extensions" },
+      { task: "Task 3 · File Hash Lookup", q: "What is the SHA256 hash of the file bl0gger?", a: "2672b6688d7b32a90f9153d2ff607d6801e6cbde61f509ed36d0450745998d58" },
+      { task: "Task 3 · File Hash Lookup", q: "What is the threat classification label used to identify the malicious file?", a: "trojan.graftor/flystudio" },
+      { task: "Task 3 · File Hash Lookup", q: "When was the file first submitted for analysis? (YYYY-MM-DD HH:MM:SS)", a: "2025-05-15 12:03:49" },
+      { task: "Task 3 · File Hash Lookup", q: "Which vendor classified the Morse-Code-Analyzer file as non-malicious?", a: "CyberFortress" },
+      { task: "Task 3 · File Hash Lookup", q: "What MITRE technique has been flagged for persistence and privilege escalation for the Morse-Code-Analyzer file?", a: "DLL Side-Loading" },
+      { task: "Task 4 · Sandbox Analysis", q: "What tags are used to identify the bl0gger.exe malicious file on Hybrid Analysis?", a: "BlackMoon, Discovery, windows-server-utility" },
+      { task: "Task 4 · Sandbox Analysis", q: "What was the stealth command line executed from the file?", a: "regsvr32 %WINDIR%\\Media\\ActiveX.ocx /s" },
+      { task: "Task 4 · Sandbox Analysis", q: "Which other process was spawned according to the process tree?", a: "werfault.exe" },
+      { task: "Task 4 · Sandbox Analysis", q: "Which known Windows file is payroll.pdf masquerading as?", a: "svchost.dll" },
+      { task: "Task 4 · Sandbox Analysis", q: "What associated URL is linked to the file?", a: "hxxp://121.182.174.27:3000/server.exe" },
+      { task: "Task 4 · Sandbox Analysis", q: "How many extracted strings were identified from the sandbox analysis of the file?", a: "454" },
+      { task: "Task 5 · Threat Intelligence Challenge", q: "What is the SHA256 hash of the file (Challenge.bin.sample)?", a: "43b0ac119ff957bb209d86ec206ea1ec3c51dd87bebf7b4a649c7e6c7f3756e7" },
+      { task: "Task 5 · Threat Intelligence Challenge", q: "What family labels are assigned to the file?", a: "akira, filecryptor" },
+      { task: "Task 5 · Threat Intelligence Challenge", q: "When was the file submitted to TryDetectThis? (YYYY-MM-DD HH:MM:SS)", a: "2023-07-10 08:22:15" },
+      { task: "Task 5 · Threat Intelligence Challenge", q: "Name the text file dropped during the execution of the malicious file.", a: "akira_readme.txt" },
+      { task: "Task 5 · Threat Intelligence Challenge", q: "What PowerShell command is observed to be executed?", a: "Get-WmiObject Win32_Shadowcopy | Remove-WmiObject" },
+      { task: "Task 5 · Threat Intelligence Challenge", q: "What MITRE ATT&CK ID is associated with the actions of the command?", a: "T1490" },
+    ],
+  },
   "soc-l1-alert-reporting": {
     verdict: "Two new alerts reported with the Five Ws and escalated to L2 as True Positives: a spoofed 'Microsoft Support' phishing email with a REPORT.rar attachment, and Active Directory discovery from a reverse shell under the IIS worker of an old Exchange server",
     severity: "High",
@@ -456,6 +629,13 @@ nltest /dclist:tryhackme.thm`,
       { type: "file", value: "C:\\Users\\a1l4m\\AppData\\Local\\Temp\\BITEA82.tmp" },
       { type: "file", value: "NOTION-SETUP.EXE-BEE97775.pf", note: "Prefetch — proof of execution" },
     ],
+    response: [
+      "Isolate the host and block globalnewshub.com, 18.199.176.247 and the fake updater.microsoft.com URL at the proxy",
+      "Block the notion-setup.exe SHA-256 in EDR and hunt for it and BITEA82.tmp on every endpoint",
+      "Allow software downloads only from approved sources; warn or block executables downloaded by the browser",
+      "Watch BITS jobs (Bitsloth uses them) — alert on new BITS transfers started by unusual processes",
+      "Reset the user's credentials and re-image the host if the second stage ran",
+    ],
   },
   "serpent-stealer": {
     verdict: "Confirmed — .NET infostealer with sandbox evasion and UAC bypass",
@@ -506,6 +686,12 @@ nltest /dclist:tryhackme.thm`,
     iocs: [
       { type: "file", value: "Im493.zip" },
       { type: "file", value: "Sd6wF1A1v.png", note: "Carrier image" },
+    ],
+    response: [
+      "Treat oversized images in archives as suspicious and scan them for embedded scripts",
+      "Enable PowerShell Script Block Logging and AMSI so Invoke-PSImage loaders are recorded and scanned",
+      "Protect LSASS (Credential Guard / RunAsPPL) so the hidden Mimikatz cannot read credentials",
+      "Block Im493.zip and Sd6wF1A1v.png by hash and reset credentials on any host where the script ran",
     ],
   },
   "email-analysis-room-report": {
@@ -641,6 +827,14 @@ nltest /dclist:tryhackme.thm`,
       },
     ],
     attachments: [{ label: "Malware analysis playbook (1 page)", href: "Assets/Cases/Malware Analysis and Prevention Strategy/AhmedEmad_Playbook.pdf" }],
+    response: [
+      "Isolate infected hosts at once; do not pay the USD 300 ransom",
+      "Restore from offline backups after re-imaging — encrypted files cannot be trusted",
+      "Block the sample's hashes and deploy the YARA rules to EDR / file scanning",
+      "Block the QQ ransom contact address and alert on @WanaDecryptor@.exe or ICO5452.tmp anywhere",
+      "Patch MS17-010 and disable SMBv1 everywhere — this variant did not spread, the original WannaCry did",
+      "Limit who can run executables from user folders (AppLocker), since this sample was started by hand",
+    ],
   },
   "depi-r4-project": {
     verdict: "Ransomware analysis plus a Wazuh-based prevention plan",
@@ -674,6 +868,12 @@ nltest /dclist:tryhackme.thm`,
       { type: "file", value: "tkfgk435jkdgf.dll", note: "Original filename" },
       { type: "other", value: "C:\\Users\\admin\\source\\repos\\SDCBundle\\SDCBundle\\obj\\Release\\net6.0-winx64\\tkfgk435jkdgf.pdb", note: "PDB path" },
     ],
+    response: [
+      "Block both SHA-256 hashes (loader and the rebuilt stage two) in EDR",
+      "Show file extensions so executables with a PDF icon stand out to users",
+      "Alert on executables with a large overlay or an expired code-signing certificate",
+      "Use the PDB path (SDCBundle … tkfgk435jkdgf.pdb) as a hunting string for related samples",
+    ],
   },
   "unload-malware-report": {
     verdict: "IcedID (BokBot) stage-one loader",
@@ -695,6 +895,12 @@ nltest /dclist:tryhackme.thm`,
       { type: "hash", value: "A3FA68045D0106D6DB3D43DF6B5997D9034F9F7D2A34148187498E4B504EBF58", note: "SHA-256" },
       { type: "domain", value: "podiumstrtss.com", note: "C2 — 14/95 vendors" },
       { type: "other", value: "rundll32.exe unload.dll,init", note: "Execution" },
+    ],
+    response: [
+      "Block podiumstrtss.com and the unload.dll SHA-256; hunt for 'rundll32.exe unload.dll,init' in process logs",
+      "Alert on rundll32.exe loading DLLs from user-writable folders",
+      "Isolate any host that beaconed — IcedID is often followed by Cobalt Strike and ransomware",
+      "Block macro / archive attachments that usually deliver the IcedID loader at the e-mail gateway",
     ],
   },
 
@@ -726,6 +932,13 @@ nltest /dclist:tryhackme.thm`,
     iocs: [
       { type: "file", value: "secret_file.docx", note: "Exfiltrated document" },
       { type: "other", value: "Ven_General&Prod_UDisk", note: "USB device mounted as F:" },
+    ],
+    response: [
+      "Block or log USB mass-storage devices by policy (Ven_General&Prod_UDisk was used to take secret_file.docx)",
+      "Reset every local account whose NTLM hash was dumped and cracked, and use long passphrases",
+      "Remove the unauthorized sshd listener on port 22 and check for other persistence",
+      "Enable Data Loss Prevention for sensitive documents and alert on copies to removable media",
+      "Preserve the memory image and the FTK Imager logs with the chain of custody for HR / legal follow-up",
     ],
   },
   "usb-forensics-report": {
@@ -778,9 +991,17 @@ nltest /dclist:tryhackme.thm`,
       { type: "file", value: "C:\\Users\\Josh\\Desktop\\mal.exe" },
       { type: "registry", value: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run → XO1XADpO01" },
     ],
+    response: [
+      "Isolate the host and re-image it; restore Josh's files from offline backups",
+      "Delete the Run-key value XO1XADpO01 and hunt for it on every endpoint",
+      "Block the payload and ransom-note hashes and alert on new files with the .lockbit extension",
+      "Find how mal.exe reached the Desktop (mail, download, USB) and close that path",
+      "Keep backups offline / immutable — LockBit targets reachable backups",
+    ],
   },
   "ecir-registry-forensics": {
     verdict: "Tip substantiated — unauthorized and trace-wiping software",
+    severity: "Medium",
     pages: 25,
     facts: [
       { label: "Lab", value: "INE eCIR · Module 6, Lab 14" },
@@ -800,6 +1021,13 @@ nltest /dclist:tryhackme.thm`,
       { type: "hash", value: "190697abebc5496f9b4eb6adc66d2834", note: "SAM (MD5)" },
       { type: "hash", value: "5b6a904d2e37fe3de2ab98cdc3c46291", note: "SOFTWARE (MD5)" },
       { type: "hash", value: "e4571e43d4d4b62db9c4dc4f96ab629a", note: "SYSTEM (MD5)" },
+    ],
+    response: [
+      "Remove the unapproved software (BCWipe, CCleaner, TeamViewer, Zenmap/Nmap) and review what was wiped",
+      "Take the user Hunter out of the local Administrators group — standard users cannot install tools like these",
+      "Enforce application allow-listing (AppLocker / WDAC) so wipers, scanners and remote-access tools cannot run",
+      "Block personal Skype / Dropbox use on company machines through the acceptable-use policy and the proxy",
+      "Keep the hashed registry hives (NTUSER.DAT, SAM, SOFTWARE, SYSTEM) as evidence with the chain of custody",
     ],
   },
   "autopsy": {

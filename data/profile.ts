@@ -18,10 +18,17 @@
  */
 
 import type { Profile } from "@/data/types";
+import { CV_FROM_PDF } from "@/data/cv-from-pdf";
 import {
   CV_PDF_HREF, GITHUB_USERNAME, HOME_LOCATION, INSTAGRAM_URL, LINKEDIN_URL, MEDIUM_URL, TIKTOK_URL, X_URL,
   YOUTUBE_CHANNEL_URL, normalizePublicHref,
 } from "@/lib/shared";
+
+/* The CV's phone as digits with the country code ("+20 101 …" → "20101…"),
+   only when it is a full international number */
+const cvPhone = CV_FROM_PDF?.sections.contact?.phone?.replace(/[^\d+]/g, "");
+const CV_PHONE = cvPhone && /^\+\d{10,15}$/.test(cvPhone) ? cvPhone.slice(1) : undefined;
+const CV_EMAIL = CV_FROM_PDF?.sections.contact?.email || undefined;
 
 export const PROFILE: Profile = {
   name: "Ahmed Emad Nasr",
@@ -29,14 +36,16 @@ export const PROFILE: Profile = {
   availability: "Open to InfoSec roles: Officer, Engineer, GRC, SOC, IR/DFIR, IAM and Security Education",
   /* The areas shown on the hero's "Focus" row */
   focus: ["GRC", "SOC", "IR & DFIR", "Malware", "IAM", "Data Security"],
+  /* E-mail, phone and WhatsApp follow the CV PDF when it has them
+     (data/cv-from-pdf.ts); the values here are the fallback */
   contact: {
-    email: "ahmed.em.nasr@gmail.com",
-    phone: "+201013972690",
+    email: CV_EMAIL ?? "ahmed.em.nasr@gmail.com",
+    phone: CV_PHONE ? `+${CV_PHONE}` : "+201013972690",
     github: GITHUB_USERNAME,
     linkedin: LINKEDIN_URL,
     wuzzuf: "https://wuzzuf.net/me/ahmed-emad-nasr",
     location: HOME_LOCATION.workArea,
-    whatsapp: "201013972690",
+    whatsapp: CV_PHONE ?? "201013972690",
     youtube: YOUTUBE_CHANNEL_URL,
     instagram: INSTAGRAM_URL,
     x: X_URL,

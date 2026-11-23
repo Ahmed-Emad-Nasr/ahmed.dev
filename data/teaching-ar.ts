@@ -7,9 +7,8 @@
    `org` stays in English: it is the key of the organisation's logo — the
    Arabic name goes in `orgLabel`. */
 
-import { AUDIENCE, AUDIENCE_LABEL, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
+import { AUDIENCE, AUDIENCE_LABEL, roundDown, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { TESTIMONIALS } from "@/data/testimonials";
-import { YOUTUBE_CHANNEL_VIDEOS } from "@/data/youtube-feed";
 import { DIPLOMA, type TeachingContent } from "@/data/teaching";
 
 export const TEACHING_AR: TeachingContent = {
@@ -88,7 +87,7 @@ export const TEACHING_AR: TeachingContent = {
       period: "مستمر",
       link: YOUTUBE_CHANNEL_URL,
       topics: "شروحات خطوة بخطوة: تنصيب Wazuh SIEM، ومحاكاة SOC على TryHackMe، وتحليل WannaCry وملفات PDF الخبيثة، و Burp Suite، وأساسيات GRC.",
-      results: [`أكثر من ${AUDIENCE.youtubeSubscribers} مشترك`, `أكثر من ${AUDIENCE.youtubeViews.toLocaleString("en-US")} مشاهدة`, `${YOUTUBE_CHANNEL_VIDEOS} فيديو`],
+      results: [`أكثر من ${roundDown(AUDIENCE.youtubeSubscribers).toLocaleString("en-US")} مشترك`, `أكثر من ${roundDown(AUDIENCE.youtubeViews).toLocaleString("en-US")} مشاهدة`, `${AUDIENCE.youtubeVideos} فيديو`],
     },
   ],
   ui: {

@@ -1,0 +1,65 @@
+# Dependabot on autopilot: its safe updates merge and deploy by themselves.
+#
+# For every Dependabot pull request this runs the site's full checks
+# (.github/workflows/verify.yml: lint, type check, data audits, build, links).
+# When they pass and the update is a minor or patch version (or any update
+# of a GitHub Action), the pull request is merged and the site is deployed.
+# Major versions (possible breaking changes) stay open for you to review;
+# a failed check also leaves the pull request open, with the reason.
+#
+# A merge made by a workflow does not start other workflows by itself, so
+# the deploy (nextjs.yml) is started here explicitly.
+name: Dependabot auto-merge
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+# One run per pull request; a newer push to it replaces the running one
+concurrency:
+  group: dependabot-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    uses: ./.github/workflows/verify.yml
+
+  merge:
+    needs: verify
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - id: meta
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Merge minor / patch updates and Action updates
+        if: >-
+          steps.meta.outputs.update-type == 'version-update:semver-minor' ||
+          steps.meta.outputs.update-type == 'version-update:semver-patch' ||
+          steps.meta.outputs.package-ecosystem == 'github_actions'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          gh pr review --approve "$PR_URL" || true
+          gh pr merge --squash --delete-branch "$PR_URL"
+          # Deploy the updated site now rather than at tomorrow's daily run
+          gh workflow run nextjs.yml --repo "$GITHUB_REPOSITORY" --ref "${{ github.event.repository.default_branch }}"
+
+      - name: Leave major updates for review
+        if: >-
+          steps.meta.outputs.update-type == 'version-update:semver-major' &&
+          steps.meta.outputs.package-ecosystem != 'github_actions'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          gh pr comment "$PR_URL" --body "Checks passed, but this is a **major** version (${{ steps.meta.outputs.dependency-names }}): it may change how things work, so it is left for you to review and merge." || true

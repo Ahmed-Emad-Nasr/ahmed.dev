@@ -179,7 +179,7 @@ export default function VideosPage() {
                         <span className="inline-flex items-center gap-2">
                           <ListVideo size={13} aria-hidden="true" /> Playlist
                         </span>
-                        {p.videoCount ? <span>{p.videoCount} videos</span> : null}
+                        {p.videoCount ? <span>{p.videoCount} {p.videoCount === 1 ? "video" : "videos"}</span> : null}
                       </span>
                       <span className="font-display text-lg font-black uppercase tracking-tight leading-tight text-foreground group-hover:text-primary-ink transition-colors">
                         {p.title}

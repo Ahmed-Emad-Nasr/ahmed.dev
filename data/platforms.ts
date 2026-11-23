@@ -5,7 +5,8 @@
  *
  * ═══ data/platforms.ts → components/home/PlatformsSection.tsx (#platforms) ═══
  *   THM_SNAPSHOT       → TryHackMe numbers used when the live fetch fails —
- *                        refresh them now and then (and asOf)
+ *                        refreshed every morning by scripts/sync-stats.mjs
+ *                        (data/live-stats.ts), nothing to do by hand
  *   tryHackMePlatform  → the text of the big TryHackMe card
  *   STATIC_PLATFORMS   → the other cards. Add one by copying an entry:
  *                        id, name, mark (2–3 letters), handle, url,
@@ -13,20 +14,12 @@
  */
 
 import { caseEvidenceLibrary } from "@/data/cases";
+import { LIVE_STATS } from "@/data/live-stats";
 
 export const TRYHACKME_USERNAME = "Ahmed.Emad.Nasr";
 
-/** Last known TryHackMe stats — used only when the API can't be reached */
-export const THM_SNAPSHOT = {
-  rank: 10427,
-  topPercentage: 1,
-  level: 14,
-  completedRoomsNumber: 315,
-  badgesNumber: 51,
-  totalPoints: 35179,
-  /** The date these numbers were read */
-  asOf: "2026-10-22",
-};
+/** Last known TryHackMe stats (read every morning) — used only when the API can't be reached at build time */
+export const THM_SNAPSHOT = { ...LIVE_STATS.tryhackme };
 
 export type TryHackMeStats = typeof THM_SNAPSHOT & { live: boolean };
 

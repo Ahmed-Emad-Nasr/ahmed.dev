@@ -13,6 +13,7 @@
  *   chain (attack chain) → Chain          timeline  → Timeline
  *   iocs (indicators, copyable) → Iocs    detection → Detection (rules / queries)
  *   the PDF report → ReportViewer (embedded viewer + download)
+ *   answers (a room's questions) → Answers — drawn by CaseArticle in "What I did"
  * The field names and allowed values are the CaseDetail type at the top of
  * data/case-details.ts. Add a field there + a block here to show something new.
  *
@@ -287,6 +288,44 @@ function Detection({ items }: { items: NonNullable<CaseDetail["detection"]> }) {
         </FadeIn>
       ))}
     </div>
+  );
+}
+
+/* ── The room's questions, answered ──────────────────────────────────── */
+
+/* Same card style as the key facts. Each answer copies on click; the
+   room's task name is shown once above its questions. */
+export function Answers({ answers }: { answers: NonNullable<CaseDetail["answers"]> }) {
+  const { copied, copy } = useCopy();
+  return (
+    <ol className="border border-foreground/10 bg-surface/60 divide-y divide-foreground/5">
+      {answers.map((item, i) => (
+        <li key={i}>
+          {item.task && item.task !== answers[i - 1]?.task && (
+            <p className="px-5 pt-4 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">{item.task}</p>
+          )}
+          <div className="grid grid-cols-[2rem_1fr] gap-x-3 px-5 py-3">
+            <span className="font-mono text-[0.625rem] font-bold text-foreground/40 pt-0.5 tabular-nums" aria-hidden="true">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div className="min-w-0">
+              <p className="text-sm text-foreground/85 leading-relaxed">{item.q}</p>
+              <button
+                type="button"
+                onClick={() => void copy(`${i}`, item.a)}
+                className="group mt-1.5 inline-flex max-w-full items-start gap-2 text-left font-mono text-xs text-accent hover:text-foreground transition-colors"
+              >
+                <span className="sr-only">Answer (click to copy): </span>
+                <span className="[overflow-wrap:anywhere]">{item.a}</span>
+                <span className="mt-0.5 shrink-0 text-foreground/30 group-hover:text-foreground/70" aria-hidden="true">
+                  {copied === `${i}` ? <Check size={12} className="text-accent" /> : <Copy size={12} />}
+                </span>
+              </button>
+            </div>
+          </div>
+        </li>
+      ))}
+    </ol>
   );
 }
 

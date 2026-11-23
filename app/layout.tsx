@@ -43,7 +43,6 @@ import "./globals.css";
 
 import { knowledgeEducationItems } from "@/data/experience";
 import { certificationsJsonLd } from "@/data/certifications";
-import { YOUTUBE_CHANNEL_VIDEOS } from "@/data/youtube-feed";
 import { skillGroups } from "@/data/skills";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ThemeFxProvider } from "@/components/layout/ThemeFxProvider";
@@ -55,7 +54,7 @@ import { CONTENT_SECURITY_POLICY } from "@/lib/security";
 import KeyboardShortcuts from "@/components/layout/KeyboardShortcuts";
 import DeferredGlobalEffects from "@/components/layout/DeferredGlobalEffects";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
-import { AUDIENCE_LABEL, AUDIENCE_LINE, HOME_LOCATION, normalizePublicHref, YOUTUBE_CHANNEL_URL, X_HANDLE } from "@/lib/shared";
+import { AUDIENCE, AUDIENCE_LABEL, AUDIENCE_LINE, HOME_LOCATION, normalizePublicHref, YOUTUBE_CHANNEL_URL, X_HANDLE } from "@/lib/shared";
 import { OG_IMAGE } from "@/lib/site";
 import { homeDataFixScript } from "@/lib/routes";
 import {
@@ -279,7 +278,7 @@ const STRUCTURED_DATA_JSON = jsonLd({
       description: withAudience(
         "Cybersecurity tutorials: SOC labs, Wazuh SIEM, malware analysis, attack simulation, GRC and security fundamentals",
         300,
-        `${AUDIENCE_LABEL.youtubeSubscribers} subscribers · ${YOUTUBE_CHANNEL_VIDEOS} videos · ${AUDIENCE_LABEL.youtubeViews} views`,
+        `${AUDIENCE_LABEL.youtubeSubscribers} subscribers · ${AUDIENCE.youtubeVideos} videos · ${AUDIENCE_LABEL.youtubeViews} views`,
       ),
       interactionStatistic: CHANNEL_AUDIENCE,
       knowsLanguage: ["en", "ar"],

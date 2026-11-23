@@ -5,3 +5,6 @@ out
 .env*.local
 .venv
 __pycache__
+
+# Written by npm run cv:sync when the CV needs a look (the deploy opens an issue from it)
+.cv-sync-report.md

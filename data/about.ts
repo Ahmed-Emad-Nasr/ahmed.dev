@@ -41,6 +41,18 @@ export const PATH = [
   { year: "2026", title: "Banque Misr & instructor", detail: "Information Security intern at Banque Misr; part-time cybersecurity instructor at NTI and AMIT Learning." },
 ] as const;
 
+/* The year he started running for Al Ahly: the "N years" on the card is
+   counted from it at every build, so it goes up by itself each year. Write
+   the month too (e.g. "2020-09") and it turns over on that month instead of
+   on 1 January. */
+const AHLY_SINCE = "2020";
+const yearsSince = (start: string) => {
+  const [y, m = 1] = start.split("-").map(Number);
+  const now = new Date();
+  return now.getFullYear() - y - (now.getMonth() + 1 < m ? 1 : 0);
+};
+const AHLY_YEARS = yearsSince(AHLY_SINCE);
+
 /* "Off the Clock." (#athlete, components/home/AthleteSection.tsx): the
    sports, newest first. `years` is shown as written; `events` are the chips. */
 export const ATHLETICS = [
@@ -48,9 +60,9 @@ export const ATHLETICS = [
     id: "ahly",
     club: "Al Ahly SC",
     sport: "Athletics — middle & long distance",
-    years: "6 years · contract renewed",
+    years: `${AHLY_YEARS} years · contract renewed`,
     current: true,
-    detail: "Running for Al Ahly, Egypt's most decorated club, for six years — and the contract was just renewed. Middle and long distance.",
+    detail: `Running for Al Ahly, Egypt's most decorated club, for ${AHLY_YEARS} years — and the contract was just renewed. Middle and long distance.`,
     events: ["800 m", "1500 m", "5K", "10K (raced once)"],
   },
   {

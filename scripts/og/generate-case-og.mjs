@@ -58,10 +58,9 @@ const { caseEvidenceLibrary } = load(join(cfg, "cases.ts"));
 const { caseDetails } = load(join(cfg, "case-details.ts"));
 const { caseAttackMapping, coveredTechniqueCount } = load(join(cfg, "attack.ts"));
 const { blogYoutubeVideos, blogYoutubePlaylists } = load(join(cfg, "youtube.ts"));
-const { YOUTUBE_CHANNEL_VIDEOS } = load(join(cfg, "youtube-feed.ts"));
 const { CV } = load(join(cfg, "cv.ts"));
 const { DIPLOMA, TEACHING_STATS } = load(join(cfg, "teaching.ts"));
-const { AUDIENCE_LABEL } = load(join(ROOT, "lib", "shared.ts"));
+const { AUDIENCE, AUDIENCE_LABEL } = load(join(ROOT, "lib", "shared.ts"));
 const { STUDENT_FEEDBACK } = load(join(cfg, "testimonials.ts"));
 const { ALL_GALLERY_CERTIFICATES, PROFESSIONAL_CERTIFICATION_COUNT } = load(join(cfg, "certifications.ts"));
 
@@ -163,7 +162,7 @@ const PAGES = [
     title: "Videos.",
     line: "Cybersecurity, explained",
     sub: "SOC · Wazuh · Malware · Networking · GRC",
-    chips: [`${YOUTUBE_CHANNEL_VIDEOS} videos`, `${AUDIENCE_LABEL.youtubeSubscribers} subscribers`, `${AUDIENCE_LABEL.youtubeViews} views`],
+    chips: [`${AUDIENCE.youtubeVideos} videos`, `${AUDIENCE_LABEL.youtubeSubscribers} subscribers`, `${AUDIENCE_LABEL.youtubeViews} views`],
     accent: "#BC002D", ink: "#ff2d55", glow: "rgba(188,0,45,.35)",
     photo: { file: "portrait-grey.webp", width: 1000, left: 400, top: -6 },
   },

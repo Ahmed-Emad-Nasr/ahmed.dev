@@ -35,7 +35,7 @@ WHERE EACH THING GOES
                            videoId and same title. Its own page /videos/<slug> is
                            made from the title automatically.
                            caseId = optional id of the case it explains.
-- Playlist               → data/youtube.ts (blogYoutubePlaylists)
+- Playlist               → data/youtube.ts (MANUAL_PLAYLISTS — new playlists and sizes come in by themselves)
 - Video page text        → data/video-notes.ts: VIDEO_NOTES["<videoId>"] = 3–5
                            points taken ONLY from what the video shows; a new
                            term in its tags can get one sentence in GLOSSARY
@@ -59,7 +59,7 @@ WHERE EACH THING GOES
 - Wazuh detection rule   → data/detection-rules.ts
 - Training platform      → data/platforms.ts
 - Organisation logo      → data/logos.ts
-- CV                     → data/cv.ts (the /cv page) — keep it identical to the PDF CV
+- CV                     → just replace public/Assets/cv/AhmedEmadNasr_CV.pdf: scripts/sync-cv.mjs reads it into data/cv-from-pdf.ts (data/cv.ts = fallback only)
 
 RULES — follow all of them
 1. Use ONLY facts I give you or that are in the files I attach. Never invent

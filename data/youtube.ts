@@ -23,6 +23,7 @@ import type {
   BlogYoutubePlaylist,
 } from "@/lib/shared";
 import { YOUTUBE_FEED } from "./youtube-feed";
+import { LIVE_STATS } from "./live-stats";
 
 /* The videos written up by hand. New uploads appear on the site by themselves
    (data/youtube-feed.ts, merged in at the end of this file); add one here to
@@ -470,7 +471,10 @@ export const blogFeaturedYoutubeVideo: FeaturedYoutubeVideo = {
   sourceUrl: "https://youtu.be/orw_kiHZvhU?si=0D4Ri-NSCzCB-Bg_",
 };
 
-export const blogYoutubePlaylists: BlogYoutubePlaylist[] = [
+/* The playlists written up by hand (description and tags). Their size, a
+   playlist id saved wrong, and any new playlist come from the channel itself
+   every morning (data/live-stats.ts, merged in below). */
+const MANUAL_PLAYLISTS: BlogYoutubePlaylist[] = [
  {
     playlistId: "PLO1VSSKnwZUgbiE0ev1TUr5wPI9kxxbgL",
     title: "Wazuh",
@@ -544,6 +548,39 @@ export const blogYoutubePlaylists: BlogYoutubePlaylist[] = [
    * YouTube and add the two entries back to this array, in the same shape as
    * the ones above.
    */
+];
+
+/* "Wazuh." and "wazuh" are the same playlist */
+const sameTitle = (a: string, b: string) => {
+  const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  return norm(a) === norm(b);
+};
+const playlistUrl = (id: string) => `https://www.youtube.com/playlist?list=${id}`;
+
+/* Every playlist: the hand-written ones with the channel's live size (and
+   real id, found by title when the saved one is wrong), then the channel's
+   playlists not written up here yet */
+const usedLive = new Set<string>();
+export const blogYoutubePlaylists: BlogYoutubePlaylist[] = [
+  ...MANUAL_PLAYLISTS.map((p) => {
+    const live =
+      LIVE_STATS.playlists.find((l) => l.id === p.playlistId) ??
+      LIVE_STATS.playlists.find((l) => !usedLive.has(l.id) && sameTitle(l.title, p.title));
+    if (!live) return p;
+    usedLive.add(live.id);
+    return live.id === p.playlistId
+      ? { ...p, videoCount: live.count }
+      : { ...p, playlistId: live.id, sourceUrl: playlistUrl(live.id), videoCount: live.count };
+  }),
+  ...LIVE_STATS.playlists
+    .filter((l) => !usedLive.has(l.id))
+    .map((l) => ({
+      playlistId: l.id,
+      title: l.title,
+      description: l.description || undefined,
+      sourceUrl: playlistUrl(l.id),
+      videoCount: l.count,
+    })),
 ];
 
 /* Uploads that must NOT appear on the site (an off-topic or private video):

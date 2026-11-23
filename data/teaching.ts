@@ -10,8 +10,6 @@
 
 import { AUDIENCE, AUDIENCE_LABEL, fullCount, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { TESTIMONIALS } from "@/data/testimonials";
-/* The channel's upload count — goes up by itself with every new upload (scripts/sync-youtube.mjs) */
-import { YOUTUBE_CHANNEL_VIDEOS } from "@/data/youtube-feed";
 
 type TeachingStat = { value: string; label: string };
 
@@ -101,7 +99,7 @@ export const TEACHING_ROLES: TeachingRole[] = [
     period: "Ongoing",
     link: YOUTUBE_CHANNEL_URL,
     topics: "Step-by-step video walkthroughs on Wazuh SIEM deployment, TryHackMe SOC simulations, WannaCry & PDF malware analysis, Burp Suite, and GRC fundamentals.",
-    results: [`${AUDIENCE_LABEL.youtubeSubscribers} subscribers`, `${fullCount(AUDIENCE.youtubeViews)} views`, `${YOUTUBE_CHANNEL_VIDEOS} videos`],
+    results: [`${AUDIENCE_LABEL.youtubeSubscribers} subscribers`, `${fullCount(AUDIENCE.youtubeViews)} views`, `${AUDIENCE.youtubeVideos} videos`],
   },
 ];
 

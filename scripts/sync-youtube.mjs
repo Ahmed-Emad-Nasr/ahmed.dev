@@ -18,12 +18,11 @@
  * data/youtube-feed.ts on the next run. A videoId in HIDDEN_VIDEOS (same
  * file) is never added.
  *
- * It also keeps the channel's upload count (YOUTUBE_CHANNEL_VIDEOS, same
- * file): every upload the feed shows that was never counted before adds 1,
- * so "86 videos" becomes "87 videos" the day a new video goes up — hidden
- * and hand-written ones included. YOUTUBE_COUNTED_IDS is the list of the
- * uploads already counted. A deleted upload is not subtracted: lower
- * YOUTUBE_CHANNEL_VIDEOS by hand then (the one value you may edit there).
+ * It also keeps a counter of the channel's uploads (YOUTUBE_CHANNEL_VIDEOS,
+ * same file): every upload the feed shows that was never counted before
+ * adds 1 — hidden and hand-written ones included. YOUTUBE_COUNTED_IDS is the
+ * list of the uploads already counted. scripts/sync-stats.mjs (run next)
+ * uses this counter only when it can't read YouTube's own number.
  *
  * Offline / YouTube down → a warning, the file is left as it is, the build
  * goes on with the videos it already has.
@@ -151,9 +150,9 @@ function write(videos, channelVideos, counted) {
       "",
       `export const YOUTUBE_FEED: BlogYoutubeVideo[] = ${body};`,
       "",
-      "/* Uploads on the whole channel (shown as \"86 videos\"): +1 for every upload",
-      "   the feed shows that is not in YOUTUBE_COUNTED_IDS yet. Lower it by hand",
-      "   only after deleting a video from YouTube. */",
+      "/* Counter of the channel's uploads: +1 for every upload the feed shows that",
+      "   is not in YOUTUBE_COUNTED_IDS yet. scripts/sync-stats.mjs uses it only when",
+      "   it can't read YouTube's own number (data/live-stats.ts). */",
       `export const YOUTUBE_CHANNEL_VIDEOS = ${channelVideos};`,
       "",
       "/* The uploads already counted in YOUTUBE_CHANNEL_VIDEOS */",

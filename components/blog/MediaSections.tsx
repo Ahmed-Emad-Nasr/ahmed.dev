@@ -253,7 +253,7 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                       <div className="mb-5 flex flex-wrap items-center gap-2">
                         {playlist.videoCount && (
                           <span className="px-2 py-1 font-mono text-[0.5625rem] uppercase tracking-[0.15em] text-accent bg-accent/10 border border-accent/20">
-                            {playlist.videoCount} videos
+                            {playlist.videoCount} {playlist.videoCount === 1 ? "video" : "videos"}
                           </span>
                         )}
                         {playlist.tags?.slice(0, 4).map((tag) => (

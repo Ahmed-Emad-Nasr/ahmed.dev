@@ -4,18 +4,26 @@ name: Deploy to Pages
 on:
   push:
     branches: ["master"]
-  # Daily rebuild (05:17 Cairo): adds new YouTube uploads (scripts/sync-youtube.mjs),
-  # refreshes the TryHackMe stats, the GitHub stars and contribution graph,
-  # and keeps the "Expires" date of /.well-known/security.txt ahead.
-  # GitHub pauses scheduled runs after 60 days with no commit — the sync's
-  # own commits (below) keep it alive while videos keep coming.
+  # Daily rebuild (05:17 Cairo). Everything below updates by itself:
+  #   · new YouTube uploads → their cards and pages (scripts/sync-youtube.mjs)
+  #   · YouTube subscribers, views, upload count and playlists, and the
+  #     TryHackMe numbers (scripts/sync-stats.mjs → data/live-stats.ts)
+  #   · the CV: a new PDF in public/Assets/cv/ is read and the /cv page, the
+  #     home Experience, the phone / e-mail follow it (scripts/sync-cv.mjs)
+  #   · the share cards that show those numbers (npm run og:cases)
+  #   · GitHub stars, new repos and the contribution graph (at build time)
+  #   · the "Expires" date of /.well-known/security.txt, the © year
+  # GitHub pauses scheduled runs after 60 days with no commit — the daily
+  # numbers commit (below) keeps it alive.
   schedule:
     - cron: "17 3 * * *"
   workflow_dispatch:
 
 permissions:
-  # write: the YouTube sync commits data/youtube-feed.ts back (below)
+  # write: the daily sync commits the synced data back (below)
   contents: write
+  # an issue when the CV PDF could not be read (below)
+  issues: write
   pages: write
   id-token: write
 
@@ -49,20 +57,57 @@ jobs:
           key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
           restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
       - run: npm ci
+      # Python for the PDF tools (CV metadata and reading the CV)
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
       # New uploads from the YouTube channel → data/youtube-feed.ts. Offline or
       # YouTube down: a warning, and the build goes on with the saved list.
       - run: npm run videos:sync
-      # Save the list in the repo, so a video stays after it leaves the feed's
-      # latest 15. A commit made here does not start another deploy. If you
-      # pushed at the same moment, the push is skipped and retried next run.
-      - name: Commit new videos
+      # YouTube subscribers / views / uploads / playlists and the TryHackMe
+      # numbers → data/live-stats.ts. YOUTUBE_API_KEY (optional repository
+      # secret, a free YouTube Data API v3 key) gives the official numbers;
+      # without it they are read from the channel's public pages. Whatever
+      # can't be read keeps its last value — this step never fails the deploy.
+      - run: npm run stats:sync
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+      # The CV PDF → data/cv-from-pdf.ts (only when the PDF changed). A section
+      # it can't read keeps its last good version, and .cv-sync-report.md says why.
+      - run: npm run cv:sync
+      # Tell Ahmed (a GitHub issue, which e-mails him) when the CV needs a look.
+      # One open issue at a time; closing it re-arms it.
+      - name: Report a CV that could not be read
+        if: hashFiles('.cv-sync-report.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          if ! git diff --quiet -- data/youtube-feed.ts; then
+          title="CV sync needs a look"
+          if [ -z "$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number')" ]; then
+            gh issue create --title "$title" --body-file .cv-sync-report.md || echo "::warning::could not open the issue"
+          fi
+      # Save it all in the repo, so a video stays after it leaves the feed's
+      # latest 15 and the numbers survive a day YouTube can't be read. A
+      # commit made here does not start another deploy. If you pushed at the
+      # same moment, the push is skipped and retried next run.
+      - name: Commit synced data
+        run: |
+          files="data/youtube-feed.ts data/live-stats.ts data/cv-from-pdf.ts public/Assets/cv/AhmedEmadNasr_CV.pdf"
+          if ! git diff --quiet -- $files; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/youtube-feed.ts
-            git commit -m "videos: add new uploads from YouTube"
-            git push origin "HEAD:${GITHUB_REF_NAME}" || echo "::warning::could not push data/youtube-feed.ts (a newer commit landed) — the next run will"
+            git add $files
+            if ! git diff --cached --quiet -- data/cv-from-pdf.ts; then
+              msg="cv: follow the new CV PDF"
+            elif ! git diff --cached --quiet -- data/youtube-feed.ts; then
+              msg="videos: add new uploads from YouTube"
+            else
+              msg="stats: refresh YouTube and TryHackMe numbers"
+            fi
+            git commit -m "$msg"
+            git push origin "HEAD:${GITHUB_REF_NAME}" || echo "::warning::could not push the synced data (a newer commit landed) — the next run will"
           fi
       # The small cover of every case image (X-thumb.webp next to X.webp):
       # made here on every deploy, so a missing one never makes a page load
@@ -70,6 +115,19 @@ jobs:
       - run: npm run thumbs
       # Warns (never fails) about any image over 300 KB — see scripts/check-image-size.mjs
       - run: npm run check:images
+      # The share cards carry live numbers (videos, subscribers, cases …):
+      # redraw the ones whose numbers changed (only those — the manifest
+      # skips the rest). They are deployed, not committed. Chromium comes
+      # from the cache after the first run. Never blocks the deploy.
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+      - name: Share cards with today's numbers
+        continue-on-error: true
+        run: |
+          npx playwright install --with-deps chromium
+          npm run og:cases
       # output: "export" in next.config.mjs makes next build write out/
       - run: npm run build
         env:

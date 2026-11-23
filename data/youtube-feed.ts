@@ -84,9 +84,9 @@ export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
   }
 ];
 
-/* Uploads on the whole channel (shown as "86 videos"): +1 for every upload
-   the feed shows that is not in YOUTUBE_COUNTED_IDS yet. Lower it by hand
-   only after deleting a video from YouTube. */
+/* Counter of the channel's uploads: +1 for every upload the feed shows that
+   is not in YOUTUBE_COUNTED_IDS yet. scripts/sync-stats.mjs uses it only when
+   it can't read YouTube's own number (data/live-stats.ts). */
 export const YOUTUBE_CHANNEL_VIDEOS = 86;
 
 /* The uploads already counted in YOUTUBE_CHANNEL_VIDEOS */

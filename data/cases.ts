@@ -54,6 +54,7 @@ const buildScreenshotRange = (
 /* case id → its screenshot paths (under public/). Shown in the case page's
    evidence grid and the library's lightbox. */
 export const caseScreenshotsByEvidenceId: Record<string, string[]> = {
+  "file-and-hash-threat-intel": buildScreenshotRange("File and Hash Threat Intel", 706, 746),
   "soc-l1-alert-reporting": buildScreenshotRange("SOC L1 Alert Reporting", 1, 25),
   "soc-l1-alert-triage": Array.from({ length: 26 }, (_, i) => `Assets/Cases/SOC L1 Alert Triage/Screenshot (${607 + i}).webp`),
   "ir-timeline-analysis": Array.from({ length: 32 }, (_, i) => `Assets/Cases/IR Timeline/Screenshot (${555 + i}).webp`),
@@ -223,6 +224,21 @@ export const caseScreenshotsByEvidenceId: Record<string, string[]> = {
 
 /* ═══ Every case, newest first. Fields = the CaseEvidence type in lib/shared.ts ═══ */
 export const caseEvidenceLibrary: CaseEvidence[] = [
+  {
+    id: "file-and-hash-threat-intel",
+    title: "File and Hash Threat Intel Walkthrough (VirusTotal, MalwareBazaar, Hybrid Analysis & TryDetectThis — BlackMoon, IcedID, Gh0st RAT & Akira Ransomware)",
+    description: "Completed all 6 tasks of TryHackMe's 'File and Hash Threat Intel' room (SOC Level 1 › Threat Analysis Tools): enriching four suspicious files with threat intelligence from their names, paths and hashes alone, without ever running them. Phase 1 — Filenames and hashes: On the analyst workstation (user 'matthew.collins') the 'CTI Files' folder held four files. I turned on file name extensions in Explorer, which exposed 'payroll.pdf' as 'payroll.pdf.exe' — a double extension (answer 'payroll.pdf, Double extensions'). I hashed every file with 'Get-FileHash -Algorithm sha256' in PowerShell and looked each hash up instead of opening the file. Phase 2 — bl0gger.exe (BlackMoon): SHA256 '2672b6688d7b32a90f9153d2ff607d6801e6cbde61f509ed36d0450745998d58'. VirusTotal flagged it 51/61 with the threat label 'trojan.graftor/flystudio' and a first submission on '2025-05-15 12:03:49'. Hybrid Analysis scored it 100/100 and tagged it 'BlackMoon', 'Discovery' and 'windows-server-utility'. Its process tree shows the stealth command 'regsvr32 %WINDIR%\\Media\\ActiveX.ocx /s' and a spawned 'werfault.exe'. Phase 3 — Morse-Code-Analyzer.exe (IcedID loader): SHA256 '1f8806869616c18cbae9ffcf581c0428915d32fb70119df16d08078d92d1a5e3'. VirusTotal flagged it 60/71 as a 'trojan.slepak' loader that unpacks an encrypted staged payload. MalwareBazaar signs it 'IcedID', and 'CyberFortress' was the one vendor that called it clean. The technique flagged for persistence and privilege escalation was 'DLL Side-Loading'. Phase 4 — payroll.pdf.exe (Gh0st RAT): SHA256 'd202ed020ed8e36bd8a0f5b571a19d386c12abecb2a28c989d50bbf92c78f54e'. VirusTotal flagged it 63/71 as a Gh0st RAT variant masquerading as 'svchost.dll'. It is linked to the URL 'hxxp://121.182.174.27:3000/server.exe', and the sandbox extracted 454 strings from it. Hybrid Analysis tagged it 'coinminer', 'gh0st', 'miner' and 'rat'. Phase 5 — Challenge.bin.sample (Akira ransomware): SHA256 '43b0ac119ff957bb209d86ec206ea1ec3c51dd87bebf7b4a649c7e6c7f3756e7'. MalwareBazaar, VirusTotal (60/70) and Hybrid Analysis all named it Akira ransomware, attributed to PUNK SPIDER. In TryDetectThis 2.0 it was flagged by 61 vendors with the family labels 'akira, filecryptor' and the submission date '2023-07-10 08:22:15'. It drops 'akira_readme.txt' with payment instructions and Tor links in every encrypted folder. It deletes every shadow copy with 'Get-WmiObject Win32_Shadowcopy | Remove-WmiObject', which maps to T1490 Inhibit System Recovery. Room completed with all 6 tasks and 144 points.",
+    platform: "TryHackMe",
+    type: "Walkthrough",
+    category: "Threat Intelligence",
+    difficulty: "Easy",
+    tags: ["TryHackMe", "Threat Intelligence", "CTI", "SOC", "File Hash Lookup", "Malware Triage", "Double Extension", "Masquerading", "BlackMoon", "IcedID", "Gh0st RAT", "Akira Ransomware", "Shadow Copy Deletion"],
+    tools: ["PowerShell (Get-FileHash)", "Windows Explorer", "VirusTotal", "MalwareBazaar", "Hybrid Analysis", "TryDetectThis 2.0"],
+    skillsGained: ["File Hash Enrichment (SHA256 / MD5 / SHA1)", "Filename Heuristics (Double Extension, Masquerading)", "Multi-Source Threat Intel Correlation", "Sandbox Report Reading (Process Tree, Mutexes, Dropped Files)", "MITRE ATT&CK Mapping", "Ransomware Behaviour Recognition"],
+    readTime: 14,
+    date: "2026-11-23",
+    image: "Assets/Cases/File and Hash Threat Intel/Screenshot (737).webp",
+  },
   {
     id: "soc-l1-alert-reporting",
     title: "SOC L1 Alert Reporting Walkthrough (Five Ws Reports, L2 Escalation, Spoofed Microsoft Phishing & Exchange Web Shell)",

@@ -2,11 +2,15 @@
    engines can read it and "Ahmed Emad Nasr CV" finds a real page.
 
    ═══ data/cv.ts → app/cv/page.tsx ═══
-   When you update the PDF (public/Assets/cv/AhmedEmadNasr_CV.pdf), update the
-   same lines here — the page and the PDF should say the same thing.
+   Nothing to do when the CV changes: replace the PDF
+   (public/Assets/cv/AhmedEmadNasr_CV.pdf, same name) and push. On the next
+   deploy scripts/sync-cv.mjs reads it into data/cv-from-pdf.ts, and every
+   section read from it replaces the hand-written one below. The values
+   below are the fallback (a section the script could not read).
    **double asterisks** = bold (the numbers, as in the PDF).
    A project link that is empty ("") is not shown. */
 
+import { CV_FROM_PDF } from "@/data/cv-from-pdf";
 import { AUDIENCE, CV_PDF_HREF, fullCount, GITHUB_USERNAME } from "@/lib/shared";
 
 type CvEntry = {
@@ -25,7 +29,7 @@ type CvProject = {
   points: string[];
 };
 
-export const CV = {
+const HAND_WRITTEN = {
   pdf: CV_PDF_HREF,
   /** Shown under the name, and in the page's description */
   headline: "Information Security Officer · Cybersecurity Instructor",
@@ -154,7 +158,7 @@ export const CV = {
     ["Frameworks & Standards", "MITRE ATT&CK, NIST CSF, NIST 800-61, NIST 800-53, ISO 27001, Cyber Kill Chain"],
     ["Operating Systems", "Windows, Windows Server, Linux"],
     ["Soft Skills", "Analytical Thinking, Problem Solving, Team Collaboration, Communication, Adaptability, Attention to Detail"],
-  ] as const,
+  ] as [string, string][],
   certifications: [
     ["eLearnSecurity Junior Penetration Tester v2 (eJPT v2)", "INE", "2026"],
     ["Certified Cybersecurity Educator Professional (CCEP)", "Red Team Leaders", "2026"],
@@ -164,7 +168,7 @@ export const CV = {
     ["Malware Analysis Fundamentals", "Mahara-Tech (ITI)", "2025"],
     ["Cyber Threat Intelligence 101", "arcX", "2025"],
     ["Cisco Certified Network Associate (CCNA 200-301)", "Cisco Systems", "2024"],
-  ] as const,
+  ] as [string, string, string][],
   volunteering: [
     {
       title: "Cybersecurity Instructor (Volunteer)",
@@ -192,5 +196,39 @@ export const CV = {
   languages: [
     ["Arabic", "Native"],
     ["English", "Professional Working Proficiency"],
-  ] as const,
+  ] as [string, string][],
+};
+
+/* ─── What the site shows: the PDF's reading over the hand-written values ── */
+
+const PDF = CV_FROM_PDF?.sections ?? {};
+
+/* The audience lines carry today's numbers (data/live-stats.ts), whatever
+   number the PDF was written with */
+const liveAwards = (awards: string[]) => {
+  const lines = awards.map((a) =>
+    /youtube/i.test(a)
+      ? a
+          .replace(/\*{0,2}[\d,.]+K?\+?\*{0,2}(?=\s*subscribers)/i, `**${fullCount(AUDIENCE.youtubeSubscribers)}**`)
+          .replace(/\*{0,2}[\d,.]+K?\+?\*{0,2}(?=\s*views)/i, `**${fullCount(AUDIENCE.youtubeViews)}**`)
+      : /linkedin/i.test(a)
+        ? a.replace(/\*{0,2}[\d,.]+K?\+?\*{0,2}(?=\s*followers)/i, `**${fullCount(AUDIENCE.linkedinFollowers)}**`)
+        : a,
+  );
+  const linkedin = HAND_WRITTEN.awards.find((a) => /linkedin/i.test(a));
+  return linkedin && !lines.some((a) => /linkedin/i.test(a)) ? [...lines, linkedin] : lines;
+};
+
+export const CV = {
+  ...HAND_WRITTEN,
+  headline: PDF.headline ?? HAND_WRITTEN.headline,
+  contact: { ...HAND_WRITTEN.contact, ...PDF.contact },
+  education: PDF.education ?? HAND_WRITTEN.education,
+  experience: (PDF.experience ?? HAND_WRITTEN.experience) satisfies CvEntry[],
+  projects: (PDF.projects ?? HAND_WRITTEN.projects) satisfies CvProject[],
+  skills: PDF.skills ?? HAND_WRITTEN.skills,
+  certifications: PDF.certifications ?? HAND_WRITTEN.certifications,
+  volunteering: (PDF.volunteering ?? HAND_WRITTEN.volunteering) satisfies CvEntry[],
+  awards: liveAwards(PDF.awards ?? HAND_WRITTEN.awards),
+  languages: PDF.languages ?? HAND_WRITTEN.languages,
 };
