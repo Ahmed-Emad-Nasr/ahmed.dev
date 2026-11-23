@@ -8,6 +8,21 @@ import type { BlogYoutubeVideo } from "@/lib/shared";
 
 export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
   {
+    "videoId": "CTuNtbM7tW8",
+    "title": "Copy vs Forensic Copy Explained | Digital Forensics | What's the Difference?",
+    "description": "Is copying a file or hard drive the same as creating a Forensic Copy? Not at all! In Digital Forensics, preserving evidence requires more than simply duplicating data. A Forensic Copy follows specific procedures to maintain evidence integrity and ensure the original data remains unaltered. In this video, we explore the difference between a regular Copy and…",
+    "publishedAt": "2026-11-23",
+    "tags": [
+      "DigitalForensics",
+      "DFIR",
+      "CyberSecurity",
+      "ForensicImaging",
+      "EvidenceIntegrity",
+      "IncidentResponse"
+    ],
+    "auto": true
+  },
+  {
     "videoId": "Z0Yxk6wqCqM",
     "title": "RTO vs RPO Explained | Recovery Time Objective vs Recovery Point Objective | Business Continuity",
     "description": "What's the difference between RTO and RPO in Business Continuity and Disaster Recovery? In this video, we explain two critical recovery metrics 🔹 **RTO (Recovery Time Objective):** The maximum acceptable time to restore a system or service after a disruption. 🔹 **RPO (Recovery Point Objective):** The maximum acceptable amount of data loss measured in…",
