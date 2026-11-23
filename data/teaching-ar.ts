@@ -7,8 +7,9 @@
    `org` stays in English: it is the key of the organisation's logo — the
    Arabic name goes in `orgLabel`. */
 
-import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
+import { AUDIENCE, AUDIENCE_LABEL, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { TESTIMONIALS } from "@/data/testimonials";
+import { YOUTUBE_CHANNEL_VIDEOS } from "@/data/youtube-feed";
 import { DIPLOMA, type TeachingContent } from "@/data/teaching";
 
 export const TEACHING_AR: TeachingContent = {
@@ -17,7 +18,7 @@ export const TEACHING_AR: TeachingContent = {
     { value: "300+", label: "متدرب في AMIT و NTI" },
     { value: String(TESTIMONIALS.length), label: "رأي مكتوب" },
     { value: "الأول", label: "من بين 250 مدربًا · GDG" },
-    { value: "60K+", label: "مشاهدة على يوتيوب" },
+    { value: AUDIENCE_LABEL.youtubeViews, label: "مشاهدة على يوتيوب" },
   ],
   diploma: {
     title: "دبلومة SOC والأمن السيبراني",
@@ -87,7 +88,7 @@ export const TEACHING_AR: TeachingContent = {
       period: "مستمر",
       link: YOUTUBE_CHANNEL_URL,
       topics: "شروحات خطوة بخطوة: تنصيب Wazuh SIEM، ومحاكاة SOC على TryHackMe، وتحليل WannaCry وملفات PDF الخبيثة، و Burp Suite، وأساسيات GRC.",
-      results: ["أكثر من 500 مشترك", "أكثر من 60,000 مشاهدة", "أكثر من 25 فيديو"],
+      results: [`أكثر من ${AUDIENCE.youtubeSubscribers} مشترك`, `أكثر من ${AUDIENCE.youtubeViews.toLocaleString("en-US")} مشاهدة`, `${YOUTUBE_CHANNEL_VIDEOS} فيديو`],
     },
   ],
   ui: {

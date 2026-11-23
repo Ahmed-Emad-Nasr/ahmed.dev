@@ -17,13 +17,17 @@ import PageEffects from "@/lib/perf/PageEffects";
 import { ArtGallery } from "@/components/gallery/dynamic";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
-import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
+import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience } from "@/lib/seo";
 import { GALLERY_ID, GALLERY_LANGUAGES, GALLERY_URL } from "@/lib/page-ids";
+import { X_HANDLE } from "@/lib/shared";
 
 /* What a search result shows: the name first, so "Ahmed Emad Nasr
    certificates" matches */
-const DESCRIPTION =
-  "Ahmed Emad Nasr's certificates and proof: his degree, professional cybersecurity certifications (eJPT, CCNA …), courses and records, and photos from classrooms and security events.";
+/* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
+const DESCRIPTION = withAudience(
+  "Ahmed Emad Nasr's certificates and proof: his degree, professional cybersecurity certifications (eJPT, CCNA …), courses and records, and photos from classrooms and security events",
+  300,
+);
 const TITLE = "Ahmed Emad Nasr — Certificates & Gallery";
 
 /* This page's own share card (npm run og:cases), else the site card */
@@ -48,8 +52,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    site: "@0x3omda",
-    creator: "@0x3omda",
+    site: X_HANDLE,
+    creator: X_HANDLE,
     images: [{ url: SHARE_IMAGE.url, alt: SHARE_IMAGE.alt }],
   },
 };

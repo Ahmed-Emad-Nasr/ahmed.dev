@@ -18,13 +18,18 @@ import { GALLERY_AR } from "@/data/gallery-copy";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
 import { pageMetadata } from "@/lib/page-meta";
-import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
+import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience } from "@/lib/seo";
+import { AUDIENCE_LINE_AR } from "@/lib/shared";
 import { GALLERY_AR_URL, GALLERY_ID, GALLERY_LANGUAGES } from "@/lib/page-ids";
 import { arabicFont } from "@/app/ar/fonts";
 
 const TITLE = "شهادات أحمد عماد نصر ومعرض الصور — أمن سيبراني";
-const DESCRIPTION =
-  "شهادات أحمد عماد نصر ووثائقه: الشهادة الجامعية، والشهادات الاحترافية في الأمن السيبراني (eJPT و CCNA …)، والدورات، وصور من قاعات التدريس وفعاليات الأمن السيبراني.";
+/* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
+const DESCRIPTION = withAudience(
+  "شهادات أحمد عماد نصر ووثائقه: الشهادة الجامعية، والشهادات الاحترافية في الأمن السيبراني (eJPT و CCNA …)، والدورات، وصور من قاعات التدريس وفعاليات الأمن السيبراني",
+  400,
+  AUDIENCE_LINE_AR,
+);
 
 const base = pageMetadata({
   title: TITLE,

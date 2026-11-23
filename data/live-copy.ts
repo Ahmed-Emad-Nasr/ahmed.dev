@@ -14,7 +14,7 @@ import type { Stat } from "@/data/types";
 import { investigationReportCount, publishedCaseCount } from "@/data/cases";
 import { PROFESSIONAL_CERTIFICATION_COUNT } from "@/data/certifications";
 import { coveredTechniqueCount } from "@/data/attack";
-import { normalizePublicHref } from "@/lib/shared";
+import { AUDIENCE, normalizePublicHref } from "@/lib/shared";
 
 /** The hero summary — the same opening line as the CV PDF (its numbers are
     computed from the data) */
@@ -35,6 +35,6 @@ export const LIVE_COPY: LiveCopy = {
     { target: investigationReportCount, suffix: "", label: "Hands-on investigations", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
     { target: PROFESSIONAL_CERTIFICATION_COUNT, suffix: "", label: "Professional certifications", href: `${normalizePublicHref("/gallery")}#all-certificates` },
     { target: 300, suffix: "+", label: "Students taught", href: normalizePublicHref("/teaching") },
-    { target: 60, suffix: "K+", label: "YouTube views", href: `${normalizePublicHref("/blog")}#videos` },
+    { target: Math.floor(AUDIENCE.youtubeViews / 1000), suffix: "K+", label: "YouTube views", href: `${normalizePublicHref("/blog")}#videos` },
   ],
 };

@@ -23,7 +23,7 @@ import { KanjiWatermark, btnOutline, btnPrimary } from "@/components/ui/kit";
 import { caseEvidenceLibrary } from "@/data/cases";
 import { SITE_VIDEOS, relatedVideos, uploadDate, videoBySlug, videoPath, videoUrl } from "@/lib/videos";
 import { absoluteUrl, caseUrl, summarize } from "@/lib/site";
-import { formatDate, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
+import { formatDate, YOUTUBE_CHANNEL_URL, X_HANDLE } from "@/lib/shared";
 import {
   CHANNEL_ID, PERSON_NAME, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, youtubePlayer, youtubeThumb, youtubeWatch,
 } from "@/lib/seo";
@@ -64,8 +64,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       card: "summary_large_image",
       title: shareTitle,
       description: summarize(video.description ?? video.title, 200),
-      site: "@0x3omda",
-      creator: "@0x3omda",
+      site: X_HANDLE,
+      creator: X_HANDLE,
       images: [youtubeThumb(video.videoId)],
     },
   };

@@ -21,17 +21,19 @@ import { DIPLOMA } from "@/data/teaching";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
 import { pageMetadata } from "@/lib/page-meta";
-import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
+import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience } from "@/lib/seo";
 import { TEACHING_URL, TRAINING_ID, TRAINING_LANGUAGES, TRAINING_URL } from "@/lib/page-ids";
 
-const { title: TITLE, description: DESCRIPTION } = TRAINING_EN;
+const { title: TITLE } = TRAINING_EN;
+/* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
+const DESCRIPTION = withAudience(TRAINING_EN.description, 400);
 
 export const metadata = {
   ...pageMetadata({
     title: TITLE,
     description: DESCRIPTION,
     path: "/training",
-    keywords: pageKeywords(KEYWORDS.training, KEYWORDS.teaching),
+    keywords: pageKeywords(KEYWORDS.training, KEYWORDS.teaching, KEYWORDS.audience),
     share: pageShareImage("training", "Ahmed Emad Nasr — cybersecurity training for teams"),
   }),
   alternates: { canonical: "/training", languages: TRAINING_LANGUAGES },

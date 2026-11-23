@@ -7,11 +7,17 @@
  *   SAME_AS    → add a new public profile (e.g. a new platform) here.
  *   KEYWORDS   → <meta keywords> groups; pages pick the groups they need.
  *   OCCUPATION → the job description used in the person JSON-LD.
+ *   PERSON_AUDIENCE / CHANNEL_AUDIENCE → the follower / subscriber / view
+ *                counts as schema.org interactionStatistic (numbers: AUDIENCE
+ *                in lib/shared.ts).
+ *   withAudience → a description with the audience line added when it fits.
  *   youtubeThumb / youtubeWatch / youtubeEmbed → YouTube URL builders.
  */
 
 import { SITE_BASE_URL } from "@/lib/site";
-import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
+import {
+  AUDIENCE, AUDIENCE_LINE, INSTAGRAM_URL, LINKEDIN_URL, MEDIUM_URL, TIKTOK_URL, X_URL, YOUTUBE_CHANNEL_URL,
+} from "@/lib/shared";
 
 export const SITE_URL = `${SITE_BASE_URL}/`;
 
@@ -30,12 +36,14 @@ export const PERSON_REF = { "@id": PERSON_ID } as const;
  * signals first. Only profiles the site already links to publicly.
  */
 export const SAME_AS = [
-  "https://www.linkedin.com/in/ahmed-emad-nasr/",
+  LINKEDIN_URL,
   "https://wuzzuf.net/me/ahmed-emad-nasr",
   "https://github.com/Ahmed-Emad-Nasr",
   YOUTUBE_CHANNEL_URL,
-  "https://x.com/0x3omda",
-  "https://www.instagram.com/ahmed_emad_nasr/",
+  MEDIUM_URL,
+  X_URL,
+  TIKTOK_URL,
+  INSTAGRAM_URL,
   "https://tryhackme.com/p/Ahmed.Emad.Nasr",
   "https://profile.hackthebox.com/profile/01a13b5b-f63f-737f-9adc-91a78153a84f",
   "https://cyberdefenders.org/p/ahmed.em.nasr",
@@ -203,6 +211,18 @@ export const KEYWORDS = {
     "SOC analyst CV",
     "cybersecurity instructor CV",
   ],
+  /* The audience: what people type to find the profiles themselves */
+  audience: [
+    "Ahmed Emad Nasr LinkedIn",
+    "Ahmed Emad Nasr YouTube channel",
+    "Ahmed Emad Nasr Medium",
+    "Ahmed Emad Nasr TikTok",
+    "Ahmed Emad Nasr X",
+    "Ahmed_Emad_Nasr",
+    "cybersecurity LinkedIn Egypt",
+    "cybersecurity YouTube channel Arabic",
+    "cybersecurity content creator Egypt",
+  ],
   /* The videos page (/videos) */
   videos: [
     "Ahmed Emad Nasr YouTube",
@@ -322,3 +342,41 @@ export const jsonLd = (data: unknown): string =>
     .replace(/&/g, "\\u0026")
     .replace(/\u2028/g, "\\u2028")
     .replace(/\u2029/g, "\\u2029");
+
+/* ─── The audience as structured data ───────────────────────────────────────
+   schema.org InteractionCounter: FollowAction on the person = people who
+   follow him (Google's ProfilePage reads this), SubscribeAction / WatchAction
+   on the channel = subscribers / views. The numbers: AUDIENCE (lib/shared.ts). */
+
+const LINKEDIN_SERVICE = { "@type": "WebSite", name: "LinkedIn", url: "https://www.linkedin.com/" } as const;
+const YOUTUBE_SERVICE = { "@type": "WebSite", name: "YouTube", url: "https://www.youtube.com/" } as const;
+
+const counter = (action: string, count: number, service: object) => ({
+  "@type": "InteractionCounter",
+  interactionType: `https://schema.org/${action}`,
+  userInteractionCount: count,
+  interactionService: service,
+});
+
+/** On the Person node: LinkedIn followers + YouTube subscribers */
+export const PERSON_AUDIENCE = [
+  counter("FollowAction", AUDIENCE.linkedinFollowers, LINKEDIN_SERVICE),
+  counter("SubscribeAction", AUDIENCE.youtubeSubscribers, YOUTUBE_SERVICE),
+];
+
+/** On the YouTube channel node: subscribers + total views */
+export const CHANNEL_AUDIENCE = [
+  counter("SubscribeAction", AUDIENCE.youtubeSubscribers, YOUTUBE_SERVICE),
+  counter("WatchAction", AUDIENCE.youtubeViews, YOUTUBE_SERVICE),
+];
+
+/**
+ * A description with " · 14K+ LinkedIn followers · 600+ YouTube subscribers"
+ * added — only when the result still fits `max` characters (search results
+ * cut ~155-160, share cards ~200), so a long description is never cut short.
+ */
+export const withAudience = (text: string, max = 160, line: string = AUDIENCE_LINE): string => {
+  const base = text.trim().replace(/[.\s]+$/, "");
+  const joined = `${base}. ${line}.`;
+  return joined.length <= max ? joined : text;
+};

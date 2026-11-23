@@ -83,3 +83,54 @@ export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
     "auto": true
   }
 ];
+
+/* Uploads on the whole channel (shown as "86 videos"): +1 for every upload
+   the feed shows that is not in YOUTUBE_COUNTED_IDS yet. Lower it by hand
+   only after deleting a video from YouTube. */
+export const YOUTUBE_CHANNEL_VIDEOS = 86;
+
+/* The uploads already counted in YOUTUBE_CHANNEL_VIDEOS */
+export const YOUTUBE_COUNTED_IDS: string[] = [
+  "1VM05WrTkJ0",
+  "1unn5GpIO28",
+  "3qxPeJOAtls",
+  "3v3jbpTspr4",
+  "4-_XHZa2lVc",
+  "9JR1gbmuYrc",
+  "9LHwl0FpuPM",
+  "AUz6clXvwxw",
+  "BV_9GnuWNnM",
+  "CTuNtbM7tW8",
+  "EF5pQLGsi38",
+  "Eq_dYmM9y10",
+  "F4REdKpJJ-4",
+  "G-Ys6VuV91g",
+  "GhzG0_IJqJY",
+  "GwPbuYulV1U",
+  "IfcbN66k9u8",
+  "J8MNgB-5rMo",
+  "JgMC1NAFNVw",
+  "PEeh_0QBjmc",
+  "Rk3MaVVwUqE",
+  "SGpeYjpzllk",
+  "Vj8lynVzv2k",
+  "XJ9KbMSEqGY",
+  "Z0Yxk6wqCqM",
+  "ZoRWT-OJvxY",
+  "Zp1brJ1dQ_A",
+  "_NHM4bJwVIg",
+  "d2eWKWp6cnQ",
+  "dZs_U8MMV2Q",
+  "ggD8ON2KZF4",
+  "kiPXdvAES1Y",
+  "lrCpQbxw-9o",
+  "mvslufknlJ4",
+  "orw_kiHZvhU",
+  "sWptomUQ1uo",
+  "u_hezaAwnmM",
+  "vqg_xMdD96E",
+  "wf-MPMkr2p8",
+  "xjMLqQOYuGQ",
+  "xpRs11z2_3Y",
+  "z4GbIULmsLA"
+];

@@ -13,7 +13,8 @@
 
 import type { Metadata } from "next";
 import { absoluteUrl } from "@/lib/site";
-import type { ShareImage } from "@/lib/og";
+import type { ShareImage } from "@/lib/og";
+import { X_HANDLE } from "@/lib/shared";
 
 type PageMeta = {
   title: string;
@@ -43,8 +44,8 @@ export function pageMetadata({ title, description, path, keywords, share, type =
       card: "summary_large_image",
       title,
       description,
-      site: "@0x3omda",
-      creator: "@0x3omda",
+      site: X_HANDLE,
+      creator: X_HANDLE,
       images: [{ url: share.url, alt: share.alt }],
     },
   };

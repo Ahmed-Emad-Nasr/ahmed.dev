@@ -20,15 +20,19 @@ import { StudentFeedback, TeachingSection } from "@/components/home/dynamic";
 import { DIPLOMA } from "@/data/teaching";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
-import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
+import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience } from "@/lib/seo";
 import { TEACHING_ID, TEACHING_LANGUAGES, TEACHING_URL } from "@/lib/page-ids";
 import { TEACHING_AR_PAGE } from "@/data/teaching-ar";
 import Link from "next/link";
+import { X_HANDLE } from "@/lib/shared";
 
 /* What a search result shows: the name first, so "Ahmed Emad Nasr
    instructor" and "Ahmed Emad Nasr teaching" match */
-const DESCRIPTION =
-  "Ahmed Emad Nasr, cybersecurity instructor at AMIT Learning and NTI: the 160-hour SOC & Cybersecurity Diploma he teaches, module by module, and what his students wrote.";
+/* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
+const DESCRIPTION = withAudience(
+  "Ahmed Emad Nasr, cybersecurity instructor at AMIT Learning and NTI: the 160-hour SOC & Cybersecurity Diploma he teaches, module by module, and what his students wrote",
+  300,
+);
 const TITLE = "Ahmed Emad Nasr — Cybersecurity Instructor & Teaching";
 
 /* This page's own share card (npm run og:cases), else the site card */
@@ -38,7 +42,7 @@ export const metadata: Metadata = {
   /* absolute: the name is already in it (no " | Ahmed Emad Nasr" template) */
   title: { absolute: TITLE },
   description: DESCRIPTION,
-  keywords: pageKeywords(KEYWORDS.teaching),
+  keywords: pageKeywords(KEYWORDS.teaching, KEYWORDS.audience),
   alternates: { canonical: "/teaching", languages: TEACHING_LANGUAGES },
   openGraph: {
     title: TITLE,
@@ -53,8 +57,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    site: "@0x3omda",
-    creator: "@0x3omda",
+    site: X_HANDLE,
+    creator: X_HANDLE,
     images: [{ url: SHARE_IMAGE.url, alt: SHARE_IMAGE.alt }],
   },
 };

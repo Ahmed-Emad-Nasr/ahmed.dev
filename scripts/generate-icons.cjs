@@ -10,7 +10,7 @@ const path = require("path");
 const brands = require("@fortawesome/free-brands-svg-icons");
 
 /* Only the glyphs components/ui/BrandIcons.tsx draws */
-const BRANDS = ["faGithub", "faInstagram", "faLinkedin", "faYoutube"];
+const BRANDS = ["faGithub", "faInstagram", "faLinkedin", "faMedium", "faTiktok", "faYoutube"];
 
 const rows = [];
 let bytes = 0;

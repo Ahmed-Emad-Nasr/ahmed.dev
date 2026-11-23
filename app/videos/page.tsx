@@ -22,14 +22,15 @@ import { Youtube } from "@/components/ui/BrandIcons";
 import { KanjiWatermark, btnOutline } from "@/components/ui/kit";
 import { blogYoutubePlaylists } from "@/data/youtube";
 import { SITE_VIDEOS, videoPath, videoUrl } from "@/lib/videos";
-import { YOUTUBE_CHANNEL_URL, formatDate } from "@/lib/shared";
+import { AUDIENCE_LABEL, YOUTUBE_CHANNEL_URL, formatDate, X_HANDLE } from "@/lib/shared";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
 import { CHANNEL_ID, KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, youtubeThumb } from "@/lib/seo";
 import { VIDEOS_ID, VIDEOS_URL } from "@/lib/page-ids";
 
 const TITLE = "Ahmed Emad Nasr — Cybersecurity Videos (YouTube)";
-const DESCRIPTION = `${SITE_VIDEOS.length} cybersecurity videos by Ahmed Emad Nasr (0x3omda): SOC and blue-team basics, Wazuh SIEM, malware analysis, networking and GRC — each one explained step by step, with its own page and the written case where there is one.`;
+/* The channel's counts come from AUDIENCE in lib/shared.ts */
+const DESCRIPTION = `${SITE_VIDEOS.length} cybersecurity videos by Ahmed Emad Nasr (0x3omda) — ${AUDIENCE_LABEL.youtubeSubscribers} subscribers, ${AUDIENCE_LABEL.youtubeViews} views: SOC and blue-team basics, Wazuh SIEM, malware analysis, networking and GRC — each one explained step by step, with its own page and the written case where there is one.`;
 
 /* This page's own share card (npm run og:cases), else the site card */
 const SHARE_IMAGE = pageShareImage("videos", "Ahmed Emad Nasr — cybersecurity videos");
@@ -37,7 +38,7 @@ const SHARE_IMAGE = pageShareImage("videos", "Ahmed Emad Nasr — cybersecurity 
 export const metadata: Metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
-  keywords: pageKeywords(KEYWORDS.videos),
+  keywords: pageKeywords(KEYWORDS.videos, KEYWORDS.audience),
   alternates: { canonical: "/videos" },
   openGraph: {
     title: TITLE,
@@ -52,8 +53,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    site: "@0x3omda",
-    creator: "@0x3omda",
+    site: X_HANDLE,
+    creator: X_HANDLE,
     images: [{ url: SHARE_IMAGE.url, alt: SHARE_IMAGE.alt }],
   },
 };

@@ -18,7 +18,10 @@
  */
 
 import type { Profile } from "@/data/types";
-import { CV_PDF_HREF, GITHUB_USERNAME, HOME_LOCATION, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
+import {
+  CV_PDF_HREF, GITHUB_USERNAME, HOME_LOCATION, INSTAGRAM_URL, LINKEDIN_URL, MEDIUM_URL, TIKTOK_URL, X_URL,
+  YOUTUBE_CHANNEL_URL, normalizePublicHref,
+} from "@/lib/shared";
 
 export const PROFILE: Profile = {
   name: "Ahmed Emad Nasr",
@@ -30,13 +33,15 @@ export const PROFILE: Profile = {
     email: "ahmed.em.nasr@gmail.com",
     phone: "+201013972690",
     github: GITHUB_USERNAME,
-    linkedin: "https://www.linkedin.com/in/ahmed-emad-nasr/",
+    linkedin: LINKEDIN_URL,
     wuzzuf: "https://wuzzuf.net/me/ahmed-emad-nasr",
     location: HOME_LOCATION.workArea,
     whatsapp: "201013972690",
     youtube: YOUTUBE_CHANNEL_URL,
-    instagram: "https://www.instagram.com/ahmed_emad_nasr/",
-    x: "https://x.com/0x3omda",
+    instagram: INSTAGRAM_URL,
+    x: X_URL,
+    tiktok: TIKTOK_URL,
+    medium: MEDIUM_URL,
     /* PGP key fingerprint, e.g. "ABCD 1234 …". Empty = no key published yet.
        Filling it in (with the public key saved as public/pgp-key.asc) adds
        the "PGP" link to the footer and the Encryption line to

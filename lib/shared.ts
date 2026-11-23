@@ -141,6 +141,46 @@ export const formatDate = (value: string): string => {
 };
 
 export const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@AhmedEmadNasr-0x3omda";
+export const LINKEDIN_URL = "https://www.linkedin.com/in/ahmed-emad-nasr/";
+
+/* The other public profiles — the ONE place each link is written (the
+   footer, the JSON-LD sameAs and the share-card tags read them) */
+export const X_URL = "https://x.com/Ahmed_Emad_Nasr";
+/** The X handle for the twitter:site / twitter:creator tags */
+export const X_HANDLE = "@Ahmed_Emad_Nasr";
+export const TIKTOK_URL = "https://www.tiktok.com/@ahmed.emadnasr";
+export const MEDIUM_URL = "https://medium.com/@ahmed.em.nasr";
+export const INSTAGRAM_URL = "https://www.instagram.com/ahmed_emad_nasr/";
+
+/* The audience — the ONE place these counts are written. When they grow,
+   change the numbers here: the stats tiles, the teaching
+   and YouTube cards, the CV line, the footer chips, the meta descriptions
+   and the JSON-LD (interactionStatistic) all read them. Write the floor:
+   14_000 shows as "14K+" — at least 14,000. */
+export const AUDIENCE = {
+  linkedinFollowers: 14_000,
+  youtubeSubscribers: 600,
+  youtubeViews: 60_000,
+} as const;
+
+/** 14000 → "14K+", 600 → "600+" */
+export const compactCount = (n: number): string =>
+  n >= 1000 ? `${Math.floor(n / 1000)}K+` : `${n}+`;
+
+/** 14000 → "14,000+" */
+export const fullCount = (n: number): string => `${n.toLocaleString("en-US")}+`;
+
+/** The counts as the site shows them */
+export const AUDIENCE_LABEL = {
+  linkedinFollowers: compactCount(AUDIENCE.linkedinFollowers),
+  youtubeSubscribers: compactCount(AUDIENCE.youtubeSubscribers),
+  youtubeViews: compactCount(AUDIENCE.youtubeViews),
+} as const;
+
+/** One line for descriptions: "14K+ LinkedIn followers · 600+ YouTube subscribers" */
+export const AUDIENCE_LINE = `${AUDIENCE_LABEL.linkedinFollowers} LinkedIn followers · ${AUDIENCE_LABEL.youtubeSubscribers} YouTube subscribers`;
+/** The same in Arabic */
+export const AUDIENCE_LINE_AR = `أكثر من ${AUDIENCE.linkedinFollowers.toLocaleString("en-US")} متابع على لينكدإن · أكثر من ${AUDIENCE.youtubeSubscribers} مشترك على يوتيوب`;
 
 /* Where he lives — the ONE place the personal location is written. The
    profile, the terminal, the JSON-LD and the geo meta tags all read

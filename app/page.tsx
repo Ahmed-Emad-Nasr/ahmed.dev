@@ -76,7 +76,8 @@ import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { SERVICES } from "@/data/services";
 import { knowledgeEducationItems } from "@/data/experience";
 import { OG_IMAGE } from "@/lib/site";
-import { KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd } from "@/lib/seo";
+import { KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd, withAudience } from "@/lib/seo";
+import { AUDIENCE_LINE, X_HANDLE } from "@/lib/shared";
 import { BLOG_ID, GALLERY_ID, TEACHING_ID } from "@/lib/page-ids";
 
 /* <head> tags for the home page only (merged over app/layout.tsx's defaults).
@@ -85,8 +86,9 @@ import { BLOG_ID, GALLERY_ID, TEACHING_ID } from "@/lib/page-ids";
 export const metadata: Metadata = {
   title: "Ahmed Emad Nasr | Information Security Officer | GRC, SOC, DFIR & IAM",
   /* ≤160 characters: search results cut anything longer mid-sentence */
-  description:
-    "Information security officer: GRC & compliance, SOC, incident response & DFIR, malware analysis, IAM and data security — with real reports behind each.",
+  description: withAudience(
+    "Information security officer: GRC, SOC, incident response & DFIR, malware analysis, IAM and data security",
+  ),
   keywords: [
     ...KEYWORDS.identity,
     "information security officer portfolio",
@@ -103,6 +105,7 @@ export const metadata: Metadata = {
     "Wazuh SIEM tutorials",
     "eJPT certified",
     ...KEYWORDS.place,
+    ...KEYWORDS.audience,
     ...KEYWORDS.athlete,
   ],
   alternates: {
@@ -111,8 +114,10 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Ahmed Emad Nasr | Information Security Officer",
-    description:
-      "GRC, SOC, incident response & DFIR, IAM and data security: case reports, projects and training by Ahmed Emad Nasr.",
+    description: withAudience(
+      "GRC, SOC, incident response & DFIR, IAM and data security: case reports, projects and training by Ahmed Emad Nasr",
+      200,
+    ),
     url: SITE_URL,
     type: "website",
     /* A page-level openGraph replaces the layout's whole object */
@@ -122,11 +127,13 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@0x3omda",
-    creator: "@0x3omda",
+    site: X_HANDLE,
+    creator: X_HANDLE,
     title: "Ahmed Emad Nasr | Information Security Officer",
-    description:
-      "GRC assessments, SOC investigations, DFIR and malware analysis, IAM and data security — the work and the reports.",
+    description: withAudience(
+      "GRC assessments, SOC investigations, DFIR and malware analysis, IAM and data security — the work and the reports",
+      200,
+    ),
     images: [{ url: OG_IMAGE.url, alt: OG_IMAGE.alt }],
   },
 };
@@ -149,7 +156,7 @@ function structuredData(repos: RepoCard[]) {
         "@id": `${SITE_URL}#profilepage`,
         url: SITE_URL,
         name: "Ahmed Emad Nasr | Information Security Officer",
-        description: "The portfolio of Ahmed Emad Nasr, information security officer: GRC, security operations, incident response, forensics, malware analysis, IAM and data security, with case reports, projects, videos and certifications.",
+        description: `The portfolio of Ahmed Emad Nasr, information security officer: GRC, security operations, incident response, forensics, malware analysis, IAM and data security, with case reports, projects, videos and certifications. ${AUDIENCE_LINE}.`,
         inLanguage: "en",
         mainEntity: PERSON_REF,
         about: PERSON_REF,

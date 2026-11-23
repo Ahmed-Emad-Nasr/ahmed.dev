@@ -43,6 +43,7 @@ import "./globals.css";
 
 import { knowledgeEducationItems } from "@/data/experience";
 import { certificationsJsonLd } from "@/data/certifications";
+import { YOUTUBE_CHANNEL_VIDEOS } from "@/data/youtube-feed";
 import { skillGroups } from "@/data/skills";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { ThemeFxProvider } from "@/components/layout/ThemeFxProvider";
@@ -54,12 +55,12 @@ import { CONTENT_SECURITY_POLICY } from "@/lib/security";
 import KeyboardShortcuts from "@/components/layout/KeyboardShortcuts";
 import DeferredGlobalEffects from "@/components/layout/DeferredGlobalEffects";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
-import { HOME_LOCATION, normalizePublicHref, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
+import { AUDIENCE_LABEL, AUDIENCE_LINE, HOME_LOCATION, normalizePublicHref, YOUTUBE_CHANNEL_URL, X_HANDLE } from "@/lib/shared";
 import { OG_IMAGE } from "@/lib/site";
 import { homeDataFixScript } from "@/lib/routes";
 import {
-  CHANNEL_ID, jsonLd, KEYWORDS, OCCUPATION, PERSON_ID, PERSON_IMAGE, PERSON_NAME, PERSON_REF,
-  SAME_AS, SITE_KEYWORDS, SITE_URL, WEBSITE_ID,
+  CHANNEL_AUDIENCE, CHANNEL_ID, jsonLd, KEYWORDS, OCCUPATION, PERSON_AUDIENCE, PERSON_ID, PERSON_IMAGE,
+  PERSON_NAME, PERSON_REF, SAME_AS, SITE_KEYWORDS, SITE_URL, WEBSITE_ID, withAudience,
 } from "@/lib/seo";
 
 // ─── Viewport ─────────────────────────────────────────────────────────────────
@@ -107,9 +108,10 @@ export const metadata: Metadata = {
     default: "Ahmed Emad Nasr 🇪🇬 🇵🇸 | Information Security Officer",
     template: "%s | Ahmed Emad Nasr",
   },
-  description:
-    "Ahmed Emad Nasr, information security officer: GRC and compliance, SOC operations, incident response and DFIR, malware analysis, IAM and data security.",
-  keywords: SITE_KEYWORDS,
+  description: withAudience(
+    "Ahmed Emad Nasr, information security officer: GRC, SOC, DFIR, malware analysis, IAM and data security",
+  ),
+  keywords: [...SITE_KEYWORDS, ...KEYWORDS.audience],
   authors: [{ name: "Ahmed Emad Nasr" }],
   creator: "Ahmed Emad Nasr",
   publisher: "Ahmed Emad Nasr",
@@ -130,7 +132,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Ahmed Emad Nasr 🇪🇬 🇵🇸 | Information Security Officer",
-    description: "GRC, SOC, incident response & DFIR, malware analysis, IAM and data security — with the reports to show for it.",
+    description: withAudience("GRC, SOC, incident response & DFIR, malware analysis, IAM and data security — with the reports to show for it", 200),
     type: "website",
     url: SITE_URL,
     locale: "en_US",
@@ -140,9 +142,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Ahmed Emad Nasr 🇪🇬 🇵🇸 | Information Security Officer",
-    description: "GRC & compliance, SOC, incident response & DFIR, IAM and data security — and the security training behind them.",
-    creator: "@0x3omda",
-    site: "@0x3omda",
+    description: withAudience("GRC & compliance, SOC, incident response & DFIR, IAM and data security — and the security training behind them", 200),
+    creator: X_HANDLE,
+    site: X_HANDLE,
     images: [{ url: OG_IMAGE.url, alt: OG_IMAGE.alt }],
   },
   /* iOS / Safari: no automatic phone / address / email links — case pages
@@ -220,7 +222,10 @@ const STRUCTURED_DATA_JSON = jsonLd({
         "B.Sc. Computer Science, Benha University — Distinction with Honor, ranked 8th of 900",
         "Google Developer Groups — ranked 1st of 250 instructors",
       ],
-      description: "Information security officer working across governance, risk and compliance, security operations, incident response and DFIR, malware analysis, identity and access management, and data security.",
+      description: `Information security officer working across governance, risk and compliance, security operations, incident response and DFIR, malware analysis, identity and access management, and data security. Cybersecurity instructor and creator: ${AUDIENCE_LINE}.`,
+      /* Followers and subscribers (AUDIENCE in lib/shared.ts) — Google's
+         ProfilePage reads FollowAction here */
+      interactionStatistic: PERSON_AUDIENCE,
       /* Where he works and studied, as organisations rather than strings — the
          current roles are the ones without an endDate. */
       worksFor: currentOrgs.map(orgNode),
@@ -266,12 +271,18 @@ const STRUCTURED_DATA_JSON = jsonLd({
          point at it and at the person who runs it. */
       "@type": "Organization",
       "@id": CHANNEL_ID,
-      name: "Ahmed Emad — Cybersecurity (YouTube)",
+      name: "Ahmed Emad Nasr — Cybersecurity (YouTube)",
+      alternateName: ["@AhmedEmadNasr-0x3omda", "0x3omda"],
       url: YOUTUBE_CHANNEL_URL,
       sameAs: [YOUTUBE_CHANNEL_URL],
       founder: PERSON_REF,
-      description: "Cybersecurity tutorials: SOC labs, Wazuh SIEM, malware analysis, attack simulation, GRC and security fundamentals.",
-      knowsLanguage: ["en"],
+      description: withAudience(
+        "Cybersecurity tutorials: SOC labs, Wazuh SIEM, malware analysis, attack simulation, GRC and security fundamentals",
+        300,
+        `${AUDIENCE_LABEL.youtubeSubscribers} subscribers · ${YOUTUBE_CHANNEL_VIDEOS} videos · ${AUDIENCE_LABEL.youtubeViews} views`,
+      ),
+      interactionStatistic: CHANNEL_AUDIENCE,
+      knowsLanguage: ["en", "ar"],
     },
     {
       "@type": "WebSite",

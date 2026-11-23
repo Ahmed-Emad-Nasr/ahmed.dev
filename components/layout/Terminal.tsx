@@ -252,6 +252,9 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
             `linkedin  ${PROFILE.contact.linkedin.replace(/^https:\/\/(www\.)?/, "").replace(/\/$/, "")}`,
             `wuzzuf    ${PROFILE.contact.wuzzuf.replace(/^https:\/\//, "")}`,
             `github    github.com/${PROFILE.contact.github}`,
+            `medium    ${PROFILE.contact.medium.replace(/^https:\/\//, "")}`,
+            `x         ${PROFILE.contact.x.replace(/^https:\/\//, "")}`,
+            `tiktok    ${PROFILE.contact.tiktok.replace(/^https:\/\/(www\.)?/, "")}`,
           ]);
           break;
 

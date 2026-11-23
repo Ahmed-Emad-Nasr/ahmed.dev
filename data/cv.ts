@@ -7,7 +7,7 @@
    **double asterisks** = bold (the numbers, as in the PDF).
    A project link that is empty ("") is not shown. */
 
-import { CV_PDF_HREF, GITHUB_USERNAME } from "@/lib/shared";
+import { AUDIENCE, CV_PDF_HREF, fullCount, GITHUB_USERNAME } from "@/lib/shared";
 
 type CvEntry = {
   title: string;
@@ -184,7 +184,8 @@ export const CV = {
   awards: [
     "**Academic Excellence:** Ranked **8th of 900** in Information Security and Digital Forensics at Benha University",
     "Ranked in the Top **1%** of users globally on the TryHackMe platform",
-    "Scaled a cybersecurity YouTube channel to **500+** subscribers & **60,000+** views, featuring practical tutorials",
+    `Scaled a cybersecurity YouTube channel to **${fullCount(AUDIENCE.youtubeSubscribers)}** subscribers & **${fullCount(AUDIENCE.youtubeViews)}** views, featuring practical tutorials`,
+    `Built a professional LinkedIn audience of **${fullCount(AUDIENCE.linkedinFollowers)}** followers through regular security content`,
     "Ranked **44th** out of **450** in the ITI & CyberTalents CTF Competition",
     "Officially recognized as a Top Achiever in the Digital Egypt Pioneers Initiative (DEPI) – Round **4**",
   ],

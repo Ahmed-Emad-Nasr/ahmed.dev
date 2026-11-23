@@ -37,7 +37,7 @@ import { absoluteUrl, caseUrl, summarize } from "@/lib/site";
 import { caseAttackMapping, parentTechnique, techniquesForCase } from "@/data/attack";
 import { caseDetails } from "@/data/case-details";
 import { caseNumbers } from "@/lib/case-numbers";
-import { caseKindOf, CASE_KINDS } from "@/lib/shared";
+import { caseKindOf, CASE_KINDS, X_HANDLE } from "@/lib/shared";
 import { jsonLd, PERSON_ID, PERSON_NAME, SITE_URL } from "@/lib/seo";
 import { blogYoutubeVideos } from "@/data/youtube";
 import { videoById, videoPath } from "@/lib/videos";
@@ -130,8 +130,8 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: shareTitle,
       description: shareDescription,
-      site: "@0x3omda",
-      creator: "@0x3omda",
+      site: X_HANDLE,
+      creator: X_HANDLE,
       images: [ogImage],
     },
   };

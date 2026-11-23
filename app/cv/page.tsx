@@ -17,15 +17,18 @@ import PageShell from "@/components/layout/PageShell";
 import { Github, Linkedin } from "@/components/ui/BrandIcons";
 import { KanjiWatermark, btnOutline, btnPrimary } from "@/components/ui/kit";
 import { CV } from "@/data/cv";
-import { normalizePublicHref } from "@/lib/shared";
+import { normalizePublicHref, X_HANDLE } from "@/lib/shared";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
-import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
+import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience } from "@/lib/seo";
 import { CV_ID, CV_URL } from "@/lib/page-ids";
 
 const TITLE = "Ahmed Emad Nasr — CV | Information Security Officer";
-const DESCRIPTION =
-  "CV of Ahmed Emad Nasr, information security officer and cybersecurity instructor in Egypt: experience at AMIT Learning, Banque Misr and DEPI, SOC, DFIR, GRC and malware-analysis projects, skills and certifications (eJPT, CCNA).";
+/* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
+const DESCRIPTION = withAudience(
+  "CV of Ahmed Emad Nasr, information security officer and cybersecurity instructor in Egypt: experience at AMIT Learning, Banque Misr and DEPI, SOC, DFIR, GRC and malware-analysis projects, skills and certifications (eJPT, CCNA)",
+  300,
+);
 
 /* The CV's own share card (npm run og:cases), else the site card */
 const SHARE_IMAGE = pageShareImage("cv", "Ahmed Emad Nasr — CV");
@@ -48,8 +51,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    site: "@0x3omda",
-    creator: "@0x3omda",
+    site: X_HANDLE,
+    creator: X_HANDLE,
     images: [{ url: SHARE_IMAGE.url, alt: SHARE_IMAGE.alt }],
   },
 };

@@ -21,14 +21,15 @@ import { caseAttackMapping } from "@/data/attack";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
 import { pageMetadata } from "@/lib/page-meta";
-import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
+import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience } from "@/lib/seo";
 import { ATTACK_ID, ATTACK_URL, BLOG_URL } from "@/lib/page-ids";
 
 const TACTICS = [...new Map(ATTACK_TECHNIQUES.map((t) => [t.tactic.id, t.tactic])).values()];
 const MAPPED_CASES = Object.keys(caseAttackMapping).length;
 
 const TITLE = "MITRE ATT&CK Techniques in Real Investigations — Ahmed Emad Nasr";
-const DESCRIPTION = `${ATTACK_TECHNIQUES.length} MITRE ATT&CK techniques across ${TACTICS.length} tactics, each one seen in my own SOC, DFIR and lab write-ups (${MAPPED_CASES} cases). Pick a technique to read the cases that show it and how it was detected.`;
+/* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
+const DESCRIPTION = withAudience(`${ATTACK_TECHNIQUES.length} MITRE ATT&CK techniques across ${TACTICS.length} tactics, each one seen in my own SOC, DFIR and lab write-ups (${MAPPED_CASES} cases). Pick a technique to read the cases that show it and how it was detected`, 300);
 
 export const metadata = pageMetadata({
   title: TITLE,

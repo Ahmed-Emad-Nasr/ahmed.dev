@@ -8,8 +8,10 @@
    (/ar/teaching) uses the same shape from data/teaching-ar.ts — a change
    here (a new module, a new place) should be made there too. */
 
-import { YOUTUBE_CHANNEL_URL } from "@/lib/shared";
+import { AUDIENCE, AUDIENCE_LABEL, fullCount, YOUTUBE_CHANNEL_URL } from "@/lib/shared";
 import { TESTIMONIALS } from "@/data/testimonials";
+/* The channel's upload count — goes up by itself with every new upload (scripts/sync-youtube.mjs) */
+import { YOUTUBE_CHANNEL_VIDEOS } from "@/data/youtube-feed";
 
 type TeachingStat = { value: string; label: string };
 
@@ -18,7 +20,7 @@ export const TEACHING_STATS: TeachingStat[] = [
   /* Counted from data/testimonials.ts — the recommendations are quoted on the home page, the students on /teaching */
   { value: String(TESTIMONIALS.length), label: "Written testimonials" },
   { value: "1st", label: "Of 250 instructors · GDG" },
-  { value: "60K+", label: "YouTube views" },
+  { value: AUDIENCE_LABEL.youtubeViews, label: "YouTube views" },
 ];
 
 /* The SOC & Cybersecurity Diploma — the curriculum taught end to end */
@@ -99,7 +101,7 @@ export const TEACHING_ROLES: TeachingRole[] = [
     period: "Ongoing",
     link: YOUTUBE_CHANNEL_URL,
     topics: "Step-by-step video walkthroughs on Wazuh SIEM deployment, TryHackMe SOC simulations, WannaCry & PDF malware analysis, Burp Suite, and GRC fundamentals.",
-    results: ["500+ subscribers", "60,000+ views", "25+ indexed videos"],
+    results: [`${AUDIENCE_LABEL.youtubeSubscribers} subscribers`, `${fullCount(AUDIENCE.youtubeViews)} views`, `${YOUTUBE_CHANNEL_VIDEOS} videos`],
   },
 ];
 

@@ -21,9 +21,10 @@
 import { useEffect, useState } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, ArrowUpRight, Mail, Copy, Check, BriefcaseBusiness } from "lucide-react";
-import { Github, Linkedin, Youtube, Instagram, XLogo } from "@/components/ui/BrandIcons";
+import { Github, Linkedin, Youtube, Instagram, Medium, Tiktok, XLogo } from "@/components/ui/BrandIcons";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { PROFILE } from "@/data/profile";
+import { AUDIENCE_LABEL } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
 import FadeIn from "@/components/ui/FadeIn";
 import { KanjiWatermark } from "@/components/ui/kit";
@@ -54,12 +55,14 @@ export default function ContactFooter() {
   /* The social icon buttons — add one by copying an entry */
   const socialLinks = [
     { name: "GitHub", icon: Github, href: `https://github.com/${PROFILE.contact.github}`, color: "text-primary-ink" },
-    { name: "LinkedIn", icon: Linkedin, href: `${PROFILE.contact.linkedin}`, color: "text-[#0077b5]" },
+    { name: "LinkedIn", icon: Linkedin, href: `${PROFILE.contact.linkedin}`, color: "text-[#0077b5]", count: `${AUDIENCE_LABEL.linkedinFollowers} followers` },
     { name: "Wuzzuf", icon: BriefcaseBusiness, href: PROFILE.contact.wuzzuf, color: "text-[#0055d9]" },
     { name: "WhatsApp", icon: MessageCircle, href: `https://wa.me/${PROFILE.contact.whatsapp}`, color: "text-[#25d366]" },
-    { name: "YouTube", icon: Youtube, href: PROFILE.contact.youtube, color: "text-[#ff0000]" },
+    { name: "YouTube", icon: Youtube, href: PROFILE.contact.youtube, color: "text-[#ff0000]", count: `${AUDIENCE_LABEL.youtubeSubscribers} subscribers` },
     { name: "Instagram", icon: Instagram, href: PROFILE.contact.instagram, color: "text-[#e1306c]" },
     { name: "X", icon: XLogo, href: `${PROFILE.contact.x}`, color: "text-foreground" },
+    { name: "TikTok", icon: Tiktok, href: PROFILE.contact.tiktok, color: "text-foreground" },
+    { name: "Medium", icon: Medium, href: PROFILE.contact.medium, color: "text-foreground" },
   ];
 
   return (
@@ -131,6 +134,12 @@ export default function ContactFooter() {
                     <span className="font-mono font-bold uppercase tracking-[0.15em] text-[0.625rem]">
                       {social.name}
                     </span>
+                    {/* The audience count (AUDIENCE in lib/shared.ts) */}
+                    {social.count && (
+                      <span className="font-mono uppercase tracking-[0.15em] text-[0.5625rem] text-foreground/60">
+                        {social.count}
+                      </span>
+                    )}
                     <ArrowUpRight
                       size={12}
                       className="opacity-0 group-hover:opacity-100 transition-opacity -translate-y-1 group-hover:translate-y-0"

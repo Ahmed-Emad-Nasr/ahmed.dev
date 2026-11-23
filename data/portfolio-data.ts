@@ -28,7 +28,7 @@ import type { Experience, PortfolioData, WorkItem } from "@/data/types";
 import { knowledgeEducationItems } from "@/data/experience";
 import { languages } from "@/data/skills";
 import { GALLERY_IMAGE_COUNT, galleryImagePath, galleryMetadata } from "@/data/certifications";
-import { GITHUB_USERNAME, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
+import { AUDIENCE, AUDIENCE_LABEL, fullCount, GITHUB_USERNAME, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
 import { PROFILE } from "@/data/profile";
 
 /* "2026-02-01" → "Feb 2026" */
@@ -277,7 +277,7 @@ export const PORTFOLIO_DATA: PortfolioData = {
     {
       name: "YouTube",
       org: "Community",
-      description: "Free cybersecurity walkthroughs — 500+ subscribers and 60,000+ views so far.",
+      description: `Free cybersecurity walkthroughs — ${AUDIENCE_LABEL.youtubeSubscribers} subscribers and ${fullCount(AUDIENCE.youtubeViews)} views so far.`,
       link: YOUTUBE_CHANNEL_URL,
     },
   ],

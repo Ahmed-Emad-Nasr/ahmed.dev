@@ -33,19 +33,23 @@ import { attackCoverage, libraryCounts } from "@/lib/library-data";
 import { blogYoutubePlaylists } from "@/data/youtube";
 import { pageShareImage } from "@/lib/og";
 import {
-  CHANNEL_ID, KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, youtubeThumb,
+  CHANNEL_ID, KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience, youtubeThumb,
 } from "@/lib/seo";
 import { absoluteUrl } from "@/lib/site";
 import { BLOG_ID, BLOG_URL } from "@/lib/page-ids";
 import { SITE_VIDEOS, videoUrl } from "@/lib/videos";
+import { X_HANDLE } from "@/lib/shared";
 
 /* The intro text under "The Blog." */
 const BLOG_DESCRIPTION =
   "Real security work, written up so anyone can follow it: what was attacked, what I did about it and how to stop it next time. Each case opens with a plain summary; the technical detail — reports, detection rules, MITRE ATT&CK — is underneath for those who want it.";
 
 /* What a search result shows: the name first, so "Ahmed Emad Nasr blog" matches */
-const SEARCH_DESCRIPTION =
-  "Ahmed Emad Nasr's cybersecurity blog: incident response, DFIR and malware analysis case studies, SOC investigations, Wazuh detection rules and MITRE ATT&CK mapping.";
+/* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
+const SEARCH_DESCRIPTION = withAudience(
+  "Ahmed Emad Nasr's cybersecurity blog: incident response, DFIR and malware analysis case studies, SOC investigations, Wazuh detection rules and MITRE ATT&CK mapping",
+  300,
+);
 
 /* This page's own share card (npm run og:cases), else the site card */
 const SHARE_IMAGE = pageShareImage("blog", "Ahmed Emad Nasr Blog — cybersecurity case studies");
@@ -72,8 +76,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Ahmed Emad Nasr Blog — Cybersecurity Case Studies",
     description: SEARCH_DESCRIPTION,
-    site: "@0x3omda",
-    creator: "@0x3omda",
+    site: X_HANDLE,
+    creator: X_HANDLE,
     images: [{ url: SHARE_IMAGE.url, alt: SHARE_IMAGE.alt }],
   },
 };

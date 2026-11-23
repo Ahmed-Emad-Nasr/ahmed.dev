@@ -21,11 +21,14 @@ import { StudentFeedback, TeachingSection } from "@/components/home/dynamic";
 import { TEACHING_AR, TEACHING_AR_PAGE } from "@/data/teaching-ar";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
-import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
+import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience } from "@/lib/seo";
+import { AUDIENCE_LINE_AR, X_HANDLE } from "@/lib/shared";
 import { TEACHING_AR_ID, TEACHING_AR_URL, TEACHING_LANGUAGES, TEACHING_URL } from "@/lib/page-ids";
 import { arabicFont } from "@/app/ar/fonts";
 
-const { title: TITLE, description: DESCRIPTION } = TEACHING_AR_PAGE;
+const { title: TITLE } = TEACHING_AR_PAGE;
+/* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
+const DESCRIPTION = withAudience(TEACHING_AR_PAGE.description, 400, AUDIENCE_LINE_AR);
 
 /* The teaching page's share card (npm run og:cases), else the site card */
 const SHARE_IMAGE = pageShareImage("teaching", "أحمد عماد نصر — مدرب أمن سيبراني");
@@ -49,8 +52,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    site: "@0x3omda",
-    creator: "@0x3omda",
+    site: X_HANDLE,
+    creator: X_HANDLE,
     images: [{ url: SHARE_IMAGE.url, alt: SHARE_IMAGE.alt }],
   },
 };

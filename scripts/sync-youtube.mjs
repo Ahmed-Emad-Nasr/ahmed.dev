@@ -18,6 +18,13 @@
  * data/youtube-feed.ts on the next run. A videoId in HIDDEN_VIDEOS (same
  * file) is never added.
  *
+ * It also keeps the channel's upload count (YOUTUBE_CHANNEL_VIDEOS, same
+ * file): every upload the feed shows that was never counted before adds 1,
+ * so "86 videos" becomes "87 videos" the day a new video goes up — hidden
+ * and hand-written ones included. YOUTUBE_COUNTED_IDS is the list of the
+ * uploads already counted. A deleted upload is not subtracted: lower
+ * YOUTUBE_CHANNEL_VIDEOS by hand then (the one value you may edit there).
+ *
  * Offline / YouTube down → a warning, the file is left as it is, the build
  * goes on with the videos it already has.
  */
@@ -104,18 +111,33 @@ export function parseFeed(xml) {
     .filter(Boolean);
 }
 
+/* One exported value of the generated file, as JSON: from "= " to the first
+   line that ends in ";" (pretty-printed JSON never ends a line with one) */
+const readExport = (src, name) => {
+  const at = src.indexOf(`export const ${name}`);
+  if (at < 0) return undefined;
+  const start = src.indexOf("= ", at) + 2;
+  const end = src.slice(start).search(/;\r?\n|;$/);
+  return JSON.parse(src.slice(start, start + end));
+};
+
 const readSaved = () => {
   try {
     const src = readFileSync(FEED_FILE, "utf8");
-    const json = src.slice(src.indexOf("= [") + 2, src.lastIndexOf("]") + 1);
-    return JSON.parse(json);
+    return {
+      videos: readExport(src, "YOUTUBE_FEED") ?? [],
+      channelVideos: readExport(src, "YOUTUBE_CHANNEL_VIDEOS"),
+      counted: readExport(src, "YOUTUBE_COUNTED_IDS"),
+    };
   } catch {
-    return [];
+    return { videos: [] };
   }
 };
 
-function write(videos) {
-  const body = JSON.stringify(videos, null, 2).replace(/\n/g, "\r\n");
+const json = (value) => JSON.stringify(value, null, 2).replace(/\n/g, "\r\n");
+
+function write(videos, channelVideos, counted) {
+  const body = json(videos);
   writeFileSync(
     FEED_FILE,
     [
@@ -128,6 +150,14 @@ function write(videos) {
       'import type { BlogYoutubeVideo } from "@/lib/shared";',
       "",
       `export const YOUTUBE_FEED: BlogYoutubeVideo[] = ${body};`,
+      "",
+      "/* Uploads on the whole channel (shown as \"86 videos\"): +1 for every upload",
+      "   the feed shows that is not in YOUTUBE_COUNTED_IDS yet. Lower it by hand",
+      "   only after deleting a video from YouTube. */",
+      `export const YOUTUBE_CHANNEL_VIDEOS = ${channelVideos};`,
+      "",
+      "/* The uploads already counted in YOUTUBE_CHANNEL_VIDEOS */",
+      `export const YOUTUBE_COUNTED_IDS: string[] = ${json(counted)};`,
       "",
     ].join("\r\n"),
   );
@@ -153,18 +183,29 @@ async function main() {
 
   /* Saved videos stay (the feed only holds the latest 15); the feed's copy
      of a video updates a saved one; hand-listed videos leave the list */
-  const byId = new Map(readSaved().map((v) => [v.videoId, v]));
+  const saved = readSaved();
+  const byId = new Map(saved.videos.map((v) => [v.videoId, v]));
   for (const v of fresh) byId.set(v.videoId, v);
   const videos = [...byId.values()]
     .filter((v) => !manual.has(v.videoId))
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt) || a.videoId.localeCompare(b.videoId));
 
-  const before = JSON.stringify(readSaved());
-  write(videos);
+  /* The channel count: every upload the feed shows that was never counted
+     adds 1. First run (no count saved yet): every video the site knows is
+     counted, and the count starts at that number. */
+  const counted = new Set(saved.counted ?? [...manual, ...saved.videos.map((v) => v.videoId)]);
+  let channelVideos = saved.channelVideos ?? counted.size;
+  const uploaded = fresh.filter((v) => !counted.has(v.videoId));
+  for (const v of uploaded) counted.add(v.videoId);
+  channelVideos += uploaded.length;
+
+  const before = JSON.stringify(saved.videos);
+  write(videos, channelVideos, [...counted].sort());
   const added = videos.filter((v) => !before.includes(`"${v.videoId}"`));
   console.log(
     `videos:sync — ${fresh.length} in the feed, ${videos.length} added automatically` +
-      (added.length ? ` (new: ${added.map((v) => v.title).join("; ")})` : " (nothing new)"),
+      (added.length ? ` (new: ${added.map((v) => v.title).join("; ")})` : " (nothing new)") +
+      `; channel: ${channelVideos} videos` + (uploaded.length ? ` (+${uploaded.length})` : ""),
   );
 }
 

@@ -15,11 +15,14 @@ import { TRAINING_AR } from "@/data/training";
 import { absoluteUrl } from "@/lib/site";
 import { pageShareImage } from "@/lib/og";
 import { pageMetadata } from "@/lib/page-meta";
-import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords } from "@/lib/seo";
+import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience } from "@/lib/seo";
+import { AUDIENCE_LINE_AR } from "@/lib/shared";
 import { TEACHING_AR_URL, TRAINING_AR_ID, TRAINING_AR_URL, TRAINING_LANGUAGES, TRAINING_URL } from "@/lib/page-ids";
 import { arabicFont } from "@/app/ar/fonts";
 
-const { title: TITLE, description: DESCRIPTION } = TRAINING_AR;
+const { title: TITLE } = TRAINING_AR;
+/* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
+const DESCRIPTION = withAudience(TRAINING_AR.description, 400, AUDIENCE_LINE_AR);
 
 const base = pageMetadata({
   title: TITLE,
