@@ -183,8 +183,6 @@ function Shot({
         onError={() => setThumbFailed(true)}
         className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
       />
-      <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
       <div className="hover-reveal absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-3 z-10">
         <span className="font-mono text-[0.5625rem] font-bold tracking-[0.3em] uppercase text-white">
           Evidence {String(index + 1).padStart(2, "0")}

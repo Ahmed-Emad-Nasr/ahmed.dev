@@ -78,7 +78,6 @@ const html = (c) => {
 @font-face{font-family:Outfit;src:url(${font("outfit-latin.woff2")});font-weight:100 900}
 *{margin:0;box-sizing:border-box}
 body{width:1200px;height:630px;background:#080808;color:#fff;font-family:Outfit;position:relative;overflow:hidden}
-.grid{position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.07) 1px,transparent 0);background-size:40px 40px}
 .top{position:absolute;top:0;left:0;right:0;height:4px;background:#BC002D}
 .side{position:absolute;left:0;top:0;bottom:0;width:6px;background:linear-gradient(#BC002D,transparent)}
 .sun{position:absolute;right:-120px;top:-80px;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(188,0,45,.2) 0%,transparent 65%)}
@@ -97,7 +96,7 @@ h1{margin-top:30px;font-family:Dela;font-size:${size}px;line-height:.98;letter-s
 .sev-medium,.sev-low{color:#38bdf8;border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.08)}
 .foot{position:absolute;left:80px;right:80px;bottom:52px;display:flex;justify-content:space-between;align-items:center;font-family:Mono;font-size:16px;letter-spacing:.22em;color:rgba(255,255,255,.45);text-transform:uppercase}
 .mark{font-family:Dela;font-size:30px;letter-spacing:-.02em;color:#fff}.mark i{color:#BC002D;font-style:normal}
-</style></head><body><div class="grid"></div><div class="sun"></div><div class="top"></div><div class="side"></div>
+</style></head><body><div class="sun"></div><div class="top"></div><div class="side"></div>
 <div class="wrap">
 <div class="badge"><span class="dot"></span>${esc(c.category)} · ${esc(c.platform)}</div>
 <h1>${esc(c.title)}</h1>
@@ -239,7 +238,6 @@ const pageHtml = (p) => `<!doctype html><html><head><meta charset="utf-8"><style
 @font-face{font-family:Outfit;src:url(${font("outfit-latin.woff2")});font-weight:100 900}
 *{margin:0;box-sizing:border-box}
 body{width:1200px;height:630px;background:#080808;color:#fff;font-family:Outfit;position:relative;overflow:hidden}
-.grid{position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(255,255,255,.07) 1px,transparent 0);background-size:40px 40px}
 .top{position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,${p.accent},${p.ink})}
 .halo{position:absolute;left:560px;top:-10px;width:660px;height:660px;border-radius:50%;background:radial-gradient(circle,${p.glow} 0%,transparent 68%)}
 .sun{position:absolute;left:650px;top:75px;width:490px;height:490px;border-radius:50%;
@@ -263,7 +261,7 @@ h1{margin-top:4px;font-family:Dela;font-size:${titleSize(p.title)}px;line-height
 .foot{position:absolute;left:72px;bottom:40px;display:flex;align-items:center;gap:18px;font-family:Mono;font-size:15px;letter-spacing:.2em;color:rgba(255,255,255,.5);text-transform:uppercase}
 .mark{font-family:Dela;font-size:30px;letter-spacing:-.02em;color:#fff}.mark i{color:#BC002D;font-style:normal}
 .bar{width:1px;height:22px;background:rgba(255,255,255,.2)}
-</style></head><body><div class="grid"></div><div class="halo"></div><div class="sun"></div><div class="ring"></div>
+</style></head><body><div class="halo"></div><div class="sun"></div><div class="ring"></div>
 <img class="photo" src="${photo(p.photo.file)}" alt="">
 <div class="fade"></div><div class="top"></div>
 <div class="wrap">

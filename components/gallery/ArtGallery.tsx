@@ -304,11 +304,6 @@ export default function ArtGallery({ copy = GALLERY_EN }: { copy?: GalleryCopy }
                   className="spotlight relative group overflow-hidden bg-surface border border-foreground/5 transition-all duration-300 hover:border-primary/40"
                 >
                   <CardEffects index={idx + 1} />
-                  <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-                  <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-                  <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-                  <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary/0 group-hover:border-primary/60 transition-colors duration-300 z-20 pointer-events-none" />
-
                   <button
                     type="button"
                     onClick={() => {
@@ -334,20 +329,7 @@ export default function ArtGallery({ copy = GALLERY_EN }: { copy?: GalleryCopy }
                     unoptimized={true}
                   />
 
-                  <div
-                    className="gallery-halftone pointer-events-none absolute inset-0 z-[5] opacity-0 transition-[opacity,transform] duration-[540ms] ease-out group-hover:scale-[1.17] group-hover:opacity-100"
-                    aria-hidden="true"
-                  />
-
                   <div className="hover-reveal absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6 z-10">
-                    <div
-                      className="absolute top-0 right-0 w-full h-full pointer-events-none opacity-20"
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(135deg, transparent 48%, var(--primary) 48%, var(--primary) 49%, transparent 49%)",
-                      }}
-                    />
-
                     <div className="relative z-10">
                       <div className="flex items-center gap-2 text-primary-ink mb-2">
                         <Sparkles size={12} />

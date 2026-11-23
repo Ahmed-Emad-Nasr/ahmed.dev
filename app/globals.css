@@ -515,16 +515,6 @@
   );
 }
 
-.gallery-halftone {
-  background-image: radial-gradient(
-    circle at 2px 2px,
-    color-mix(in srgb, var(--primary) 28%, transparent) 1px,
-    transparent 0
-  );
-  background-size: 8px 8px;
-  mix-blend-mode: screen;
-}
-
 @media (prefers-reduced-motion: reduce) {
   button:not(:disabled),
   a[role="button"] {

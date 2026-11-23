@@ -161,12 +161,6 @@ export default function ContactFooter() {
           <FadeIn y={40} duration={0.8} delay={0.2}
             className="relative bg-surface/60 border border-foreground/5 p-8 md:p-12 group"
           >
-            {/* Corner bracket accents */}
-            <div className="absolute top-0 left-0 w-5 h-5 border-t-2 border-l-2 border-primary/40" />
-            <div className="absolute top-0 right-0 w-5 h-5 border-t-2 border-r-2 border-primary/40" />
-            <div className="absolute bottom-0 left-0 w-5 h-5 border-b-2 border-l-2 border-primary/40" />
-            <div className="absolute bottom-0 right-0 w-5 h-5 border-b-2 border-r-2 border-primary/40" />
-
             {/* The stamp: lands on the form when the mail app opens. Not
                 "sent" — the visitor still presses send in their mail app. */}
             <AnimatePresence>

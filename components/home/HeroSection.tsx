@@ -326,10 +326,6 @@ export default function HeroSection({
                     className="group/social relative w-11 h-11 flex items-center justify-center border border-foreground/10 bg-foreground/[0.02] text-foreground/60 transition-colors duration-200 hover:border-primary hover:text-primary-ink"
                     aria-label={s.name}
                   >
-                    <span
-                      className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-primary/0 group-hover/social:border-primary transition-colors duration-300"
-                      aria-hidden="true"
-                    />
                     <s.icon size={18} strokeWidth={1.5} />
                     <span
                       className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap px-2.5 py-1 bg-background border border-primary/40 font-mono text-[0.5625rem] font-bold tracking-[0.25em] uppercase text-primary-ink opacity-0 group-hover/social:opacity-100 transition-opacity duration-300"
@@ -348,8 +344,6 @@ export default function HeroSection({
             className="relative border border-foreground/10 bg-foreground/[0.02] p-6 md:p-7"
             aria-label="Field record"
           >
-            <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-primary/50 pointer-events-none" />
-            <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-primary/50 pointer-events-none" />
             <div className="flex items-center gap-3 mb-5">
               <div className="w-8 h-[2px] bg-primary" />
               <span className="font-mono text-[0.625rem] font-bold tracking-[0.16em] uppercase text-primary-ink">

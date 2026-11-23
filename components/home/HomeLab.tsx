@@ -91,13 +91,6 @@ export default function HomeLab() {
             <desc id="lab-desc">
               Kali Linux attacks Windows and Linux endpoints behind pfSense. Endpoint logs (Sysmon, auditd, file integrity) and Suricata and Zeek network alerts flow into Wazuh. Wazuh enriches hashes through VirusTotal, triggers a YARA scan and quarantine script, and opens cases in TheHive.
             </desc>
-            <defs>
-              <pattern id="lab-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M20 0H0V20" fill="none" stroke="currentColor" strokeOpacity="0.05" />
-              </pattern>
-            </defs>
-            <rect width="1040" height="440" fill="url(#lab-grid)" className="text-foreground" />
-
             {/* Links: dashed, flowing in the data's direction, each with a packet */}
             {LINKS.map((l, i) => (
               <g key={i}>
