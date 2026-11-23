@@ -87,7 +87,7 @@ export default function TrainingContent({ copy }: { copy: TrainingCopy }) {
           <span className="w-12 h-[2px] bg-primary" aria-hidden="true" />
           {copy.audiencesTitle}
         </h2>
-        <ul className="mb-24 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <ul className="mb-24 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
           {copy.audiences.map((a, i) => {
             const Icon = AUDIENCE_ICONS[i % AUDIENCE_ICONS.length];
             return (
@@ -105,7 +105,7 @@ export default function TrainingContent({ copy }: { copy: TrainingCopy }) {
           <span className="w-12 h-[2px] bg-primary" aria-hidden="true" />
           {copy.formatsTitle}
         </h2>
-        <ul className="mb-24 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <ul className="mb-24 grid grid-cols-1 lg:grid-cols-3 gap-6">
           {copy.formats.map((f, i) => (
             <FadeIn as="li" key={f.title} y={16} delay={i * 0.08} className={`${cardSurface} p-7`}>
               <p className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-tertiary">{f.detail}</p>
@@ -118,7 +118,9 @@ export default function TrainingContent({ copy }: { copy: TrainingCopy }) {
         {/* ─── The diploma, module by module ─── */}
         <h2 className={subTitle}>
           <span className="w-12 h-[2px] bg-primary" aria-hidden="true" />
-          {diploma.title} — <bdi>{diploma.hours}</bdi> {copy.hoursLabel}
+          <span className="min-w-0">
+            {diploma.title} — <bdi>{diploma.hours}</bdi> {copy.hoursLabel}
+          </span>
         </h2>
         <FadeIn className={`${cardSurface} mb-24 p-7 md:p-10`}>
           <p className="max-w-3xl text-sm md:text-base text-foreground/60 font-light leading-relaxed">{diploma.summary}</p>
@@ -170,17 +172,17 @@ export default function TrainingContent({ copy }: { copy: TrainingCopy }) {
         </Link>
 
         {/* ─── The request ─── */}
-        <FadeIn className={`${cardSurface} p-7 md:p-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6`}>
+        <FadeIn className={`${cardSurface} p-7 md:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6`}>
           <div
             className="absolute top-0 start-0 w-full h-[2px] bg-gradient-to-r rtl:bg-gradient-to-l from-tertiary via-tertiary/40 to-transparent"
             aria-hidden="true"
           />
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <p className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-tertiary">{cta.eyebrow}</p>
             <h2 className="mt-3 font-display text-2xl md:text-3xl font-black uppercase tracking-tight leading-tight">{cta.title}</h2>
             <p className="mt-3 max-w-2xl text-sm md:text-base text-foreground/60 font-light leading-relaxed">{cta.text}</p>
           </div>
-          <a href={mailto} className={`${ctaPrimary} shrink-0 self-start md:self-center`}>
+          <a href={mailto} className={`${ctaPrimary} shrink-0 self-start lg:self-center`}>
             <Mail size={16} aria-hidden="true" />
             {cta.button}
           </a>

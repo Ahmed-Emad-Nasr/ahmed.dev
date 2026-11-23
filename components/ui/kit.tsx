@@ -128,9 +128,17 @@ export function Chapter({
       </div>
       <h2
         id={id}
-        className="font-display text-2xl md:text-4xl font-black uppercase tracking-tighter leading-[0.95] text-foreground [text-wrap:balance]"
+        className="group/chapter scroll-mt-28 font-display text-2xl md:text-4xl font-black uppercase tracking-tighter leading-[0.95] text-foreground [text-wrap:balance]"
       >
         {title}
+        {/* A link to this part of the page — shows on hover or keyboard focus */}
+        <a
+          href={`#${id}`}
+          aria-label={`Link to this section: ${title}`}
+          className="ml-3 align-middle font-mono text-base font-normal text-foreground/0 group-hover/chapter:text-foreground/40 focus-visible:text-foreground/70 hover:!text-primary-ink transition-colors duration-200"
+        >
+          #
+        </a>
       </h2>
       <p className="mt-3 max-w-2xl text-base text-foreground/60 font-light leading-relaxed">{children}</p>
     </div>

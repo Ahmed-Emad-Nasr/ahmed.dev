@@ -10,6 +10,7 @@ import ShowMore from "@/components/ui/ShowMore";
 import { TiltCard } from "@/components/ui/Motion";
 import { KanjiWatermark, chipTertiary } from "@/components/ui/kit";
 import { TOOL_GROUPS as GROUPS } from "@/data/about";
+import { sizeFor } from "@/lib/shared";
 
 export default function ToolsSection() {
   return (
@@ -33,7 +34,7 @@ export default function ToolsSection() {
               <TiltCard className="group spotlight spotlight-blue relative bg-surface/60 border border-foreground/5 p-7 h-full hover:border-tertiary/50 transition-colors duration-500">
                 <div className="absolute top-0 left-0 w-full h-[2px] bg-tertiary/0 group-hover:bg-tertiary transition-colors duration-500" aria-hidden="true" />
                 <div className="flex items-baseline justify-between gap-3 mb-1">
-                  <h3 className="font-display text-lg font-black uppercase tracking-tight text-foreground">{g.title}</h3>
+                  <h3 className={`font-display ${sizeFor(g.title, "text-lg", "text-base lg:text-[0.9375rem] xl:text-base", 9)} font-black uppercase tracking-tight text-foreground`}>{g.title}</h3>
                   <span className="brush-jp text-xl text-tertiary shrink-0" lang="ja" aria-hidden="true">
                     {g.japanese}
                   </span>

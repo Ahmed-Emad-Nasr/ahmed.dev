@@ -15,15 +15,15 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import gsap from "gsap";
-import { prefersReducedMotion } from "@/lib/fx";
+import { calmEffects } from "@/lib/fx";
 
 export default function ExperienceReveal({ className, children }: { className?: string; children: ReactNode }) {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = sectionRef.current;
-    // Reduced motion: leave every element in its natural, final position.
-    if (!root || prefersReducedMotion()) return;
+    // Reduced motion or a weak device: leave every element in its natural, final position.
+    if (!root || calmEffects()) return;
 
     const cards = gsap.utils.toArray<HTMLElement>(".exp-item", root);
     /* One paused tween per card, starting from off to the side and invisible */

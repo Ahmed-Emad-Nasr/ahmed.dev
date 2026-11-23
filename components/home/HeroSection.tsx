@@ -25,7 +25,7 @@ import { Github, Linkedin, Youtube } from "@/components/ui/BrandIcons";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 
-import { prefersReducedMotion } from "@/lib/fx";
+import { calmEffects } from "@/lib/fx";
 import { whenIntroDone } from "@/lib/intro";
 
 function FieldRow({ label, value, hot = false }: { label: string; value: string; hot?: boolean }) {
@@ -55,7 +55,7 @@ export default function HeroSection({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (prefersReducedMotion()) return; // final state is the natural layout
+    if (calmEffects()) return; // final state is the natural layout (reduced motion or a weak device)
     let ctx: gsap.Context | undefined;
     const stopWaiting = whenIntroDone(() => {
       ctx = gsap.context(() => {

@@ -23,7 +23,7 @@ import { KanjiWatermark, btnOutline, btnPrimary } from "@/components/ui/kit";
 import { caseEvidenceLibrary } from "@/data/cases";
 import { SITE_VIDEOS, relatedVideos, uploadDate, videoBySlug, videoPath, videoUrl } from "@/lib/videos";
 import { absoluteUrl, caseUrl, summarize } from "@/lib/site";
-import { formatDate, YOUTUBE_CHANNEL_URL, X_HANDLE } from "@/lib/shared";
+import { formatDate, splitTitle, YOUTUBE_CHANNEL_URL, X_HANDLE, longestWord } from "@/lib/shared";
 import {
   CHANNEL_ID, PERSON_NAME, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, youtubePlayer, youtubeThumb, youtubeWatch,
 } from "@/lib/seo";
@@ -32,6 +32,7 @@ import { GLOSSARY, VIDEO_NOTES } from "@/data/video-notes";
 import FadeIn from "@/components/ui/FadeIn";
 import VideoPlayer from "@/components/videos/VideoPlayer";
 import CaseLinkGrid from "@/components/blog/CaseLinkGrid";
+import type { CSSProperties } from "react";
 
 export function generateStaticParams() {
   return SITE_VIDEOS.map((v) => ({ slug: v.slug }));
@@ -132,6 +133,9 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
     ],
   });
 
+  /* A long title: the name as the heading, the rest under it */
+  const titleParts = splitTitle(video.title);
+
   return (
     <PageShell>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: structuredData }} />
@@ -156,9 +160,21 @@ export default async function VideoPage({ params }: { params: Promise<{ slug: st
             <span className="text-foreground/60">Video</span>
           </nav>
 
-          <h1 className="font-display text-3xl md:text-5xl font-black tracking-tighter [word-spacing:0.12em] uppercase leading-[0.95] text-foreground [text-wrap:balance]">
-            {video.title}
+          <div className="title-box">
+          <h1
+            style={{ "--word-n": Math.max(longestWord(titleParts.main), 8) } as CSSProperties}
+            className={`font-display word-fit ${titleParts.main.length > 30 ? "[--fit-max:1.625rem] md:[--fit-max:2.5rem]" : "[--fit-max:1.875rem] md:[--fit-max:3rem]"} font-black tracking-tighter [word-spacing:0.12em] uppercase leading-[0.95] text-foreground [text-wrap:balance]`}>
+            {titleParts.main}
+            {titleParts.sub && (
+              <>
+                <span className="sr-only"> — </span>
+                <span className="mt-4 block font-body text-base md:text-xl font-light normal-case tracking-normal [word-spacing:normal] leading-snug text-foreground/70">
+                  {titleParts.sub}
+                </span>
+              </>
+            )}
           </h1>
+          </div>
           {video.publishedAt && (
             <p className="mt-5 font-mono text-xs uppercase tracking-[0.25em] text-tertiary">
               <time dateTime={video.publishedAt}>{formatDate(video.publishedAt)}</time> · YouTube · @AhmedEmadNasr-0x3omda

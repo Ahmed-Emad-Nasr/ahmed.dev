@@ -223,7 +223,15 @@ export const CV = {
   ...HAND_WRITTEN,
   headline: PDF.headline ?? HAND_WRITTEN.headline,
   contact: { ...HAND_WRITTEN.contact, ...PDF.contact },
-  education: PDF.education ?? HAND_WRITTEN.education,
+  /* the PDF wins, but a field it left empty (coursework, GPA) keeps the hand-written one */
+  education: PDF.education
+    ? {
+        ...PDF.education,
+        school: PDF.education.school.replace(/\s*[–—|,-]\s*GPA\b.*$/i, "").trim() || HAND_WRITTEN.education.school,
+        gpa: PDF.education.gpa || (PDF.education.school.match(/GPA\s*:?\s*([\d.]+\/[\d.]+)/i)?.[1] ?? HAND_WRITTEN.education.gpa),
+        coursework: PDF.education.coursework || HAND_WRITTEN.education.coursework,
+      }
+    : HAND_WRITTEN.education,
   experience: (PDF.experience ?? HAND_WRITTEN.experience) satisfies CvEntry[],
   projects: (PDF.projects ?? HAND_WRITTEN.projects) satisfies CvProject[],
   skills: PDF.skills ?? HAND_WRITTEN.skills,

@@ -18,7 +18,7 @@
  */
 
 import { useLayoutEffect, useRef } from "react";
-import { prefersReducedMotion } from "@/lib/fx";
+import { calmEffects } from "@/lib/fx";
 
 const TILES = ".attack-seg, .attack-tile, .attack-cell";
 
@@ -27,7 +27,7 @@ export default function HeatReveal() {
 
   useLayoutEffect(() => {
     const section = ref.current?.closest("section");
-    if (!section || prefersReducedMotion() || !("IntersectionObserver" in window)) return;
+    if (!section || calmEffects() || !("IntersectionObserver" in window)) return;
     const tiles = [...section.querySelectorAll(TILES)];
     tiles.forEach((t) => t.setAttribute("data-cold", ""));
     const io = new IntersectionObserver(

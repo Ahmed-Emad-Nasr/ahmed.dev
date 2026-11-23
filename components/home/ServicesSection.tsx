@@ -42,7 +42,7 @@ import {
 import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import CaseFilterLink from "@/components/blog/CaseFilterLink";
 import { caseEvidenceLibrary } from "@/data/cases";
-import { CV_PDF_HREF, caseKindOf, normalizePublicHref } from "@/lib/shared";
+import { CV_PDF_HREF, caseKindOf, normalizePublicHref, sizeFor } from "@/lib/shared";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { KanjiWatermark } from "@/components/ui/kit";
@@ -288,7 +288,7 @@ export function ServicesSection() {
                 <span className="font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-tertiary mb-1.5">
                   {r.serviceArea}
                 </span>
-                <h3 className="font-display text-xl font-black uppercase tracking-tight text-foreground mb-3 leading-tight">
+                <h3 className={`font-display ${sizeFor(r.title, "text-xl", "text-xl xl:text-base 2xl:text-lg")} font-black uppercase tracking-tight text-foreground mb-3 leading-tight`}>
                   {r.title}
                 </h3>
                 <p className="text-sm text-foreground/60 font-light leading-relaxed mb-5">

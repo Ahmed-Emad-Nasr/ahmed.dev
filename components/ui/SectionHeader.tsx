@@ -14,6 +14,7 @@
 
 import type { CSSProperties, ReactNode } from "react";
 import FadeIn from "@/components/ui/FadeIn";
+import { longestWord } from "@/lib/shared";
 
 interface SectionHeaderProps {
   eyebrow?: string;
@@ -58,9 +59,16 @@ export default function SectionHeader({
   const titleSize =
     size === "lg"
       ? "title-fit leading-[0.9]"
-      : "text-4xl md:text-6xl lg:text-7xl leading-[0.9]";
+      : split
+        ? /* beside a counter the column is about half the page from lg */
+          "word-fit [--fit-max:2.25rem] md:[--fit-max:3.75rem] lg:[--fit-max:3rem] xl:[--fit-max:4.5rem] leading-[0.9]"
+        : `${titleA.length + titleB.length > 28 ? "word-fit [--fit-max:1.875rem] md:[--fit-max:3rem] lg:[--fit-max:3.75rem]" : "word-fit [--fit-max:2.25rem] md:[--fit-max:3.75rem] lg:[--fit-max:4.5rem]"} leading-[0.9]`;
   /* title-fit needs the longest line's length */
-  const fit = size === "lg" ? ({ "--title-n": Math.max(titleA.length, titleB.length, 5) } as CSSProperties) : undefined;
+  const fitVars: Record<string, number> =
+    size === "lg"
+      ? { "--title-n": Math.max(titleA.length, titleB.length, 5) }
+      : { "--word-n": Math.max(longestWord(`${titleA} ${titleB}`), 5) };
+  const fit = fitVars as CSSProperties;
 
   return (
     <FadeIn
@@ -75,7 +83,7 @@ export default function SectionHeader({
         .filter(Boolean)
         .join(" ")}
     >
-      <div className={split ? "min-w-0 flex-1" : undefined}>
+      <div className={split ? "title-box min-w-0 flex-1" : "title-box"}>
         {eyebrow ? (
           <div className="relative flex items-center gap-4 mb-6">
             <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />

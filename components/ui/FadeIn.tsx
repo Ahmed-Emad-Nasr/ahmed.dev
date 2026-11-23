@@ -24,6 +24,7 @@
 import { m, useAnimationControls } from "framer-motion";
 import { useRef, type ComponentProps } from "react";
 import { whenIntroDone } from "@/lib/intro";
+import { isLiteDevice } from "@/lib/fx";
 import {
   MOTION_EASE,
   MOTION_ENTER_DURATION,
@@ -120,6 +121,11 @@ export default function FadeIn({
         /* Under the intro screen nothing plays: it starts as the screen lifts */
         whenIntroDone(() => {
           if (!ref.current) return; // left the page while waiting
+          /* A weak device: shown at once, no animation work */
+          if (isLiteDevice()) {
+            controls.set({ opacity: 1, transform: "none" });
+            return;
+          }
           enqueue(ref.current, (order) => {
             void controls.start({
               opacity: 1,

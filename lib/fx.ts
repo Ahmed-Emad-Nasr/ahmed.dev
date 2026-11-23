@@ -69,6 +69,17 @@ export function getDeviceTier(): DeviceTier {
   return "full";
 }
 
+let liteDevice: boolean | undefined;
+/** A weak device (≤ 4 cores and ≤ 4 GB RAM) or Save-Data switched on — read once */
+export const isLiteDevice = (): boolean => (liteDevice ??= getDeviceTier() === "lite");
+
+/**
+ * The decorative effects (card tilt, the hover glow, scroll reveals, the
+ * hero's word-by-word entrance) are skipped when the visitor asked for less
+ * motion OR the device is weak. Strong devices see the site exactly as before.
+ */
+export const calmEffects = (): boolean => prefersReducedMotion() || isLiteDevice();
+
 /** New-theme canvas palette (must match globals.css tokens). */
 export const THEME_CANVAS_BG: Record<"light" | "dark", string> = {
   light: "#f7f5f0",

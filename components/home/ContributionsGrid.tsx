@@ -39,7 +39,7 @@ export default function ContributionsGrid({ stats }: { stats: ContributionStats 
           )}
         </FadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {PORTFOLIO_DATA.contributions.map((c, idx) => (
             <FadeIn as="a" y={24} duration={0.65} delay={idx * 0.08}
               key={c.name}

@@ -25,7 +25,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense, useCallback, useMemo, useState, ViewTransition, type ReactNode } from "react";
+import { Suspense, useCallback, useMemo, useState, ViewTransition, type CSSProperties, type ReactNode } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -40,7 +40,7 @@ import {
   Maximize2,
   PlayCircle,
 } from "lucide-react";
-import { normalizePublicHref, getThumbnail, formatDate, type CaseKind } from "@/lib/shared";
+import { normalizePublicHref, getThumbnail, formatDate, splitTitle, type CaseKind, longestWord } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
 import type { CaseNumber } from "@/lib/case-numbers";
 import CaseNumbers from "@/components/blog/CaseNumbers";
@@ -243,6 +243,9 @@ export default function CaseArticle({
   /* The description is parsed once and shared by the three places that draw it */
   const summary = useMemo(() => parseCaseSummary(item.description), [item.description]);
 
+  /* A long title: the name as the heading, the bracketed detail under it */
+  const titleParts = splitTitle(item.title);
+
   /* Which chapters this case has, numbered in the order they appear */
   const has = caseFileHas(detail, item.href);
   let chapterNo = 0;
@@ -306,11 +309,24 @@ export default function CaseArticle({
             )}
           </div>
           {/* Shares its name with the title on the library card it was opened from */}
+          <div className="title-box">
           <ViewTransition name={`case-title-${item.id}`}>
-            <h1 className="font-display text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter [word-spacing:0.12em] uppercase leading-[0.95] text-foreground [text-wrap:balance]">
-              {item.title}
+            <h1
+              style={{ "--word-n": Math.max(longestWord(titleParts.main), 8) } as CSSProperties}
+              className={`font-display word-fit ${titleParts.main.length > 30 ? "[--fit-max:1.625rem] md:[--fit-max:2.5rem] lg:[--fit-max:3rem]" : "[--fit-max:1.875rem] md:[--fit-max:3rem] lg:[--fit-max:3.75rem]"} font-black tracking-tighter [word-spacing:0.12em] uppercase leading-[0.95] text-foreground [text-wrap:balance]`}>
+              {titleParts.main}
+              {titleParts.sub && (
+                <>
+                  <span className="sr-only"> (</span>
+                  <span className="mt-4 block font-body text-base md:text-xl font-light normal-case tracking-normal [word-spacing:normal] leading-snug text-foreground/70">
+                    {titleParts.sub}
+                  </span>
+                  <span className="sr-only">)</span>
+                </>
+              )}
             </h1>
           </ViewTransition>
+          </div>
           <p className="mt-5 font-mono text-xs uppercase tracking-[0.25em] text-tertiary">
             {collection ? (
               <Link prefetch={false} href={collection.href} className="hover:text-foreground transition-colors duration-300">

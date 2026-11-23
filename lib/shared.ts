@@ -137,6 +137,34 @@ export const markLoaded = (e: { currentTarget: Element }): void => {
 export const getThumbnail = (imgPath: string): string =>
   imgPath.replace(/(\.webp|\.png|\.jpg|\.jpeg)$/i, "-thumb$1");
 
+/**
+ * A long page title split into its name and its detail, so the big heading
+ * shows the name and the detail sits under it in smaller type:
+ *   "X Walkthrough (VirusTotal, MalwareBazaar …)"  → main "X Walkthrough",  sub "VirusTotal, MalwareBazaar …"
+ *   "TCP vs UDP Explained | What's the Difference?" → main "TCP vs UDP Explained", sub "What's the Difference?"
+ * Short titles, and titles whose name part would be too short, stay whole.
+ */
+export const splitTitle = (title: string): { main: string; sub?: string } => {
+  const t = title.trim();
+  if (t.length <= 48) return { main: t };
+  const paren = /^(.{12,}?)\s*\(([^()]{8,})\)$/.exec(t);
+  if (paren) return { main: paren[1], sub: paren[2] };
+  const parts = t.split(/\s+[|—–]\s+/);
+  if (parts.length > 1 && parts[0].length >= 12) return { main: parts[0], sub: parts.slice(1).join(" · ") };
+  return { main: t };
+};
+
+/** The length of the longest word — a heading with a very long word is set a size smaller */
+export const longestWord = (text: string): number => Math.max(0, ...text.split(/\s+/).map((w) => w.length));
+
+/**
+ * Display headings in narrow cards: the wide display font fits about 12
+ * capitals in a card, so a title with a longer word ("CYBERSECURITY",
+ * "TELECOMMUNICATION") takes the `long` size instead of breaking mid-word.
+ */
+export const sizeFor = (text: string, normal: string, long: string, limit = 11): string =>
+  longestWord(text) > limit ? long : normal;
+
 export const formatDate = (value: string): string => {
   const parsed = new Date(value);
   return Number.isNaN(parsed.getTime()) ? value : dateFormatter.format(parsed);

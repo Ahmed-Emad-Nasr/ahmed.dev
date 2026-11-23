@@ -28,6 +28,13 @@ import OrgLogo from "@/components/ui/OrgLogo";
 import { KanjiWatermark, btnOutline, cardSurface, chipNeutral, chipTertiary, ctaPrimary } from "@/components/ui/kit";
 import { TEACHING_EN, type TeachingContent } from "@/data/teaching";
 import { PROFILE } from "@/data/profile";
+import { sizeFor } from "@/lib/shared";
+
+/** The period tag beside (or, on phones, under) an organisation */
+const periodBadge = (current: boolean) =>
+  `font-mono text-[0.5625rem] uppercase tracking-[0.25em] px-2.5 py-1 border ${
+    current ? "border-primary/40 text-primary-ink bg-primary/[0.06]" : "border-foreground/10 text-foreground/60"
+  }`;
 
 export default function TeachingSection({ content = TEACHING_EN }: { content?: TeachingContent }) {
   const { stats, diploma, roles, ui } = content;
@@ -87,7 +94,7 @@ export default function TeachingSection({ content = TEACHING_EN }: { content?: T
             <span className="block font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-primary-ink">
               {ui.curriculumLabel}
             </span>
-            <h3 className="mt-5 font-display text-2xl sm:text-3xl md:text-4xl font-black uppercase tracking-tight leading-[0.95]">
+            <h3 className={`mt-5 font-display ${sizeFor(diploma.title, "text-2xl sm:text-3xl md:text-4xl", "text-xl sm:text-3xl md:text-4xl lg:text-2xl xl:text-4xl")} font-black uppercase tracking-tight leading-[0.95]`}>
               {diploma.title}
             </h3>
             <p className="mt-4 text-sm md:text-base text-foreground/60 font-light leading-relaxed">
@@ -139,7 +146,7 @@ export default function TeachingSection({ content = TEACHING_EN }: { content?: T
                   <div className="flex items-start justify-between gap-4">
                     <OrgLogo name={r.org} className="group-hover:border-primary" />
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-display text-lg md:text-xl font-black uppercase tracking-tight leading-tight">
+                      <h3 className={`font-display ${sizeFor(r.orgLabel ?? r.org, "text-base sm:text-lg md:text-xl", "text-sm sm:text-base md:text-lg lg:text-sm xl:text-lg")} font-black uppercase tracking-tight leading-tight`}>
                         {r.link ? (
                           <a
                             href={r.link}
@@ -161,14 +168,10 @@ export default function TeachingSection({ content = TEACHING_EN }: { content?: T
                       <p className="mt-1 font-mono text-[0.625rem] uppercase tracking-[0.2em] text-primary-ink">
                         {r.role}
                       </p>
+                      {/* phones: the period sits under the role, so the name keeps the full width */}
+                      <span className={`mt-2 inline-block sm:hidden ${periodBadge(r.period === ui.now)}`}>{r.period}</span>
                     </div>
-                    <span
-                      className={`shrink-0 font-mono text-[0.5625rem] uppercase tracking-[0.25em] px-2.5 py-1 border ${
-                        r.period === ui.now
-                          ? "border-primary/40 text-primary-ink bg-primary/[0.06]"
-                          : "border-foreground/10 text-foreground/60"
-                      }`}
-                    >
+                    <span className={`hidden sm:inline-block shrink-0 ${periodBadge(r.period === ui.now)}`}>
                       {r.period}
                     </span>
                   </div>
@@ -189,12 +192,12 @@ export default function TeachingSection({ content = TEACHING_EN }: { content?: T
         </div>
 
         {/* ─── Training for a team: opens the visitor's mail app ─── */}
-        <FadeIn className={`${cardSurface} mt-12 md:mt-16 p-7 md:p-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6`}>
+        <FadeIn className={`${cardSurface} mt-12 md:mt-16 p-7 md:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6`}>
           <div
             className="absolute top-0 start-0 w-full h-[2px] bg-gradient-to-r rtl:bg-gradient-to-l from-tertiary via-tertiary/40 to-transparent"
             aria-hidden="true"
           />
-          <div className="min-w-0">
+          <div className="min-w-0 flex-1">
             <p className="font-mono text-[0.625rem] font-bold uppercase tracking-[0.3em] text-tertiary">
               {ui.cta.eyebrow}
             </p>
@@ -205,7 +208,7 @@ export default function TeachingSection({ content = TEACHING_EN }: { content?: T
               {ui.cta.text}
             </p>
           </div>
-          <div className="flex shrink-0 flex-wrap items-center gap-4 self-start md:self-center">
+          <div className="flex shrink-0 flex-wrap items-center gap-4 self-start lg:self-center">
             <a href={mailto} className={ctaPrimary}>
               <Mail size={16} aria-hidden="true" />
               {ui.cta.button}

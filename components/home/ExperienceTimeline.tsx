@@ -14,6 +14,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import ExperienceReveal from "@/components/home/ExperienceReveal";
 import ShowMore from "@/components/ui/ShowMore";
 import { KanjiWatermark } from "@/components/ui/kit";
+import { sizeFor } from "@/lib/shared";
 
 /*
  * ═══ components/home/ExperienceTimeline.tsx — the EXPERIENCE section (#experience) ═══
@@ -85,7 +86,7 @@ export default function ExperienceTimeline() {
                     rel="noopener noreferrer"
                     className="group/link flex items-center gap-3 w-fit"
                   >
-                    <h3 className="font-display text-3xl md:text-5xl font-black text-foreground group-hover/link:text-primary transition-colors duration-300">
+                    <h3 className={`font-display ${sizeFor(item.company, "text-3xl md:text-5xl", "text-2xl md:text-3xl lg:text-xl xl:text-3xl", 12)} font-black text-foreground group-hover/link:text-primary transition-colors duration-300`}>
                       {item.company}
                     </h3>
                     <ExternalLink
@@ -94,7 +95,7 @@ export default function ExperienceTimeline() {
                     />
                   </a>
                 ) : (
-                  <h3 className="font-display text-3xl md:text-5xl font-black text-foreground w-fit">{item.company}</h3>
+                  <h3 className={`font-display ${sizeFor(item.company, "text-3xl md:text-5xl", "text-2xl md:text-3xl lg:text-xl xl:text-3xl", 12)} font-black text-foreground w-fit`}>{item.company}</h3>
                 )}
 
                 {/* Location */}

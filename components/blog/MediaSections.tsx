@@ -222,7 +222,7 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                   Playlists
                 </h3>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {playlists.map((playlist, idx) => (
                   <FadeIn
                     y={24}

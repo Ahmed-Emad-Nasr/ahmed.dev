@@ -490,6 +490,11 @@
   opacity: 1;
 }
 
+/* A weak device (lib/fx.ts isLiteDevice): no glow layer at all */
+html[data-lite] .spotlight::before {
+  display: none;
+}
+
 @media (hover: hover) {
   .spotlight {
     transition:
@@ -720,6 +725,35 @@ html[data-intro-seen] [data-app-loader] {
       calc((min(100vw - 10rem, 80rem)) / (var(--title-n, 10) * 0.86))
     );
   }
+  /* Inside a .title-box the title fits its own column, not the screen:
+     next to a counter or chip (split layout) the column is about half the
+     width, and "LETSDEFEND" used to break into "LETSDEFEN / D" */
+  @supports (width: 1cqi) {
+    .title-box & {
+      font-size: min(6rem, calc(100cqi / (var(--title-n, 10) * 0.86)));
+    }
+  }
+}
+
+/*
+ * word-fit — a heading at its normal size (--fit-max, set per breakpoint)
+ * unless its longest word (--word-n letters) would not fit the column; then
+ * it shrinks just enough. Needs a .title-box (or other inline-size
+ * container) around it. Words never break in the middle.
+ */
+@utility word-fit {
+  font-size: min(var(--fit-max, 3rem), calc(100cqi / (var(--word-n, 10) * 0.92)));
+}
+
+/* The column a title-fit heading measures itself against */
+.title-box {
+  container-type: inline-size;
+  width: 100%;
+}
+
+/* Native checkboxes, radios and range sliders in the site's colour */
+:root {
+  accent-color: var(--primary);
 }
 
 /* ATT&CK coverage (components/blog/AttackCoverage.tsx). Server-rendered,

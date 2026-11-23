@@ -16,7 +16,7 @@
 
 import { useEffect, useRef, type ReactNode, type MouseEvent } from "react";
 import { m as motion, useMotionValue, useSpring } from "framer-motion";
-import { prefersReducedMotion } from "@/lib/fx";
+import { calmEffects, isLiteDevice } from "@/lib/fx";
 
 /* tone="blue" → the top line and the big number light up in the blue
    (tertiary) colour instead of red. Pair it with "spotlight spotlight-blue"
@@ -62,7 +62,9 @@ function rectOf(el: Element, now: number): DOMRect {
 /** One global listener: feeds --mx/--my to any hovered .spotlight card. */
 export function SpotlightHost() {
   useEffect(() => {
-    if (prefersReducedMotion()) return;
+    /* A weak device: the CSS hides the glow layer (html[data-lite]) */
+    if (isLiteDevice()) document.documentElement.setAttribute("data-lite", "");
+    if (calmEffects()) return;
     /* The newest mouse position is written once per frame, however many
        mouse events arrived in between. */
     let el: HTMLElement | null = null;
@@ -111,7 +113,7 @@ export function TiltCard({
   const sry = useSpring(ry, { stiffness: 180, damping: 18 });
 
   const onMove = (e: MouseEvent) => {
-    if (prefersReducedMotion()) return;
+    if (calmEffects()) return;
     const el = ref.current;
     if (!el) return;
     /* (The glow position, --mx / --my, is SpotlightHost's job.) */

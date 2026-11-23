@@ -50,7 +50,7 @@ export function RevealText({
           className="inline-block [clip-path:inset(-0.5em_-0.5em_0_-0.5em)] pb-[0.08em] -mb-[0.08em] align-bottom"
         >
           <motion.span
-            className="inline-block will-change-transform"
+            className="inline-block"
             variants={{
               hidden: { y: "110%" },
               show: { y: "0%", transition: { duration: 0.7, ease: MOTION_EASE } },

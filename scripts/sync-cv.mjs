@@ -157,6 +157,14 @@ function shape(parsed, titleFirst) {
     if (/universit|college|institute|school|academy/i.test(s.education.degree) && !/universit|college|institute|school|academy/i.test(s.education.school)) {
       [s.education.degree, s.education.school] = [s.education.school, s.education.degree];
     }
+    /* "Benha University – GPA: 3.78/4.0" → school "Benha University", gpa "3.78/4.0" */
+    for (const k of ["school", "degree"]) {
+      const m = s.education[k].match(/\s*[–—|,-]\s*GPA\s*:?\s*([\d.]+\s*\/\s*[\d.]+)\s*$/i);
+      if (m) {
+        s.education[k] = s.education[k].slice(0, m.index).trim();
+        if (!s.education.gpa) s.education.gpa = m[1].replace(/\s+/g, "");
+      }
+    }
   }
   for (const key of ["experience", "volunteering"]) if (parsed[key]) s[key] = parsed[key].map(toEntry(titleFirst));
   if (parsed.projects) {

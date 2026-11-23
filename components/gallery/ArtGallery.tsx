@@ -34,7 +34,7 @@
 import Image from "next/image";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
-import { markLoaded } from "@/lib/shared";
+import { markLoaded, sizeFor } from "@/lib/shared";
 import {
   ALL_GALLERY_CERTIFICATES,
   galleryGroupCount,
@@ -208,7 +208,7 @@ export default function ArtGallery({ copy = GALLERY_EN }: { copy?: GalleryCopy }
             })}
           </div>
 
-          <ol className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <ol className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {filteredCerts.map((cert, idx) => {
               const num = String(idx + 1).padStart(2, "0");
               return (
@@ -234,7 +234,7 @@ export default function ArtGallery({ copy = GALLERY_EN }: { copy?: GalleryCopy }
                             {num} • <bdi>{cert.issuer}</bdi>
                           </span>
                         </div>
-                        <h3 className="font-display text-lg md:text-xl font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight">
+                        <h3 className={`font-display ${sizeFor(cert.title, "text-lg md:text-xl", "text-base md:text-lg")} font-black uppercase text-foreground mb-3 group-hover:text-primary-ink transition-colors duration-300 leading-tight`}>
                           {/* <bdi>: the English names keep their punctuation in place on /ar/gallery */}
                           <bdi>{cert.title}</bdi>
                         </h3>
