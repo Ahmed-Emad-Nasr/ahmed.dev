@@ -6,6 +6,11 @@
  * ═══ lib/seo.ts ═══
  *   SAME_AS    → add a new public profile (e.g. a new platform) here.
  *   KEYWORDS   → <meta keywords> groups; pages pick the groups they need.
+ *   NAME_SPELLINGS → other ways people write the name (also the Person
+ *                alternateName in app/layout.tsx).
+ *   NAME_ROLE_NAMES × NAME_ROLE_TERMS → "Ahmed Emad SOC", "Ahmed Emad Nasr GRC" …
+ *                built automatically; add a role to NAME_ROLE_TERMS.
+ *   Tools and frameworks come from data/skills.ts by themselves.
  *   OCCUPATION → the job description used in the person JSON-LD.
  *   PERSON_AUDIENCE / CHANNEL_AUDIENCE → the follower / subscriber / view
  *                counts as schema.org interactionStatistic (numbers: AUDIENCE
@@ -15,6 +20,7 @@
  */
 
 import { SITE_BASE_URL } from "@/lib/site";
+import { skillGroups } from "@/data/skills";
 import {
   AUDIENCE, AUDIENCE_LINE, INSTAGRAM_URL, LINKEDIN_URL, MEDIUM_URL, TIKTOK_URL, X_URL, YOUTUBE_CHANNEL_URL,
 } from "@/lib/shared";
@@ -51,6 +57,56 @@ export const SAME_AS = [
 ] as const;
 
 /*
+ * Other spellings of the name — how people actually type it into Google
+ * (Ahmad / Imad / Nassr, the handles, Arabic with and without hamza).
+ */
+export const NAME_SPELLINGS = [
+  "Ahmed Emad Nasr",
+  "Ahmed Emad",
+  "Ahmed Nasr",
+  "Ahmad Emad Nasr",
+  "Ahmad Emad",
+  "Ahmed Imad Nasr",
+  "Ahmed Emad Nassr",
+  "Ahmed Emad Naser",
+  "Ahmed Emaad Nasr",
+  "AhmedEmadNasr",
+  "Ahmed-Emad-Nasr",
+  "Ahmed_Emad_Nasr",
+  "ahmed.emadnasr",
+  "ahmed.em.nasr",
+  "3omda",
+  "3omdaa",
+  "0x3omda",
+  "أحمد عماد نصر",
+  "احمد عماد نصر",
+  "أحمد عماد",
+  "احمد عماد",
+] as const;
+
+/* "<name> <role>": every way someone searches for him by what he does */
+const NAME_ROLE_NAMES = ["Ahmed Emad Nasr", "Ahmed Emad", "Ahmed Nasr", "3omda", "0x3omda"] as const;
+const NAME_ROLE_TERMS = [
+  "SOC", "SOC Analyst", "SOC L1", "GRC", "GRC Analyst", "DFIR", "Digital Forensics",
+  "Incident Response", "Incident Responder", "Malware Analysis", "Malware Analyst",
+  "Threat Intelligence", "Threat Hunting", "Blue Team", "Detection Engineering",
+  "Cybersecurity", "Cyber Security", "Information Security", "InfoSec",
+  "Information Security Officer", "Security Analyst", "Security Engineer",
+  "IAM", "Data Security", "Cloud Security", "AWS Security", "Wazuh", "SIEM",
+  "ISO 27001", "MITRE ATT&CK", "CCNA", "eJPT", "Instructor", "Trainer",
+  "Cybersecurity Instructor", "NTI", "AMIT", "Benha University", "Cairo", "Egypt",
+  "YouTube", "LinkedIn", "GitHub", "TryHackMe", "CyberDefenders", "Hack The Box",
+  "CV", "Resume", "Portfolio", "Blog", "Write-ups",
+] as const;
+const NAME_ROLE_AR = [
+  "أمن سيبراني", "أمن المعلومات", "سايبر سيكيورتي", "SOC", "GRC", "DFIR", "مدرب",
+  "كورسات", "يوتيوب", "لينكدإن",
+] as const;
+
+/* Every tool and framework he lists (data/skills.ts — soft skills left out) */
+const SKILL_TERMS = skillGroups.filter((g) => g.id !== "soft").flatMap((g) => g.items);
+
+/*
  * The site-wide keyword set. Grouped by intent so it stays readable and so a
  * page can pick the group that fits it.
  */
@@ -62,7 +118,17 @@ export const KEYWORDS = {
     "3omda",
     "0x3omda",
     "Ahmed Emad Nasr Wuzzuf",
+    "أحمد عماد نصر",
+    "احمد عماد نصر",
   ],
+  /* Other spellings + "<name> <role>" ("Ahmed Emad SOC", "ahmed emad nasr grc" …) */
+  spellings: NAME_SPELLINGS,
+  nameRoles: [
+    ...NAME_ROLE_NAMES.flatMap((n) => NAME_ROLE_TERMS.map((r) => `${n} ${r}`)),
+    ...["أحمد عماد نصر", "احمد عماد", "احمد عماد نصر"].flatMap((n) => NAME_ROLE_AR.map((r) => `${n} ${r}`)),
+  ],
+  /* Every tool / framework from data/skills.ts, and the same with "Ahmed Emad" in front */
+  skills: [...SKILL_TERMS, ...SKILL_TERMS.map((t) => `Ahmed Emad ${t}`)],
   roles: [
     "Information Security Officer",
     "Information Security Analyst",
@@ -75,6 +141,19 @@ export const KEYWORDS = {
     "IAM Analyst",
     "Data Security Analyst",
     "Cybersecurity Instructor",
+    "Information Security Engineer",
+    "Security Analyst",
+    "SOC L1 Analyst",
+    "Blue Team Analyst",
+    "Threat Intelligence Analyst",
+    "Threat Hunter",
+    "Detection Engineer",
+    "Incident Responder",
+    "Digital Forensics Analyst",
+    "Compliance Analyst",
+    "Risk Analyst",
+    "Cybersecurity Trainer",
+    "Cyber Security Specialist",
   ],
   grc: [
     "Governance Risk and Compliance",
@@ -86,6 +165,13 @@ export const KEYWORDS = {
     "risk assessment",
     "gap assessment",
     "security policies",
+    "GRC",
+    "GDPR",
+    "security auditing",
+    "compliance",
+    "cyber risk management",
+    "information security management system",
+    "ISMS",
   ],
   operations: [
     "Security Operations Center",
@@ -97,6 +183,13 @@ export const KEYWORDS = {
     "threat hunting",
     "detection engineering",
     "MITRE ATT&CK",
+    "SOC",
+    "SOC L1",
+    "blue team",
+    "alert triage",
+    "log analysis",
+    "Sigma rules",
+    "YARA rules",
   ],
   response: [
     "incident response",
@@ -105,6 +198,10 @@ export const KEYWORDS = {
     "malware analysis",
     "reverse engineering",
     "threat intelligence",
+    "DFIR",
+    "cyber threat intelligence",
+    "IOC analysis",
+    "ransomware analysis",
   ],
   identityData: [
     "Identity and Access Management",
@@ -122,6 +219,14 @@ export const KEYWORDS = {
     "information security Benha",
     "SOC analyst Egypt",
     "GRC analyst Egypt",
+    "SOC analyst Cairo Egypt",
+    "DFIR Egypt",
+    "malware analyst Egypt",
+    "information security officer Egypt",
+    "cybersecurity instructor Cairo",
+    "أمن سيبراني مصر",
+    "أمن المعلومات القاهرة",
+    "محلل SOC مصر",
   ],
   /* Per page: what someone types to find THAT page (app/blog, app/teaching, app/gallery) */
   blog: [
@@ -210,6 +315,12 @@ export const KEYWORDS = {
     "information security officer CV Egypt",
     "SOC analyst CV",
     "cybersecurity instructor CV",
+    "Ahmed Emad CV",
+    "Ahmed Emad resume",
+    "Ahmed Emad SOC CV",
+    "Ahmed Emad GRC CV",
+    "GRC analyst CV Egypt",
+    "DFIR analyst CV",
   ],
   /* The audience: what people type to find the profiles themselves */
   audience: [
@@ -297,6 +408,7 @@ export const SITE_KEYWORDS: string[] = [
   ...new Set([
     ...KEYWORDS.identity, ...KEYWORDS.roles, ...KEYWORDS.grc, ...KEYWORDS.operations,
     ...KEYWORDS.response, ...KEYWORDS.identityData, ...KEYWORDS.place,
+    ...KEYWORDS.spellings, ...KEYWORDS.nameRoles, ...KEYWORDS.skills,
   ]),
 ];
 

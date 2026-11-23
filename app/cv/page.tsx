@@ -36,7 +36,7 @@ const SHARE_IMAGE = pageShareImage("cv", "Ahmed Emad Nasr — CV");
 export const metadata: Metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
-  keywords: pageKeywords(KEYWORDS.cv),
+  keywords: pageKeywords(KEYWORDS.cv, KEYWORDS.roles, KEYWORDS.spellings),
   alternates: { canonical: "/cv" },
   openGraph: {
     title: TITLE,

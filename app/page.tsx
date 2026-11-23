@@ -76,7 +76,7 @@ import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { SERVICES } from "@/data/services";
 import { knowledgeEducationItems } from "@/data/experience";
 import { OG_IMAGE } from "@/lib/site";
-import { KEYWORDS, PERSON_IMAGE, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd, withAudience } from "@/lib/seo";
+import { KEYWORDS, PERSON_IMAGE, SITE_KEYWORDS, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd, withAudience } from "@/lib/seo";
 import { AUDIENCE_LINE, X_HANDLE } from "@/lib/shared";
 import { BLOG_ID, GALLERY_ID, TEACHING_ID } from "@/lib/page-ids";
 
@@ -107,7 +107,8 @@ export const metadata: Metadata = {
     ...KEYWORDS.place,
     ...KEYWORDS.audience,
     ...KEYWORDS.athlete,
-  ],
+    ...SITE_KEYWORDS,
+  ].filter((k, i, all) => all.indexOf(k) === i),
   alternates: {
     canonical: "/",
     types: { "application/rss+xml": [{ url: "/blog/feed.xml", title: "Ahmed Emad Nasr — Case Library" }] },

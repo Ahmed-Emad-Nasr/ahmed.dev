@@ -59,7 +59,7 @@ import { OG_IMAGE } from "@/lib/site";
 import { homeDataFixScript } from "@/lib/routes";
 import {
   CHANNEL_AUDIENCE, CHANNEL_ID, jsonLd, KEYWORDS, OCCUPATION, PERSON_AUDIENCE, PERSON_ID, PERSON_IMAGE,
-  PERSON_NAME, PERSON_REF, SAME_AS, SITE_KEYWORDS, SITE_URL, WEBSITE_ID, withAudience,
+  NAME_SPELLINGS, PERSON_NAME, PERSON_REF, SAME_AS, SITE_KEYWORDS, SITE_URL, WEBSITE_ID, withAudience,
 } from "@/lib/seo";
 
 // ─── Viewport ─────────────────────────────────────────────────────────────────
@@ -203,7 +203,8 @@ const STRUCTURED_DATA_JSON = jsonLd({
       givenName: "Ahmed",
       additionalName: "Emad",
       familyName: "Nasr",
-      alternateName: ["Ahmed Emad", "3omda", "0x3omda"],
+      /* the name as people type it: Ahmad / Imad / Nassr, Arabic, the handles */
+      alternateName: NAME_SPELLINGS.filter((n) => n !== PERSON_NAME && !/[._-]/.test(n) && !/^AhmedEmadNasr$/.test(n)),
       url: SITE_URL,
       mainEntityOfPage: { "@id": `${SITE_URL}#profilepage` },
       image: { "@type": "ImageObject", "@id": `${SITE_URL}#person-image`, url: PERSON_IMAGE, caption: PERSON_NAME },
