@@ -86,7 +86,7 @@ export default function SectionHeader({
       <div className={split ? "title-box min-w-0 flex-1" : "title-box"}>
         {eyebrow ? (
           <div className="relative flex items-center gap-4 mb-6">
-            <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
+            <div className="eyebrow-line w-12 h-[2px] bg-primary" aria-hidden="true" />
             <span className="eyebrow text-primary-ink">{eyebrow}</span>
             {japanese ? (
               <span

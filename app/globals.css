@@ -604,6 +604,14 @@ html[data-lite] .spotlight::before {
   initial-value: #57534a;
 }
 
+/* The theme switch (ThemeFxProvider.tsx): the browser's own cross-fade is
+   switched off, so only the circle (a clip-path on the new picture) shows */
+html.theme-vt::view-transition-old(root),
+html.theme-vt::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
 .fx-morph {
   transition:
     --primary-ink 0.55s ease,
@@ -644,34 +652,6 @@ html[data-lite] .spotlight::before {
   opacity: 1;
 }
 
-/* ─── Reading progress (app/layout.tsx) ───
-   A 2px red→blue line across the top that fills as the page scrolls. Pure
-   CSS: a scroll-driven animation runs on the compositor, no JavaScript and
-   no scroll listener. Browsers without animation-timeline simply skip it. */
-.scroll-progress {
-  display: none;
-}
-@supports (animation-timeline: scroll()) {
-  .scroll-progress {
-    display: block;
-    position: fixed;
-    inset: 0 0 auto 0;
-    height: 2px;
-    z-index: 105;
-    pointer-events: none;
-    transform-origin: 0 50%;
-    transform: scaleX(0);
-    background: linear-gradient(90deg, var(--primary), var(--tertiary));
-    animation: scroll-progress linear both;
-    animation-timeline: scroll(root block);
-  }
-  @keyframes scroll-progress {
-    to {
-      transform: scaleX(1);
-    }
-  }
-}
-
 /* Intro already played in this visit (lib/intro.ts) → never painted */
 html[data-intro-seen] [data-app-loader] {
   display: none;
@@ -697,16 +677,48 @@ html[data-intro-seen] [data-app-loader] {
   body {
     background: #fff !important;
     color: #000 !important;
+    /* the paper around the page white too, also from the dark theme */
+    color-scheme: light !important;
   }
   nav,
-  canvas {
+  canvas,
+  footer,
+  button,
+  .skip-link,
+  [data-app-loader],
+  .kanji-drift,
+  .japanese-bg,
+  [data-tip] {
     display: none !important;
   }
   /* Entrances that have not played yet (below the fold) print as they are */
   [style*="opacity:0"],
-  [style*="translateY(110%)"] {
+  [style*="translateY(110%)"],
+  .img-fade {
     opacity: 1 !important;
     transform: none !important;
+  }
+  /* Ink on paper: no dark page or cards, no glow, no grey photos */
+  main,
+  main * {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+    color: #000 !important;
+    filter: none !important;
+  }
+  /* A card, a figure or a table row never splits across two pages */
+  :is(figure, li, tr, pre, blockquote, .spotlight) {
+    break-inside: avoid;
+  }
+  :is(h1, h2, h3) {
+    break-after: avoid;
+  }
+  /* Where a link in the text goes, written next to it */
+  main :is(p, li, dd) a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
   }
 }
 
@@ -1104,7 +1116,7 @@ html[data-intro-seen] [data-app-loader] {
     position: absolute;
     inset: -1px;
     border: 1px solid var(--primary);
-    animation: brief-node 2.4s ease-out infinite;
+    animation: brief-node 3.6s ease-out infinite;
     animation-delay: inherit;
   }
 }
@@ -1170,7 +1182,7 @@ html[data-intro-seen] [data-app-loader] {
   }
 }
 .radar-spin {
-  animation: radar-spin 3.24s linear infinite;
+  animation: radar-spin 7s linear infinite;
 }
 @keyframes radar-spin {
   to {
@@ -1186,7 +1198,7 @@ html[data-intro-seen] [data-app-loader] {
 
 /* ── Triage challenge ── */
 .siren-pulse {
-  animation: siren-pulse 1.56s ease-in-out infinite;
+  animation: siren-pulse 2.4s ease-in-out infinite;
 }
 @keyframes siren-pulse {
   50% {
@@ -1243,7 +1255,7 @@ html[data-intro-seen] [data-app-loader] {
   }
 }
 .lab-beacon {
-  animation: siren-pulse 1.62s ease-in-out infinite;
+  animation: siren-pulse 3.2s ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
 }
@@ -1471,3 +1483,210 @@ html[data-intro-seen] [data-app-loader] {
   animation-play-state: paused !important;
 }
 
+/* ═══ Light polish ═══════════════════════════════════════════════════════
+   CSS the browser does by itself: no JavaScript, nothing runs while the
+   page is still. Off with prefers-reduced-motion; the moving parts also
+   stop in lite mode (html[data-lite], lib/fx.ts). */
+
+/* Press feel — buttons and tabs sink 3% while pressed, cards a hair.
+   `scale` is its own property, so it never fights a transform (tilt,
+   hover lift). */
+:where(button, a[class*="inline-flex"], [role="tab"]):not(:disabled):active {
+  scale: 0.97;
+}
+:where(.spotlight):active {
+  scale: 0.995;
+}
+
+/* Underlined links — on hover the line draws itself left to right in the
+   site's red (right to left on the Arabic pages) */
+a.underline {
+  text-decoration-color: color-mix(in srgb, currentColor 35%, transparent);
+  background: linear-gradient(var(--primary-ink), var(--primary-ink)) no-repeat 0 100% / 0 2px;
+  transition:
+    background-size 0.35s cubic-bezier(0.2, 0.7, 0.2, 1),
+    text-decoration-color 0.2s,
+    color 0.2s;
+}
+a.underline:hover,
+a.underline:focus-visible {
+  background-size: 100% 2px;
+  text-decoration-color: transparent;
+}
+[dir="rtl"] a.underline {
+  background-position: 100% 100%;
+}
+
+/* The big kanji behind a section (KanjiWatermark, components/ui/kit.tsx)
+   move a little slower than the page as it scrolls, which gives depth.
+   A scroll-driven animation: the browser works it out from the scroll
+   position, on the compositor — no JavaScript, no scroll listener.
+   The timeline is the SECTION's passage through the screen (--section):
+   sections clip their overflow, which makes each one its own (never
+   scrolling) scroll box, so a plain view() inside one would never move. */
+@supports (animation-timeline: view()) {
+  :where(section) {
+    view-timeline: --section block;
+  }
+  .kanji-drift {
+    animation: kanji-drift linear both;
+    animation-timeline: --section;
+    animation-range: cover;
+  }
+  @keyframes kanji-drift {
+    from {
+      translate: 0 5vh;
+    }
+    to {
+      translate: 0 -5vh;
+    }
+  }
+}
+
+/* Typing — the cursor and the field's underline in the site's red */
+:where(input, textarea, select) {
+  caret-color: var(--primary-ink);
+}
+:where(input:not([type="checkbox"], [type="radio"], [type="range"]), textarea, select):focus-visible {
+  border-color: var(--primary);
+  box-shadow: 0 1px 0 0 var(--primary);
+}
+
+/* ─── The always-running loops, slowed right down ─────────────────────
+   Each moves only transform or opacity, pauses off screen
+   (lib/perf/OffscreenAnimations.tsx) and stops on a weak device. */
+/* The inscription circling the portrait (HeroSection.tsx): a turn in 90s */
+.hero-orbit {
+  animation: orbit-spin 90s linear infinite;
+}
+@keyframes orbit-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+/* The two mascots beside the hero float up and down (HeroMascot.tsx) */
+.mascot-float {
+  animation: mascot-float 7s ease-in-out infinite;
+}
+@keyframes mascot-float {
+  50% {
+    translate: 0 -4px;
+  }
+}
+/* The "Swipe for the full lab →" arrow (HomeLab.tsx) */
+.soft-pulse {
+  animation: soft-pulse 2.8s ease-in-out infinite;
+}
+@keyframes soft-pulse {
+  50% {
+    opacity: 0.35;
+    translate: 3px 0;
+  }
+}
+html[data-lite] :is(.kanji-drift, .hero-orbit, .mascot-float, .soft-pulse, .lab-flow, .lab-beacon, .radar-spin, .siren-pulse),
+html[data-lite] .brief-node::after {
+  animation: none;
+}
+html[data-lite] .lab-packet {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.kanji-drift, .hero-orbit, .mascot-float, .soft-pulse) {
+    animation: none !important;
+  }
+  :where(button, a, [role="tab"], .spotlight):active {
+    scale: none !important;
+  }
+}
+
+/* ─── More light touches ────────────────────────────────────────────── */
+
+/* Phones: no blue box flashing over whatever you tap — the site's own
+   press feel (scale, above) is the feedback */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Links out of the site: their ↗ arrow nudges up and right on hover,
+   pointing the way out. `transform`, so it adds to any translate the icon
+   already has. */
+a :is(.lucide-arrow-up-right, .lucide-external-link) {
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+a:is(:hover, :focus-visible) :is(.lucide-arrow-up-right, .lucide-external-link) {
+  transform: translate(2px, -2px);
+}
+
+/* The short red line before every section label draws itself from nothing
+   as the section comes on screen (scroll-driven, on the compositor; the
+   section's own timeline, --section above — the label sits near its top) */
+@supports (animation-timeline: view()) {
+  .eyebrow-line {
+    transform-origin: 0 50%;
+    animation: eyebrow-draw linear both;
+    animation-timeline: --section;
+    animation-range: entry 120px entry 420px;
+  }
+  [dir="rtl"] .eyebrow-line {
+    transform-origin: 100% 50%;
+  }
+  @keyframes eyebrow-draw {
+    from {
+      transform: scaleX(0);
+    }
+  }
+}
+
+/* Icon-only buttons (theme, search): a small label on hover or keyboard
+   focus, to their left so the navbar's slanted edge never cuts it */
+[data-tip] {
+  position: relative;
+}
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  right: calc(100% + 8px);
+  top: 50%;
+  z-index: 10;
+  padding: 4px 8px;
+  white-space: nowrap;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--foreground);
+  background: var(--surface);
+  border: 1px solid color-mix(in srgb, var(--foreground) 15%, transparent);
+  opacity: 0;
+  translate: 4px -50%;
+  pointer-events: none;
+  transition:
+    opacity 0.15s,
+    translate 0.15s;
+}
+[data-tip]:is(:hover, :focus-visible)::after {
+  opacity: 1;
+  translate: 0 -50%;
+  transition-delay: 0.3s;
+}
+
+/* An image still on its way: its box shows the card colour instead of a
+   black hole (the image itself fades in over it — .img-fade) */
+:where(a, button, div, figure, span):has(> img.img-fade:not([data-loaded])) {
+  background-color: var(--surface);
+}
+
+html[data-lite] .eyebrow-line {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .eyebrow-line {
+    animation: none !important;
+  }
+  a:is(:hover, :focus-visible) :is(.lucide-arrow-up-right, .lucide-external-link) {
+    transform: none;
+  }
+}

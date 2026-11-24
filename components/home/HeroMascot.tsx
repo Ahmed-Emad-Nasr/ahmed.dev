@@ -292,11 +292,9 @@ function MascotSlot({
   };
 
   return (
-    <motion.div
-      className={className}
-      animate={reduced ? {} : { y: [0, -3.6, 0] }}
-      transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: beat }}
-    >
+    /* The slow float is CSS (.mascot-float, globals.css): it runs on the
+       compositor instead of a JavaScript frame loop */
+    <div className={`mascot-float ${className ?? ""}`} style={{ animationDelay: `${beat}s` }}>
       <motion.button
         type="button"
         onClick={play}
@@ -310,7 +308,7 @@ function MascotSlot({
           {mascot.name} • {mascot.role}
         </span>
       </motion.button>
-    </motion.div>
+    </div>
   );
 }
 

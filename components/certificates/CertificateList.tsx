@@ -129,7 +129,9 @@ export default function CertificateList({ copy = CERTS_EN, sizes = {} }: Props) 
           {copy.groupNotes[filter]}
         </p>
 
-        <ol id="certificate-grid" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {/* key: a new filter draws the list afresh, so the cards fade in one
+            after another (FadeIn) instead of jumping into their new places */}
+        <ol key={filter} id="certificate-grid" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {shown.map((c, idx) => {
             const when = certificateWhen(c);
             const facts = [c.hours, c.score].filter(Boolean) as string[];
@@ -150,7 +152,7 @@ export default function CertificateList({ copy = CERTS_EN, sizes = {} }: Props) 
                       fill
                       unoptimized
                       sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                      className={`img-fade object-cover ${(sizes[c.slug]?.height ?? 0) > (sizes[c.slug]?.width ?? 1) ? "object-top" : "object-center"} transition-transform duration-500 group-hover:scale-[1.04]`}
+                      className={`img-fade object-cover grayscale group-hover:grayscale-0 group-focus-within:grayscale-0 ${(sizes[c.slug]?.height ?? 0) > (sizes[c.slug]?.width ?? 1) ? "object-top" : "object-center"} transition-[transform,filter] duration-700 group-hover:scale-[1.04]`}
                       onLoad={markLoaded}
                       onError={markLoaded}
                       loading="lazy"

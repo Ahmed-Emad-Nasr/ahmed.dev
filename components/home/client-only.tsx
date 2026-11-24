@@ -9,5 +9,5 @@
 
 import dynamic from "next/dynamic";
 
-/* The chapter rail (wide screens) + back-to-top button */
-export const SectionRail = dynamic(() => import("@/components/home/SectionRail"), { ssr: false });
+/* The back-to-top button */
+export const BackToTop = dynamic(() => import("@/components/home/BackToTop"), { ssr: false });

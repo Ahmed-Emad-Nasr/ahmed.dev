@@ -63,7 +63,7 @@ lightbox, the command palette and the terminal.
    Server Component stays one — rendered on the server, its code and the data
    it reads never shipped as JavaScript. Only sections that say "use client"
    themselves send code. Browser-only parts (`ssr: false`) live in client
-   files of their own: `components/home/client-only.tsx` (section rail) and
+   files of their own: `components/home/client-only.tsx` (back-to-top button) and
    `components/blog/CaseLibraryLoader.tsx` (the case library). Global visual effects that are not needed
    for first paint are deferred by `components/layout/DeferredGlobalEffects.tsx`
    until the browser is idle.

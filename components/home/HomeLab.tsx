@@ -48,6 +48,10 @@ const TONE: Record<Node["tone"], string> = {
 };
 
 /* Links as paths, in the direction the data flows */
+/* All the lab's motion runs this many times slower than the numbers below:
+   calm enough to read, and fewer frames for the browser to draw */
+const LAB_SLOW = 2.5;
+
 const LINKS: { d: string; tone: Node["tone"]; label?: string; lx?: number; ly?: number; dur: number }[] = [
   { d: "M230 77 H310", tone: "primary", label: "attack", lx: 270, ly: 68, dur: 1.79 },
   { d: "M230 77 C270 77 270 227 310 227", tone: "primary", dur: 2.27 },
@@ -96,11 +100,12 @@ export default function HomeLab() {
               <g key={i}>
                 <path d={l.d} fill="none" stroke={TONE[l.tone]} strokeOpacity="0.25" strokeWidth="2" />
                 {i % 2 === 0 && (
-                  <path d={l.d} fill="none" stroke={TONE[l.tone]} strokeWidth="2" strokeDasharray="6 10" className="lab-flow" style={{ animationDuration: `${l.dur}s` }} />
+                  <path d={l.d} fill="none" stroke={TONE[l.tone]} strokeWidth="2" strokeDasharray="6 10" className="lab-flow" style={{ animationDuration: `${(l.dur * LAB_SLOW).toFixed(2)}s` }} />
                 )}
-                {i % 2 === 0 && (
+                {/* One packet on every fourth link: the flow lines already show the direction */}
+                {i % 4 === 0 && (
                   <circle r="4" fill={TONE[l.tone]} className="lab-packet">
-                    <animateMotion dur={`${l.dur * 1.6}s`} repeatCount="indefinite" path={l.d} begin={`${(i * 0.22).toFixed(2)}s`} />
+                    <animateMotion dur={`${(l.dur * 1.6 * LAB_SLOW).toFixed(2)}s`} repeatCount="indefinite" path={l.d} begin={`${(i * 0.4).toFixed(2)}s`} />
                   </circle>
                 )}
                 {l.label && (
@@ -134,7 +139,7 @@ export default function HomeLab() {
             ))}
           </svg>
           <p className="md:hidden mt-3 font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-primary-ink flex items-center gap-2" aria-hidden="true">
-            Swipe for the full lab <span className="inline-block animate-pulse">→</span>
+            Swipe for the full lab <span className="inline-block soft-pulse">→</span>
           </p>
           <figcaption className="mt-4 flex flex-wrap gap-x-6 gap-y-2 font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-foreground/60">
             <span className="flex items-center gap-2"><span className="h-[2px] w-5 bg-primary" /> the attack</span>

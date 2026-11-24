@@ -201,7 +201,9 @@ export default function ArtGallery({
           ))}
         </div>
 
-        <ul id="photo-grid" className="columns-1 md:columns-2 xl:columns-3 gap-6 [&>li]:mb-6">
+        {/* key: a new filter draws the grid afresh, so the photos fade in one
+            after another (FadeIn) instead of jumping into their new places */}
+        <ul key={filter} id="photo-grid" className="columns-1 md:columns-2 xl:columns-3 gap-6 [&>li]:mb-6">
           {shown.map((p, idx) => {
             const size = sizes[p.slug];
             const when = formatPhotoDate(p.date);

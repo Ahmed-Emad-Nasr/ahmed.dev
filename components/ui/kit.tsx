@@ -68,7 +68,7 @@ export const cardSurface =
 export function Eyebrow({ children }: { children: ReactNode }) {
   return (
     <div className="flex items-center gap-4 mb-6">
-      <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
+      <div className="eyebrow-line w-12 h-[2px] bg-primary" aria-hidden="true" />
       <span className="text-primary-ink text-[0.6875rem] font-mono font-bold tracking-[0.35em] uppercase">{children}</span>
     </div>
   );
@@ -123,7 +123,7 @@ export function Chapter({
         <span className="font-mono text-sm font-black text-primary-ink tabular-nums">
           {String(n).padStart(2, "0")}
         </span>
-        <div className="w-12 h-[2px] bg-primary" aria-hidden="true" />
+        <div className="eyebrow-line w-12 h-[2px] bg-primary" aria-hidden="true" />
         <span className="flex-1 h-px bg-gradient-to-r from-foreground/10 to-transparent" aria-hidden="true" />
       </div>
       <h2
@@ -160,7 +160,7 @@ export function KanjiWatermark({
   const corner = side === "left" ? "left-0 top-24" : side === "edge" ? "right-0 bottom-10" : "right-0 top-24";
   return (
     <div className={`pointer-events-none absolute z-0 select-none ${corner}`} aria-hidden="true" lang="ja">
-      <div className={`font-black text-foreground/[0.03] vertical-text ${size === "large" ? "text-[20vw]" : "text-[13vw]"}`}>
+      <div className={`kanji-drift font-black text-foreground/[0.03] vertical-text ${size === "large" ? "text-[20vw]" : "text-[13vw]"}`}>
         {[...chars].map((c, i) => (
           <span key={`${c}-${i}`}>{c}</span>
         ))}

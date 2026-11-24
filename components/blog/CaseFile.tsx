@@ -230,18 +230,32 @@ function Iocs({ iocs }: { iocs: NonNullable<CaseDetail["iocs"]> }) {
               <button
                 type="button"
                 onClick={() => void copy(key, value)}
-                className="group w-full text-left grid grid-cols-1 md:grid-cols-[6rem_1fr_auto] items-start gap-x-4 gap-y-1 px-4 py-3 hover:bg-foreground/[0.03] transition-colors"
+                className="group w-full text-left grid grid-cols-[minmax(0,1fr)_auto] md:grid-cols-[6rem_minmax(0,1fr)_auto] items-start gap-x-4 gap-y-1 px-4 py-3 hover:bg-foreground/[0.03] transition-colors"
               >
                 <span className="sr-only">Copy </span>
-                <span className="font-mono text-[0.5625rem] font-bold uppercase tracking-[0.25em] text-foreground/60 pt-0.5">{IOC_LABEL[i.type]}</span>
-                <span className="min-w-0">
-                  <span className={`block font-mono text-xs [overflow-wrap:anywhere] ${i.type === "hash" ? "text-primary-ink" : NETWORK_IOC.has(i.type) ? "text-accent" : "text-tertiary"}`}>
-                    {value}
-                  </span>
+                <span className="col-start-1 font-mono text-[0.5625rem] font-bold uppercase tracking-[0.25em] text-foreground/60 pt-0.5">{IOC_LABEL[i.type]}</span>
+                <span className="col-start-1 md:col-start-2 md:row-start-1 min-w-0">
+                  {i.type === "hash" ? (
+                    /* A hash stays on one line, in a smaller type: whole where
+                       it fits, start…end on a phone (a tap copies all of it) */
+                    <span className="block font-mono text-[0.6875rem] text-primary-ink whitespace-nowrap" title={value}>
+                      <span className="hidden sm:inline">{value}</span>
+                      <span className="sm:hidden" aria-hidden="true">
+                        {value.length > 26 ? `${value.slice(0, 12)}…${value.slice(-10)}` : value}
+                      </span>
+                      <span className="sr-only sm:hidden">{value}</span>
+                    </span>
+                  ) : (
+                    <span className={`block font-mono text-xs [overflow-wrap:anywhere] ${NETWORK_IOC.has(i.type) ? "text-accent" : "text-tertiary"}`}>
+                      {value}
+                    </span>
+                  )}
                   {i.note && <span className="block mt-1 text-xs text-foreground/60">{i.note}</span>}
                 </span>
-                <span className="hidden md:flex items-center text-foreground/30 group-hover:text-foreground/70 transition-colors" aria-hidden="true">
+                {/* The copy button: on every screen, "Copied" after a tap */}
+                <span className="col-start-2 row-start-1 row-span-2 md:col-start-3 md:row-span-1 flex items-center gap-1.5 self-center font-mono text-[0.5625rem] uppercase tracking-[0.2em] text-foreground/40 group-hover:text-foreground/80 transition-colors" aria-hidden="true">
                   {copied === key ? <Check size={13} className="text-accent" /> : <Copy size={13} />}
+                  <span className={copied === key ? "text-accent" : "hidden"}>Copied</span>
                 </span>
               </button>
             </li>

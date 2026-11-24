@@ -63,7 +63,7 @@ import {
   AthleteSection,
   ContactFooter,
 } from "@/components/home/dynamic";
-import { SectionRail } from "@/components/home/client-only";
+import { BackToTop } from "@/components/home/client-only";
 import { ContributionsGrid } from "@/components/blog/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
 import { getTryHackMeStats } from "@/lib/api/tryhackme";
@@ -274,8 +274,8 @@ export default async function Home() {
       <PageEffects />
       {/* Top navigation bar */}
       <SiteNav />
-      {/* Chapter rail on the right edge (1280px+) and the back-to-top button */}
-      <SectionRail />
+      {/* The back-to-top button */}
+      <BackToTop />
 
       {/* ═══ 01 · The pitch: who → roles → proof → experience ═══ */}
       {/* Hero: name, title, CTA buttons (Sensei-Dev's hero, GSAP entrance). Text comes from data/profile.ts + data/live-copy.ts */}

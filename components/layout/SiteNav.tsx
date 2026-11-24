@@ -35,8 +35,7 @@ import {
 } from "lucide-react";
 
 /* Seven links, in page order. Every other section is one click away in the
-   section rail on the right (components/home/SectionRail.tsx), the footer
-   and the command palette (Ctrl+K). */
+   footer and the command palette (Ctrl+K). */
 const navItems = [
   { name: "Home", href: "#home", icon: Home },
   { name: "Projects", href: "#work", icon: Code2 },
@@ -179,7 +178,7 @@ export default function SiteNav() {
             type="button"
             onClick={() => window.dispatchEvent(new Event("sensei:palette"))}
             aria-label="Open command palette (Ctrl+K)"
-            title="Commands (Ctrl+K)"
+            data-tip="Search · Ctrl K"
             className="flex items-center gap-1.5 border border-foreground/10 bg-foreground/[0.03] px-2.5 py-2.5 font-mono text-[11px] text-foreground/60 transition-colors duration-300 hover:border-primary hover:text-primary-ink"
           >
             <Command size={14} />

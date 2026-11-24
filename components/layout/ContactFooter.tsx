@@ -18,7 +18,7 @@
  *   • Footer links → components/layout/FooterBar.tsx.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, ArrowUpRight, Mail, Copy, Check, BriefcaseBusiness } from "lucide-react";
 import { Github, Linkedin, Youtube, Instagram, Medium, Tiktok, XLogo } from "@/components/ui/BrandIcons";
@@ -54,15 +54,16 @@ export default function ContactFooter() {
 
   /* The social icon buttons — add one by copying an entry */
   const socialLinks = [
-    { name: "GitHub", icon: Github, href: `https://github.com/${PROFILE.contact.github}`, color: "text-primary-ink" },
-    { name: "LinkedIn", icon: Linkedin, href: `${PROFILE.contact.linkedin}`, color: "text-[#0077b5]", count: `${AUDIENCE_LABEL.linkedinFollowers} followers` },
-    { name: "Wuzzuf", icon: BriefcaseBusiness, href: PROFILE.contact.wuzzuf, color: "text-[#0055d9]" },
-    { name: "WhatsApp", icon: MessageCircle, href: `https://wa.me/${PROFILE.contact.whatsapp}`, color: "text-[#25d366]" },
-    { name: "YouTube", icon: Youtube, href: PROFILE.contact.youtube, color: "text-[#ff0000]", count: `${AUDIENCE_LABEL.youtubeSubscribers} subscribers` },
-    { name: "Instagram", icon: Instagram, href: PROFILE.contact.instagram, color: "text-[#e1306c]" },
-    { name: "X", icon: XLogo, href: `${PROFILE.contact.x}`, color: "text-foreground" },
-    { name: "TikTok", icon: Tiktok, href: PROFILE.contact.tiktok, color: "text-foreground" },
-    { name: "Medium", icon: Medium, href: PROFILE.contact.medium, color: "text-foreground" },
+    /* brand: the border and a faint tint when you point at it */
+    { name: "GitHub", icon: Github, href: `https://github.com/${PROFILE.contact.github}`, color: "text-primary-ink", brand: "var(--primary)" },
+    { name: "LinkedIn", icon: Linkedin, href: `${PROFILE.contact.linkedin}`, color: "text-[#0077b5]", brand: "#0077b5", count: `${AUDIENCE_LABEL.linkedinFollowers} followers` },
+    { name: "Wuzzuf", icon: BriefcaseBusiness, href: PROFILE.contact.wuzzuf, color: "text-[#0055d9]", brand: "#0055d9" },
+    { name: "WhatsApp", icon: MessageCircle, href: `https://wa.me/${PROFILE.contact.whatsapp}`, color: "text-[#25d366]", brand: "#25d366" },
+    { name: "YouTube", icon: Youtube, href: PROFILE.contact.youtube, color: "text-[#ff0000]", brand: "#ff0000", count: `${AUDIENCE_LABEL.youtubeSubscribers} subscribers` },
+    { name: "Instagram", icon: Instagram, href: PROFILE.contact.instagram, color: "text-[#e1306c]", brand: "#e1306c" },
+    { name: "X", icon: XLogo, href: `${PROFILE.contact.x}`, color: "text-foreground", brand: "var(--foreground)" },
+    { name: "TikTok", icon: Tiktok, href: PROFILE.contact.tiktok, color: "text-foreground", brand: "#25f4ee" },
+    { name: "Medium", icon: Medium, href: PROFILE.contact.medium, color: "text-foreground", brand: "var(--foreground)" },
   ];
 
   return (
@@ -126,7 +127,8 @@ export default function ContactFooter() {
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-3 px-5 py-3 bg-foreground/5 border border-foreground/10 hover:border-primary/40 transition-all duration-300 text-foreground/80 hover:text-foreground"
+                    style={{ "--brand": social.brand } as CSSProperties}
+                    className="group flex items-center gap-3 px-5 py-3 bg-foreground/5 border border-foreground/10 hover:border-[var(--brand)] hover:bg-[color-mix(in_srgb,var(--brand)_8%,transparent)] transition-all duration-300 text-foreground/80 hover:text-foreground"
                   >
                     {/* Brand colour on the icon only: LinkedIn blue or YouTube
                         red as 10px text fell below 4.5:1 on the dark theme. */}

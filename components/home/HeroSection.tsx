@@ -199,7 +199,7 @@ export default function HeroSection({
 
             {/* Orbit inscription  stack names circling the portrait */}
             <div
-              className="absolute -inset-3 animate-[spin_36s_linear_infinite] motion-reduce:animate-none pointer-events-none"
+              className="hero-orbit absolute -inset-3 motion-reduce:animate-none pointer-events-none"
               aria-hidden="true"
             >
               <svg viewBox="0 0 200 200" className="w-full h-full">

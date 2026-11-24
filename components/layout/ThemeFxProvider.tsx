@@ -3,7 +3,10 @@
 /*
  * ═══ components/layout/ThemeFxProvider.tsx — the THEME-SWITCH ANIMATION ═══
  *
- * When the theme toggles, a <canvas> over the page draws an expanding disc
+ * When the theme toggles, the new theme grows out of the click point as a
+ * circle (View Transitions API — the browser clips a picture of the new
+ * page; css: html.theme-vt in globals.css). Browsers without it get the
+ * fallback: a <canvas> over the page draws an expanding disc
  * (the new background colour) with ripple rings and droplets from the click
  * point; halfway through, the real theme flips (next-themes) and the colours
  * ease over (CSS .fx-morph in app/globals.css).
@@ -26,6 +29,7 @@ import {
   useRef,
   type ReactNode,
 } from "react";
+import { flushSync } from "react-dom";
 import { useTheme } from "next-themes";
 import {
   getDeviceTier,
@@ -33,6 +37,11 @@ import {
   prefersReducedMotion,
   THEME_CANVAS_BG,
 } from "@/lib/fx";
+
+/* document.startViewTransition, where the browser has it */
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (update: () => void) => { ready: Promise<void>; finished: Promise<void> };
+};
 
 interface Origin {
   x: number;
@@ -99,6 +108,44 @@ export function ThemeFxProvider({ children }: { children: ReactNode }) {
           Math.max(o.x, window.innerWidth - o.x),
           Math.max(o.y, window.innerHeight - o.y)
         ) + 40;
+
+      /* Where the browser can (View Transitions API): the NEW theme itself
+         grows out of the click as a circle. The browser takes a picture of
+         the page before and after and only clips the new one — the graphics
+         card's job, no drawing per frame. Elsewhere: the canvas disc below. */
+      const doc = document as ViewTransitionDocument;
+      if (doc.startViewTransition) {
+        const root = document.documentElement;
+        root.classList.add("theme-vt");
+        runningRef.current = true;
+        const done = () => {
+          root.classList.remove("theme-vt");
+          runningRef.current = false;
+        };
+        try {
+          const vt = doc.startViewTransition(() => {
+            flushSync(() => setTheme(theme));
+            /* next-themes sets the class in an effect; set it now so the
+               "after" picture is already in the new theme */
+            root.classList.remove("light", "dark");
+            root.classList.add(theme);
+            root.style.colorScheme = theme;
+          });
+          vt.ready
+            .then(() => {
+              root.animate(
+                { clipPath: [`circle(0px at ${o.x}px ${o.y}px)`, `circle(${maxR}px at ${o.x}px ${o.y}px)`] },
+                { duration: Math.min(duration, 900), easing: "cubic-bezier(0.2, 0.7, 0.2, 1)", pseudoElement: "::view-transition-new(root)" },
+              );
+            })
+            .catch(done);
+          vt.finished.then(done, done);
+        } catch {
+          done();
+          setTheme(theme);
+        }
+        return;
+      }
 
       const dpr = Math.min(2, window.devicePixelRatio || 1);
       canvas.width = window.innerWidth * dpr;
