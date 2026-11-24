@@ -8,6 +8,21 @@ import type { BlogYoutubeVideo } from "@/lib/shared";
 
 export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
   {
+    "videoId": "7zcUxR3GO-Y",
+    "title": "What is KPI? | Key Performance Indicator Explained Simply",
+    "description": "📊 **What is KPI (Key Performance Indicator)?** Have you ever wondered how companies measure performance and determine whether they're achieving their goals? In this video, we'll explain what **KPI (Key Performance Indicator)** means, why organizations use it, and how it helps measure success and track progress. 🔹 **What You'll Learn:** - What is KPI?…",
+    "publishedAt": "2026-11-24",
+    "tags": [
+      "KPI",
+      "KeyPerformanceIndicator",
+      "Cybersecurity",
+      "SOC",
+      "IT",
+      "Business"
+    ],
+    "auto": true
+  },
+  {
     "videoId": "CTuNtbM7tW8",
     "title": "Copy vs Forensic Copy Explained | Digital Forensics | What's the Difference?",
     "description": "Is copying a file or hard drive the same as creating a Forensic Copy? Not at all! In Digital Forensics, preserving evidence requires more than simply duplicating data. A Forensic Copy follows specific procedures to maintain evidence integrity and ensure the original data remains unaltered. In this video, we explore the difference between a regular Copy and…",
@@ -87,7 +102,7 @@ export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
 /* Counter of the channel's uploads: +1 for every upload the feed shows that
    is not in YOUTUBE_COUNTED_IDS yet. scripts/sync-stats.mjs uses it only when
    it can't read YouTube's own number (data/live-stats.ts). */
-export const YOUTUBE_CHANNEL_VIDEOS = 86;
+export const YOUTUBE_CHANNEL_VIDEOS = 87;
 
 /* The uploads already counted in YOUTUBE_CHANNEL_VIDEOS */
 export const YOUTUBE_COUNTED_IDS: string[] = [
@@ -96,6 +111,7 @@ export const YOUTUBE_COUNTED_IDS: string[] = [
   "3qxPeJOAtls",
   "3v3jbpTspr4",
   "4-_XHZa2lVc",
+  "7zcUxR3GO-Y",
   "9JR1gbmuYrc",
   "9LHwl0FpuPM",
   "AUz6clXvwxw",
