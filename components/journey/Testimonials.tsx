@@ -1,54 +1,36 @@
 /*
  * Testimonials — the LinkedIn recommendations, word for word. Server Component.
  *
- * ═══ components/home/Testimonials.tsx — the TESTIMONIALS section (#testimonials) ═══
+ * ═══ components/journey/Testimonials.tsx — "In Their Words." (#testimonials on /journey) ═══
  *
  *   Part on screen                      Edit in data/testimonials.ts
  *   ──────────────────────────────────  ──────────────────────────────
  *   "In Their Words." + count badge     (counted automatically)
  *   The large named cards               RECOMMENDATIONS (LinkedIn)
  *
- * The students' feedback is on the Teaching page
+ * Each card links to the writer's own page, /journey/<writer> (who they
+ * are, how they know Ahmed, the role they worked with him in). The
+ * students' feedback is on the Teaching page
  * (components/home/StudentFeedback.tsx, app/teaching/page.tsx).
  *
  * Arabic quotes are set right-to-left (lang="ar" dir="rtl").
  */
 
-import { ArrowUpRight, Quote } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Quote } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CounterChip from "@/components/ui/CounterChip";
 import Link from "next/link";
 import { KanjiWatermark, cardSurface } from "@/components/ui/kit";
 import { Linkedin } from "@/components/ui/BrandIcons";
-import {
-  LINKEDIN_RECOMMENDATIONS_URL,
-  RECOMMENDATIONS,
-  STUDENT_FEEDBACK,
-  type Testimonial,
-} from "@/data/testimonials";
+import QuoteText from "@/components/ui/QuoteText";
+import { LINKEDIN_RECOMMENDATIONS_URL, RECOMMENDATIONS, STUDENT_FEEDBACK } from "@/data/testimonials";
+import { journeyPath, recommendationSlug } from "@/data/journey-index";
 
 /* "2026-03-26" → "Mar 2026" */
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const monthYear = (iso: string) => `${MONTHS[Number(iso.slice(5, 7)) - 1]} ${iso.slice(0, 4)}`;
 
-export function QuoteText({ t, large = false }: { t: Testimonial; large?: boolean }) {
-  const rtl = t.lang === "ar";
-  return (
-    <blockquote
-      lang={t.lang ?? "en"}
-      dir={rtl ? "rtl" : "ltr"}
-      className={`${large ? "text-base md:text-lg" : "text-sm md:text-[0.9375rem]"} text-foreground/80 font-light leading-relaxed ${rtl ? "text-right" : ""}`}
-    >
-      {/* "\n" in the data = a new paragraph, as the writer broke it */}
-      {t.quote.split("\n").map((line, i) => (
-        <p key={i} className={i ? "mt-3" : undefined}>
-          {line}
-        </p>
-      ))}
-    </blockquote>
-  );
-}
 
 export default function Testimonials() {
   return (
@@ -94,6 +76,14 @@ export default function Testimonials() {
                     {t.source}
                     {t.date ? ` · ${monthYear(t.date)}` : ""}
                   </p>
+                  <Link
+                    href={journeyPath(recommendationSlug(t.author))}
+                    prefetch={false}
+                    className="group/more mt-4 inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-primary-ink hover:text-foreground transition-colors"
+                  >
+                    The full story <span className="sr-only">of {t.author}&apos;s recommendation</span>
+                    <ArrowRight size={13} className="transition-transform group-hover/more:translate-x-0.5" aria-hidden="true" />
+                  </Link>
                 </figcaption>
               </figure>
             </FadeIn>

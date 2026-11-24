@@ -26,6 +26,8 @@ export const TRAINING_AR_URL = absoluteUrl("/ar/training");
 export const TRAINING_AR_ID = `${TRAINING_AR_URL}#training`;
 /* The training page in both languages (hreflang): each page lists both */
 export const TRAINING_LANGUAGES = { en: "/training", ar: "/ar/training", "x-default": "/training" };
+export const JOURNEY_URL = absoluteUrl("/journey");
+export const JOURNEY_ID = `${JOURNEY_URL}#journey`;
 export const GALLERY_URL = absoluteUrl("/gallery");
 export const GALLERY_AR_URL = absoluteUrl("/ar/gallery");
 /* The gallery in both languages (hreflang): each page lists both */

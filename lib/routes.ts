@@ -2,7 +2,7 @@
  * lib/routes.ts — the site's pages, and which page each section lives on.
  *
  *   /             the portfolio: hero, what I do, projects, tools, experience,
- *                 the path, recommendations, platforms, contact
+ *                 contact
  *   /blog         the case library, videos, ATT&CK, detection rules, triage,
  *                 home lab (app/blog/page.tsx)
  *   /blog/<id>    one page per case (app/blog/[slug]/page.tsx)
@@ -10,6 +10,8 @@
  *                 (app/teaching/page.tsx)
  *   /gallery      the personal photos (app/gallery/page.tsx)
  *   /certificates every certificate, one page each (app/certificates)
+ *   /journey      the path, the platforms, the recommendations and the
+ *                 sport — one page each (app/journey)
  *
  * SECTION_PAGE below is the one place that knows where a section lives: the
  * navbar, the command palette, the g-shortcuts and old /#cases-style links
@@ -17,7 +19,7 @@
  */
 
 /** The page each section id is on. Not listed = the home page. */
-export const SECTION_PAGE: Readonly<Record<string, "/blog" | "/teaching" | "/gallery" | "/certificates">> = {
+export const SECTION_PAGE: Readonly<Record<string, "/blog" | "/teaching" | "/gallery" | "/certificates" | "/journey">> = {
   blog: "/blog",
   cases: "/blog",
   videos: "/blog",
@@ -34,6 +36,13 @@ export const SECTION_PAGE: Readonly<Record<string, "/blog" | "/teaching" | "/gal
   certificates: "/certificates",
   /* the certificates used to be a section of the gallery: old #all-certificates links */
   "all-certificates": "/certificates",
+  /* these four were on the home page until Nov 2026: old /#path … links land on /journey */
+  journey: "/journey",
+  path: "/journey",
+  now: "/journey",
+  platforms: "/journey",
+  testimonials: "/journey",
+  athlete: "/journey",
 };
 
 /** "/blog" for "cases", "/" for "work" */
@@ -42,7 +51,7 @@ const pageOfSection = (id: string): string => SECTION_PAGE[id] ?? "/";
 /* The home page's sections (components/home/*) */
 const HOME_SECTIONS = new Set([
   "home", "services", "roles", "process", "work", "projects", "contributions", "tools", "uses",
-  "experience", "path", "now", "athlete", "testimonials", "platforms", "faq", "contact",
+  "experience", "faq", "contact",
 ]);
 
 /** The page of a KNOWN section or case card (#case-…), or null for any other id */

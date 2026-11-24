@@ -15,12 +15,12 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import { OG_IMAGE, absoluteUrl } from "@/lib/site";
 
-type SharePage = "blog" | "teaching" | "gallery" | "certificates" | "cv" | "videos" | "attack" | "writeups" | "tools" | "training" | `tool-${string}`;
+type SharePage = "blog" | "teaching" | "gallery" | "certificates" | "cv" | "videos" | "attack" | "writeups" | "tools" | "training" | "journey" | `tool-${string}`;
 
 export type ShareImage = { url: string; width: number; height: number; type: string; alt: string };
 
 /* Pages without a card of their own borrow the nearest one */
-const BORROWED: Partial<Record<SharePage, SharePage>> = { certificates: "gallery", attack: "blog", writeups: "blog", tools: "cv", training: "teaching" };
+const BORROWED: Partial<Record<SharePage, SharePage>> = { certificates: "gallery", attack: "blog", writeups: "blog", tools: "cv", training: "teaching", journey: "gallery" };
 
 export function pageShareImage(page: SharePage, alt: string): ShareImage {
   const own = `og/pages/${page}.jpg`;

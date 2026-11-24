@@ -11,6 +11,8 @@ import type { MetadataRoute } from "next";
 import { caseEvidenceLibrary, caseScreenshotsByEvidenceId } from "@/data/cases";
 import { absoluteUrl, caseUrl, OG_IMAGE } from "@/lib/site";
 import { GALLERY_PHOTOS, photoImagePath } from "@/data/gallery-photos";
+import { journeyItems } from "@/data/journey";
+import { journeyPath } from "@/data/journey-index";
 import { CERTIFICATES, certificateImagePath, certificatePagePath } from "@/data/certificates";
 import { SITE_VIDEOS, uploadDate, videoUrl, type SiteVideo } from "@/lib/videos";
 import { PERSON_IMAGE, SITE_URL, youtubePlayer, youtubeThumb } from "@/lib/seo";
@@ -161,6 +163,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
       priority: c.group === "certifications" || c.group === "education" ? 0.6 : 0.4,
       images: [loc(absoluteUrl(certificateImagePath(c.slug)))],
+    })),
+    /* The journey, then one page per step, platform, recommendation and sport */
+    {
+      url: absoluteUrl("/journey"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    ...journeyItems().map((i) => ({
+      url: absoluteUrl(journeyPath(i.slug)),
+      lastModified: i.isoDate && /^\d{4}-\d{2}-\d{2}$/.test(i.isoDate) ? parseDate(i.isoDate) : latestCaseDate,
+      changeFrequency: "yearly" as const,
+      priority: 0.5,
+      ...(i.photos.length ? { images: i.photos.slice(0, 12).map((p) => loc(absoluteUrl(photoImagePath(p.slug)))) } : {}),
     })),
     /* Training for teams, in English and Arabic: each names the other (hreflang) */
     {

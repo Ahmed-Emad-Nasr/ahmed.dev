@@ -62,7 +62,7 @@ export function serveOut(root = join(process.cwd(), "out")) {
 export function samplePages(root = join(process.cwd(), "out")) {
   const pages = ["/", "/this-page-does-not-exist"];
   /* The pages of their own (lib/routes.ts) */
-  for (const page of ["blog", "teaching", "gallery", "ar/teaching", "cv", "videos", "training", "ar/training", "ar/gallery", "attack"]) if (existsSync(join(root, `${page}.html`))) pages.push(`/${page}`);
+  for (const page of ["blog", "teaching", "gallery", "ar/teaching", "cv", "videos", "training", "ar/training", "ar/gallery", "attack", "journey"]) if (existsSync(join(root, `${page}.html`))) pages.push(`/${page}`);
   const blogDir = join(root, "blog");
   const html = (name) => existsSync(join(blogDir, `${name}.html`));
   /* A case with a full case file and ones without */
@@ -71,7 +71,7 @@ export function samplePages(root = join(process.cwd(), "out")) {
   const videosDir = join(root, "videos");
   const video = existsSync(videosDir) && readdirSync(videosDir).find((f) => f.endsWith(".html"));
   if (video) pages.push(`/videos/${video.slice(0, -5)}`);
-  /* One ATT&CK technique, one platform's write-ups, one tool page */
-  for (const page of ["attack/T1059", "writeups/tryhackme", "projects/webp-converter"]) if (existsSync(join(root, `${page}.html`))) pages.push(`/${page}`);
+  /* One ATT&CK technique, one platform's write-ups, one tool page, journey pages of three kinds */
+  for (const page of ["attack/T1059", "writeups/tryhackme", "projects/webp-converter", "journey/2026-banque-misr-instructor", "journey/abdelrahman-ahmed", "journey/tryhackme"]) if (existsSync(join(root, `${page}.html`))) pages.push(`/${page}`);
   return pages;
 }

@@ -14,7 +14,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import CounterChip from "@/components/ui/CounterChip";
 import ShowMore from "@/components/ui/ShowMore";
 import { KanjiWatermark } from "@/components/ui/kit";
-import { QuoteText } from "@/components/home/Testimonials";
+import QuoteText from "@/components/ui/QuoteText";
 import { STUDENT_FEEDBACK } from "@/data/testimonials";
 
 type FeedbackCopy = {

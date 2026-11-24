@@ -65,6 +65,135 @@ export type CaseDetail = {
 const LD = "LetsDefend SOC simulator";
 
 export const caseDetails: Record<string, CaseDetail> = {
+  "detecting-web-attacks": {
+    verdict: "Breach confirmed from one address, 192.168.1.10: ffuf fuzzed the site and found /login.php, Hydra brute-forced the admin account (password astrongpassword123, answered 302 → /account), then sqlmap's always-true injection on /account/changeusername.php dumped the users table — alice, bob, admin and the flag THM{dumped_the_db}",
+    severity: "Critical",
+    facts: [
+      { label: "Platform", value: "TryHackMe · SOC Level 1 (Web Security Monitoring) — 7 tasks, 88 points" },
+      { label: "Scenario", value: "TryBankMe, a small online bank: customer data leaked on a darknet forum — retrace the attack" },
+      { label: "Evidence", value: "access.log (Apache access log) · traffic.pcap (446 packets) on the analyst's Ubuntu desktop" },
+      { label: "Attacker", value: "192.168.1.10 (VMware NIC 00:0c:29:df:fc:9a) — 253 packets, 38 HTTP requests" },
+      { label: "Target", value: "192.168.1.9:80 — Apache/2.4.52 (Ubuntu), PHP login and account pages" },
+      { label: "Attack date", value: "20 Aug 2025, 07:37:38 – 07:38:21 UTC — 43 seconds from first fuzz to database dump" },
+      { label: "Tools seen", value: "FFUF v2.1.0 · Mozilla/5.0 (Hydra) · sqlmap/stable — each named itself in its User-Agent" },
+      { label: "My tools", value: "Pluma (log) · CyberChef URL Decode · Wireshark: http && ip.src==192.168.1.10, Follow HTTP Stream" },
+      { label: "Compromised", value: "Account admin (brute-forced password) · the users table (ids, usernames, e-mails, flag row)" },
+      { label: "Investigated", value: "24 Nov 2026, 19:04 – 19:24 (Cairo)" },
+    ],
+    chain: [
+      { step: "07:37:38 — ffuf (User-Agent FFUF v2.1.0) requests 13 paths in two seconds: /social, /images, /manage, /corporate, /company, /files, /features, /jobs, /adminpanel answer 404; /login.php, /home, /catalog and /products answer 200", technique: "T1595.003" },
+      { step: "07:38:09 — Hydra (User-Agent Mozilla/5.0 (Hydra), HTTP/1.0) loads /login.php 11 times, then posts 11 login attempts in the same second (every one I opened was for the user admin)", technique: "T1110.001" },
+      { step: "Each failed guess gets 200 with 457 bytes and 'Invalid username or password' (password123, summertime2002 …); the guess astrongpassword123 (TCP stream 32) gets 302 Found, Location: /account" },
+      { step: "Right after, the tool follows the redirect: GET /account (301) → GET /account/ (200) — logged in as admin with a valid password", technique: "T1078" },
+      { step: "07:38:20 — sqlmap (User-Agent sqlmap/stable, with a PHP session cookie) sends GET /account/changeusername.php?q=%25%27+OR+%271%27%3D%271 — URL-decoded: %' OR '1'='1", technique: "T1190" },
+      { step: "The page builds its query by string concatenation and even prints it (DEBUG): SELECT id, username, email FROM users WHERE username LIKE '%%' OR '1'='1%'" },
+      { step: "The always-true condition returns every row of users: 1 alice alice@example.com · 2 bob bob@example.com · 3 admin admin@example.com · 4 flag THM{dumped_the_db} — the data that leaked", technique: "T1213.006" },
+    ],
+    timeline: [
+      { time: "20 Aug 2025 · 07:37:38 UTC", event: "Directory fuzz starts — FFUF v2.1.0, first request GET /login.php (200)" },
+      { time: "07:37:40", event: "Last fuzz request: GET /adminpanel (404) — 13 paths tried" },
+      { time: "07:38:09", event: "Hydra: 11 GET /login.php, then 11 POST /login.php (login attempts)" },
+      { time: "07:38:09", event: "POST with astrongpassword123 → 302 Found, Location: /account" },
+      { time: "07:38:09 – 07:38:10", event: "GET /account (301) → GET /account/ (200): logged in" },
+      { time: "07:38:20 – 07:38:21", event: "sqlmap: GET /account/changeusername.php with the injection → 200, the users table in the page" },
+      { time: "24 Nov 2026 · 19:09 (Cairo)", event: "My investigation: access.log read — the three User-Agents, the 302, the sqlmap URL" },
+      { time: "19:11", event: "Payload URL-decoded in CyberChef" },
+      { time: "19:13 – 19:20", event: "traffic.pcap in Wireshark: POST bodies, the 302 for astrongpassword123, the dumped table in stream 44" },
+      { time: "19:23", event: "WAF task — block rule for User-Agent BotTHM; room completed, 7 tasks, 88 points" },
+    ],
+    iocs: [
+      { type: "ip", value: "192.168.1.10", note: "Attacker — fuzzing, brute force and SQL injection" },
+      { type: "ip", value: "192.168.1.9", note: "Victim web server (Apache/2.4.52, port 80)" },
+      { type: "other", value: "FFUF v2.1.0", note: "User-Agent of the directory fuzz" },
+      { type: "other", value: "Mozilla/5.0 (Hydra)", note: "User-Agent of the brute force (HTTP/1.0)" },
+      { type: "other", value: "sqlmap/stable", note: "User-Agent of the SQL injection" },
+      { type: "url", value: "http://192.168.1.9/login.php", note: "Brute-forced login form (username / password fields)" },
+      { type: "url", value: "http://192.168.1.9/account/changeusername.php?q=%25%27+OR+%271%27%3D%271", note: "Injected request — decoded: %' OR '1'='1" },
+      { type: "account", value: "admin", note: "Compromised — password astrongpassword123 found by Hydra" },
+      { type: "other", value: "SELECT id, username, email FROM users WHERE username LIKE '%%' OR '1'='1%'", note: "Query printed by the page's DEBUG output" },
+      { type: "other", value: "THM{dumped_the_db}", note: "Flag row read from the users table" },
+    ],
+    response: [
+      "Reset the admin password and every session of the account; check what was done with it after 07:38:09",
+      "Tell the users in the leaked table (alice, bob, admin) and treat their e-mail addresses as exposed",
+      "Fix changeusername.php: parameterised queries instead of string concatenation, and remove the DEBUG output that printed the SQL",
+      "Rate-limit and lock /login.php after a few failures, add MFA for admin accounts, and ban passwords like astrongpassword123",
+      "Block 192.168.1.10 and alert on attack-tool User-Agents (ffuf, Hydra, sqlmap) — they are easy to fake, so never rely on them alone",
+      "Put a WAF in front of the site with the OWASP managed rules (SQL injection, scanners) and a rate rule on the login page",
+      "Log POST bodies of the login form somewhere safe (or at least the result of each attempt): the access log alone could not show the guesses",
+    ],
+    detection: [
+      {
+        title: "Splunk — brute force that ends in a redirect (many POSTs, then a 302)",
+        lang: "spl",
+        code: `index=web sourcetype=access_combined uri_path="/login.php" method=POST
+| bin _time span=1m
+| stats count AS attempts, count(eval(status=302)) AS successes, values(useragent) AS agents BY _time, clientip
+| where attempts >= 10 AND successes >= 1
+| sort - attempts`,
+      },
+      {
+        title: "Sigma — SQL injection patterns in the URL",
+        lang: "yaml",
+        code: `title: SQL Injection Pattern in Web Request
+status: experimental
+description: Always-true conditions and UNION/SLEEP probes in the URI, raw or URL-encoded (T1190)
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-uri-query|contains:
+      - "' OR '1'='1"
+      - '%27+OR+%271%27%3D%271'
+      - '%27%20OR%20%271%27%3D%271'
+      - 'UNION SELECT'
+      - 'UNION+SELECT'
+      - 'SLEEP('
+  condition: selection
+level: high
+tags:
+  - attack.initial-access
+  - attack.t1190`,
+      },
+      {
+        title: "Sigma — attack tools announcing themselves in the User-Agent",
+        lang: "yaml",
+        code: `title: Web Attack Tool User-Agent
+status: experimental
+description: ffuf, Hydra and sqlmap as seen in this breach (easy to change — pair with rate rules)
+logsource:
+  category: webserver
+detection:
+  selection:
+    cs-user-agent|contains:
+      - 'FFUF'
+      - '(Hydra)'
+      - 'sqlmap'
+      - 'Nikto'
+      - 'gobuster'
+  condition: selection
+level: medium
+tags:
+  - attack.reconnaissance
+  - attack.t1595.003
+  - attack.credential-access
+  - attack.t1110.001`,
+      },
+    ],
+    answers: [
+      { task: "Task 2 · Client-Side Attacks", q: "What class of attacks relies on exploiting the user's behavior or device?", a: "Client-Side" },
+      { task: "Task 2 · Client-Side Attacks", q: "What is the most common client-side attack?", a: "XSS" },
+      { task: "Task 3 · Server-Side Attacks", q: "What class of attacks relies on exploiting vulnerabilities within web servers?", a: "Server-Side" },
+      { task: "Task 3 · Server-Side Attacks", q: "Which server-side attack lets attackers abuse forms to dump database contents?", a: "SQLi" },
+      { task: "Task 4 · Log-Based Detection", q: "What is the attacker's User-Agent while performing the directory fuzz?", a: "FFUF v2.1.0" },
+      { task: "Task 4 · Log-Based Detection", q: "What is the name of the page on which the attacker performs a brute-force attack?", a: "/login.php" },
+      { task: "Task 4 · Log-Based Detection", q: "What is the complete, decoded SQLi payload the attacker uses on the /changeusername.php form?", a: "%' OR '1'='1" },
+      { task: "Task 5 · Network-Based Detection", q: "What password does the attacker successfully identify in the brute-force attack?", a: "astrongpassword123" },
+      { task: "Task 5 · Network-Based Detection", q: "What is the flag the attacker found in the database using SQLi?", a: "THM{dumped_the_db}" },
+      { task: "Task 6 · Web Application Firewall", q: "What do WAFs inspect and filter?", a: "Web Requests" },
+      { task: "Task 6 · Web Application Firewall", q: "Create a custom firewall rule to block any User-Agent that matches \"BotTHM\".", a: "If User-Agent contains \"BotTHM\" then block" },
+    ],
+  },
   "file-and-hash-threat-intel": {
     verdict: "All four files in 'CTI Files' are malicious: bl0gger.exe (BlackMoon trojan that runs a silent regsvr32), Morse-Code-Analyzer.exe (IcedID / Slepak loader using DLL side-loading), payroll.pdf.exe (Gh0st RAT hiding behind a double extension and the name svchost.dll) and Challenge.bin.sample (Akira ransomware that deletes every shadow copy)",
     severity: "Critical",

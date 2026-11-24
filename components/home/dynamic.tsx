@@ -2,7 +2,7 @@
  * The home page's dynamic imports — as on Sensei-Dev, this file is NOT a
  * client module: the sections stay Server Components, rendered into the
  * page's HTML on the server, so their code and the data they read (cases,
- * platforms, experience …) never ship to the browser as JavaScript. Only the
+ * experience …) never ship to the browser as JavaScript. Only the
  * sections that are client components themselves ("use client" at their
  * top: hero, projects, contact …) send code, each in its own chunk.
  *
@@ -29,11 +29,7 @@ export const HeroSection = dynamic(() => import("@/components/home/HeroSection")
 export const WorkShowcase = dynamic(() => import("@/components/home/WorkShowcase"), { loading: () => <SectionSkeleton lines={2} /> });
 export const ExperienceTimeline = dynamic(() => import("@/components/home/ExperienceTimeline"), { loading: () => <SectionSkeleton lines={3} tall /> });
 export const TeachingSection = dynamic(() => import("@/components/home/TeachingSection"), { loading: () => <SectionSkeleton lines={3} /> });
-export const Testimonials = dynamic(() => import("@/components/home/Testimonials"), { loading: () => <SectionSkeleton lines={3} /> });
 export const StudentFeedback = dynamic(() => import("@/components/home/StudentFeedback"), { loading: () => <SectionSkeleton lines={3} /> });
-export const PlatformsSection = dynamic(() => import("@/components/home/PlatformsSection"), { loading: () => <SectionSkeleton lines={3} /> });
 /* The sections from Sensei-Dev's layout (data/about.ts) */
 export const ToolsSection = dynamic(() => import("@/components/home/ToolsSection"), { loading: () => <SectionSkeleton lines={2} /> });
-export const PathSection = dynamic(() => import("@/components/home/PathSection"), { loading: () => <SectionSkeleton lines={3} /> });
-export const AthleteSection = dynamic(() => import("@/components/home/AthleteSection"), { loading: () => <SectionSkeleton lines={2} /> });
 export const ContactFooter = dynamic(() => import("@/components/layout/ContactFooter"), { loading: () => <SectionSkeleton lines={2} /> });

@@ -356,7 +356,7 @@ export const KEYWORDS = {
     "Wazuh tutorial",
     "blue team videos",
   ],
-  /* The athlete (#athlete on the home page, data/about.ts → ATHLETICS) */
+  /* The athlete (#athlete on /journey, data/about.ts → ATHLETICS) */
   athlete: [
     "Ahmed Emad Nasr athlete",
     "Ahmed Emad Nasr Al Ahly",
@@ -364,6 +364,18 @@ export const KEYWORDS = {
     "Al Ahly runner",
     "800m 1500m runner Egypt",
     "modern pentathlon Benha",
+  ],
+  /* /journey and each /journey/<slug>: the path, the platforms, the recommendations */
+  journey: [
+    "Ahmed Emad Nasr journey",
+    "Ahmed Emad Nasr career path",
+    "Ahmed Emad Nasr recommendations",
+    "Ahmed Emad Nasr TryHackMe",
+    "Ahmed Emad Nasr Hack The Box",
+    "Ahmed Emad Nasr CyberDefenders",
+    "Ahmed Emad Nasr CyberTalents",
+    "cybersecurity career milestones",
+    "cybersecurity training platforms",
   ],
   /* The ATT&CK pages (/attack, /attack/<T-id>) */
   attack: [

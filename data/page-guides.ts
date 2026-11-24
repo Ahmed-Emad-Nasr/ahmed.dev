@@ -20,7 +20,7 @@ const PAGE_GUIDES: PageGuide[] = [
     match: "/",
     id: "home",
     title: "Welcome",
-    text: "Everything about me on one page: projects, services, experience, my running and how to reach me. Scroll down, or use the numbers on the right to jump.",
+    text: "Everything about me on one page: projects, services, experience and how to reach me. My path, my running and what people wrote are on the Journey page.",
   },
   {
     match: "/blog",
@@ -87,6 +87,18 @@ const PAGE_GUIDES: PageGuide[] = [
     id: "certificate",
     title: "One certificate",
     text: "The full scan, every detail printed on it, what it covers, and — where the issuer offers one — the link to verify it.",
+  },
+  {
+    match: "/journey",
+    id: "journey",
+    title: "The journey",
+    text: "My path year by year, the platforms I train on, what people I worked with wrote, and the track. Open any item for its own page with every detail.",
+  },
+  {
+    match: "/journey/*",
+    id: "journey-item",
+    title: "One step of the journey",
+    text: "Everything about it: the details, the roles behind it with every bullet, the certificates and the photos — each opens its own page.",
   },
   {
     match: "/gallery",

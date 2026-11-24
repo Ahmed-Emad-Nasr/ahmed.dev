@@ -3,7 +3,7 @@
 A static Next.js 16 export (`output: "export"`) served by GitHub Pages under
 `/ahmed.dev` (the deploy workflow sets the base path from the repository:
 `/ahmed.dev` here, `""` if it is ever deployed from `Ahmed-Emad-Nasr.github.io`). Pages: the portfolio (`/`), the blog (`/blog`), teaching
-(`/teaching`, and in Arabic `/ar/teaching` — data/teaching-ar.ts), the certificates (`/certificates`, one page each at `/certificates/<slug>`, and `/ar/certificates`), the photo gallery (`/gallery`), plus one static page per case
+(`/teaching`, and in Arabic `/ar/teaching` — data/teaching-ar.ts), the certificates (`/certificates`, one page each at `/certificates/<slug>`, and `/ar/certificates`), the photo gallery (`/gallery`), the journey (`/journey` — the path, the platforms, the recommendations and the sport, one page each at `/journey/<slug>`, data/journey.ts), plus one static page per case
 (`/blog/<id>`). Which section lives on which page is `SECTION_PAGE` in
 `lib/routes.ts` — the navbar, the command palette, the `g` shortcuts and old
 `/#cases`-style links all follow it.
@@ -207,6 +207,7 @@ The common edits:
 | A Wazuh rule in the detection library | `data/detection-rules.ts` |
 | A certificate | `public/Assets/certificates/<slug>.webp` + `data/certificates.ts` (its page `/certificates/<slug>` is automatic) |
 | A gallery photo | `public/Assets/gallery/<slug>.webp` + `data/gallery-photos.ts` |
+| A step of the path / a sport / a recommendation | `data/about.ts` (PATH, ATHLETICS) / `data/testimonials.ts` — its `/journey/<slug>` page is automatic; connect its roles, certificates and photos in the LINKS tables of `data/journey.ts` |
 | Image metadata (in the files) | automatic — `scripts/tag-images.mjs` (`npm run images:tag`, run by CI) |
 | The CV | the PDF in `public/Assets/cv/` (`CV_PDF_HREF` in `lib/shared.ts`) |
 | Navbar links | `components/layout/SiteNav.tsx` → `navItems` |

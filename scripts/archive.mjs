@@ -13,7 +13,7 @@
  */
 
 const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev").replace(/\/+$/, "");
-const PAGES = ["/", "/blog", "/teaching", "/certificates", "/gallery", "/cv", "/videos", "/training"];
+const PAGES = ["/", "/blog", "/teaching", "/certificates", "/journey", "/gallery", "/cv", "/videos", "/training"];
 const warn = (msg) => console.warn(`::warning::archive — ${msg}`);
 
 const save = async (url) => {

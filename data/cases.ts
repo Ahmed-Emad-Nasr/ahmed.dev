@@ -56,6 +56,7 @@ const buildScreenshotRange = (
 export const caseScreenshotsByEvidenceId: Record<string, string[]> = {
   "file-and-hash-threat-intel": buildScreenshotRange("File and Hash Threat Intel", 706, 746),
   "soc-l1-alert-reporting": buildScreenshotRange("SOC L1 Alert Reporting", 1, 25),
+  "detecting-web-attacks": buildScreenshotRange("Detecting Web Attacks", 750, 773),
   "soc-l1-alert-triage": Array.from({ length: 26 }, (_, i) => `Assets/Cases/SOC L1 Alert Triage/Screenshot (${607 + i}).webp`),
   "ir-timeline-analysis": Array.from({ length: 32 }, (_, i) => `Assets/Cases/IR Timeline/Screenshot (${555 + i}).webp`),
   "threat-intelligence-for-soc": Array.from({ length: 20 }, (_, i) => `Assets/Cases/Threat Inteligence For SOC/Screenshot (${531 + i}).webp`),
@@ -224,6 +225,21 @@ export const caseScreenshotsByEvidenceId: Record<string, string[]> = {
 
 /* ═══ Every case, newest first. Fields = the CaseEvidence type in lib/shared.ts ═══ */
 export const caseEvidenceLibrary: CaseEvidence[] = [
+  {
+    id: "detecting-web-attacks",
+    title: "Detecting Web Attacks Walkthrough (Access Log & PCAP — ffuf Fuzzing, Hydra Brute Force, sqlmap SQL Injection & WAF Rules)",
+    description: "Completed all 7 tasks of TryHackMe's 'Detecting Web Attacks' room (SOC Level 1 › Web Security Monitoring): how a SOC spots web attacks from server logs, network captures and a Web Application Firewall. The theory first: client-side attacks (XSS, CSRF, clickjacking) run in the user's browser and leave the SOC almost nothing to see, while server-side attacks (brute force, SQL injection, command injection) hit the web server and show up in its logs and traffic. Then came the investigation. TryBankMe (a small online bank) was breached and its customer data leaked on a darknet forum; the job was to retrace the attacker's steps from 'access.log' and 'traffic.pcap'. Phase 1 — Access log: Every request came from '192.168.1.10' to the Apache 2.4.52 server '192.168.1.9' on 20 Aug 2025. At 07:37:38 the User-Agent 'FFUF v2.1.0' requested 13 paths in two seconds ('/social', '/manage', '/adminpanel' … mostly 404) — a directory fuzz that found '/login.php'. At 07:38:09 'Mozilla/5.0 (Hydra)' sent 11 GETs and 11 POSTs to '/login.php' in the same second — a brute force; one POST got a '302' instead of a '200', followed by 'GET /account' (301) and '/account/' (200): the attacker was in. At 07:38:20 'sqlmap/stable' requested '/account/changeusername.php?q=%25%27+OR+%271%27%3D%271'; I URL-decoded it in CyberChef: a wildcard followed by an always-true OR 1=1 condition, the classic SQL injection test (the exact payload is in the answers below). Phase 2 — Network capture: The log does not hold POST bodies, so I opened 'traffic.pcap' in Wireshark (446 packets, 253 from the attacker, 38 HTTP requests with 'http && ip.src==192.168.1.10'). Following the HTTP streams of the POSTs showed each guess in clear text: 'username=admin&password=password123' and 'summertime2002' got 'Invalid username or password'; 'astrongpassword123' (TCP stream 32) got '302 Found' with 'Location: /account' — the password the brute force found. Stream 44 holds the sqlmap request and the server's answer. A DEBUG line in the page exposed the SQL query it built (a LIKE search on the users table made always true by the injected OR), and below it the whole users table was dumped — the accounts alice, bob and admin with their e-mails, plus the row 'flag | THM{dumped_the_db}'. Phase 3 — Web Application Firewall: WAFs inspect and filter web requests with rules (block, allow, challenge by region), managed OWASP rule sets and threat-intelligence feeds of bad IPs and User-Agents; I wrote the rule 'If User-Agent contains \"BotTHM\" then block'. Room completed: 7 tasks, 88 points.",
+    platform: "TryHackMe",
+    type: "Walkthrough",
+    category: "SOC Analysis",
+    difficulty: "Easy",
+    tags: ["TryHackMe", "SOC", "Web Security Monitoring", "Log Analysis", "Apache Access Log", "PCAP Analysis", "Directory Fuzzing", "Brute Force", "SQL Injection", "Data Breach", "WAF", "XSS", "CSRF"],
+    tools: ["Pluma (access.log)", "Wireshark", "CyberChef", "ffuf (attacker)", "Hydra (attacker)", "sqlmap (attacker)"],
+    skillsGained: ["Web Access Log Analysis", "Attack Tool Fingerprinting (User-Agent)", "Wireshark HTTP Stream Reconstruction", "URL Decoding of Payloads", "Brute-Force Detection (302 after many 200s)", "SQL Injection Detection", "WAF Rule Writing", "MITRE ATT&CK Mapping"],
+    readTime: 12,
+    date: "2026-11-24",
+    image: "Assets/Cases/Detecting Web Attacks/Screenshot (765).webp",
+  },
   {
     id: "file-and-hash-threat-intel",
     title: "File and Hash Threat Intel Walkthrough (VirusTotal, MalwareBazaar, Hybrid Analysis & TryDetectThis — BlackMoon, IcedID, Gh0st RAT & Akira Ransomware)",

@@ -97,6 +97,9 @@ Certificates and personal photos live in **two separate folders** and two separa
 2. In `data/certificates.ts`, copy an entry and change: `slug`, `title` (as printed), `issuer`, `kind`, `group` (`certifications` if you passed an exam, `courses`, `education`, `exams`, `badges`), `date` (`"2026-02-15"`), and whatever the document prints: `period`, `hours`, `score`, `credentialId`, `instructor`, `nameOnDocument`, **`verifyUrl`** (a Verify button appears). Then `summary` (one line), `description` (the full explanation) and `covers` (topics).
 3. If it is a professional (exam) certification, also add it to `certifications` in `data/certifications.ts` with `certificate: "<slug>"` (those are counted on the home page).
 
+**A step of the path, a sport or a recommendation** (`/journey`, each with its own page `/journey/<slug>`):
+add it where it already lived — a step in `PATH` or a sport in `ATHLETICS` (`data/about.ts`), a recommendation in `RECOMMENDATIONS` (`data/testimonials.ts`). Its page appears by itself. To show the roles, certificates and photos that belong to it, add a line to the matching LINKS table in `data/journey.ts` (an organisation's name as in `data/experience.ts`, certificate slugs, a pattern for photo slugs). A new training platform: `STATIC_PLATFORMS` in `data/platforms.ts`, plus its id in `PLATFORM_IDS` (`data/journey-index.ts`).
+
 **A personal photo** (the gallery, `/gallery#<slug>`):
 
 1. Save it as `public/Assets/gallery/<slug>.webp`.

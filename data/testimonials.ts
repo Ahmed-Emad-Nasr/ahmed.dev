@@ -1,7 +1,7 @@
 /*
  * What other people wrote about him — quoted word for word.
  *
- * ═══ data/testimonials.ts → components/home/Testimonials.tsx (#testimonials) ═══
+ * ═══ data/testimonials.ts → components/journey/Testimonials.tsx (#testimonials on /journey) ═══
  *   RECOMMENDATIONS → LinkedIn recommendations: named, with the writer's
  *                     headline as LinkedIn shows it, and a link to read them
  *                     there (the proof).

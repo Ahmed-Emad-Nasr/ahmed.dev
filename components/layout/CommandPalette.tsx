@@ -16,7 +16,8 @@
  *   • go("#id")    → jump to a section (works from any page)
  *   • visit("/x")  → open another page
  *   • hint         → optional grey text on the right
- * Cases come from /palette-index.json (built from data/cases.ts) and
+ * Cases come from /palette-index.json (built from data/cases.ts), the
+ * /journey pages from /journey-index.json (data/journey-index.ts), and
  * certificates from data/certificates.ts — no need to add those by hand.
  */
 
@@ -77,16 +78,23 @@ interface Command {
 
 /* Cases to search, fetched from /palette-index.json when the palette first opens */
 type CaseIndexEntry = { id: string; title: string; category: string };
+/* The /journey pages, fetched from /journey-index.json the same way */
+type JourneyIndexEntry = { slug: string; title: string; kind: string };
 
 /* Loaded on demand by PaletteMount, so it starts open */
 export default function CommandPalette() {
   const [open, setOpen] = useState(true);
   const [cases, setCases] = useState<readonly CaseIndexEntry[]>([]);
+  const [journey, setJourney] = useState<readonly JourneyIndexEntry[]>([]);
   useEffect(() => {
     let alive = true;
     fetch(normalizePublicHref("/palette-index.json"))
       .then((r) => (r.ok ? r.json() : []))
       .then((list: CaseIndexEntry[]) => alive && setCases(list))
+      .catch(() => {});
+    fetch(normalizePublicHref("/journey-index.json"))
+      .then((r) => (r.ok ? r.json() : []))
+      .then((list: JourneyIndexEntry[]) => alive && setJourney(list))
       .catch(() => {});
     return () => {
       alive = false;
@@ -188,11 +196,13 @@ export default function CommandPalette() {
       { id: "lab", group: "Go to", label: "Home lab architecture", icon: Code2, run: () => go("#lab") },
       { id: "tools", group: "Go to", label: "Tools of the trade", icon: Wrench, run: () => go("#tools") },
       { id: "experience", group: "Go to", label: "Experience", icon: Briefcase, run: () => go("#experience") },
+      { id: "journey", group: "Go to", label: "The journey — path, platforms, recommendations, the track", icon: Route, run: () => visit("/journey") },
       { id: "path", group: "Go to", label: "The path — year by year", icon: Route, run: () => go("#path") },
       { id: "teaching", group: "Go to", label: "Teaching — the course & student feedback", icon: GraduationCap, run: () => visit("/teaching") },
       { id: "testimonials", group: "Go to", label: "Recommendations", icon: MessageSquareQuote, run: () => go("#testimonials") },
       { id: "student-feedback", group: "Go to", label: "Student feedback", icon: MessageSquareQuote, run: () => go("#student-feedback") },
       { id: "platforms", group: "Go to", label: "Practice platforms (THM, HTB …)", icon: Trophy, run: () => go("#platforms") },
+      { id: "athlete", group: "Go to", label: "Off the clock — the athlete (Al Ahly SC)", icon: Trophy, run: () => go("#athlete") },
       { id: "gallery", group: "Go to", label: "Photo gallery — classes, events, races", icon: Palette, run: () => visit("/gallery") },
       { id: "all-certs", group: "Go to", label: `Certificates — all ${CERTIFICATES.length}`, icon: Award, run: () => visit("/certificates") },
       { id: "attack", group: "Go to", label: "MITRE ATT&CK coverage", icon: Crosshair, run: () => go("#attack") },
@@ -270,7 +280,7 @@ export default function CommandPalette() {
     ];
   }, [go, visit, resolvedTheme, transitionTo, copied, fxDuration, singleKeys]);
 
-  /* Cases and certificates join the list once you type */
+  /* Cases, certificates and the journey pages join the list once you type */
   const caseCommands: Command[] = useMemo(
     () =>
       cases.map((item) => ({
@@ -297,17 +307,30 @@ export default function CommandPalette() {
     [visit]
   );
 
+  const journeyCommands: Command[] = useMemo(
+    () =>
+      journey.map((item) => ({
+        id: `journey-${item.slug}`,
+        group: "Journey",
+        label: item.title,
+        hint: item.kind,
+        icon: Route,
+        run: () => visit(`/journey/${item.slug}`),
+      })),
+    [visit, journey]
+  );
+
   /* What the search box matches → the visible list */
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return commands;
-    return [...commands, ...caseCommands, ...certCommands].filter(
+    return [...commands, ...caseCommands, ...certCommands, ...journeyCommands].filter(
       (c) =>
         c.label.toLowerCase().includes(q) ||
         c.group.toLowerCase().includes(q) ||
         (c.hint ?? "").toLowerCase().includes(q)
     );
-  }, [commands, caseCommands, certCommands, query]);
+  }, [commands, caseCommands, certCommands, journeyCommands, query]);
 
   const onKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {

@@ -3,11 +3,14 @@
  * Ahmed's own data. Nothing here is a new claim: every line repeats what
  * the experience, cases, certifications or teaching sections already prove.
  *
- * ═══ data/about.ts → components/home/{ToolsSection,PathSection,AthleteSection}.tsx ═══
+ * ═══ data/about.ts → components/home/ToolsSection.tsx and
+ *                    components/journey/{PathSection,AthleteSection}.tsx (/journey) ═══
  *   TOOL_GROUPS → "Tools of the Trade." (#tools) — built from data/skills.ts,
  *                 so the CV skill list and this section never disagree
- *   PATH        → "The Path." — one line per year, from data/experience.ts
- *   ATHLETICS   → "Off the Clock." (#athlete) — the sports
+ *   PATH        → "The Path." — one line per year, from data/experience.ts;
+ *                 each step has its own page /journey/<year-title>
+ *   ATHLETICS   → "Off the Clock." (#athlete) — the sports, each with
+ *                 its own page /journey/<club-sport>
  */
 
 import { skillGroups } from "@/data/skills";
@@ -53,7 +56,7 @@ const yearsSince = (start: string) => {
 };
 const AHLY_YEARS = yearsSince(AHLY_SINCE);
 
-/* "Off the Clock." (#athlete, components/home/AthleteSection.tsx): the
+/* "Off the Clock." (#athlete, components/journey/AthleteSection.tsx): the
    sports, newest first. `years` is shown as written; `events` are the chips. */
 export const ATHLETICS = [
   {

@@ -1,16 +1,19 @@
 /*
- * ═══ components/home/AthleteSection.tsx — "Off the Clock." (#athlete) ═══
+ * ═══ components/journey/AthleteSection.tsx — "Off the Clock." (#athlete on /journey) ═══
  * The other half of the week: running for Al Ahly SC now, modern pentathlon
- * at Benha Club before it. One card per sport, with its years and events.
+ * at Benha Club before it. One card per sport, with its years and events;
+ * each opens the sport's own page, /journey/<club-sport>, with its photos.
  * Edit the text in data/about.ts (ATHLETICS). Server Component.
  */
 
-import { Timer, Trophy } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Timer, Trophy } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { CardEffects } from "@/components/ui/Motion";
 import { KanjiWatermark, chipNeutral, chipTertiary } from "@/components/ui/kit";
 import { ATHLETICS } from "@/data/about";
+import { journeyPath, sportSlug } from "@/data/journey-index";
 
 export default function AthleteSection() {
   return (
@@ -60,6 +63,14 @@ export default function AthleteSection() {
                     </li>
                   ))}
                 </ul>
+                <Link
+                  href={journeyPath(sportSlug(a))}
+                  prefetch={false}
+                  className="group/more relative mt-7 inline-flex items-center gap-2 font-mono text-[0.625rem] font-bold uppercase tracking-[0.25em] text-primary-ink hover:text-foreground transition-colors"
+                >
+                  The full story <span className="sr-only">of {a.sport} at {a.club}</span>
+                  <ArrowRight size={13} className="transition-transform group-hover/more:translate-x-0.5" aria-hidden="true" />
+                </Link>
               </FadeIn>
             );
           })}

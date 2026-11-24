@@ -37,7 +37,7 @@ project    : ahmed.dev — the portfolio of Ahmed Emad Nasr (0x3omda)
 role       : Information Security Officer · Cybersecurity Instructor (AMIT & NTI)
 covers     : GRC · SOC · Incident Response & DFIR · Malware Analysis · IAM · Data Security
 live       : https://ahmed-emad-nasr.github.io/ahmed.dev/
-pages      : /  ·  /blog  ·  /blog/<case>  ·  /teaching  ·  /ar/teaching  ·  /certificates  ·  /certificates/<slug>  ·  /gallery
+pages      : /  ·  /blog  ·  /blog/<case>  ·  /teaching  ·  /ar/teaching  ·  /certificates  ·  /certificates/<slug>  ·  /gallery  ·  /journey  ·  /journey/<slug>
 built_with : Next.js 16 (static export) · React 19 · TypeScript · Tailwind CSS v4 · GSAP · Framer Motion
 hosting    : GitHub Pages — no server, everything is built ahead of time
 ```
@@ -105,6 +105,7 @@ flowchart LR
 | [`/ar/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/teaching) | The same page in Arabic (right to left, Cairo font), linked to the English one with `hreflang` |
 | [`/certificates`](https://ahmed-emad-nasr.github.io/ahmed.dev/certificates) | Degree, certifications, courses, exam scores and badges — every detail, one page each, with verification links |
 | [`/gallery`](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery) | Personal photos: classes, events, the Banque Misr internship, races — with full captions |
+| [`/journey`](https://ahmed-emad-nasr.github.io/ahmed.dev/journey) | Beyond the CV: the path year by year, the training platforms, the recommendations and the track — each item with its own page `/journey/<slug>` (the roles behind it, every certificate, the photos, the write-ups) |
 
 Operator tools on every page: `Ctrl / ⌘ + K` command palette · `?` keyboard
 shortcuts · `g` + key to jump to a section · type `3omda` for the terminal.
@@ -198,7 +199,7 @@ assistant — AI tools that open the repo read the same rules from `AGENTS.md`).
 ## `> tree -L 2`
 
 ```text
-app/          routes: /, /blog, /blog/[slug], /teaching, /ar/teaching, /certificates, /certificates/[slug], /gallery, metadata, sitemap, feeds
+app/          routes: /, /blog, /blog/[slug], /teaching, /ar/teaching, /certificates, /certificates/[slug], /gallery, /journey, /journey/[slug], metadata, sitemap, feeds
 components/
   layout/     navigation, theme, terminal, command palette, shortcuts, footer
   ui/         shared pieces: SectionHeader, CounterChip, ShowMore, kit

@@ -32,9 +32,10 @@ import {
   Command,
   GraduationCap,
   Handshake,
+  Route,
 } from "lucide-react";
 
-/* Seven links, in page order. Every other section is one click away in the
+/* Eight links, in page order. Every other section is one click away in the
    footer and the command palette (Ctrl+K). */
 const navItems = [
   { name: "Home", href: "#home", icon: Home },
@@ -44,6 +45,7 @@ const navItems = [
   /* Pages of their own (lib/routes.ts) */
   { name: "Blog", href: "/blog", icon: BookOpen },
   { name: "Teaching", href: "/teaching", icon: GraduationCap },
+  { name: "Journey", href: "/journey", icon: Route },
   { name: "Contact", href: "#contact", icon: Mail },
 ];
 

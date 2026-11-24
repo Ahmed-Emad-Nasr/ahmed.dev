@@ -4,7 +4,7 @@
  * Renders a 1200×630 card per case in the site's style (category, title,
  * verdict, severity, ATT&CK ids) into public/og/cases/<id>.jpg; the case
  * page uses it when the file exists. Also one card for each of /blog,
- * /teaching, /certificates and /gallery (the page's name and its real counts, from the
+ * /teaching, /certificates, /gallery and /journey (the page's name and its real counts, from the
  * data files) into public/og/pages/<page>.jpg, used by lib/og.ts.
  *
  *   npm run og:cases              only cards whose case changed (part of npm run prepare:assets)
@@ -65,6 +65,9 @@ const { STUDENT_FEEDBACK } = load(join(cfg, "testimonials.ts"));
 const { PROFESSIONAL_CERTIFICATION_COUNT } = load(join(cfg, "certifications.ts"));
 const { CERTIFICATES } = load(join(cfg, "certificates.ts"));
 const { GALLERY_PHOTOS } = load(join(cfg, "gallery-photos.ts"));
+const { PATH, ATHLETICS } = load(join(cfg, "about.ts"));
+const { RECOMMENDATIONS } = load(join(cfg, "testimonials.ts"));
+const { PLATFORM_IDS } = load(join(cfg, "journey-index.ts"));
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 /* Fonts inlined as data URIs: a page set with setContent() cannot load file:// fonts */
@@ -110,7 +113,7 @@ ${ids.length ? `<div class="ids">${ids.map((i) => `<span>${esc(i)}</span>`).join
 </body></html>`;
 };
 
-/* ─── Page cards: /blog, /teaching, /certificates, /gallery ─── */
+/* ─── Page cards: /blog, /teaching, /certificates, /gallery, /journey … ─── */
 /* Same count as the ATT&CK section on /blog (parent techniques) */
 const techniqueCount = coveredTechniqueCount();
 /* Each page: its words, its colour and its own photo (scripts/og/portrait-*.webp —
@@ -158,6 +161,16 @@ const PAGES = [
     accent: "#a16207", ink: "#facc15", glow: "rgba(250,204,21,.25)",
     /* A passport-style photo: cut off at the shoulders, so its sides fade too */
     photo: { file: "portrait-formal.webp", width: 430, left: 690, top: 70, fadeSides: true },
+  },
+  {
+    id: "journey",
+    badge: "Path · platforms · the track",
+    title: "Journey.",
+    line: "Beyond the CV",
+    sub: "Year by year, where I train, what people wrote",
+    chips: [`${PATH.length} milestones`, `${PLATFORM_IDS.length} platforms`, `${RECOMMENDATIONS.length} recommendations`, `${ATHLETICS.length} sports`],
+    accent: "#BC002D", ink: "#ff2d55", glow: "rgba(188,0,45,.35)",
+    photo: { file: "portrait-grey.webp", width: 1000, left: 400, top: -6 },
   },
   {
     id: "cv",

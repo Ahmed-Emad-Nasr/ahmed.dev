@@ -3,7 +3,7 @@
  * build time (lib/api/tryhackme.ts) with THM_SNAPSHOT as the fallback; the
  * other platforms show their profile only — no unverifiable numbers.
  *
- * ═══ data/platforms.ts → components/home/PlatformsSection.tsx (#platforms) ═══
+ * ═══ data/platforms.ts → components/journey/PlatformsSection.tsx (#platforms on /journey) ═══
  *   THM_SNAPSHOT       → TryHackMe numbers used when the live fetch fails —
  *                        refreshed every morning by scripts/sync-stats.mjs
  *                        (data/live-stats.ts), nothing to do by hand

@@ -1,14 +1,19 @@
 /*
- * ═══ components/home/PathSection.tsx — "The Path." ═══
+ * ═══ components/journey/PathSection.tsx — "The Path." (#path on /journey) ═══
  * One line per step, oldest first (data/about.ts → PATH). The last step is
- * filled in. Layout from Sensei-Dev's MilestonesSection. Server Component.
+ * filled in. Each step's title opens its own page, /journey/<year-title>,
+ * with the roles, certificates and photos behind it (data/journey.ts).
+ * Layout from Sensei-Dev's MilestonesSection. Server Component.
  */
 
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { KanjiWatermark } from "@/components/ui/kit";
 import CounterChip from "@/components/ui/CounterChip";
 import { PATH } from "@/data/about";
+import { journeyPath, pathSlug } from "@/data/journey-index";
 
 export default function PathSection() {
   return (
@@ -25,7 +30,7 @@ export default function PathSection() {
           titleA="The"
           titleB="Path."
           size="lg"
-          description="Every step below is documented on this page: experience, cases or credentials."
+          description="Every step below is documented: open one for the roles, the certificates and the photos behind it."
           aside={<CounterChip stats={[{ value: String(PATH.length).padStart(2, "0"), label: "Stops so far" }]} />}
         />
 
@@ -48,7 +53,16 @@ export default function PathSection() {
                       {!showYear && <span className="sr-only">{m.year}</span>}
                     </span>
                     <div>
-                      <h3 className="font-display text-xl font-black uppercase tracking-tight text-foreground">{m.title}</h3>
+                      <h3 className="font-display text-xl font-black uppercase tracking-tight text-foreground">
+                        <Link
+                          href={journeyPath(pathSlug(m))}
+                          prefetch={false}
+                          className="group/step inline-flex items-center gap-2 hover:text-primary-ink transition-colors"
+                        >
+                          {m.title}
+                          <ArrowRight size={16} className="text-primary-ink/70 transition-transform group-hover/step:translate-x-0.5" aria-hidden="true" />
+                        </Link>
+                      </h3>
                       <p className="mt-1 text-sm text-foreground/60 font-light leading-relaxed">{m.detail}</p>
                     </div>
                   </div>

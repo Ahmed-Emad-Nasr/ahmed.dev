@@ -2,9 +2,10 @@
  * ═══ app/page.tsx — the HOME PAGE  ( URL: / ) ═══
  *
  * The portfolio: the pitch (who, roles, proof, experience) down to contact.
- * The blog, the teaching and the gallery are pages of their own
- * (app/blog/page.tsx, app/teaching/page.tsx, app/gallery/page.tsx — the map
- * of which section lives where is lib/routes.ts).
+ * The blog, the teaching, the gallery and the journey are pages of their own
+ * (app/blog/page.tsx, app/teaching/page.tsx, app/gallery/page.tsx,
+ * app/journey/page.tsx — the map of which section lives where is
+ * lib/routes.ts).
  * Section order follows the Sensei-Dev portfolio
  * (github.com/MostafaSensei106/Sensei-Dev, GPL-3.0).
  *
@@ -20,10 +21,8 @@
  *   Contributions #contributions components/home/ContributionsGrid GitHub calendar (build time)
  *   Tools        #tools    components/home/ToolsSection     data/about.ts (from data/skills.ts)
  *   Experience   #experience components/home/ExperienceTimeline  data/experience.ts
- *   The path     #path     components/home/PathSection      data/about.ts
- *   Off the clock #athlete components/home/AthleteSection   data/about.ts (ATHLETICS)
- *   Recommendations #testimonials components/home/Testimonials data/testimonials.ts
- *   Platforms    #platforms components/home/PlatformsSection data/platforms.ts (+ TryHackMe API)
+ *   (The path, the platforms, the recommendations and the sport are on
+ *    /journey — app/journey/page.tsx)
  *   Contact      #contact  components/layout/ContactFooter
  *   Footer line            components/layout/FooterBar
  *
@@ -56,21 +55,15 @@ import {
   HeroSection,
   WorkShowcase,
   ExperienceTimeline,
-  Testimonials,
-  PlatformsSection,
   ToolsSection,
-  PathSection,
-  AthleteSection,
   ContactFooter,
 } from "@/components/home/dynamic";
 import { BackToTop } from "@/components/home/client-only";
 import { ContributionsGrid } from "@/components/blog/dynamic";
 import FooterBar from "@/components/layout/FooterBar";
-import { getTryHackMeStats } from "@/lib/api/tryhackme";
 import { getContributionStats } from "@/lib/api/contributions";
 import { getMoreRepos, getRepoCards, repoFacts, type RepoCard } from "@/lib/api/github-repos";
 import { PROFILE } from "@/data/profile";
-import { STATIC_PLATFORMS, tryHackMePlatform } from "@/data/platforms";
 import { LIVE_COPY } from "@/data/live-copy";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { SERVICES } from "@/data/services";
@@ -78,7 +71,7 @@ import { knowledgeEducationItems } from "@/data/experience";
 import { OG_IMAGE } from "@/lib/site";
 import { KEYWORDS, PERSON_IMAGE, SITE_KEYWORDS, PERSON_REF, SITE_URL, WEBSITE_ID, jsonLd, withAudience } from "@/lib/seo";
 import { AUDIENCE_LINE, X_HANDLE } from "@/lib/shared";
-import { BLOG_ID, GALLERY_ID, TEACHING_ID } from "@/lib/page-ids";
+import { BLOG_ID, GALLERY_ID, JOURNEY_ID, TEACHING_ID } from "@/lib/page-ids";
 
 /* <head> tags for the home page only (merged over app/layout.tsx's defaults).
    This title is used as-is: the layout's "%s | Ahmed Emad Nasr" template only
@@ -106,7 +99,6 @@ export const metadata: Metadata = {
     "eJPT certified",
     ...KEYWORDS.place,
     ...KEYWORDS.audience,
-    ...KEYWORDS.athlete,
     ...SITE_KEYWORDS,
   ].filter((k, i, all) => all.indexOf(k) === i),
   alternates: {
@@ -171,6 +163,7 @@ function structuredData(repos: RepoCard[]) {
           { "@id": BLOG_ID },
           { "@id": TEACHING_ID },
           { "@id": GALLERY_ID },
+          { "@id": JOURNEY_ID },
         ],
       },
       /* ── The projects' repositories (lib/api/github-repos.ts) ── */
@@ -250,12 +243,10 @@ function structuredData(repos: RepoCard[]) {
 }
 
 /* `async` because it runs at BUILD time (static export): it fetches the
-   TryHackMe stats and the GitHub contribution calendar once, while
-   `npm run build` runs, and bakes them into the page (TryHackMe falls back
-   to the saved snapshot in data/platforms.ts if offline). */
+   GitHub contribution calendar and repositories once, while `npm run build`
+   runs, and bakes them into the page. */
 export default async function Home() {
-  const [thm, contributions, repos, moreRepos] = await Promise.all([
-    getTryHackMeStats(),
+  const [contributions, repos, moreRepos] = await Promise.all([
     getContributionStats(PROFILE.contact.github),
     getRepoCards(),
     getMoreRepos(),
@@ -313,22 +304,7 @@ export default async function Home() {
         <ExperienceTimeline />
       </div>
 
-      {/* One line per year, then what's happening now (data/about.ts) */}
-      <PathSection />
-      {/* The athlete: Al Ahly SC, modern pentathlon (data/about.ts → ATHLETICS) */}
-      <AthleteSection />
-
-
-      {/* What others wrote: the LinkedIn recommendations (data/testimonials.ts);
-          the students' feedback is on /teaching */}
-      <div className="tone-blue">
-        <Testimonials />
-      </div>
-
-      {/* Training platforms: TryHackMe as the big card (live stats), others from data/platforms.ts */}
-      <div className="tone-blue">
-        <PlatformsSection featured={tryHackMePlatform(thm)} thm={thm} others={STATIC_PLATFORMS} />
-      </div>
+      {/* The path, the platforms, the recommendations and the sport: /journey */}
 
       {/* Contact section + form */}
       <div id="contact" className="relative mt-20">

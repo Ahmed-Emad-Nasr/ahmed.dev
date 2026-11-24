@@ -3,11 +3,13 @@
  * can check. Numbers are fetched at build time (TryHackMe) or documented
  * results — nothing estimated. Server Component.
  *
- * ═══ components/home/PlatformsSection.tsx — the PLATFORMS section (#platforms) ═══
+ * ═══ components/journey/PlatformsSection.tsx — "Proving Grounds." (#platforms on /journey) ═══
  *
  * One big "featured" card (TryHackMe, with live rank / rooms / badges) and a
  * grid of smaller cards for the other platforms (Hack The Box,
- * CyberDefenders, CyberTalents…).
+ * CyberDefenders, CyberTalents…). The cards open the public profiles; the
+ * row under them opens each platform's own page, /journey/<platform>, with
+ * the certificates, roles and write-ups that go with it.
  *
  * HOW TO EDIT
  *   • Add / change a platform card → STATIC_PLATFORMS in data/platforms.ts
@@ -33,6 +35,7 @@ import OrgLogo from "@/components/ui/OrgLogo";
 import { KanjiWatermark, btnOutline, cardSurface } from "@/components/ui/kit";
 import type { Platform, TryHackMeStats } from "@/data/platforms";
 import { PLATFORM_PAGES, casesForPlatform } from "@/lib/collections";
+import { journeyPath } from "@/data/journey-index";
 
 /* The platform's logo; its short monogram (platform.mark) when it has none */
 function Mark({ platform }: { platform: Platform }) {
@@ -168,8 +171,18 @@ export default function PlatformsSection({
           ))}
         </div>
 
-        {/* The write-ups from each platform, one page per platform (/writeups/<slug>) */}
+        {/* Each platform's own page on /journey: its certificates, roles and write-ups */}
         <FadeIn className="mt-10 flex flex-wrap items-center gap-4">
+          <span className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">Each in detail:</span>
+          {[featured, ...others].map((p) => (
+            <Link key={p.id} prefetch={false} href={journeyPath(p.id)} className={btnOutline}>
+              {p.name} <ArrowRight size={13} aria-hidden="true" />
+            </Link>
+          ))}
+        </FadeIn>
+
+        {/* The write-ups from each platform, one page per platform (/writeups/<slug>) */}
+        <FadeIn className="mt-4 flex flex-wrap items-center gap-4">
           <span className="font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">Read the write-ups:</span>
           {PLATFORM_PAGES.map((p) => (
             <Link key={p.slug} prefetch={false} href={`/writeups/${p.slug}`} className={btnOutline}>
