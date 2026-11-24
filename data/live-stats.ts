@@ -40,7 +40,7 @@ export const LIVE_STATS: LiveStats = {
   "youtube": {
     "subscribers": 613,
     "views": 40697,
-    "videos": 86
+    "videos": 87
   },
   "playlists": [
     {
