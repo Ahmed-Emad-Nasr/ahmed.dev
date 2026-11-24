@@ -25,6 +25,7 @@ const CONFIG_FILES = [
   "data/case-details.ts",
   "data/certifications.ts",
   "data/certificates.ts",
+  "data/credly-badges.ts",
   "data/gallery-photos.ts",
   "data/experience.ts",
   "data/portfolio-data.ts",
@@ -166,10 +167,11 @@ for (const file of CONFIG_FILES) {
    -thumb). Slugs built in a loop are checked by npm run images:tag. */
 for (const [file, dir] of [
   ["data/certificates.ts", "Assets/certificates"],
+  ["data/credly-badges.ts", "Assets/certificates"],
   ["data/gallery-photos.ts", "Assets/gallery"],
 ]) {
   const src = stripComments(readFileSync(join(ROOT, file), "utf8"));
-  for (const [, slug] of src.matchAll(/\bslug:\s*"([^"]+)"/g)) {
+  for (const [, slug] of src.matchAll(/\b"?slug"?:\s*"([^"]+)"/g)) {
     const rel = `${dir}/${slug}.webp`;
     checked++;
     if (!realPaths.has(rel)) {

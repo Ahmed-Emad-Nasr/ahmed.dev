@@ -1,0 +1,91 @@
+# Is the LIVE site healthy? Once a week, and by hand from the Actions tab.
+#
+# scripts/check-live.mjs opens the site people actually see: the main pages,
+# a different sample of the sitemap's pages and images each week, the CV PDF,
+# how long ago the last deploy was, and whether the daily YouTube / TryHackMe
+# sync is still reading numbers; then Lighthouse (scripts/check-speed.mjs)
+# scores a few pages for speed, accessibility, best practices and SEO on a
+# simulated phone. A problem → one GitHub issue (GitHub e-mails it to
+# Ahmed); a later clean check closes it. Read-only: changes nothing.
+#
+# Also weekly: a dated copy of the site on the Wayback Machine
+# (scripts/archive.mjs), and the keepalive job that stops GitHub from
+# pausing the scheduled workflows.
+name: Live site health
+
+on:
+  schedule:
+    # Mondays 09:43 Cairo
+    - cron: "43 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+  # configure-pages reads the live address (if it can't, the default is used)
+  pages: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      # The live address: the same one the deploy builds for
+      - id: pages
+        uses: actions/configure-pages@v6
+        continue-on-error: true
+      - run: npm run health:live
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+      # Lighthouse with the runner's Chrome; adds its findings to the same report
+      - name: Speed & accessibility (Lighthouse)
+        continue-on-error: true
+        run: npm run health:speed
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+      - name: Open, update or close the issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="The live site needs a look"
+          open=$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number')
+          if [ -f .live-report.md ]; then
+            if [ -z "$open" ]; then gh issue create --title "$title" --body-file .live-report.md
+            else gh issue comment "$open" --body-file .live-report.md; fi
+          elif [ -n "$open" ]; then
+            gh issue close "$open" --comment "This week's check found nothing wrong."
+          fi
+      # A dated public copy on the Wayback Machine. Last, and never fails.
+      - name: Save the site on the Wayback Machine
+        continue-on-error: true
+        timeout-minutes: 15
+        run: npm run archive
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+
+  # GitHub stops the scheduled runs of a repository with no activity for 60
+  # days. Re-enabling each scheduled workflow through the API (even one that
+  # is still enabled) resets that
+  # count (no dummy commits), so the daily deploy, the weekly checks and this
+  # job keep each other alive for as long as the repo exists.
+  keepalive:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          sparse-checkout: .github/workflows
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for f in $(grep -l "schedule:" .github/workflows/*.yml); do
+            gh api -X PUT "repos/$GITHUB_REPOSITORY/actions/workflows/$(basename "$f")/enable" && echo "kept alive: $f"
+          done
+

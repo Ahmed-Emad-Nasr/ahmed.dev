@@ -686,7 +686,7 @@ html[data-intro-seen] [data-app-loader] {
   button,
   .skip-link,
   [data-app-loader],
-  .kanji-drift,
+  .kanji-watermark,
   .japanese-bg,
   [data-tip] {
     display: none !important;
@@ -1517,29 +1517,13 @@ a.underline:focus-visible {
   background-position: 100% 100%;
 }
 
-/* The big kanji behind a section (KanjiWatermark, components/ui/kit.tsx)
-   move a little slower than the page as it scrolls, which gives depth.
-   A scroll-driven animation: the browser works it out from the scroll
-   position, on the compositor — no JavaScript, no scroll listener.
-   The timeline is the SECTION's passage through the screen (--section):
-   sections clip their overflow, which makes each one its own (never
-   scrolling) scroll box, so a plain view() inside one would never move. */
+/* Each section's passage through the screen, as a timeline (--section) for
+   the scroll-driven touches below (the label line). Sections clip their
+   overflow, which makes each one its own (never scrolling) scroll box, so a
+   plain view() inside one would never move. */
 @supports (animation-timeline: view()) {
   :where(section) {
     view-timeline: --section block;
-  }
-  .kanji-drift {
-    animation: kanji-drift linear both;
-    animation-timeline: --section;
-    animation-range: cover;
-  }
-  @keyframes kanji-drift {
-    from {
-      translate: 0 5vh;
-    }
-    to {
-      translate: 0 -5vh;
-    }
   }
 }
 
@@ -1583,7 +1567,7 @@ a.underline:focus-visible {
     translate: 3px 0;
   }
 }
-html[data-lite] :is(.kanji-drift, .hero-orbit, .mascot-float, .soft-pulse, .lab-flow, .lab-beacon, .radar-spin, .siren-pulse),
+html[data-lite] :is(.hero-orbit, .mascot-float, .soft-pulse, .lab-flow, .lab-beacon, .radar-spin, .siren-pulse),
 html[data-lite] .brief-node::after {
   animation: none;
 }
@@ -1592,7 +1576,7 @@ html[data-lite] .lab-packet {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :is(.kanji-drift, .hero-orbit, .mascot-float, .soft-pulse) {
+  :is(.hero-orbit, .mascot-float, .soft-pulse) {
     animation: none !important;
   }
   :where(button, a, [role="tab"], .spotlight):active {

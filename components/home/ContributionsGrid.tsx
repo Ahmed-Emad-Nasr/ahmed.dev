@@ -6,6 +6,7 @@ import { ContributionGraph } from "@/components/home/ContributionGraph";
 import { CountUp } from "@/components/ui/CountUp";
 import { ExternalLink } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
+import { KanjiWatermark } from "@/components/ui/kit";
 
 /* Open-source contributions to other projects, plus the GitHub contribution
    graph
@@ -19,7 +20,9 @@ import FadeIn from "@/components/ui/FadeIn";
 export default function ContributionsGrid({ stats }: { stats: ContributionStats }) {
   return (
     <section id="contributions" aria-label="Open-source contributions" className="relative py-16 md:py-20 px-6 md:px-20 bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+      {/* 貢献 — contribution */}
+      <KanjiWatermark chars="貢献" side="left" />
+      <div className="max-w-7xl mx-auto relative z-10">
         <FadeIn x={-32} y={0} duration={0.7}
           className="mb-10 flex flex-wrap items-center gap-4"
         >

@@ -29,6 +29,8 @@ const nextConfig = {
     NEXT_PUBLIC_BUILD_ID: (process.env.GITHUB_SHA ?? Date.now().toString(36)).slice(0, 12),
     /* "owner/repo" on GitHub Actions: REPO_URL in lib/shared.ts */
     NEXT_PUBLIC_REPOSITORY: process.env.GITHUB_REPOSITORY ?? "",
+    /* When this copy was built: the footer's "Updated …" (FooterBar.tsx) */
+    NEXT_PUBLIC_BUILT_AT: new Date().toISOString(),
   },
   experimental: { optimizePackageImports: ["framer-motion", "lucide-react"] },
 };

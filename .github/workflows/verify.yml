@@ -43,3 +43,18 @@ jobs:
       - name: Internal links
         if: always() && steps.build.outcome == 'success'
         run: npm run check:links
+      # Accessibility in a real browser (scripts/a11y-audit.mjs: axe-core,
+      # WCAG 2.2 AA, phone + desktop, dark + light). Pull requests only —
+      # Dependabot's included, so an update that breaks accessibility is not
+      # merged by itself. It takes a few minutes, so the daily deploy skips it
+      # (the weekly Lighthouse check in site-health.yml watches the live site).
+      - if: always() && steps.build.outcome == 'success' && github.event_name == 'pull_request'
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('package-lock.json') }}
+      - name: Accessibility (axe)
+        if: always() && steps.build.outcome == 'success' && github.event_name == 'pull_request'
+        run: |
+          npx playwright install --with-deps chromium
+          npm run check:a11y

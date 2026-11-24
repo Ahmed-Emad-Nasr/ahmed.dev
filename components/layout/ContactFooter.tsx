@@ -19,6 +19,7 @@
  */
 
 import { useEffect, useState, type CSSProperties } from "react";
+import { SERVICE, onService } from "@/data/status";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, ArrowUpRight, Mail, Copy, Check, BriefcaseBusiness } from "lucide-react";
 import { Github, Linkedin, Youtube, Instagram, Medium, Tiktok, XLogo } from "@/components/ui/BrandIcons";
@@ -94,8 +95,11 @@ export default function ContactFooter() {
               <h2 className="font-display text-[clamp(2rem,10.5vw,5rem)] lg:text-[clamp(3rem,4.8vw,8rem)] font-black uppercase leading-[0.8] mb-12 tracking-tighter">
                 Forge <br /> <span className="text-primary italic">Together.</span>
               </h2>
-              <p className="mb-8 max-w-xl text-base md:text-lg text-foreground/60 font-light leading-relaxed">
-                Hiring for a security role, need a security review, or want training for your team? Send me a message — I reply within a day or two. E-mail is the fastest way to reach me.
+              {/* Between the dates in data/status.ts the reply-time promise gives
+                  way to the national-service note; it comes back by itself */}
+              <p className="mb-8 max-w-xl text-base md:text-lg text-foreground/60 font-light leading-relaxed" suppressHydrationWarning>
+                Hiring for a security role, need a security review, or want training for your team?{" "}
+                {onService() ? SERVICE.contact : "Send me a message — I reply within a day or two. E-mail is the fastest way to reach me."}
               </p>
 
               {/* Direct email: the one channel a recruiter usually wants,

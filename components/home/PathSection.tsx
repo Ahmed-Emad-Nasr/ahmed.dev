@@ -6,6 +6,7 @@
 
 import FadeIn from "@/components/ui/FadeIn";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { KanjiWatermark } from "@/components/ui/kit";
 import CounterChip from "@/components/ui/CounterChip";
 import { PATH } from "@/data/about";
 
@@ -14,6 +15,8 @@ export default function PathSection() {
     <section id="path" aria-labelledby="path-title" className="relative py-24 md:py-32 px-6 md:px-20 bg-background overflow-hidden">
       {/* Old links to #now (the Right Now section, removed) land here */}
       <span id="now" className="absolute top-0" aria-hidden="true" />
+      {/* 道程 — the road travelled */}
+      <KanjiWatermark chars="道程" side="right" />
       <div className="max-w-7xl mx-auto relative z-10">
         <SectionHeader
           id="path-title"

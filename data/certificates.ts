@@ -13,6 +13,9 @@
  *     public/Assets/certificates/<slug>.webp          the scan
  *     public/Assets/certificates/<slug>-thumb.webp    640px card picture (npm run thumbs)
  *
+ * NEW CREDLY BADGES are added by themselves (scripts/sync-credly.mjs →
+ * data/credly-badges.ts, every deploy) — nothing to do here.
+ *
  * ADD A CERTIFICATE
  *   1. Save the scan as public/Assets/certificates/<slug>.webp — the slug is
  *      the address too (/certificates/<slug>): lowercase, words-with-dashes.
@@ -25,6 +28,8 @@
  * (image_display_thumb/N.webp): old links (/gallery?cert=N) still land on the
  * right certificate. New certificates leave it out.
  */
+
+import { CREDLY_BADGES } from "@/data/credly-badges";
 
 /* What kind of document it is — the filter buttons:
      certifications → professional certifications passed by exam
@@ -79,7 +84,8 @@ export type Certificate = {
 
 const NAME_FULL = "Ahmed Emad Eldeen Abdelmoneam";
 
-export const CERTIFICATES: readonly Certificate[] = [
+/* The documents, written by hand */
+const LISTED: readonly Certificate[] = [
   /* ─── Degree & programmes ─── */
   {
     slug: "bsc-computers-ai-benha-university-proof-of-graduation",
@@ -931,6 +937,10 @@ export const CERTIFICATES: readonly Certificate[] = [
     covers: ["Junior Cybersecurity Analyst Career Path"],
   },
 ];
+
+/* Every certificate on the site: the ones above, then the Credly badges
+   that are not among them (scripts/sync-credly.mjs, every deploy) */
+export const CERTIFICATES: readonly Certificate[] = [...LISTED, ...CREDLY_BADGES];
 
 /* ─── Helpers ─── */
 

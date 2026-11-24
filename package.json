@@ -31,7 +31,13 @@
     "og:site": "node scripts/og/generate-site-og.mjs",
     "videos:sync": "node scripts/sync-youtube.mjs",
     "stats:sync": "node scripts/sync-stats.mjs",
-    "cv:sync": "node scripts/sync-cv.mjs"
+    "cv:sync": "node scripts/sync-cv.mjs",
+    "credly:sync": "node scripts/sync-credly.mjs",
+    "health:live": "node scripts/check-live.mjs",
+    "fonts:kanji": "node scripts/kanji-font.mjs",
+    "indexnow": "node scripts/indexnow.mjs",
+    "health:speed": "node scripts/check-speed.mjs",
+    "archive": "node scripts/archive.mjs"
   },
   "dependencies": {
     "focus-trap": "8.2.5",

@@ -156,6 +156,11 @@ Every morning (05:17 Cairo) GitHub Actions (`.github/workflows/nextjs.yml`) refr
 | GitHub stars, new repos, contribution graph | the GitHub API at build time | — |
 | Share cards that show numbers | `npm run og:cases` in the deploy | the deployed site |
 | The CV: the `/cv` page, new jobs and end dates on the home Experience, phone / e-mail / WhatsApp, the PDF's title & keywords | the CV PDF, read when it changes — `scripts/sync-cv.mjs` | `data/cv-from-pdf.ts` |
+| New Credly badges (picture, issuer, date, skills, verify link) — each gets its own `/certificates/<slug>` page | your public Credly profile (`credly.com/users/ahmed-emad-nasr`) — `scripts/sync-credly.mjs`; a badge already on the site is never added twice | `data/credly-badges.ts`, `public/Assets/certificates/credly-*.webp` |
+| Image details written into every certificate / photo file | `data/certificates.ts`, `data/gallery-photos.ts` — `scripts/tag-images.mjs` | the image files |
+| The kanji font: re-cut when a page shows a new kanji | the built pages — `scripts/kanji-font.mjs` (then one more build, and the new font is committed) | `app/fonts/yuji-site-*.woff2` |
+| The footer's "Updated <date>" | the day of the build | — |
+| The national-service note (contact section + footer), on only between its dates | `data/status.ts` — change the dates there | — |
 | Years at Al Ahly, the © year | counted at every build (`AHLY_SINCE` in `data/about.ts`) | — |
 | security.txt "Expires" date | every build | — |
 | Package updates | Dependabot every Monday; minor/patch updates that pass the checks merge and deploy by themselves (`.github/workflows/dependabot-auto-merge.yml`); major versions wait for you | — |
@@ -164,7 +169,24 @@ Every morning (05:17 Cairo) GitHub Actions (`.github/workflows/nextjs.yml`) refr
 
 **When the CV can't be read:** a section the script can't read with confidence keeps its last good version, and the deploy opens a GitHub issue **"CV sync needs a look"** (GitHub e-mails you) saying which section and why. If even the Experience section can't be read, nothing at all is changed. A job that is in the CV but not yet in `data/experience.ts` appears on the home page with the CV's bullet points; to give it a logo, a website and an intro line, add it to `data/experience.ts` / `ROLE_INTRO` as usual — the CV keeps its dates in step.
 
-Run any sync by hand: `npm run videos:sync`, `npm run stats:sync`, `npm run cv:sync` (`-- --force` to read the same CV again).
+After each deploy the changed pages are sent to Bing & co. through **IndexNow** (`scripts/indexnow.mjs`, free, no account) — Google reads the sitemap instead.
+
+Every week a dated copy of the main pages and the CV PDF is saved on the **Wayback Machine** (`scripts/archive.mjs`) — at `https://web.archive.org/web/*/ahmed-emad-nasr.github.io/ahmed.dev*`, readable even if GitHub Pages is ever down.
+
+**The schedules never fall asleep:** GitHub stops the scheduled runs of a repo with no activity for 60 days. The `keepalive` job (in `nextjs.yml` daily and `site-health.yml` weekly) re-enables every scheduled workflow through GitHub's API, which resets that count — no dummy commits.
+
+**Accessibility:** every pull request (Dependabot's too) runs `npm run check:a11y` (axe-core, WCAG 2.2 AA, phone + desktop, dark + light) — an update that breaks accessibility is not merged by itself.
+
+**When something breaks you get an e-mail** (a GitHub issue; one at a time, and it closes by itself once things work again):
+
+| Issue | Opened by | When |
+|---|---|---|
+| "The daily deploy failed" | `nextjs.yml` (the `alert` job) | a check, the build or the deploy failed — the live site keeps its last good version |
+| "CV sync needs a look" | `nextjs.yml` | the new CV PDF could not be read with confidence |
+| "The live site needs a look" | `.github/workflows/site-health.yml`, every Monday | a page or image on the LIVE site does not open, the CV PDF is missing, the last deploy is over 3 days old, YouTube / TryHackMe numbers have not been read for a week (an expired `YOUTUBE_API_KEY`, for example), or a Lighthouse score fell under its floor (`scripts/check-speed.mjs` — the issue names what costs the points) |
+| "Broken external links" | `links.yml`, every Monday | a link to another site is dead |
+
+Run any of it by hand: `npm run videos:sync`, `npm run stats:sync`, `npm run cv:sync` (`-- --force` to read the same CV again), `npm run credly:sync`, `npm run fonts:kanji` (after a build), `npm run health:live`, `npm run health:speed`, `npm run archive`, `npm run check:a11y` (after a build).
 
 ## If something fails
 

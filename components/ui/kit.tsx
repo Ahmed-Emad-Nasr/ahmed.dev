@@ -159,8 +159,8 @@ export function KanjiWatermark({
 }) {
   const corner = side === "left" ? "left-0 top-24" : side === "edge" ? "right-0 bottom-10" : "right-0 top-24";
   return (
-    <div className={`pointer-events-none absolute z-0 select-none ${corner}`} aria-hidden="true" lang="ja">
-      <div className={`kanji-drift font-black text-foreground/[0.03] vertical-text ${size === "large" ? "text-[20vw]" : "text-[13vw]"}`}>
+    <div className={`kanji-watermark pointer-events-none absolute z-0 select-none ${corner}`} aria-hidden="true" lang="ja">
+      <div className={`font-black text-foreground/[0.03] vertical-text ${size === "large" ? "text-[20vw]" : "text-[13vw]"}`}>
         {[...chars].map((c, i) => (
           <span key={`${c}-${i}`}>{c}</span>
         ))}
