@@ -112,6 +112,7 @@ export default function SiteNav() {
     <>
       {/* ─── Main Navigation Bar ─── */}
       <nav
+        aria-label="Main"
         data-site-header="true"
         className="fixed z-[100] left-1/2 -translate-x-1/2 backdrop-blur-xl bg-background/60 border border-foreground/10 px-4 md:px-8 py-2 md:py-3 flex items-center justify-between"
         style={{

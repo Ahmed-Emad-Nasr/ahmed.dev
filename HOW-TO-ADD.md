@@ -178,6 +178,10 @@ Every week a dated copy of the main pages and the CV PDF is saved on the **Wayba
 
 **The schedules never fall asleep:** GitHub stops the scheduled runs of a repo with no activity for 60 days. The `keepalive` job (in `nextjs.yml` daily and `site-health.yml` weekly) re-enables every scheduled workflow through GitHub's API, which resets that count — no dummy commits.
 
+**The contact form** sends straight to your inbox through Web3Forms (free: 250 messages a month) — the key is in `data/contact-form.ts` (make a new one at web3forms.com to change the inbox). If a send ever fails, the form opens the visitor's mail app instead, so no message is lost. While the national-service dates apply, the visitor reads "Sent — … my reply may take a while".
+
+**Search keywords:** every "name + role" pair ("ahmed emad soc", "ahmed grc", "ahmed emad nasr info sec", the Arabic ones …) is built in `lib/seo.ts` — add a name to `NAME_ROLE_NAMES` or a role to `NAME_ROLE_TERMS` and every pair appears on the home page by itself. Google Search Console is verified with the meta tags in `app/layout.tsx` (`verification`); keep them.
+
 **Accessibility:** every pull request (Dependabot's too) runs `npm run check:a11y` (axe-core, WCAG 2.2 AA, phone + desktop, dark + light) — an update that breaks accessibility is not merged by itself.
 
 **When something breaks you get an e-mail** (a GitHub issue; one at a time, and it closes by itself once things work again). This needs **Issues turned on**: repository **Settings → General → Features → Issues** ✓. With Issues off nothing breaks: a failed deploy still sends GitHub's own "Run failed" e-mail, and the weekly checks (live site, links) fail their run on purpose so that e-mail reaches you, with the report in the run's summary — only the CV note stays a warning in the deploy log.

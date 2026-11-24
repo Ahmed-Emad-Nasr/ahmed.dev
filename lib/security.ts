@@ -3,6 +3,8 @@
  * GitHub Pages cannot send response headers. Every origin the site really
  * loads from, and nothing else:
  *   · YouTube: the privacy-enhanced player and its thumbnails
+ *   · Web3Forms: the contact form posts its message to api.web3forms.com
+ *     (data/contact-form.ts)
  *   · GitHub: nothing — the contribution calendar is read at build time,
  *     so no API or image is loaded from GitHub in the browser
  *   · 'self' frames: the case pages show their own PDF reports inline
@@ -26,7 +28,7 @@ export const CONTENT_SECURITY_POLICY = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https://i.ytimg.com",
   "font-src 'self'",
-  "connect-src 'self'",
+  "connect-src 'self' https://api.web3forms.com",
   "frame-src 'self' https://www.youtube-nocookie.com",
   "media-src 'self'",
   "worker-src 'self'",

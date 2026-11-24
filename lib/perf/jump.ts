@@ -71,6 +71,13 @@ export function goToSection(target: string, pathname: string, push: (href: strin
  * page is no longer where the jump left it. A nudge corrects a target that
  * moved under a still page; it never pulls a page somebody else moved.
  * A newer jump cancels the older one's checks.
+ *
+ * One exception to "the page moved, so someone else moved it": when the
+ * page's HEIGHT changed too, the move is the browser's own scroll anchoring
+ * reacting to a section above being drawn (content-visibility) — not a
+ * reader. Without this, clicking Contact on the home page stopped 1,500px
+ * short: the Experience section above it was drawn (1,156 → 2,707 px), the
+ * browser nudged the scroll by 105px, and the checks gave up.
  */
 let jumpSeq = 0;
 const CHECKS_MS = [120, 400, 1000, 2000, 3500, 5000];
@@ -86,15 +93,19 @@ async function settle(id: string): Promise<void> {
   const events = ["wheel", "touchstart", "keydown", "pointerdown"] as const;
   events.forEach((t) => window.addEventListener(t, take, { passive: true, once: true }));
   let left = window.scrollY;
+  let height = document.documentElement.scrollHeight;
   let waited = 0;
   for (const at of CHECKS_MS) {
     await new Promise((r) => window.setTimeout(r, at - waited));
     waited = at;
     if (touched || seq !== jumpSeq) break;
-    if (Math.abs(window.scrollY - left) > MOVED_BY_SOMEONE_ELSE) break;
+    const nowHeight = document.documentElement.scrollHeight;
+    const relaidOut = nowHeight !== height;
+    height = nowHeight;
+    if (!relaidOut && Math.abs(window.scrollY - left) > MOVED_BY_SOMEONE_ELSE) break;
     const el = document.getElementById(id);
     if (!el) break;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const max = nowHeight - window.innerHeight;
     if (Math.abs(window.scrollY - Math.min(scrollTargetOf(el), max)) > 4) {
       scrollToElement(el);
       left = window.scrollY;

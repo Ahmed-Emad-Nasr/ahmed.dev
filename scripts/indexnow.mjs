@@ -21,7 +21,10 @@ import { fileURLToPath } from "node:url";
 /* Any 32 hex characters; changing it is harmless (the next run publishes the new one) */
 const KEY = "fae4ac88d5785465da77891dcd71f47d";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev").replace(/\/+$/, "");
+/* https always (GitHub can hand the address over as http://), localhost aside */
+const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev")
+  .replace(/^http:\/\/(?!localhost|127\.0\.0\.1)/i, "https://")
+  .replace(/\/+$/, "");
 const DAYS = 3;
 const warn = (msg) => console.warn(`::warning::indexnow — ${msg}`);
 

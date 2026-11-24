@@ -22,7 +22,10 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev").replace(/\/+$/, "");
+/* https always (GitHub can hand the address over as http://), localhost aside */
+const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev")
+  .replace(/^http:\/\/(?!localhost|127\.0\.0\.1)/i, "https://")
+  .replace(/\/+$/, "");
 const REPORT = join(ROOT, ".live-report.md");
 const NAME = "Ahmed Emad Nasr";
 const PAGES = ["/", "/blog", "/teaching", "/training", "/certificates", "/journey", "/gallery", "/cv", "/videos", "/ar/teaching"];

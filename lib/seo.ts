@@ -70,6 +70,12 @@ export const NAME_SPELLINGS = [
   "Ahmed Emad Nassr",
   "Ahmed Emad Naser",
   "Ahmed Emaad Nasr",
+  /* as his LinkedIn recommendations write it (data/testimonials.ts) */
+  "Ahmed Emad Eldeen",
+  "Ahmed Emad El-Deen",
+  "Ahmed Emad Eldin",
+  "Ahmad Nasr",
+  "Ahmed Imad",
   "AhmedEmadNasr",
   "Ahmed-Emad-Nasr",
   "Ahmed_Emad_Nasr",
@@ -82,26 +88,74 @@ export const NAME_SPELLINGS = [
   "احمد عماد نصر",
   "أحمد عماد",
   "احمد عماد",
+  "أحمد نصر",
+  "احمد نصر",
+  "أحمد عماد الدين",
+  "احمد عماد الدين",
 ] as const;
 
-/* "<name> <role>": every way someone searches for him by what he does */
-const NAME_ROLE_NAMES = ["Ahmed Emad Nasr", "Ahmed Emad", "Ahmed Nasr", "3omda", "0x3omda"] as const;
+/*
+ * "<name> <role>": every way someone searches for him by what he does —
+ * "ahmed emad soc", "ahmed nasr soc", "ahmed grc", "ahmed emad nasr info sec" …
+ * Every name below × every term below (search engines ignore upper / lower
+ * case, so each pair is written once). Used on the home page only
+ * (SITE_KEYWORDS), so the other 270 pages stay light.
+ */
+const NAME_ROLE_NAMES = [
+  "Ahmed Emad Nasr", "Ahmed Emad", "Ahmed Nasr", "Ahmed",
+  "Ahmad Emad Nasr", "Ahmad Emad", "Ahmed Imad", "Ahmed Emad Eldeen",
+  "3omda", "0x3omda",
+] as const;
 const NAME_ROLE_TERMS = [
-  "SOC", "SOC Analyst", "SOC L1", "GRC", "GRC Analyst", "DFIR", "Digital Forensics",
-  "Incident Response", "Incident Responder", "Malware Analysis", "Malware Analyst",
-  "Threat Intelligence", "Threat Hunting", "Blue Team", "Detection Engineering",
-  "Cybersecurity", "Cyber Security", "Information Security", "InfoSec",
-  "Information Security Officer", "Security Analyst", "Security Engineer",
-  "IAM", "Data Security", "Cloud Security", "AWS Security", "Wazuh", "SIEM",
-  "ISO 27001", "MITRE ATT&CK", "CCNA", "eJPT", "Instructor", "Trainer",
-  "Cybersecurity Instructor", "NTI", "AMIT", "Benha University", "Cairo", "Egypt",
-  "YouTube", "LinkedIn", "GitHub", "TryHackMe", "CyberDefenders", "Hack The Box",
-  "CV", "Resume", "Portfolio", "Blog", "Write-ups",
+  /* SOC */
+  "SOC", "SOC Analyst", "SOC L1", "SOC Tier 1", "SOC Level 1", "SOC Engineer", "Blue Team", "Blue Teamer",
+  "SIEM", "Splunk", "QRadar", "Wazuh", "Detection Engineering", "Threat Hunting", "Threat Hunter",
+  /* GRC */
+  "GRC", "GRC Analyst", "GRC Specialist", "Governance Risk Compliance", "Risk", "Compliance",
+  "ISO 27001", "PCI DSS", "NIST", "Audit", "Security Officer",
+  /* Information security, every spelling */
+  "Information Security", "Info Sec", "InfoSec", "Infosec Analyst", "Information Security Officer",
+  "Information Security Analyst", "Information Security Engineer", "ISO",
+  "Cybersecurity", "Cyber Security", "Cyber", "Security", "Security Analyst", "Security Engineer",
+  "Security Specialist", "Cybersecurity Analyst", "Cybersecurity Engineer", "Cybersecurity Specialist",
+  /* Response, forensics, malware, intel */
+  "DFIR", "IR", "Incident Response", "Incident Responder", "Digital Forensics", "Forensics",
+  "Malware Analysis", "Malware Analyst", "Malware", "Reverse Engineering",
+  "Threat Intelligence", "Threat Intel", "CTI",
+  /* Identity, data, cloud, network, offense */
+  "IAM", "PAM", "Data Security", "DLP", "Cloud Security", "AWS Security", "Network Security",
+  "Networking", "Linux", "Penetration Testing", "Pentest", "Web Security", "OWASP",
+  "MITRE ATT&CK",
+  /* Credentials */
+  "CCNA", "eJPT", "Security+", "CCEP", "RHCSA", "Red Hat",
+  /* Teaching */
+  "Instructor", "Trainer", "Cybersecurity Instructor", "Courses", "Training", "Diploma", "SOC Course",
+  /* Where — work, study, place */
+  "NTI", "AMIT", "Banque Misr", "DEPI", "ITI", "Huawei", "GDG", "Benha University", "Cairo", "Egypt",
+  /* Where he publishes */
+  "YouTube", "LinkedIn", "GitHub", "TryHackMe", "CyberDefenders", "Hack The Box", "CyberTalents", "Medium",
+  "CV", "Resume", "Portfolio", "Blog", "Write-ups", "Writeups", "Certificates", "Projects",
+  /* Off the clock (/journey) */
+  "Al Ahly", "Runner", "Athlete",
 ] as const;
+const NAME_ROLE_AR_NAMES = ["أحمد عماد نصر", "احمد عماد نصر", "أحمد عماد", "احمد عماد", "احمد نصر", "عمدة"] as const;
 const NAME_ROLE_AR = [
-  "أمن سيبراني", "أمن المعلومات", "سايبر سيكيورتي", "SOC", "GRC", "DFIR", "مدرب",
-  "كورسات", "يوتيوب", "لينكدإن",
+  "أمن سيبراني", "الأمن السيبراني", "امن سيبراني", "أمن المعلومات", "امن المعلومات", "سايبر سيكيورتي", "سايبر",
+  "سوك", "محلل سوك", "جي ار سي", "حوكمة", "تحليل البرمجيات الخبيثة", "الاستجابة للحوادث", "الأدلة الجنائية الرقمية",
+  "SOC", "GRC", "DFIR", "مدرب", "مدرس", "محاضر", "كورسات", "كورس سوك", "دورات", "دبلومة",
+  "يوتيوب", "لينكدإن", "الأهلي",
 ] as const;
+
+/* Every pair once, whatever its case ("Ahmed SOC" = "ahmed soc") */
+const pairs = (names: readonly string[], terms: readonly string[]): string[] => {
+  const seen = new Set<string>();
+  return names.flatMap((n) => terms.map((t) => `${n} ${t}`)).filter((k) => {
+    const key = k.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+};
 
 /* Every tool and framework he lists (data/skills.ts — soft skills left out) */
 const SKILL_TERMS = skillGroups.filter((g) => g.id !== "soft").flatMap((g) => g.items);
@@ -123,10 +177,7 @@ export const KEYWORDS = {
   ],
   /* Other spellings + "<name> <role>" ("Ahmed Emad SOC", "ahmed emad nasr grc" …) */
   spellings: NAME_SPELLINGS,
-  nameRoles: [
-    ...NAME_ROLE_NAMES.flatMap((n) => NAME_ROLE_TERMS.map((r) => `${n} ${r}`)),
-    ...["أحمد عماد نصر", "احمد عماد", "احمد عماد نصر"].flatMap((n) => NAME_ROLE_AR.map((r) => `${n} ${r}`)),
-  ],
+  nameRoles: [...pairs(NAME_ROLE_NAMES, NAME_ROLE_TERMS), ...pairs(NAME_ROLE_AR_NAMES, NAME_ROLE_AR)],
   /* Every tool / framework from data/skills.ts, and the same with "Ahmed Emad" in front */
   skills: [...SKILL_TERMS, ...SKILL_TERMS.map((t) => `Ahmed Emad ${t}`)],
   roles: [

@@ -11,9 +11,16 @@
 
 const DEFAULT_ORIGIN = "https://ahmed-emad-nasr.github.io";
 
-export const SITE_BASE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ||
-    `${DEFAULT_ORIGIN}${process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev"}`
+/* Always https (localhost aside). GitHub's configure-pages hands the address
+   over as http:// when "Enforce HTTPS" is off in the Pages settings — and
+   every URL of the site (sitemap, canonical, Open Graph, JSON-LD) then said
+   http://, which Search Console counts as outside the https:// property:
+   the sitemap showed "Couldn't fetch" and listed 0 pages (Nov 2026). */
+const httpsOnly = (url: string): string =>
+  /^http:\/\/(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/i.test(url) ? url : url.replace(/^http:\/\//i, "https://");
+
+export const SITE_BASE_URL = httpsOnly(
+  process.env.NEXT_PUBLIC_SITE_URL || `${DEFAULT_ORIGIN}${process.env.NEXT_PUBLIC_BASE_PATH ?? "/ahmed.dev"}`,
 ).replace(/\/+$/, "");
 
 export const SITE_ORIGIN = new URL(SITE_BASE_URL).origin;

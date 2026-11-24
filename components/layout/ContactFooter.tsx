@@ -7,9 +7,12 @@
  * copy button, social icons and the contact form. The blog and the gallery
  * follow it; the page's last line is FooterBar (app/page.tsx).
  *
- * HOW THE FORM SENDS (no server — GitHub Pages is static, and no
- * third-party form service): it opens the visitor's own mail app with the
- * message filled in, and offers Gmail / "copy message" when none opens.
+ * HOW THE FORM SENDS: straight to Ahmed's inbox through Web3Forms
+ * (data/contact-form.ts — GitHub Pages has no server of its own). The
+ * visitor sees "sent" on the page, with the national-service note while it
+ * applies. If that send fails (offline, the monthly limit, Web3Forms down)
+ * it falls back to the old way: the visitor's own mail app opens with the
+ * message filled in, and Gmail / "copy message" are offered too.
  *
  * HOW TO EDIT
  *   • E-mail, GitHub, LinkedIn, Wuzzuf, WhatsApp, YouTube… → PROFILE.contact
@@ -20,6 +23,7 @@
 
 import { useEffect, useState, type CSSProperties } from "react";
 import { SERVICE, onService } from "@/data/status";
+import { FORM_FROM_NAME, WEB3FORMS_ACCESS_KEY, WEB3FORMS_ENDPOINT } from "@/data/contact-form";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, ArrowUpRight, Mail, Copy, Check, BriefcaseBusiness } from "lucide-react";
 import { Github, Linkedin, Youtube, Instagram, Medium, Tiktok, XLogo } from "@/components/ui/BrandIcons";
@@ -45,8 +49,11 @@ export default function ContactFooter() {
   /* The last message handed to the mail app — kept so the fallback panel
      can offer the same text another way. */
   const [draft, setDraft] = useState<Draft | null>(null);
-  /* The "READY TO SEND" stamp: bumped on every send, shown for ~2 s */
+  /* The stamp on the form: bumped on every send, shown for ~2 s */
   const [stamp, setStamp] = useState(0);
+  const [stampText, setStampText] = useState("Sent");
+  /* idle → sending → sent | (failed: the mail-app fallback below) */
+  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   useEffect(() => {
     if (!stamp) return;
     const t = window.setTimeout(() => setStamp(0), 2200);
@@ -176,8 +183,9 @@ export default function ContactFooter() {
           <FadeIn y={40} duration={0.8} delay={0.2}
             className="relative bg-surface/60 border border-foreground/5 p-8 md:p-12 group"
           >
-            {/* The stamp: lands on the form when the mail app opens. Not
-                "sent" — the visitor still presses send in their mail app. */}
+            {/* The stamp: "Sent" when the message reached the inbox; "Ready
+                to send" when the fallback opened the visitor's mail app
+                (they still press send there). */}
             <AnimatePresence>
               {stamp > 0 && (
                 <motion.div
@@ -189,7 +197,7 @@ export default function ContactFooter() {
                   transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                   className="pointer-events-none absolute right-6 top-6 z-20 border-2 border-primary px-4 py-2 font-mono text-[0.6875rem] font-black uppercase tracking-[0.35em] text-primary-ink bg-background/80"
                 >
-                  Ready to send
+                  {stampText}
                 </motion.div>
               )}
             </AnimatePresence>
@@ -215,10 +223,11 @@ export default function ContactFooter() {
 
             <form
               className="flex flex-col gap-6"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-
-                const formData = new FormData(e.currentTarget);
+                if (status === "sending") return;
+                const form = e.currentTarget;
+                const formData = new FormData(form);
                 /* Honeypot: people never see this field, bots fill it */
                 if (formData.get("botcheck")) return;
 
@@ -226,16 +235,42 @@ export default function ContactFooter() {
                 const email = formData.get("email")?.toString() || "";
                 const type = formData.get("type")?.toString() || "project";
                 const message = formData.get("message")?.toString() || "";
-
-                const subject = encodeURIComponent(`[${type}] Inquiry from ${name}`);
+                const subject = `[${type}] Inquiry from ${name}`;
                 const fullBody = `Sender: ${name} (${email})\nType: ${type}\n\n${message}`;
-                const body = encodeURIComponent(fullBody);
 
-                const mailto = `mailto:${EMAIL}?subject=${subject}&body=${body}`;
-
-                setDraft({ subject: `[${type}] Inquiry from ${name}`, body: fullBody });
+                /* 1. Straight to the inbox (Web3Forms) */
+                setDraft(null);
+                setStatus("sending");
+                try {
+                  const res = await fetch(WEB3FORMS_ENDPOINT, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", Accept: "application/json" },
+                    body: JSON.stringify({
+                      access_key: WEB3FORMS_ACCESS_KEY,
+                      subject,
+                      from_name: FORM_FROM_NAME,
+                      name,
+                      email,
+                      reason: type,
+                      message,
+                      page: window.location.href,
+                    }),
+                  });
+                  const data = (await res.json().catch(() => ({}))) as { success?: boolean };
+                  if (!res.ok || !data.success) throw new Error(`HTTP ${res.status}`);
+                  form.reset();
+                  setStatus("sent");
+                  setStampText("Sent");
+                  setStamp((n) => n + 1);
+                  return;
+                } catch {
+                  /* 2. Could not send from here: the visitor's own mail app */
+                  setStatus("idle");
+                }
+                setDraft({ subject, body: fullBody });
+                setStampText("Ready to send");
                 setStamp((n) => n + 1);
-                window.location.assign(mailto);
+                window.location.assign(`mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(fullBody)}`);
               }}
             >
               <input type="checkbox" name="botcheck" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
@@ -297,14 +332,38 @@ export default function ContactFooter() {
               </div>
               <button
                 type="submit"
-                className="btn-sheen relative overflow-hidden mt-4 w-full py-5 bg-primary text-white font-mono font-black uppercase tracking-[0.3em] text-sm hover:bg-foreground hover:text-background transition-all duration-300"
+                disabled={status === "sending"}
+                aria-busy={status === "sending"}
+                className="btn-sheen relative overflow-hidden mt-4 w-full py-5 bg-primary text-white font-mono font-black uppercase tracking-[0.3em] text-sm hover:bg-foreground hover:text-background transition-all duration-300 disabled:opacity-70 disabled:cursor-wait"
               >
-                <span className="relative">DISPATCH MESSAGE</span>
+                <span className="relative">{status === "sending" ? "SENDING…" : "DISPATCH MESSAGE"}</span>
               </button>
 
-              {/* A static site has no server to send mail: the button opens
-                  the visitor's mail app. When none is set up nothing visible
-                  happens, so the same message is offered two other ways. */}
+              {/* Sent: it is in Ahmed's inbox */}
+              <AnimatePresence>
+                {status === "sent" && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -7 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0 }}
+                    role="status"
+                    className="border-l-2 border-tertiary bg-foreground/[0.03] px-5 py-4"
+                  >
+                    <p className="flex items-start gap-2 font-mono text-[0.6875rem] leading-relaxed text-foreground/80" suppressHydrationWarning>
+                      <Check size={14} className="mt-0.5 shrink-0 text-tertiary" aria-hidden="true" />
+                      <span>
+                        Sent — your message is in my inbox.{" "}
+                        {onService() ? "I'm on national service until late 2027, so my reply may take a while — but it will come." : "I'll get back to you soon."}
+                      </span>
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {/* The fallback, when the message could not be sent from here:
+                  the visitor's mail app was opened. When none is set up
+                  nothing visible happens, so the same message is offered two
+                  other ways. */}
               <AnimatePresence>
                 {draft && (
                   <motion.div
@@ -315,7 +374,7 @@ export default function ContactFooter() {
                     className="border-l-2 border-primary bg-foreground/[0.03] px-5 py-4"
                   >
                     <p className="font-mono text-[0.6875rem] leading-relaxed text-foreground/70">
-                      Your e-mail app should now be open with the message ready to send. Nothing opened? Use one of these instead:
+                      It could not be sent from here, so your e-mail app should now be open with the message ready to send. Nothing opened? Use one of these instead:
                     </p>
                     <div className="mt-3 flex flex-wrap gap-3">
                       <a

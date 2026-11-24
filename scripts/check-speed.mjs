@@ -27,7 +27,10 @@ import { fileURLToPath } from "node:url";
 const run = promisify(execFile);
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const REPORT = join(ROOT, ".live-report.md");
-const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev").replace(/\/+$/, "");
+/* https always (GitHub can hand the address over as http://), localhost aside */
+const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev")
+  .replace(/^http:\/\/(?!localhost|127\.0\.0\.1)/i, "https://")
+  .replace(/\/+$/, "");
 const LIGHTHOUSE = "lighthouse@13.6.0";
 
 /* The pages most people open first (SPEED_PAGES=/a,/b to measure others) */

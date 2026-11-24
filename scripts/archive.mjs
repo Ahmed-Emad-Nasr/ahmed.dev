@@ -12,7 +12,10 @@
  * never fails anything.
  */
 
-const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev").replace(/\/+$/, "");
+/* https always (GitHub can hand the address over as http://), localhost aside */
+const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev")
+  .replace(/^http:\/\/(?!localhost|127\.0\.0\.1)/i, "https://")
+  .replace(/\/+$/, "");
 const PAGES = ["/", "/blog", "/teaching", "/certificates", "/journey", "/gallery", "/cv", "/videos", "/training"];
 const warn = (msg) => console.warn(`::warning::archive — ${msg}`);
 

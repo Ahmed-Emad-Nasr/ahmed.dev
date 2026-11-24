@@ -59,7 +59,7 @@ import { OG_IMAGE } from "@/lib/site";
 import { homeDataFixScript } from "@/lib/routes";
 import {
   CHANNEL_AUDIENCE, CHANNEL_ID, jsonLd, KEYWORDS, OCCUPATION, PERSON_AUDIENCE, PERSON_ID, PERSON_IMAGE,
-  NAME_SPELLINGS, PERSON_NAME, PERSON_REF, SAME_AS, SITE_KEYWORDS, SITE_URL, WEBSITE_ID, withAudience,
+  NAME_SPELLINGS, PERSON_NAME, PERSON_REF, SAME_AS, SITE_URL, WEBSITE_ID, withAudience,
 } from "@/lib/seo";
 
 // ─── Viewport ─────────────────────────────────────────────────────────────────
@@ -110,7 +110,10 @@ export const metadata: Metadata = {
   description: withAudience(
     "Ahmed Emad Nasr, information security officer: GRC, SOC, DFIR, malware analysis, IAM and data security",
   ),
-  keywords: [...SITE_KEYWORDS, ...KEYWORDS.audience],
+  /* The default for a page that sets none (the 404 page): the name and the
+     roles. The full name × role list (SITE_KEYWORDS, 1,500+ entries) is on
+     the home page only — app/page.tsx. */
+  keywords: [...KEYWORDS.identity, ...KEYWORDS.roles, ...KEYWORDS.audience],
   authors: [{ name: "Ahmed Emad Nasr" }],
   creator: "Ahmed Emad Nasr",
   publisher: "Ahmed Emad Nasr",
