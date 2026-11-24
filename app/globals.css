@@ -1353,6 +1353,18 @@ html[data-intro-seen] [data-app-loader] {
   contain-intrinsic-size: auto 900px;
 }
 
+/* The same for the long sections lower down /blog and /teaching. Each of
+   them already clips its content (overflow-hidden / overflow-clip) and holds
+   nothing fixed-position, so the containment content-visibility brings
+   changes nothing on screen. Estimated heights are close to the real ones;
+   lib/perf/jump.ts corrects a #jump as on the home page. Not on the
+   certificate cards: their glow and lift reach past the card's edge, which
+   containment would cut off. */
+:is(#attack, #detections, #triage, #lab, #student-feedback) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1500px;
+}
+
 /* ─── ATT&CK: the heat fills in as the tiles scroll into view ──────────
    Each tile starts as a plain surface and reaches its own heat (more
    reports = deeper red) when it arrives on screen — once.

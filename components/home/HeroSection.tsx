@@ -19,7 +19,7 @@ import { RevealText } from "@/components/ui/RevealText";
 import { HeroMascots } from "@/components/home/HeroMascot";
 import { PROFILE } from "@/data/profile";
 import { normalizePublicHref } from "@/lib/shared";
-import gsap from "gsap";
+import { gsapEase, gsapEnd, gsapStart } from "@/lib/ease";
 import { ArrowDown, BriefcaseBusiness, Download, MessageCircle } from "lucide-react";
 import { Github, Linkedin, Youtube } from "@/components/ui/BrandIcons";
 import Image from "next/image";
@@ -56,28 +56,33 @@ export default function HeroSection({
   const containerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (calmEffects()) return; // final state is the natural layout (reduced motion or a weak device)
-    let ctx: gsap.Context | undefined;
+    /* The entrance, drawn by the browser (element.animate) with GSAP's
+       power2.out curve (lib/ease.ts): each block of the hero rises 12px and
+       fades in, 50 ms after the one before it, and ends with the same inline
+       values gsap.from left (gsapStart / gsapEnd). */
+    const running: Animation[] = [];
     const stopWaiting = whenIntroDone(() => {
-      ctx = gsap.context(() => {
-        gsap.from(".hero-content > *", {
-          y: 12,
-          opacity: 0,
-          duration: 0.55,
-          stagger: 0.05,
-          ease: "power2.out",
-        });
-
-        gsap.from(".hero-image", {
-          opacity: 0,
-          duration: 0.55,
-          ease: "power2.out",
-        });
-      }, containerRef);
+      const root = containerRef.current;
+      if (!root) return;
+      const easing = gsapEase("power2.out");
+      const play = (el: HTMLElement, frames: Keyframe[], delay: number, moved: boolean) => {
+        const opacity = getComputedStyle(el).opacity;
+        if (moved) gsapStart(el);
+        const anim = el.animate(frames, { duration: 550, delay, easing, fill: "backwards" });
+        anim.onfinish = () => gsapEnd(el, opacity, moved);
+        running.push(anim);
+      };
+      /* The photo is one of these blocks: it rises and fades in its turn
+         like the others, and keeps only its opacity afterwards (what GSAP's
+         second, photo-only tween left on it) */
+      root.querySelectorAll<HTMLElement>(".hero-content > *").forEach((el, i) => {
+        play(el, [{ opacity: 0, transform: "translate(0px, 12px)" }, {}], i * 50, !el.classList.contains("hero-image"));
+      });
     });
 
     return () => {
       stopWaiting();
-      ctx?.revert();
+      running.forEach((a) => a.cancel());
     };
   }, []);
 

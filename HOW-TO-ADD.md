@@ -177,7 +177,7 @@ Every week a dated copy of the main pages and the CV PDF is saved on the **Wayba
 
 **Accessibility:** every pull request (Dependabot's too) runs `npm run check:a11y` (axe-core, WCAG 2.2 AA, phone + desktop, dark + light) — an update that breaks accessibility is not merged by itself.
 
-**When something breaks you get an e-mail** (a GitHub issue; one at a time, and it closes by itself once things work again):
+**When something breaks you get an e-mail** (a GitHub issue; one at a time, and it closes by itself once things work again). This needs **Issues turned on**: repository **Settings → General → Features → Issues** ✓. With Issues off nothing breaks: a failed deploy still sends GitHub's own "Run failed" e-mail, and the weekly checks (live site, links) fail their run on purpose so that e-mail reaches you, with the report in the run's summary — only the CV note stays a warning in the deploy log.
 
 | Issue | Opened by | When |
 |---|---|---|

@@ -51,6 +51,16 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # Issues turned off: a problem fails this run instead, and GitHub's
+          # own "Run failed" e-mail carries it (the report is in the summary)
+          if [ "$(gh api "repos/$GITHUB_REPOSITORY" --jq .has_issues)" != "true" ]; then
+            if [ -f .live-report.md ]; then
+              cat .live-report.md >> "$GITHUB_STEP_SUMMARY"
+              echo "::error::The live site needs a look — the report is in this run's summary. (Issues are turned off for this repository (Settings → General → Features → Issues), so no issue was opened.)"
+              exit 1
+            fi
+            exit 0
+          fi
           title="The live site needs a look"
           open=$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number')
           if [ -f .live-report.md ]; then

@@ -1,6 +1,6 @@
 "use client";
 
-import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { CONTRIBUTIONS } from "@/data/contributions";
 import type { ContributionStats } from "@/lib/api/contributions";
 import { ContributionGraph } from "@/components/home/ContributionGraph";
 import { CountUp } from "@/components/ui/CountUp";
@@ -12,8 +12,8 @@ import { KanjiWatermark } from "@/components/ui/kit";
    graph
 
    ═══ components/home/ContributionsGrid.tsx — the CONTRIBUTIONS section (#contributions) ═══
-   • The contribution cards (rule merged upstream, …) → PORTFOLIO_DATA.contributions
-     in data/portfolio-data.ts.
+   • The contribution cards (rule merged upstream, …) → CONTRIBUTIONS
+     in data/contributions.ts.
    • The green-squares year graph → components/home/ContributionGraph.tsx; its
      data (`stats`) is read at build time by lib/api/contributions.ts in
      app/page.tsx (GitHub username = PROFILE.contact.github). */
@@ -43,7 +43,7 @@ export default function ContributionsGrid({ stats }: { stats: ContributionStats 
         </FadeIn>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PORTFOLIO_DATA.contributions.map((c, idx) => (
+          {CONTRIBUTIONS.map((c, idx) => (
             <FadeIn as="a" y={24} duration={0.65} delay={idx * 0.08}
               key={c.name}
               href={c.link}

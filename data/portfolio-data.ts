@@ -1,7 +1,10 @@
 /*
  * Everything the home page renders, in the shape data/types.ts describes.
  * Read by client components, so it must not import cases.ts or attack.ts
- * (numbers from the case library live in live-copy.ts, server-only).
+ * (numbers from the case library live in live-copy.ts, server-only). A
+ * component that shows only ONE small part imports that part's own file
+ * (data/contributions.ts, data/languages.ts) — importing PORTFOLIO_DATA sends
+ * the browser everything in it, the experience and project lists included.
  *
  * ═══ data/portfolio-data.ts — PORTFOLIO_DATA: most of the home page's content ═══
  *
@@ -13,8 +16,9 @@
  *   experience                  the Experience cards (built from data/experience.ts
  *                               + ROLE_INTRO + ROLE_PROOF below)
  *   work                        the project cards (#work) — the `work` array below
- *   languages                   from data/skills.ts
- *   contributions               the open-source contribution cards
+ *   languages                   from data/languages.ts (via data/contributions.ts)
+ *   contributions               the open-source contribution cards —
+ *                               edited in data/contributions.ts
  *
  * HOW TO ADD A PROJECT: copy an entry of `work` below — fields are the
  * WorkItem type in data/types.ts (id, title, type: "lab" | "tool" |
@@ -25,9 +29,9 @@
 
 import type { Experience, PortfolioData, WorkItem } from "@/data/types";
 import { knowledgeEducationItems } from "@/data/experience";
-import { languages } from "@/data/skills";
-import { certificatePagePath } from "@/data/certificates";
-import { AUDIENCE, AUDIENCE_LABEL, fullCount, GITHUB_USERNAME, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
+import { CONTRIBUTIONS, SPOKEN_LANGUAGES } from "@/data/contributions";
+import { certificatePagePath } from "@/data/certificate-paths";
+import { GITHUB_USERNAME, normalizePublicHref } from "@/lib/shared";
 import { PROFILE } from "@/data/profile";
 
 /* "2026-02-01" → "Feb 2026" */
@@ -260,25 +264,6 @@ export const PORTFOLIO_DATA: PortfolioData = {
   profile: PROFILE,
   experience,
   work,
-  languages: languages.map((l) => ({ code: l.code, name: l.name, level: l.short })),
-  contributions: [
-    {
-      name: "SOC Fortress",
-      org: "Wazuh rules",
-      description: "A custom Wazuh detection rule, reviewed and merged by the maintainers of the open-source SOC Fortress ruleset.",
-      link: "https://github.com/socfortress/Wazuh-Rules",
-    },
-    {
-      name: "GDG CTF",
-      org: "Google Developer Groups",
-      description: "Co-designed 10+ CTF challenges and delivered 35+ security sessions to 120+ learners.",
-      link: "https://gdg.community.dev/",
-    },
-    {
-      name: "YouTube",
-      org: "Community",
-      description: `Free cybersecurity walkthroughs — ${AUDIENCE_LABEL.youtubeSubscribers} subscribers and ${fullCount(AUDIENCE.youtubeViews)} views so far.`,
-      link: YOUTUBE_CHANNEL_URL,
-    },
-  ],
+  languages: SPOKEN_LANGUAGES,
+  contributions: CONTRIBUTIONS,
 };

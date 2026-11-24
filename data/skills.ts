@@ -144,8 +144,6 @@ export const skillGroups: readonly SkillGroup[] = [
   },
 ];
 
-/* Spoken languages: code + level as shown on the home page */
-export const languages = [
-  { code: "AR", name: "Arabic", short: "Native" },
-  { code: "EN", name: "English", short: "Professional" },
-] as const;
+/* Spoken languages: edited in data/languages.ts (a tiny file of its own, so
+   the contact section loads it without these skill lists) */
+export { languages } from "@/data/languages";

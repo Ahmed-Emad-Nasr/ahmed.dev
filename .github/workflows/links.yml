@@ -54,13 +54,25 @@ jobs:
             --exclude-path "out/_next"
             "out/**/*.html"
 
-      # One issue, updated each week while links stay broken
-      - id: existing
+      # Issues turned off: broken links fail this run instead, and GitHub's own
+      # "Run failed" e-mail carries them (the report is in the summary)
+      - id: issues
         if: steps.lychee.outputs.exit_code != 0
         env:
           GH_TOKEN: ${{ github.token }}
+        run: echo "on=$(gh api "repos/$GITHUB_REPOSITORY" --jq .has_issues)" >> "$GITHUB_OUTPUT"
+      - if: steps.lychee.outputs.exit_code != 0 && steps.issues.outputs.on != 'true'
+        run: |
+          cat ./lychee/report.md >> "$GITHUB_STEP_SUMMARY"
+          echo "::error::Broken external links — the list is in this run's summary. (Issues are turned off for this repository (Settings → General → Features → Issues), so no issue was opened.)"
+          exit 1
+      # One issue, updated each week while links stay broken
+      - id: existing
+        if: steps.lychee.outputs.exit_code != 0 && steps.issues.outputs.on == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: echo "number=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search 'in:title "Broken external links"' --json number --jq '.[0].number')" >> "$GITHUB_OUTPUT"
-      - if: steps.lychee.outputs.exit_code != 0
+      - if: steps.lychee.outputs.exit_code != 0 && steps.issues.outputs.on == 'true'
         uses: peter-evans/create-issue-from-file@v6
         with:
           title: Broken external links

@@ -951,7 +951,7 @@ export const certificateImagePath = (slug: string): string => `${CERTIFICATE_FOL
 /** The 640px card picture made by npm run thumbs */
 export const certificateThumbPath = (slug: string): string => `${CERTIFICATE_FOLDER}/${slug}-thumb.webp`;
 /** The certificate's own page */
-export const certificatePagePath = (slug: string): string => `/certificates/${slug}`;
+export { certificatePagePath } from "@/data/certificate-paths";
 
 export const certificateBySlug = (slug: string): Certificate | undefined => CERTIFICATES.find((c) => c.slug === slug);
 

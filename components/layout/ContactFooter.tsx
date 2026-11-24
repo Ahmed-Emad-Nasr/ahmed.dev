@@ -23,7 +23,7 @@ import { SERVICE, onService } from "@/data/status";
 import { m as motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, ArrowUpRight, Mail, Copy, Check, BriefcaseBusiness } from "lucide-react";
 import { Github, Linkedin, Youtube, Instagram, Medium, Tiktok, XLogo } from "@/components/ui/BrandIcons";
-import { PORTFOLIO_DATA } from "@/data/portfolio-data";
+import { SPOKEN_LANGUAGES } from "@/data/contributions";
 import { PROFILE } from "@/data/profile";
 import { AUDIENCE_LABEL } from "@/lib/shared";
 import { useCopyLink } from "@/lib/use-copy-link";
@@ -154,9 +154,9 @@ export default function ContactFooter() {
                 ))}
               </div>
 
-              {/* Languages  from portfolio data */}
+              {/* Languages — data/languages.ts */}
               <div className="mt-8 flex flex-wrap items-center gap-3 font-mono text-[0.625rem] tracking-[0.25em] uppercase">
-                {PORTFOLIO_DATA.languages.map((l, i) => (
+                {SPOKEN_LANGUAGES.map((l, i) => (
                   <span key={l.code} className="flex items-center gap-3">
                     {i > 0 && (
                       <span className="text-primary-ink" aria-hidden="true">

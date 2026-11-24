@@ -92,6 +92,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          if [ "$(gh api "repos/$GITHUB_REPOSITORY" --jq .has_issues)" != "true" ]; then
+            echo "::warning::The CV could not be read with confidence (see .cv-sync-report.md below). Issues are turned off for this repository (Settings → General → Features → Issues), so no issue was opened."
+            cat .cv-sync-report.md >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
           title="CV sync needs a look"
           if [ -z "$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number')" ]; then
             gh issue create --title "$title" --body-file .cv-sync-report.md || echo "::warning::could not open the issue"
@@ -252,6 +257,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
+          # With Issues turned off, GitHub's own "Run failed" e-mail is the alert
+          if [ "$(gh api "repos/$GITHUB_REPOSITORY" --jq .has_issues)" != "true" ]; then
+            echo "::warning::Issues are turned off for this repository (Settings → General → Features → Issues) — GitHub's \"Run failed\" e-mail is the alert."
+            exit 0
+          fi
           title="The daily deploy failed"
           run="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           open=$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number')
@@ -272,5 +282,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
+          # Issues turned off: there is no issue to close
+          if [ "$(gh api "repos/$GITHUB_REPOSITORY" --jq .has_issues)" != "true" ]; then exit 0; fi
           open=$(gh issue list --state open --search "in:title \"The daily deploy failed\"" --json number --jq '.[0].number')
           if [ -n "$open" ]; then gh issue close "$open" --comment "Fixed: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }} deployed fine."; fi

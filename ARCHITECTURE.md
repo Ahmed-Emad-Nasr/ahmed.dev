@@ -119,16 +119,19 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
 - Speed dials (Sensei-Dev's tempo): `MOTION_ENTER_DURATION`, `MOTION_STAGGER_STEP`
   and `MOTION_EASE` in `lib/motion.ts`; each `<FadeIn>` passes its own
   duration, distance and delay.
-- Experience cards: GSAP draws the slide, the browser's IntersectionObserver
-  starts it (`components/home/ExperienceReveal.tsx`) — no ScrollTrigger, so no
-  loop runs while the page stands still.
+- Experience cards: the browser draws the slide (`element.animate` with
+  GSAP's expo.out curve from `lib/ease.ts`), its IntersectionObserver starts
+  it (`components/home/ExperienceReveal.tsx`) — no GSAP and no loop while the
+  page stands still.
 - Home sections below the hero use `content-visibility: auto`
   (`app/globals.css`); `lib/perf/jump.ts` re-aims #jumps once they are drawn.
 - Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
   only, staggered top to bottom). framer-motion loads lazily
   (`LazyMotion` + `m`).
-- Hero entrance: GSAP (`gsap.from` in `components/home/HeroSection.tsx`),
-  the same code as Sensei-Dev's hero; it waits for the intro screen to lift.
+- Hero entrance: `element.animate` in `components/home/HeroSection.tsx` with
+  GSAP's power2.out curve (`lib/ease.ts` — CSS `linear()` drawn from GSAP's
+  formulas, so the motion is Sensei-Dev's); it waits for the intro screen to
+  lift. GSAP itself is no longer shipped (26 KB less on home and teaching).
 - No `backdrop-filter` except on the navbar: it is re-computed every
   scrolled frame, and a translucent background looks the same.
 - Section dividers drift with a CSS scroll timeline (framer fallback).

@@ -30,8 +30,8 @@ const REPORT = join(ROOT, ".live-report.md");
 const SITE = (process.env.SITE_URL || "https://ahmed-emad-nasr.github.io/ahmed.dev").replace(/\/+$/, "");
 const LIGHTHOUSE = "lighthouse@13.6.0";
 
-/* The pages most people open first */
-const PAGES = ["/", "/blog", "/certificates", "/cv"];
+/* The pages most people open first (SPEED_PAGES=/a,/b to measure others) */
+const PAGES = (process.env.SPEED_PAGES || "/,/blog,/certificates,/cv").split(",");
 /* The lowest score (0–100) each category may have before it is reported.
    Performance on a simulated phone (measured Nov 2026, with compression as
    GitHub Pages serves it): home ≈ 90, /cv ≈ 96, /blog and /certificates

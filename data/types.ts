@@ -97,7 +97,7 @@ export interface WorkItem {
   featured?: boolean;
 }
 
-interface Contribution {
+export interface Contribution {
   name: string;
   org: string;
   description: string;
