@@ -43,6 +43,8 @@ export default function FooterBar({ className = "" }: { className?: string }) {
         <span className="text-primary-ink" aria-hidden="true">•</span>
         <Link prefetch={false} href="/teaching" className="hover:text-primary-ink transition-colors">Teaching</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>
+        <Link prefetch={false} href="/certificates" className="hover:text-primary-ink transition-colors">Certificates</Link>
+        <span className="text-primary-ink" aria-hidden="true">•</span>
         <Link prefetch={false} href="/gallery" className="hover:text-primary-ink transition-colors">Gallery</Link>
         <span className="text-primary-ink" aria-hidden="true">•</span>
         <Link prefetch={false} href="/videos" className="hover:text-primary-ink transition-colors">Videos</Link>

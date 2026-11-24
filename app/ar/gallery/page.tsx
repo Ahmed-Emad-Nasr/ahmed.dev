@@ -1,10 +1,9 @@
 /*
  * ═══ app/ar/gallery/page.tsx — /gallery in Arabic  ( URL: /ar/gallery ) ═══
  *
- * The same certificates and photos as app/gallery/page.tsx, with the page's
- * own words in Arabic, right to left. The certificate and photo titles stay
- * as written in data/certifications.ts and data/portfolio-data.ts (they are
- * the names printed on the documents). The two pages name each other
+ * The same photos as app/gallery/page.tsx, with the page's own words in
+ * Arabic, right to left. The photo captions stay as written in
+ * data/gallery-photos.ts. The certificates: /ar/certificates. The two pages name each other
  * (hreflang), so Google shows each one to its language.
  *
  * The words: data/gallery-copy.ts (GALLERY_AR).
@@ -22,11 +21,13 @@ import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, wi
 import { AUDIENCE_LINE_AR } from "@/lib/shared";
 import { GALLERY_AR_URL, GALLERY_ID, GALLERY_LANGUAGES } from "@/lib/page-ids";
 import { arabicFont } from "@/app/ar/fonts";
+import { GALLERY_PHOTOS } from "@/data/gallery-photos";
+import { GALLERY_PROPS } from "@/lib/gallery-ld";
 
-const TITLE = "شهادات أحمد عماد نصر ومعرض الصور — أمن سيبراني";
+const TITLE = "معرض صور أحمد عماد نصر — التدريس والفعاليات وألعاب القوى";
 /* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
 const DESCRIPTION = withAudience(
-  "شهادات أحمد عماد نصر ووثائقه: الشهادة الجامعية، والشهادات الاحترافية في الأمن السيبراني (eJPT و CCNA …)، والدورات، وصور من قاعات التدريس وفعاليات الأمن السيبراني",
+  `${GALLERY_PHOTOS.length} صورة لأحمد عماد نصر: تدريس الأمن السيبراني (المعهد القومي للاتصالات و GDG بنها)، وتدريب رواد في بنك مصر، ومشروع التخرج، وبطولات ألعاب القوى — مع البوستات الرسمية`,
   400,
   AUDIENCE_LINE_AR,
 );
@@ -36,7 +37,7 @@ const base = pageMetadata({
   description: DESCRIPTION,
   path: "/ar/gallery",
   keywords: pageKeywords(KEYWORDS.galleryAr, KEYWORDS.gallery),
-  share: pageShareImage("gallery", "أحمد عماد نصر — الشهادات ومعرض الصور"),
+  share: pageShareImage("gallery", "أحمد عماد نصر — معرض الصور"),
 });
 
 export const metadata = {
@@ -59,10 +60,12 @@ const STRUCTURED_DATA = jsonLd({
       author: PERSON_REF,
       isPartOf: { "@id": WEBSITE_ID },
       translationOfWork: { "@id": GALLERY_ID },
+      /* The photos themselves are described once, on /gallery */
+      associatedMedia: GALLERY_PHOTOS.map((p) => ({ "@id": `${absoluteUrl("/gallery")}#${p.slug}` })),
     },
     breadcrumbs([
       ["أحمد عماد نصر", absoluteUrl("/")],
-      ["الشهادات", GALLERY_AR_URL],
+      ["معرض الصور", GALLERY_AR_URL],
     ]),
   ],
 });
@@ -89,7 +92,7 @@ export default function ArabicGalleryPage() {
             </Link>
           </span>
         </p>
-        <ArtGallery copy={GALLERY_AR} />
+        <ArtGallery copy={GALLERY_AR} {...GALLERY_PROPS} certificatesHref="/ar/certificates" />
       </div>
     </PageShell>
   );

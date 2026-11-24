@@ -27,7 +27,7 @@ import { m as motion } from "framer-motion";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { caseEvidenceLibrary } from "@/data/cases";
-import { ALL_GALLERY_CERTIFICATES } from "@/data/certifications";
+import { CERTIFICATES } from "@/data/certificates";
 import { CV_PDF_HREF, normalizePublicHref } from "@/lib/shared";
 import { PORTFOLIO_DATA } from "@/data/portfolio-data";
 import { PROFILE } from "@/data/profile";
@@ -118,7 +118,7 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
             "ls                — list all cases",
             "ls <keyword>      — filter the list",
             "open <n|id>       — open a case page",
-            `certs [keyword]   — list all ${ALL_GALLERY_CERTIFICATES.length} certifications, courses & records`,
+            `certs [keyword]   — list all ${CERTIFICATES.length} certifications, courses & records`,
             "work              — list open-source projects",
             "cat cv            — open the CV",
             "skills            — most used tools",
@@ -203,10 +203,10 @@ export default function Terminal({ onClose }: { onClose: () => void }) {
 
         case "certs": {
           const list = arg
-            ? ALL_GALLERY_CERTIFICATES.filter((c) =>
+            ? CERTIFICATES.filter((c) =>
                 `${c.title} ${c.issuer} ${c.kind} ${c.summary}`.toLowerCase().includes(arg.toLowerCase()),
               )
-            : ALL_GALLERY_CERTIFICATES;
+            : CERTIFICATES;
           if (!list.length) {
             print(`certs: no certificate matches "${arg}"`, "err");
             break;

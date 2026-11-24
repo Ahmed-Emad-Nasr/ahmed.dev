@@ -15,7 +15,6 @@
  *   work                        the project cards (#work) — the `work` array below
  *   languages                   from data/skills.ts
  *   contributions               the open-source contribution cards
- *   artGallery                  the numbered gallery images (data/certifications.ts)
  *
  * HOW TO ADD A PROJECT: copy an entry of `work` below — fields are the
  * WorkItem type in data/types.ts (id, title, type: "lab" | "tool" |
@@ -27,7 +26,7 @@
 import type { Experience, PortfolioData, WorkItem } from "@/data/types";
 import { knowledgeEducationItems } from "@/data/experience";
 import { languages } from "@/data/skills";
-import { GALLERY_IMAGE_COUNT, galleryImagePath, galleryMetadata } from "@/data/certifications";
+import { certificatePagePath } from "@/data/certificates";
 import { AUDIENCE, AUDIENCE_LABEL, fullCount, GITHUB_USERNAME, YOUTUBE_CHANNEL_URL, normalizePublicHref } from "@/lib/shared";
 import { PROFILE } from "@/data/profile";
 
@@ -40,22 +39,23 @@ const monthYear = (iso: string) => {
 
 /* ── Experience ─────────────────────────────────────────────────────────── */
 
-/* Proof per role: the certificate in the gallery, and the case-library view
-   of the work done there */
+/* Proof per role: the certificate's own page (/certificates/<slug>,
+   data/certificates.ts), and the case-library view of the work done there */
+const cert = (slug: string) => normalizePublicHref(certificatePagePath(slug));
 const ROLE_PROOF: Record<string, Pick<Experience, "proof" | "cases">> = {
-  "AMIT Learning": { proof: { label: "CCEP educator certificate", href: normalizePublicHref(galleryImagePath(6)) } },
-  "Banque Misr": { proof: { label: "Internship certificate", href: normalizePublicHref(galleryImagePath(1)) } },
+  "AMIT Learning": { proof: { label: "CCEP educator certificate", href: cert("ccep-certified-cybersecurity-educator-professional") } },
+  "Banque Misr": { proof: { label: "Internship certificate", href: cert("banque-misr-rowad-information-security-summer-training") } },
   "Digital Egypt Pioneers Initiative (DEPI)": {
-    proof: { label: "DEPI IR certificate", href: normalizePublicHref(galleryImagePath(5)) },
+    proof: { label: "DEPI IR certificate", href: cert("depi-cyber-security-incident-response-analyst") },
     cases: { label: "LetsDefend investigations", params: { q: "LetsDefend" } },
   },
   "Information Technology Institute (ITI)": {
-    proof: { label: "ITI bootcamp certificate", href: normalizePublicHref(galleryImagePath(14)) },
+    proof: { label: "ITI bootcamp certificate", href: cert("iti-universities-pentesting-bootcamp-2025") },
     cases: { label: "PortSwigger & ITI labs", params: { q: "PortSwigger" } },
   },
-  Huawei: { proof: { label: "HCIA-Datacom certificate", href: normalizePublicHref(galleryImagePath(24)) } },
-  "Google Developer Groups (GDG)": { proof: { label: "GDG bootcamp certificate", href: normalizePublicHref(galleryImagePath(36)) } },
-  "Benha University": { proof: { label: "Proof of graduation", href: normalizePublicHref(galleryImagePath(99)) } },
+  Huawei: { proof: { label: "HCIA-Datacom course certificate", href: cert("huawei-hcia-datacom-v1-course") } },
+  "Google Developer Groups (GDG)": { proof: { label: "GDG bootcamp certificate", href: cert("gdg-on-campus-benha-bootcamp-cyber-security-technical") } },
+  "Benha University": { proof: { label: "Proof of graduation", href: cert("bsc-computers-ai-benha-university-proof-of-graduation") } },
 };
 
 /* Per organisation (key = subTag in data/experience.ts): the one-line intro,
@@ -281,9 +281,4 @@ export const PORTFOLIO_DATA: PortfolioData = {
       link: YOUTUBE_CHANNEL_URL,
     },
   ],
-  artGallery: Array.from({ length: GALLERY_IMAGE_COUNT }, (_, k) => ({
-    src: normalizePublicHref(galleryImagePath(k + 1)),
-    thumb: normalizePublicHref(galleryImagePath(k + 1)),
-    ...galleryMetadata(k + 1),
-  })),
 };

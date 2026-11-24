@@ -32,17 +32,17 @@ if (!existsSync(PUBLIC)) {
 
 const SOURCE_EXT = /\.(webp|png|jpe?g)$/i;
 
-/* Only case images go through getThumbnail(): .webp/.jpeg under Assets/Cases/
-   (not the gallery's own _thumb folder or old Assets/Cases/thumbnails/).
+/* Case images (getThumbnail()), the certificates (Assets/certificates/,
+   data/certificates.ts) and the personal photos (Assets/gallery/,
+   data/gallery-photos.ts): .webp/.jpeg only (not old Assets/Cases/thumbnails/).
    --all lifts these limits. */
 const ALL = args.has("--all");
 
 const shouldProcess = (relPath) => {
   if (ALL) return true;
   if (!/\.(webp|jpe?g)$/i.test(relPath)) return false;
-  if (relPath.includes("image_display_thumb/")) return false;
   if (relPath.startsWith("Assets/Cases/thumbnails/")) return false;
-  return relPath.startsWith("Assets/Cases/");
+  return ["Assets/Cases/", "Assets/certificates/", "Assets/gallery/"].some((dir) => relPath.startsWith(dir));
 };
 
 /** Every image that isn't already a thumbnail */

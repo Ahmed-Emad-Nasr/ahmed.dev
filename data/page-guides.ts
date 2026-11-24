@@ -77,10 +77,22 @@ const PAGE_GUIDES: PageGuide[] = [
     text: "Who it is for, three ways to take it, the diploma module by module — and a button that writes the request for you.",
   },
   {
+    match: "/certificates",
+    id: "certificates",
+    title: "Certificates",
+    text: "Every certificate, sorted by type. Tap the scan to see it full size, or open a card for every detail and the issuer's verification link.",
+  },
+  {
+    match: "/certificates/*",
+    id: "certificate",
+    title: "One certificate",
+    text: "The full scan, every detail printed on it, what it covers, and — where the issuer offers one — the link to verify it.",
+  },
+  {
     match: "/gallery",
     id: "gallery",
-    title: "Certificates",
-    text: "Every certificate and record, sorted by type. Tap one to see the scan, or verify it with the issuer. Photos from classes and events below.",
+    title: "Gallery",
+    text: "Photos from my classes, the GDG bootcamp, the Banque Misr internship and my races — each says what it is, when and where. Tap one to see it full size.",
   },
   {
     match: "/cv",
@@ -112,8 +124,15 @@ const PAGE_GUIDES: PageGuide[] = [
     match: "/ar/gallery",
     id: "ar-gallery",
     ar: true,
+    title: "معرض الصور",
+    text: "صور من محاضراتي ومعسكر GDG وتدريب بنك مصر وسباقاتي — مع كل صورة ما هي ومتى وأين. اضغط على أي صورة لتراها بالحجم الكامل.",
+  },
+  {
+    match: "/ar/certificates",
+    id: "ar-certificates",
+    ar: true,
     title: "الشهادات",
-    text: "كل شهاداتي ووثائقي مرتّبة حسب النوع. اضغط على أي واحدة لترى الوثيقة أو تتحقّق منها. وتحتها صور من المحاضرات والفعاليات.",
+    text: "كل شهاداتي مرتّبة حسب النوع. اضغط على الوثيقة لتراها بالحجم الكامل، أو افتح البطاقة لكل التفاصيل ورابط التحقق.",
   },
 ];
 

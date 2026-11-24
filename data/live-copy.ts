@@ -33,7 +33,7 @@ export const LIVE_COPY: LiveCopy = {
   heroDescription: CV_SUMMARY,
   stats: [
     { target: investigationReportCount, suffix: "", label: "Hands-on investigations", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
-    { target: PROFESSIONAL_CERTIFICATION_COUNT, suffix: "", label: "Professional certifications", href: `${normalizePublicHref("/gallery")}#all-certificates` },
+    { target: PROFESSIONAL_CERTIFICATION_COUNT, suffix: "", label: "Professional certifications", href: normalizePublicHref("/certificates") },
     { target: 300, suffix: "+", label: "Students taught", href: normalizePublicHref("/teaching") },
     { target: Math.floor(AUDIENCE.youtubeViews / 1000), suffix: "K+", label: "YouTube views", href: `${normalizePublicHref("/blog")}#videos` },
   ],

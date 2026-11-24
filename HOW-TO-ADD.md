@@ -87,13 +87,22 @@ That's it — the video's page, its card on the blog and on `/videos`, and its s
 
 ---
 
-## 3) A new certificate
+## 3) A new certificate — or a new photo
 
-1. Put the certificate image in `public/Assets/art-gallery/Images/image_display_thumb/` with the next number (if the last one is `99.webp`, it is `100.webp`).
-2. In `data/certifications.ts`:
-   - raise `GALLERY_IMAGE_COUNT` by one.
-   - in `ALL_GALLERY_CERTIFICATES`, copy an entry and change: `galleryIndex` (the image number), `title`, `issuer`, `kind`, `group` (`certifications` if you passed an exam, `courses` for a course, `badges`, `exams`, `education`), `summary`, and **`verifyUrl` if it has a verification link** — a Verify button appears.
-   - if it is a professional (exam) certification, also add it to `certifications` above (those are the ones counted on the home page).
+Certificates and personal photos live in **two separate folders** and two separate data files.
+
+**A certificate** (its own page appears at `/certificates/<slug>`):
+
+1. Pick a slug: lowercase words with dashes, e.g. `comptia-security-plus`. Save the scan as `public/Assets/certificates/<slug>.webp`.
+2. In `data/certificates.ts`, copy an entry and change: `slug`, `title` (as printed), `issuer`, `kind`, `group` (`certifications` if you passed an exam, `courses`, `education`, `exams`, `badges`), `date` (`"2026-02-15"`), and whatever the document prints: `period`, `hours`, `score`, `credentialId`, `instructor`, `nameOnDocument`, **`verifyUrl`** (a Verify button appears). Then `summary` (one line), `description` (the full explanation) and `covers` (topics).
+3. If it is a professional (exam) certification, also add it to `certifications` in `data/certifications.ts` with `certificate: "<slug>"` (those are counted on the home page).
+
+**A personal photo** (the gallery, `/gallery#<slug>`):
+
+1. Save it as `public/Assets/gallery/<slug>.webp`.
+2. In `data/gallery-photos.ts`, copy an entry: `slug`, `title`, `description`, `category` (`athletics`, `teaching`, `community`, `internship`, `university`), `event`, and `date`, `place`, `source` (for a screenshot of an official post: who posted it and when) when known.
+
+**Then** nothing else by hand: on the next deploy GitHub Actions makes the small `-thumb.webp` (`npm run thumbs`) and writes the title, description, keywords, date, place and copyright **into the image file itself** (`npm run images:tag`, ExifTool). To do it on your own machine: `npm run thumbs && npm run images:tag`.
 
 ---
 

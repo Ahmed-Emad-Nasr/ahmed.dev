@@ -1,13 +1,14 @@
 /*
  * ═══ app/gallery/page.tsx — the GALLERY page  ( URL: /gallery ) ═══
  *
- * The proof behind the portfolio: the degree, every certificate, course and
- * record, then photos from classrooms and events. ?cert=N opens scan N in
- * the lightbox (the command palette links to them).
+ * The personal photos: classes, the GDG bootcamp, the Banque Misr
+ * internship, the graduation project and the races — each with its full
+ * caption, and the official posts named as their source. The certificates
+ * have their own page (/certificates); old /gallery?cert=N links go there.
  *
  *   Section on screen      Component                          Content / data
  *   ─────────────────────  ─────────────────────────────────  ──────────────────────────
- *   Gallery      #gallery  components/gallery/ArtGallery      data/certifications.ts, portfolio-data.ts
+ *   Gallery      #gallery  components/gallery/ArtGallery      data/gallery-photos.ts
  */
 
 import type { Metadata } from "next";
@@ -20,18 +21,20 @@ import { pageShareImage } from "@/lib/og";
 import { KEYWORDS, PERSON_REF, WEBSITE_ID, breadcrumbs, jsonLd, pageKeywords, withAudience } from "@/lib/seo";
 import { GALLERY_ID, GALLERY_LANGUAGES, GALLERY_URL } from "@/lib/page-ids";
 import { X_HANDLE } from "@/lib/shared";
+import { GALLERY_PHOTOS } from "@/data/gallery-photos";
+import { GALLERY_PROPS, photoImageLd } from "@/lib/gallery-ld";
 
 /* What a search result shows: the name first, so "Ahmed Emad Nasr
-   certificates" matches */
+   photos" matches */
 /* The audience line (AUDIENCE in lib/shared.ts) is added to the description */
 const DESCRIPTION = withAudience(
-  "Ahmed Emad Nasr's certificates and proof: his degree, professional cybersecurity certifications (eJPT, CCNA …), courses and records, and photos from classrooms and security events",
+  `${GALLERY_PHOTOS.length} photos of Ahmed Emad Nasr: teaching cybersecurity (NTI, GDG on Campus Benha), the Banque Misr Rowad internship, his graduation project, and his athletics titles — with the official posts`,
   300,
 );
-const TITLE = "Ahmed Emad Nasr — Certificates & Gallery";
+const TITLE = "Ahmed Emad Nasr — Photo Gallery";
 
 /* This page's own share card (npm run og:cases), else the site card */
-const SHARE_IMAGE = pageShareImage("gallery", "Ahmed Emad Nasr — certificates and gallery");
+const SHARE_IMAGE = pageShareImage("gallery", "Ahmed Emad Nasr — photo gallery");
 
 export const metadata: Metadata = {
   /* absolute: the name is already in it (no " | Ahmed Emad Nasr" template) */
@@ -58,7 +61,8 @@ export const metadata: Metadata = {
   },
 };
 
-/* JSON-LD: the gallery (its images are listed in sitemap.xml) + breadcrumbs */
+/* JSON-LD: the gallery and every photo as an ImageObject (caption, date,
+   place, credit, copyright, licence) + breadcrumbs */
 const STRUCTURED_DATA = jsonLd({
   "@context": "https://schema.org",
   "@graph": [
@@ -72,7 +76,10 @@ const STRUCTURED_DATA = jsonLd({
       about: PERSON_REF,
       author: PERSON_REF,
       isPartOf: { "@id": WEBSITE_ID },
+      inLanguage: "en",
+      associatedMedia: GALLERY_PHOTOS.map((p) => ({ "@id": `${GALLERY_URL}#${p.slug}` })),
     },
+    ...GALLERY_PHOTOS.map(photoImageLd),
     breadcrumbs([
       ["Ahmed Emad Nasr", absoluteUrl("/")],
       ["Gallery", GALLERY_URL],
@@ -104,7 +111,7 @@ export default function GalleryPage() {
             </Link>
           </span>
         </p>
-        <ArtGallery />
+        <ArtGallery {...GALLERY_PROPS} />
       </div>
     </PageShell>
   );

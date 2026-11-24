@@ -17,7 +17,7 @@
  *   • visit("/x")  → open another page
  *   • hint         → optional grey text on the right
  * Cases come from /palette-index.json (built from data/cases.ts) and
- * certificates from data/certifications.ts — no need to add those by hand.
+ * certificates from data/certificates.ts — no need to add those by hand.
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -56,7 +56,7 @@ import {
 } from "lucide-react";
 import { Github, Linkedin } from "@/components/ui/BrandIcons";
 import { PROFILE } from "@/data/profile";
-import { ALL_GALLERY_CERTIFICATES } from "@/data/certifications";
+import { CERTIFICATES, certificatePagePath } from "@/data/certificates";
 import { normalizePublicHref } from "@/lib/shared";
 import { goToSection } from "@/lib/perf/jump";
 import { lockScroll } from "@/lib/scroll";
@@ -193,8 +193,8 @@ export default function CommandPalette() {
       { id: "testimonials", group: "Go to", label: "Recommendations", icon: MessageSquareQuote, run: () => go("#testimonials") },
       { id: "student-feedback", group: "Go to", label: "Student feedback", icon: MessageSquareQuote, run: () => go("#student-feedback") },
       { id: "platforms", group: "Go to", label: "Practice platforms (THM, HTB …)", icon: Trophy, run: () => go("#platforms") },
-      { id: "gallery", group: "Go to", label: "Proof gallery", icon: Palette, run: () => visit("/gallery") },
-      { id: "all-certs", group: "Go to", label: `Certifications, courses & records (${ALL_GALLERY_CERTIFICATES.length})`, icon: Award, run: () => go("#all-certificates") },
+      { id: "gallery", group: "Go to", label: "Photo gallery — classes, events, races", icon: Palette, run: () => visit("/gallery") },
+      { id: "all-certs", group: "Go to", label: `Certificates — all ${CERTIFICATES.length}`, icon: Award, run: () => visit("/certificates") },
       { id: "attack", group: "Go to", label: "MITRE ATT&CK coverage", icon: Crosshair, run: () => go("#attack") },
       { id: "detections", group: "Go to", label: "Detection library (Wazuh rules)", icon: Crosshair, run: () => go("#detections") },
       { id: "attack-pages", group: "Go to", label: "ATT&CK techniques — one page each", icon: Crosshair, run: () => visit("/attack") },
@@ -286,15 +286,15 @@ export default function CommandPalette() {
 
   const certCommands: Command[] = useMemo(
     () =>
-      ALL_GALLERY_CERTIFICATES.map((cert) => ({
-        id: `cert-${cert.galleryIndex}`,
+      CERTIFICATES.map((cert) => ({
+        id: `cert-${cert.slug}`,
         group: "Certificates",
         label: cert.title,
         hint: `${cert.issuer} · ${cert.kind}`,
         icon: Award,
-        run: () => go(`?cert=${cert.galleryIndex}#all-certificates`),
+        run: () => visit(certificatePagePath(cert.slug)),
       })),
-    [go]
+    [visit]
   );
 
   /* What the search box matches → the visible list */

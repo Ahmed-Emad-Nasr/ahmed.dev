@@ -24,6 +24,8 @@ const CONFIG_FILES = [
   "data/cases.ts",
   "data/case-details.ts",
   "data/certifications.ts",
+  "data/certificates.ts",
+  "data/gallery-photos.ts",
   "data/experience.ts",
   "data/portfolio-data.ts",
   "data/youtube.ts",
@@ -156,6 +158,24 @@ for (const file of CONFIG_FILES) {
       path: `${dir}/  (directory, referenced by a template literal)`,
       hint: alt ? `case mismatch — the real directory is "${alt}"` : "not found in public/",
     });
+  }
+}
+
+/* Certificates and gallery photos are named by their slug: every
+   `slug: "x"` in the two data files needs Assets/<folder>/x.webp (and its
+   -thumb). Slugs built in a loop are checked by npm run images:tag. */
+for (const [file, dir] of [
+  ["data/certificates.ts", "Assets/certificates"],
+  ["data/gallery-photos.ts", "Assets/gallery"],
+]) {
+  const src = stripComments(readFileSync(join(ROOT, file), "utf8"));
+  for (const [, slug] of src.matchAll(/\bslug:\s*"([^"]+)"/g)) {
+    const rel = `${dir}/${slug}.webp`;
+    checked++;
+    if (!realPaths.has(rel)) {
+      const alt = lowerMap.get(rel.toLowerCase());
+      missing.push({ file, path: rel, hint: alt ? `case mismatch — the real file is "${alt}"` : "not found in public/ — save the image under its slug" });
+    } else if (!realPaths.has(`${dir}/${slug}-thumb.webp`)) missingThumbs.add(`${dir}/${slug}-thumb.webp`);
   }
 }
 

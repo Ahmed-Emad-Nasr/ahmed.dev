@@ -285,13 +285,24 @@ export const KEYWORDS = {
   ],
   /* The Arabic gallery (/ar/gallery) */
   galleryAr: [
-    "شهادات أحمد عماد نصر",
+    "صور أحمد عماد نصر",
     "أحمد عماد نصر",
+    "أحمد عماد نصر ألعاب القوى",
+    "أحمد عماد نصر عداء",
+    "أحمد عماد نصر بنك مصر",
+    "أحمد عماد نصر GDG",
+    "مدرب أمن سيبراني",
+  ],
+  /* The Arabic certificates page (/ar/certificates) */
+  certificatesAr: [
+    "شهادات أحمد عماد نصر",
+    "شهادات احمد عماد",
     "شهادات أمن سيبراني",
     "شهادات أمن المعلومات",
-    "eJPT",
-    "CCNA",
-    "مدرب أمن سيبراني",
+    "شهادة eJPT",
+    "شهادة CCNA",
+    "شهادات DEPI",
+    "رواد بنك مصر",
   ],
   /* The Arabic training page (/ar/training): what companies in Egypt type */
   trainingAr: [
@@ -391,14 +402,32 @@ export const KEYWORDS = {
     "Ahmed Emad Nasr training",
     "Ahmed Emad Nasr instructor",
   ],
+  /* The gallery (/gallery): the personal photos */
   gallery: [
+    "Ahmed Emad Nasr gallery",
+    "Ahmed Emad Nasr photos",
+    "Ahmed Emad photos",
+    "Ahmed Emad Nasr athlete",
+    "Ahmed Emad Nasr Banque Misr",
+    "Ahmed Emad Nasr GDG Benha",
+    "Ahmed Emad Nasr NTI",
+    "Ahmed Emad Nasr graduation project",
+    "cybersecurity instructor photos",
+  ],
+  /* The certificates (/certificates and each /certificates/<slug>) */
+  certificates: [
     "Ahmed Emad Nasr certificates",
     "Ahmed Emad Nasr certifications",
-    "Ahmed Emad Nasr gallery",
+    "Ahmed Emad certificates",
+    "Ahmed Emad Nasr eJPT",
+    "Ahmed Emad Nasr CCNA",
+    "Ahmed Emad Nasr DEPI",
+    "Ahmed Emad Nasr Banque Misr Rowad",
     "cybersecurity certifications",
-    "CCNA certified",
     "eJPT certified",
+    "CCNA certified",
     "security credentials",
+    "verified certificates",
   ],
 } as const;
 

@@ -113,6 +113,15 @@ jobs:
       # made here on every deploy, so a missing one never makes a page load
       # the full-size image. Only the missing ones are made (scripts/generate-thumbs.mjs).
       - run: npm run thumbs
+      # Writes each certificate's and photo's details INTO the image file
+      # (title, description, keywords, copyright, date, place — XMP/IPTC/EXIF)
+      # from data/certificates.ts and data/gallery-photos.ts, so a new or
+      # edited entry is tagged without anyone running it by hand. Never blocks.
+      - name: Image metadata (certificates and gallery photos)
+        continue-on-error: true
+        run: |
+          sudo apt-get install -y -qq libimage-exiftool-perl >/dev/null
+          npm run images:tag
       # Warns (never fails) about any image over 300 KB — see scripts/check-image-size.mjs
       - run: npm run check:images
       # The share cards carry live numbers (videos, subscribers, cases …):

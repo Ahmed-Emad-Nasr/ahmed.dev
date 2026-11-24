@@ -13,7 +13,7 @@
 [![Live portfolio](https://img.shields.io/badge/LIVE-portfolio-BC002D?style=for-the-badge&logo=githubpages&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/)
 [![Blog](https://img.shields.io/badge/BLOG-83_cases-111111?style=for-the-badge&logo=readdotcv&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/blog)
 [![Teaching](https://img.shields.io/badge/TEACHING-160h_diploma-00A6B2?style=for-the-badge&logo=googleclassroom&logoColor=white)](https://ahmed-emad-nasr.github.io/ahmed.dev/teaching)
-[![Gallery](https://img.shields.io/badge/PROOF-certificates-E3B341?style=for-the-badge&logo=credly&logoColor=black)](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery)
+[![Certificates](https://img.shields.io/badge/PROOF-certificates-E3B341?style=for-the-badge&logo=credly&logoColor=black)](https://ahmed-emad-nasr.github.io/ahmed.dev/certificates)
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-connect-0077B5?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ahmed-emad-nasr/)
 [![YouTube](https://img.shields.io/badge/YouTube-@AhmedEmadNasr--0x3omda-FF0000?style=flat-square&logo=youtube&logoColor=white)](https://www.youtube.com/@AhmedEmadNasr-0x3omda)
@@ -37,7 +37,7 @@ project    : ahmed.dev — the portfolio of Ahmed Emad Nasr (0x3omda)
 role       : Information Security Officer · Cybersecurity Instructor (AMIT & NTI)
 covers     : GRC · SOC · Incident Response & DFIR · Malware Analysis · IAM · Data Security
 live       : https://ahmed-emad-nasr.github.io/ahmed.dev/
-pages      : /  ·  /blog  ·  /blog/<case>  ·  /teaching  ·  /ar/teaching  ·  /gallery
+pages      : /  ·  /blog  ·  /blog/<case>  ·  /teaching  ·  /ar/teaching  ·  /certificates  ·  /certificates/<slug>  ·  /gallery
 built_with : Next.js 16 (static export) · React 19 · TypeScript · Tailwind CSS v4 · GSAP · Framer Motion
 hosting    : GitHub Pages — no server, everything is built ahead of time
 ```
@@ -83,7 +83,7 @@ flowchart LR
   B["/blog  —  Blog<br/>83 cases · 37 videos<br/>ATT&CK · detection rules · triage · home lab"]
   C["/blog/&lt;case&gt;<br/>one report per case"]
   T["/teaching  —  Teaching<br/>160 h diploma · where it was taught<br/>student feedback"]
-  G["/gallery  —  Proof<br/>49 certificates & records · 50 photos"]
+  G["/certificates  —  Proof<br/>49 certificates, one page each · /gallery  —  50 photos"]
   H --> B --> C
   H --> T
   H --> G
@@ -103,7 +103,8 @@ flowchart LR
 | [`/ar/gallery`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/gallery) | The gallery in Arabic (`hreflang` with `/gallery`) |
 | [`/training`](https://ahmed-emad-nasr.github.io/ahmed.dev/training) · [`/ar/training`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/training) | Training for teams, in English and Arabic (`hreflang`): who it is for, the formats, the diploma module by module, student quotes and a request button |
 | [`/ar/teaching`](https://ahmed-emad-nasr.github.io/ahmed.dev/ar/teaching) | The same page in Arabic (right to left, Cairo font), linked to the English one with `hreflang` |
-| [`/gallery`](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery) | Degree, certifications, courses and records, photos from classrooms and events |
+| [`/certificates`](https://ahmed-emad-nasr.github.io/ahmed.dev/certificates) | Degree, certifications, courses, exam scores and badges — every detail, one page each, with verification links |
+| [`/gallery`](https://ahmed-emad-nasr.github.io/ahmed.dev/gallery) | Personal photos: classes, events, the Banque Misr internship, races — with full captions |
 
 Operator tools on every page: `Ctrl / ⌘ + K` command palette · `?` keyboard
 shortcuts · `g` + key to jump to a section · type `3omda` for the terminal.
@@ -197,7 +198,7 @@ assistant — AI tools that open the repo read the same rules from `AGENTS.md`).
 ## `> tree -L 2`
 
 ```text
-app/          routes: /, /blog, /blog/[slug], /teaching, /ar/teaching, /gallery, metadata, sitemap, feeds
+app/          routes: /, /blog, /blog/[slug], /teaching, /ar/teaching, /certificates, /certificates/[slug], /gallery, metadata, sitemap, feeds
 components/
   layout/     navigation, theme, terminal, command palette, shortcuts, footer
   ui/         shared pieces: SectionHeader, CounterChip, ShowMore, kit

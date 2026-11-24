@@ -4,7 +4,7 @@
  * Renders a 1200×630 card per case in the site's style (category, title,
  * verdict, severity, ATT&CK ids) into public/og/cases/<id>.jpg; the case
  * page uses it when the file exists. Also one card for each of /blog,
- * /teaching and /gallery (the page's name and its real counts, from the
+ * /teaching, /certificates and /gallery (the page's name and its real counts, from the
  * data files) into public/og/pages/<page>.jpg, used by lib/og.ts.
  *
  *   npm run og:cases              only cards whose case changed (part of npm run prepare:assets)
@@ -62,7 +62,9 @@ const { CV } = load(join(cfg, "cv.ts"));
 const { DIPLOMA, TEACHING_STATS } = load(join(cfg, "teaching.ts"));
 const { AUDIENCE, AUDIENCE_LABEL } = load(join(ROOT, "lib", "shared.ts"));
 const { STUDENT_FEEDBACK } = load(join(cfg, "testimonials.ts"));
-const { ALL_GALLERY_CERTIFICATES, PROFESSIONAL_CERTIFICATION_COUNT } = load(join(cfg, "certifications.ts"));
+const { PROFESSIONAL_CERTIFICATION_COUNT } = load(join(cfg, "certifications.ts"));
+const { CERTIFICATES } = load(join(cfg, "certificates.ts"));
+const { GALLERY_PHOTOS } = load(join(cfg, "gallery-photos.ts"));
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 /* Fonts inlined as data URIs: a page set with setContent() cannot load file:// fonts */
@@ -108,7 +110,7 @@ ${ids.length ? `<div class="ids">${ids.map((i) => `<span>${esc(i)}</span>`).join
 </body></html>`;
 };
 
-/* ─── Page cards: /blog, /teaching, /gallery ─── */
+/* ─── Page cards: /blog, /teaching, /certificates, /gallery ─── */
 /* Same count as the ATT&CK section on /blog (parent techniques) */
 const techniqueCount = coveredTechniqueCount();
 /* Each page: its words, its colour and its own photo (scripts/og/portrait-*.webp —
@@ -136,12 +138,23 @@ const PAGES = [
     photo: { file: "portrait-grey.webp", width: 1000, left: 400, top: -6 },
   },
   {
-    id: "gallery",
+    id: "certificates",
     badge: "Certificates · proof",
-    title: "Gallery.",
+    title: "Certificates.",
     line: "Certificates & degree",
-    sub: "The original documents, and the classes",
-    chips: [`${PROFESSIONAL_CERTIFICATION_COUNT} certifications`, `${ALL_GALLERY_CERTIFICATES.length} documents`],
+    sub: "Every original document, with how to verify it",
+    chips: [`${PROFESSIONAL_CERTIFICATION_COUNT} certifications`, `${CERTIFICATES.length} documents`, `${CERTIFICATES.filter((c) => c.verifyUrl).length} verifiable`],
+    accent: "#a16207", ink: "#facc15", glow: "rgba(250,204,21,.25)",
+    /* A passport-style photo: cut off at the shoulders, so its sides fade too */
+    photo: { file: "portrait-formal.webp", width: 430, left: 690, top: 70, fadeSides: true },
+  },
+  {
+    id: "gallery",
+    badge: "Photos · classes · races",
+    title: "Gallery.",
+    line: "Life outside the documents",
+    sub: "Teaching, events, the internship and the track",
+    chips: [`${GALLERY_PHOTOS.length} photos`, `${GALLERY_PHOTOS.filter((p) => p.source).length} official posts`],
     accent: "#a16207", ink: "#facc15", glow: "rgba(250,204,21,.25)",
     /* A passport-style photo: cut off at the shoulders, so its sides fade too */
     photo: { file: "portrait-formal.webp", width: 430, left: 690, top: 70, fadeSides: true },

@@ -3,7 +3,7 @@
 A static Next.js 16 export (`output: "export"`) served by GitHub Pages under
 `/ahmed.dev` (the deploy workflow sets the base path from the repository:
 `/ahmed.dev` here, `""` if it is ever deployed from `Ahmed-Emad-Nasr.github.io`). Pages: the portfolio (`/`), the blog (`/blog`), teaching
-(`/teaching`, and in Arabic `/ar/teaching` — data/teaching-ar.ts), the gallery (`/gallery`), plus one static page per case
+(`/teaching`, and in Arabic `/ar/teaching` — data/teaching-ar.ts), the certificates (`/certificates`, one page each at `/certificates/<slug>`, and `/ar/certificates`), the photo gallery (`/gallery`), plus one static page per case
 (`/blog/<id>`). Which section lives on which page is `SECTION_PAGE` in
 `lib/routes.ts` — the navbar, the command palette, the `g` shortcuts and old
 `/#cases`-style links all follow it.
@@ -202,7 +202,9 @@ The common edits:
 | The figures at the top of a case ("By the numbers") | counted automatically — `lib/case-numbers.ts`; measured results go in `outcome` in `data/case-details.ts` |
 | A video | automatic (`scripts/sync-youtube.mjs` → `data/youtube-feed.ts`, daily in GitHub Actions); written up by hand in `data/youtube.ts` |
 | A Wazuh rule in the detection library | `data/detection-rules.ts` |
-| A gallery photo / certificate | numbered image + `GALLERY_IMAGE_COUNT` / `ALL_GALLERY_CERTIFICATES` in `data/certifications.ts` |
+| A certificate | `public/Assets/certificates/<slug>.webp` + `data/certificates.ts` (its page `/certificates/<slug>` is automatic) |
+| A gallery photo | `public/Assets/gallery/<slug>.webp` + `data/gallery-photos.ts` |
+| Image metadata (in the files) | automatic — `scripts/tag-images.mjs` (`npm run images:tag`, run by CI) |
 | The CV | the PDF in `public/Assets/cv/` (`CV_PDF_HREF` in `lib/shared.ts`) |
 | Navbar links | `components/layout/SiteNav.tsx` → `navItems` |
 | Command palette entries | `components/layout/CommandPalette.tsx` → `commands` |

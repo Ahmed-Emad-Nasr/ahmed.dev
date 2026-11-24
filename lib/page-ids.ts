@@ -31,3 +31,8 @@ export const GALLERY_AR_URL = absoluteUrl("/ar/gallery");
 /* The gallery in both languages (hreflang): each page lists both */
 export const GALLERY_LANGUAGES = { en: "/gallery", ar: "/ar/gallery", "x-default": "/gallery" };
 export const GALLERY_ID = `${GALLERY_URL}#gallery`;
+export const CERTIFICATES_URL = absoluteUrl("/certificates");
+export const CERTIFICATES_AR_URL = absoluteUrl("/ar/certificates");
+export const CERTIFICATES_ID = `${CERTIFICATES_URL}#certificates`;
+/* The certificates page in both languages (hreflang): each page lists both */
+export const CERTIFICATES_LANGUAGES = { en: "/certificates", ar: "/ar/certificates", "x-default": "/certificates" };

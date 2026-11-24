@@ -8,7 +8,8 @@
  *   /blog/<id>    one page per case (app/blog/[slug]/page.tsx)
  *   /teaching     the course, where it was taught, student feedback
  *                 (app/teaching/page.tsx)
- *   /gallery      certificates, records and photos (app/gallery/page.tsx)
+ *   /gallery      the personal photos (app/gallery/page.tsx)
+ *   /certificates every certificate, one page each (app/certificates)
  *
  * SECTION_PAGE below is the one place that knows where a section lives: the
  * navbar, the command palette, the g-shortcuts and old /#cases-style links
@@ -16,7 +17,7 @@
  */
 
 /** The page each section id is on. Not listed = the home page. */
-export const SECTION_PAGE: Readonly<Record<string, "/blog" | "/teaching" | "/gallery">> = {
+export const SECTION_PAGE: Readonly<Record<string, "/blog" | "/teaching" | "/gallery" | "/certificates">> = {
   blog: "/blog",
   cases: "/blog",
   videos: "/blog",
@@ -30,7 +31,9 @@ export const SECTION_PAGE: Readonly<Record<string, "/blog" | "/teaching" | "/gal
   "student-feedback": "/teaching",
   gallery: "/gallery",
   art: "/gallery",
-  "all-certificates": "/gallery",
+  certificates: "/certificates",
+  /* the certificates used to be a section of the gallery: old #all-certificates links */
+  "all-certificates": "/certificates",
 };
 
 /** "/blog" for "cases", "/" for "work" */

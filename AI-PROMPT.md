@@ -39,11 +39,18 @@ WHERE EACH THING GOES
 - Video page text        → data/video-notes.ts: VIDEO_NOTES["<videoId>"] = 3–5
                            points taken ONLY from what the video shows; a new
                            term in its tags can get one sentence in GLOSSARY
-- Certificate            → image public/Assets/art-gallery/Images/image_display_thumb/<N>.webp
-                           data/certifications.ts: raise GALLERY_IMAGE_COUNT,
-                           add to ALL_GALLERY_CERTIFICATES (galleryIndex = N,
-                           verifyUrl only if I give you the official link);
-                           exam-based certifications also go in `certifications`
+- Certificate            → image public/Assets/certificates/<slug>.webp
+                           data/certificates.ts: one entry with every detail
+                           PRINTED on the document (dates, hours, IDs —
+                           never guessed); verifyUrl only if printed on it or
+                           I give you the official link. Its page
+                           /certificates/<slug> appears by itself.
+                           Exam-based certifications also go in
+                           `certifications` (data/certifications.ts) with
+                           certificate: "<slug>"
+- Personal photo         → image public/Assets/gallery/<slug>.webp
+                           data/gallery-photos.ts (title, description,
+                           category, event, date/place/source when known)
 - Job / internship / volunteering / course → data/experience.ts
 - A place I taught       → data/teaching.ts (TEACHING_ROLES) AND the same in
                            Arabic in data/teaching-ar.ts

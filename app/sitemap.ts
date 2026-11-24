@@ -10,10 +10,11 @@
 import type { MetadataRoute } from "next";
 import { caseEvidenceLibrary, caseScreenshotsByEvidenceId } from "@/data/cases";
 import { absoluteUrl, caseUrl, OG_IMAGE } from "@/lib/site";
-import { GALLERY_IMAGE_COUNT, galleryImagePath } from "@/data/certifications";
+import { GALLERY_PHOTOS, photoImagePath } from "@/data/gallery-photos";
+import { CERTIFICATES, certificateImagePath, certificatePagePath } from "@/data/certificates";
 import { SITE_VIDEOS, uploadDate, videoUrl, type SiteVideo } from "@/lib/videos";
 import { PERSON_IMAGE, SITE_URL, youtubePlayer, youtubeThumb } from "@/lib/seo";
-import { GALLERY_LANGUAGES, TEACHING_LANGUAGES, TRAINING_LANGUAGES } from "@/lib/page-ids";
+import { CERTIFICATES_LANGUAGES, GALLERY_LANGUAGES, TEACHING_LANGUAGES, TRAINING_LANGUAGES } from "@/lib/page-ids";
 import { ATTACK_TECHNIQUES, PLATFORM_PAGES, casesForPlatform } from "@/lib/collections";
 import { TOOL_PAGES } from "@/data/tools";
 
@@ -24,8 +25,10 @@ import { TOOL_PAGES } from "@/data/tools";
 const loc = (url: string) => encodeURI(decodeURI(url));
 
 /* The home page: the portrait and the share image. The gallery page: every
-   gallery image */
-const galleryImages = Array.from({ length: GALLERY_IMAGE_COUNT }, (_, i) => loc(absoluteUrl(galleryImagePath(i + 1))));
+   personal photo. The certificates page: every scan (each scan is listed
+   again on its own page, /certificates/<slug>). */
+const galleryImages = GALLERY_PHOTOS.map((p) => loc(absoluteUrl(photoImagePath(p.slug))));
+const certificateImages = CERTIFICATES.map((c) => loc(absoluteUrl(certificateImagePath(c.slug))));
 const homeImages = [PERSON_IMAGE, OG_IMAGE.url].map(loc);
 
 /* Google allows 2,048 characters of description; keep well under */
@@ -58,6 +61,7 @@ const absoluteLanguages = (languages: Record<string, string>) =>
   Object.fromEntries(Object.entries(languages).map(([lang, path]) => [lang, absoluteUrl(path)]));
 const trainingLanguages = absoluteLanguages(TRAINING_LANGUAGES);
 const galleryLanguages = absoluteLanguages(GALLERY_LANGUAGES);
+const certificatesLanguages = absoluteLanguages(CERTIFICATES_LANGUAGES);
 
 /* Required by the static export (see the same line in app/manifest.ts) */
 export const dynamic = "force-static";
@@ -135,6 +139,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
       alternates: { languages: galleryLanguages },
     },
+    /* Every certificate: the list in English and Arabic, then one page each */
+    {
+      url: absoluteUrl("/certificates"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.8,
+      images: certificateImages,
+      alternates: { languages: certificatesLanguages },
+    },
+    {
+      url: absoluteUrl("/ar/certificates"),
+      lastModified: latestCaseDate,
+      changeFrequency: "monthly",
+      priority: 0.6,
+      alternates: { languages: certificatesLanguages },
+    },
+    ...CERTIFICATES.map((c) => ({
+      url: absoluteUrl(certificatePagePath(c.slug)),
+      lastModified: c.date && /^\d{4}-\d{2}-\d{2}$/.test(c.date) ? parseDate(c.date) : latestCaseDate,
+      changeFrequency: "yearly" as const,
+      priority: c.group === "certifications" || c.group === "education" ? 0.6 : 0.4,
+      images: [loc(absoluteUrl(certificateImagePath(c.slug)))],
+    })),
     /* Training for teams, in English and Arabic: each names the other (hreflang) */
     {
       url: absoluteUrl("/training"),
