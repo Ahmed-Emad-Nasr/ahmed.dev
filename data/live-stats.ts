@@ -39,8 +39,8 @@ export const LIVE_STATS: LiveStats = {
   "checked": "2026-11-25",
   "youtube": {
     "subscribers": 613,
-    "views": 40757,
-    "videos": 87
+    "views": 40867,
+    "videos": 86
   },
   "playlists": [
     {
