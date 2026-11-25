@@ -30,7 +30,7 @@ export const JOURNEY_KINDS: Record<JourneyKind, { label: string; anchor: string;
 };
 
 /** "Huawei & IEEE" → "huawei-ieee" */
-export const slugify = (s: string): string =>
+const slugify = (s: string): string =>
   s
     .toLowerCase()
     .normalize("NFKD")
@@ -52,7 +52,7 @@ export const PLATFORM_IDS = [
   { id: "cybertalents", name: "CyberTalents" },
 ] as const;
 
-export type JourneyEntry = { slug: string; kind: JourneyKind; title: string };
+type JourneyEntry = { slug: string; kind: JourneyKind; title: string };
 
 export const JOURNEY_INDEX: readonly JourneyEntry[] = [
   ...PATH.map((m) => ({ slug: pathSlug(m), kind: "path" as const, title: `${m.year} — ${m.title}` })),

@@ -12,7 +12,7 @@
  */
 
 import type { ReactNode } from "react";
-import { normalizePublicHref } from "@/lib/shared";
+import Link from "next/link";
 import { scrollToHash } from "@/lib/perf/jump";
 
 type Props = {
@@ -26,10 +26,12 @@ type Props = {
 
 export default function CaseFilterLink({ params, className, children, ...rest }: Props) {
   const search = new URLSearchParams(params).toString();
-  const href = `${normalizePublicHref("/blog")}?${search}#cases`;
   return (
-    <a
-      href={href}
+    /* next/link: from another page it opens the blog inside the site (no
+       fresh page load); on the blog itself onClick below takes over */
+    <Link
+      prefetch={false}
+      href={`/blog?${search}#cases`}
       className={className}
       onClick={(e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
@@ -44,6 +46,6 @@ export default function CaseFilterLink({ params, className, children, ...rest }:
       {...rest}
     >
       {children}
-    </a>
+    </Link>
   );
 }

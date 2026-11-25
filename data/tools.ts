@@ -15,7 +15,7 @@
  * link come from).
  */
 
-export type ToolPage = {
+type ToolPage = {
   /** The project id in data/portfolio-data.ts — also the URL: /projects/<id> */
   id: string;
   /** The second (red) line of the page title */

@@ -4,8 +4,7 @@
  *
  * ═══ data/skills.ts ═══
  * skillGroups → used for the JSON-LD (knowsAbout / skills) in app/layout.tsx.
- * languages   → spoken languages: the hero's "Languages" row and the
- *               contact section (via PORTFOLIO_DATA.languages).
+ * (Spoken languages are in data/languages.ts.)
  * Add a skill → add it to `items` of the right group.
  */
 
@@ -143,7 +142,3 @@ export const skillGroups: readonly SkillGroup[] = [
     items: ["Analytical Thinking", "Problem Solving", "Team Collaboration", "Communication", "Adaptability", "Attention to Detail"],
   },
 ];
-
-/* Spoken languages: edited in data/languages.ts (a tiny file of its own, so
-   the contact section loads it without these skill lists) */
-export { languages } from "@/data/languages";

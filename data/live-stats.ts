@@ -11,7 +11,7 @@
  * data/platforms.ts.
  */
 
-export interface LivePlaylist {
+interface LivePlaylist {
   id: string;
   title: string;
   description: string;
@@ -39,7 +39,7 @@ export const LIVE_STATS: LiveStats = {
   "checked": "2026-11-24",
   "youtube": {
     "subscribers": 613,
-    "views": 40757,
+    "views": 40697,
     "videos": 87
   },
   "playlists": [

@@ -21,7 +21,7 @@ import { CardEffects, TiltCard } from "@/components/ui/Motion";
 import { CountUp } from "@/components/ui/CountUp";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { Youtube } from "@/components/ui/BrandIcons";
-import { formatDate, markLoaded, normalizePublicHref, YOUTUBE_CHANNEL_URL, type ChannelVideo } from "@/lib/shared";
+import { formatDate, markLoaded, YOUTUBE_CHANNEL_URL, type ChannelVideo } from "@/lib/shared";
 import { blogFeaturedYoutubeVideo, blogYoutubePlaylists as playlists, blogYoutubeVideos } from "@/data/youtube";
 import type { LibraryCounts } from "@/lib/library-data";
 import { KanjiWatermark, btnOutline } from "@/components/ui/kit";
@@ -190,9 +190,9 @@ export default function MediaSections({ counts }: { counts: LibraryCounts }) {
                           <ExternalLink size={13} /> Watch on YouTube
                         </a>
                         {video.caseId && (
-                          <a href={normalizePublicHref(`/blog/${video.caseId}`)} className={`${btnOutline} w-fit`}>
+                          <Link prefetch={false} href={`/blog/${video.caseId}`} className={`${btnOutline} w-fit`}>
                             <FileText size={13} /> The case
-                          </a>
+                          </Link>
                         )}
                       </div>
                     </div>

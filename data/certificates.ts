@@ -944,7 +944,7 @@ export const CERTIFICATES: readonly Certificate[] = [...LISTED, ...CREDLY_BADGES
 
 /* ─── Helpers ─── */
 
-export const CERTIFICATE_FOLDER = "Assets/certificates";
+const CERTIFICATE_FOLDER = "Assets/certificates";
 
 /** The scan: Assets/certificates/<slug>.webp (no leading slash — normalizePublicHref adds the base path) */
 export const certificateImagePath = (slug: string): string => `${CERTIFICATE_FOLDER}/${slug}.webp`;
@@ -955,10 +955,6 @@ export { certificatePagePath } from "@/data/certificate-paths";
 
 export const certificateBySlug = (slug: string): Certificate | undefined => CERTIFICATES.find((c) => c.slug === slug);
 
-/** The old gallery number → the certificate (old ?cert=N links) */
-export const certificateByLegacyIndex = (n: number): Certificate | undefined =>
-  CERTIFICATES.find((c) => c.legacyIndex === n);
-
 /** Certificates of one group */
 export const certificateGroupCount = (group: CertificateGroup): number =>
   CERTIFICATES.filter((c) => c.group === group).length;
@@ -966,7 +962,7 @@ export const certificateGroupCount = (group: CertificateGroup): number =>
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 /** "2026-02-15" → "15 February 2026", "2026-08" → "August 2026", "2025" → "2025" */
-export const formatCertificateDate = (date?: string): string | undefined => {
+const formatCertificateDate = (date?: string): string | undefined => {
   if (!date) return undefined;
   const [y, m, d] = date.split("-").map(Number);
   if (!m) return String(y);

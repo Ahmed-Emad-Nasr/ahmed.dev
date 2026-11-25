@@ -4,20 +4,40 @@
  * Used by every in-page #link (lib/perf/PageEffects.tsx), the command palette,
  * the g-shortcuts, the case library's deep links and arrivals with a hash.
  * The jump is instant — straight to the section, under the fixed header, no
- * smooth glide. Every section is in the page's HTML, so the target is
- * always there; only late images or fonts above it can still nudge it,
- * which settle() below corrects.
+ * smooth glide. Nearly every section is in the page's HTML; the one drawn
+ * in the browser (the blog's case library, with #videos) is waited for.
+ * Late images or fonts above the target can still nudge it, which
+ * settle() below corrects.
  */
 
 import { scrollTargetOf, scrollToElement } from "@/lib/scroll";
 import { sectionHref } from "@/lib/routes";
+import { SECTION_ADDED } from "@/lib/perf/schedule";
 
 /** Go to an in-page anchor, instantly, under the fixed header. */
 export async function scrollToHash(hash: string): Promise<void> {
   const id = decodeURIComponent(hash.replace(/^#/, ""));
   if (!id) return;
   const el = document.getElementById(id);
-  if (!el) return;
+  if (!el) {
+    /* Not in the page yet: a part the browser draws once its data arrives
+       (the case library and the #videos under it — /blog#videos). Go there
+       when it does (SECTION_ADDED), unless the reader has scrolled since. */
+    const y = window.scrollY;
+    const arrived = await new Promise<boolean>((done) => {
+      const timer = window.setTimeout(() => done(false), 8000);
+      window.addEventListener(
+        SECTION_ADDED,
+        () => {
+          window.clearTimeout(timer);
+          done(true);
+        },
+        { once: true },
+      );
+    });
+    if (arrived && document.getElementById(id) && Math.abs(window.scrollY - y) <= 4) return scrollToHash(hash);
+    return;
+  }
   scrollToElement(el);
   /* Sections far down the home page are drawn only once they are near the
      screen (content-visibility in globals.css). After a jump the sections it

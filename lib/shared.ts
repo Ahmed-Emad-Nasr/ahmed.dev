@@ -199,7 +199,7 @@ export const roundDown = (n: number): number =>
   n < 100 ? n : n < 1000 ? Math.floor(n / 50) * 50 : n < 10_000 ? Math.floor(n / 100) * 100 : Math.floor(n / 1000) * 1000;
 
 /** 14,000 → "14K+", 1,234 → "1.2K+", 610 → "600+" */
-export const compactCount = (n: number): string =>
+const compactCount = (n: number): string =>
   n >= 10_000 ? `${Math.floor(n / 1000)}K+` : n >= 1000 ? `${Math.floor(n / 100) / 10}K+` : `${roundDown(n)}+`;
 
 /** 14,000 → "14,000+", 61,234 → "61,000+", 610 → "600+" */

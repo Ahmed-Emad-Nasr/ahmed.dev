@@ -7,14 +7,15 @@
  *   heroDescription → the hero's summary paragraph (CV_SUMMARY below)
  *   stats           → the 4 tiles of StatsBar between the hero and the What I Do cards:
  *                     target = number, suffix = "+" / "K+", label,
- *                     href = where the tile links
+ *                     href = where the tile links (a route inside the site,
+ *                     like "/blog#videos": it opens without a page reload)
  */
 
 import type { Stat } from "@/data/types";
 import { investigationReportCount, publishedCaseCount } from "@/data/cases";
 import { PROFESSIONAL_CERTIFICATION_COUNT } from "@/data/certifications";
 import { coveredTechniqueCount } from "@/data/attack";
-import { AUDIENCE, normalizePublicHref } from "@/lib/shared";
+import { AUDIENCE } from "@/lib/shared";
 
 /** The hero summary — the same opening line as the CV PDF (its numbers are
     computed from the data) */
@@ -32,9 +33,9 @@ type LiveCopy = {
 export const LIVE_COPY: LiveCopy = {
   heroDescription: CV_SUMMARY,
   stats: [
-    { target: investigationReportCount, suffix: "", label: "Hands-on investigations", href: `${normalizePublicHref("/blog")}?kind=investigation#cases` },
-    { target: PROFESSIONAL_CERTIFICATION_COUNT, suffix: "", label: "Professional certifications", href: normalizePublicHref("/certificates") },
-    { target: 300, suffix: "+", label: "Students taught", href: normalizePublicHref("/teaching") },
-    { target: Math.floor(AUDIENCE.youtubeViews / 1000), suffix: "K+", label: "YouTube views", href: `${normalizePublicHref("/blog")}#videos` },
+    { target: investigationReportCount, suffix: "", label: "Hands-on investigations", href: "/blog?kind=investigation#cases" },
+    { target: PROFESSIONAL_CERTIFICATION_COUNT, suffix: "", label: "Professional certifications", href: "/certificates" },
+    { target: 300, suffix: "+", label: "Students taught", href: "/teaching" },
+    { target: Math.floor(AUDIENCE.youtubeViews / 1000), suffix: "K+", label: "YouTube views", href: "/blog#videos" },
   ],
 };

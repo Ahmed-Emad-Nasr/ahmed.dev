@@ -20,7 +20,7 @@ import { absoluteUrl } from "@/lib/site";
 import { PERSON_REF } from "@/lib/seo";
 import { REPO_URL } from "@/lib/shared";
 
-export type ImageSize = { width: number; height: number };
+type ImageSize = { width: number; height: number };
 
 /** Width and height from a WebP/PNG/JPEG header (only the first bytes are read) */
 export function imageSize(publicPath: string): ImageSize | undefined {
@@ -59,9 +59,9 @@ export function imageSize(publicPath: string): ImageSize | undefined {
 }
 
 /** The content licence: the photos and scans are © Ahmed Emad Nasr (CONTENT-LICENSE.md) */
-export const CONTENT_LICENSE_URL = `${REPO_URL}/blob/master/CONTENT-LICENSE.md`;
+const CONTENT_LICENSE_URL = `${REPO_URL}/blob/master/CONTENT-LICENSE.md`;
 /** Where to ask for permission to reuse an image */
-export const ACQUIRE_LICENSE_URL = absoluteUrl("/#contact");
+const ACQUIRE_LICENSE_URL = absoluteUrl("/#contact");
 
 type ImageObjectInput = {
   id: string;

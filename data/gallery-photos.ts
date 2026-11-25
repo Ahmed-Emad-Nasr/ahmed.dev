@@ -396,7 +396,7 @@ export const GALLERY_PHOTOS: readonly GalleryPhoto[] = [
 
 /* ─── Helpers ─── */
 
-export const GALLERY_FOLDER = "Assets/gallery";
+const GALLERY_FOLDER = "Assets/gallery";
 
 /** The photo: Assets/gallery/<slug>.webp (no leading slash — normalizePublicHref adds the base path) */
 export const photoImagePath = (slug: string): string => `${GALLERY_FOLDER}/${slug}.webp`;

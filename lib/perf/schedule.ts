@@ -7,7 +7,9 @@
  *                      loaded, the browser reports idle time, nobody has
  *                      scrolled, wheeled or swiped for 300 ms, and the tab
  *                      is visible — so background work never lands in a
- *                      frame the reader is scrolling through.
+ *                      frame the reader is scrolling through. While the
+ *                      intro screen is up, back to back instead: nobody can
+ *                      scroll yet, and it is all done before the page shows.
  *
  *   SECTION_ADDED      Fired on window when a section arrives after the page
  *                      loaded (the case library, whose data is fetched), so
@@ -37,12 +39,19 @@ const requestIdle = (cb: (d: Deadline) => void): void => {
   else window.setTimeout(() => cb({ didTimeout: false, timeRemaining: () => 8 }), 120);
 };
 
+/* The intro screen (AppLoader) is still covering the page */
+const underIntro = (): boolean => Boolean(document.querySelector("[data-app-loader]"));
+
 function next(): void {
   if (!queue.length) {
     running = false;
     return;
   }
-  requestIdle(async () => {
+  /* While the intro covers the page there is no reader to disturb: the
+     tasks run back to back, so their code is all here before it lifts
+     (waiting for idle time there pushed some past it on a busy phone) */
+  const when = underIntro() ? (cb: () => void) => window.setTimeout(cb, 0) : requestIdle;
+  when(async () => {
     /* Busy (scrolling, hidden tab): look again a little later */
     if (document.hidden || isScrolling()) {
       window.setTimeout(next, SCROLL_QUIET_MS);
@@ -75,7 +84,7 @@ function start(): void {
         started = true;
         pump();
       },
-      document.querySelector("[data-app-loader]") ? START_UNDER_INTRO_MS : START_AFTER_LOAD_MS,
+      underIntro() ? START_UNDER_INTRO_MS : START_AFTER_LOAD_MS,
     );
   if (document.readyState === "complete") go();
   else window.addEventListener("load", go, { once: true });

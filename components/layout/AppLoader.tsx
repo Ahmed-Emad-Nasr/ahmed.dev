@@ -26,8 +26,13 @@ import { INTRO_SEEN_KEY, introSeen, introStarting, markIntroDone } from "@/lib/i
  * one of the site's own links.
  *   • The first page of a visit gets the full intro (1.9 s).
  *   • Every page after it gets a short one (QUICK, 0.9 s).
- *   • Either way it then waits (up to READY_WAIT) until the fonts and the
- *     images on the first screen have arrived, so the page appears whole.
+ *   • Either way it then waits (up to READY_WAIT) until the page underneath
+ *     is whole: the fonts, the pictures of the first two screens, and every
+ *     section that was still a grey skeleton (the blog's case library, a
+ *     section whose code was still downloading).
+ *   • While it is up, every picture further down the page starts loading
+ *     too (warmPictures below), so scrolling never waits for one. Not on a
+ *     "save data" or 2G connection: there only the first two screens do.
  * Skipped only on the browser's Back button after a full load, where the
  * page comes back from the cache already drawn (see lib/intro.ts).
  *
@@ -58,25 +63,125 @@ const noSubscribe = () => () => {};
    on top of the bar for the fonts and the first screen's images */
 const QUICK = 900;
 const READY_WAIT = 900;
+/* The most the warm-up waits for the first screens before it starts */
+const WARM_AFTER_MAX = 2500;
 
-/* Resolves when the fonts are ready and every image on the first screen has
-   loaded (or failed) — or after `max` ms, whichever comes first */
-function pageReady(max: number): Promise<void> {
-  const images = [...document.images].filter((img) => {
-    if (img.complete) return false;
-    const r = img.getBoundingClientRect();
-    return r.width > 0 && r.top < window.innerHeight && r.bottom > 0;
+/* How far down "the first screens" go: the loader waits for the pictures
+   in them, in screen heights */
+const FIRST_SCREENS = 2;
+
+/* A "save data" or 2G connection: only what the first screens need */
+function thriftyConnection(): boolean {
+  const c = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  return Boolean(c?.saveData) || /2g/.test(c?.effectiveType ?? "");
+}
+
+const nearTop = (el: Element): boolean => {
+  const r = el.getBoundingClientRect();
+  return r.width > 0 && r.top < window.innerHeight * FIRST_SCREENS && r.bottom > 0;
+};
+
+/* Under the loader: every picture marked loading="lazy" starts downloading
+   now instead of when it is scrolled near, so the page is already complete
+   when the screen lifts. Two at a time, top to bottom: the first screens
+   come first, and the network never fills up with pictures (a page that
+   keeps loading looks "busy" to speed tests and scores lower). Pictures
+   that arrive later (a section drawn in the browser, like the case
+   library) join the queue. Iframes (videos, PDFs) stay lazy: they are
+   whole pages, not pictures. Returns the function that stops it. */
+const WARM_AT_ONCE = 2;
+/* A picture that neither loads nor fails (removed from the page) frees its
+   place after this long */
+const WARM_GIVE_UP = 8000;
+
+function warmPictures(): () => void {
+  const thrifty = thriftyConnection();
+  const queue: HTMLImageElement[] = [];
+  const queued = new WeakSet<HTMLImageElement>();
+  let active = 0;
+  let stopped = false;
+
+  const pump = () => {
+    while (!stopped && active < WARM_AT_ONCE && queue.length) {
+      const img = queue.shift()!;
+      if (img.loading !== "lazy" || !img.isConnected) continue;
+      if (img.complete && img.naturalWidth > 0) continue;
+      active++;
+      let freed = false;
+      const free = () => {
+        if (freed) return;
+        freed = true;
+        window.clearTimeout(timer);
+        active--;
+        pump();
+      };
+      const timer = window.setTimeout(free, WARM_GIVE_UP);
+      img.addEventListener("load", free, { once: true });
+      img.addEventListener("error", free, { once: true });
+      img.loading = "eager";
+    }
+  };
+  const add = (img: HTMLImageElement) => {
+    if (img.loading !== "lazy" || queued.has(img)) return;
+    if (thrifty && !nearTop(img)) return;
+    queued.add(img);
+    queue.push(img);
+  };
+  const sweep = (root: ParentNode) => root.querySelectorAll<HTMLImageElement>('img[loading="lazy"]').forEach(add);
+
+  sweep(document);
+  pump();
+  const watcher = new MutationObserver((changes) => {
+    for (const change of changes)
+      for (const node of change.addedNodes) {
+        if (node instanceof HTMLImageElement) add(node);
+        else if (node instanceof Element) sweep(node);
+      }
+    pump();
   });
-  const loaded = images.map(
-    (img) =>
-      new Promise<void>((done) => {
-        img.addEventListener("load", () => done(), { once: true });
-        img.addEventListener("error", () => done(), { once: true });
-      }),
-  );
+  watcher.observe(document.body, { childList: true, subtree: true });
+  return () => {
+    stopped = true;
+    watcher.disconnect();
+  };
+}
+
+/* Resolves once the page underneath is whole — the fonts are ready, no
+   section is a grey skeleton any more (SectionSkeleton, data-skeleton), and
+   every picture of the first screens has loaded (or failed) — or after
+   `max` ms, whichever comes first */
+function pageReady(max: number): Promise<void> {
   const fonts = document.fonts ? document.fonts.ready.then(() => undefined) : Promise.resolve();
+  const skeletons = new Promise<void>((done) => {
+    const check = () => {
+      if (document.querySelector("[data-skeleton]")) return false;
+      done();
+      return true;
+    };
+    if (check()) return;
+    const watcher = new MutationObserver(() => {
+      if (check()) watcher.disconnect();
+    });
+    watcher.observe(document.body, { childList: true, subtree: true });
+    setTimeout(() => watcher.disconnect(), max);
+  });
+  /* Pictures: looked at once the skeletons are gone, so the ones the new
+     sections brought are counted too */
+  const pictures = skeletons.then(() =>
+    Promise.all(
+      [...document.images]
+        .filter((img) => !img.complete && nearTop(img))
+        .map(
+          (img) =>
+            new Promise<void>((done) => {
+              img.addEventListener("load", () => done(), { once: true });
+              img.addEventListener("error", () => done(), { once: true });
+            }),
+        ),
+    ),
+  );
   return Promise.race([
-    Promise.all([fonts, ...loaded]).then(() => undefined),
+    Promise.all([fonts, pictures]).then(() => undefined),
     new Promise<void>((done) => setTimeout(done, max)),
   ]);
 }
@@ -96,6 +201,29 @@ export default function AppLoader() {
   useLayoutEffect(() => {
     if (!seen) introStarting();
   }, [seen]);
+  /* Everything further down the page starts loading while the screen is
+     up: once the page itself has loaded and its first screens are whole,
+     so what is seen first always goes first (warmPictures, two at a time).
+     On its own effect: if it is not done when the screen lifts, it
+     carries on. */
+  useEffect(() => {
+    if (seen) return;
+    let live = true;
+    let stop = () => {};
+    new Promise<void>((done) => {
+      if (document.readyState === "complete") done();
+      else window.addEventListener("load", () => done(), { once: true });
+    })
+      .then(() => pageReady(WARM_AFTER_MAX))
+      .then(() => {
+        if (live) stop = warmPictures();
+      });
+    return () => {
+      live = false;
+      stop();
+    };
+  }, [seen]);
+
   const [wordIndex, setWordIndex] = useState(0);
   const barRef = useRef<HTMLDivElement>(null);
   const countRef = useRef<HTMLSpanElement>(null);

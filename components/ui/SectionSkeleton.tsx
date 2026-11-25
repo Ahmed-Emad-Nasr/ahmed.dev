@@ -12,6 +12,8 @@ export default function SectionSkeleton({
   return (
     <section
       aria-hidden="true"
+      /* AppLoader waits for every one of these to be gone before it lifts */
+      data-skeleton=""
       className={`mx-auto w-full max-w-7xl px-6 md:px-20 ${tall ? "py-32" : "py-24"}`}
     >
       <div className="animate-pulse space-y-4">
