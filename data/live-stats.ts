@@ -36,18 +36,18 @@ export interface LiveStats {
 }
 
 export const LIVE_STATS: LiveStats = {
-  "checked": "2026-11-24",
+  "checked": "2026-11-25",
   "youtube": {
     "subscribers": 613,
-    "views": 40697,
-    "videos": 87
+    "views": 40867,
+    "videos": 86
   },
   "playlists": [
     {
       "id": "PLWgsM4fK9Xls",
       "title": "Cybersecurity Basics",
       "description": "مصطلحات Cybersecurity ببساطة | Cybersecurity Terms Explained\n\nفي الـPlaylist دي هنتكلم عن أهم **Cybersecurity Terms & Concepts** اللي لازم تكون فاهمها لو بتبدأ أو بتطور نفسك في مجال الـCybersecurity.\n\nكل فيديو بيركز على **مصطلح أو Concept مهم**، وبيشرحه بطريقة بسيطة وعملية، مع توضيح معناه، بيستخدم فين، وليه مهم في عالم الـCybersecurity.\n\nهنتكلم عن مواضيع ومص",
-      "count": 22
+      "count": 23
     },
     {
       "id": "PLPDYYur6-Ax4",
