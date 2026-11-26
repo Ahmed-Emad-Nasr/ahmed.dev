@@ -24,6 +24,7 @@
 import SectionHeader from "@/components/ui/SectionHeader";
 import { KanjiWatermark, PlainNotes } from "@/components/ui/kit";
 import FadeIn from "@/components/ui/FadeIn";
+import LabSvg from "@/components/home/LabSvg";
 
 type Node = { id: string; x: number; y: number; w: number; h: number; title: string; sub: string; tone: "primary" | "accent" | "tertiary" | "muted" };
 
@@ -90,7 +91,7 @@ export default function HomeLab() {
         {/* Scrolls sideways on narrow screens — focusable so keyboard users can
             scroll it too (arrow keys), and named for screen readers */}
         <FadeIn as="figure" y={30} duration={0.8} className="relative border border-foreground/10 bg-surface/40 p-4 md:p-8 overflow-x-auto" tabIndex={0} aria-labelledby="lab-title">
-          <svg viewBox="0 0 1040 440" className="min-w-[760px] w-full h-auto" role="img" aria-labelledby="lab-title lab-desc">
+          <LabSvg viewBox="0 0 1040 440" className="min-w-[760px] w-full h-auto" role="img" aria-labelledby="lab-title lab-desc">
             <title id="lab-title">SOC home lab architecture</title>
             <desc id="lab-desc">
               Kali Linux attacks Windows and Linux endpoints behind pfSense. Endpoint logs (Sysmon, auditd, file integrity) and Suricata and Zeek network alerts flow into Wazuh. Wazuh enriches hashes through VirusTotal, triggers a YARA scan and quarantine script, and opens cases in TheHive.
@@ -137,7 +138,7 @@ export default function HomeLab() {
                 )}
               </g>
             ))}
-          </svg>
+          </LabSvg>
           <p className="md:hidden mt-3 font-mono text-[0.5625rem] uppercase tracking-[0.25em] text-primary-ink flex items-center gap-2" aria-hidden="true">
             Swipe for the full lab <span className="inline-block soft-pulse">→</span>
           </p>
