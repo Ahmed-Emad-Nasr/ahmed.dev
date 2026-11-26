@@ -125,9 +125,10 @@ scrolled. `lib/routes.ts` knows which page each section id lives on.
   page stands still.
 - Home sections below the hero use `content-visibility: auto`
   (`app/globals.css`); `lib/perf/jump.ts` re-aims #jumps once they are drawn.
-- Entrances: `components/ui/FadeIn.tsx` (framer-motion, opacity + transform
-  only, staggered top to bottom). framer-motion loads lazily
-  (`LazyMotion` + `m`).
+- Entrances: `components/ui/FadeIn.tsx` (browser `element.animate`, opacity +
+  transform only, staggered top to bottom; one shared IntersectionObserver in
+  `lib/in-view.ts`, also used by `CountUp`). No animation library. The other
+  framer-motion pieces load lazily (`LazyMotion` + `m`).
 - Hero entrance: `element.animate` in `components/home/HeroSection.tsx` with
   GSAP's power2.out curve (`lib/ease.ts` — CSS `linear()` drawn from GSAP's
   formulas, so the motion is Sensei-Dev's); it waits for the intro screen to

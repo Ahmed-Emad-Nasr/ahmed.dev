@@ -6,8 +6,12 @@
  *
  *  · Elements without a delay entering in the same frame start top to bottom,
  *    80 ms apart; lists stagger through their own `delay`.
- *  · opacity + transform (not framer's x/y) so the browser runs them off the
- *    main thread (WAAPI) and a cascade never stutters the scroll.
+ *  · No animation library: one shared IntersectionObserver (lib/in-view.ts)
+ *    and the browser's own element.animate on opacity + transform, so it runs
+ *    off the main thread and a cascade never stutters the scroll.
+ *  · The element is server-rendered hidden (opacity 0, moved). When it enters,
+ *    its final style is written at once and the animation plays "from" the
+ *    hidden state (fill: backwards) — nothing is left running afterwards.
  *
  * ═══ components/ui/FadeIn.tsx — the entrance animation used everywhere ═══
  * Wrap anything:
@@ -21,15 +25,11 @@
  * Global feel (ease curve, stagger gap) → lib/motion.ts.
  */
 
-import { m, useAnimationControls } from "framer-motion";
-import { useRef, type ComponentProps } from "react";
+import { useEffect, useRef, type ElementType, type HTMLAttributes } from "react";
 import { whenIntroDone } from "@/lib/intro";
-import { isLiteDevice } from "@/lib/fx";
-import {
-  MOTION_EASE,
-  MOTION_ENTER_DURATION,
-  MOTION_STAGGER_STEP,
-} from "@/lib/motion";
+import { isLiteDevice, prefersReducedMotion } from "@/lib/fx";
+import { onceInView } from "@/lib/in-view";
+import { MOTION_EASE, MOTION_ENTER_DURATION, MOTION_STAGGER_STEP } from "@/lib/motion";
 
 type Tag =
   | "div"
@@ -53,10 +53,7 @@ type Tag =
   | "h3"
   | "h4";
 
-type FadeInProps = Omit<
-  ComponentProps<typeof m.div>,
-  "initial" | "animate" | "whileInView" | "viewport" | "transition" | "ref"
-> & {
+type FadeInProps = Omit<HTMLAttributes<HTMLElement>, "style"> & {
   as?: Tag;
   x?: number;
   y?: number;
@@ -79,6 +76,8 @@ type FadeInProps = Omit<
    Speed dials for the whole site: MOTION_ENTER_DURATION / MOTION_EASE in
    lib/motion.ts. */
 const MAX_DELAY = 8 * MOTION_STAGGER_STEP;
+const EASING = `cubic-bezier(${MOTION_EASE.join(", ")})`;
+const FINAL_TRANSFORM = "translate(0px, 0px) scale(1)";
 
 /* Elements without a delay of their own that enter in the same frame (a
    header's eyebrow, title and text) start top to bottom, one step apart */
@@ -104,42 +103,54 @@ export default function FadeIn({
   delay = 0,
   ...rest
 }: FadeInProps) {
-  const Element = m[as] as typeof m.div;
-  const ref = useRef<HTMLDivElement>(null);
-  const controls = useAnimationControls();
+  const Element = as as ElementType;
+  const ref = useRef<HTMLElement>(null);
+  const startTransform = `translate(${x}px, ${y}px) scale(${scale})`;
 
-  return (
-    <Element
-      ref={ref}
-      initial={{
-        opacity: 0,
-        transform: `translate(${x}px, ${y}px) scale(${scale})`,
-      }}
-      animate={controls}
-      viewport={{ once: true, margin: "0px 0px -40px 0px" }}
-      onViewportEnter={() =>
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let cancelIntro = () => {};
+    const stop = onceInView(
+      el,
+      () => {
         /* Under the intro screen nothing plays: it starts as the screen lifts */
-        whenIntroDone(() => {
-          if (!ref.current) return; // left the page while waiting
+        cancelIntro = whenIntroDone(() => {
+          if (!el.isConnected) return; // left the page while waiting
           /* A weak device: shown at once, no animation work */
           if (isLiteDevice()) {
-            controls.set({ opacity: 1, transform: "none" });
+            el.style.opacity = "1";
+            el.style.transform = "none";
             return;
           }
-          enqueue(ref.current, (order) => {
-            void controls.start({
-              opacity: 1,
-              transform: "translate(0px, 0px) scale(1)",
-              transition: {
-                duration: duration || MOTION_ENTER_DURATION,
-                delay: delay ? Math.min(delay, MAX_DELAY) : Math.min(order, 4) * MOTION_STAGGER_STEP,
-                ease: MOTION_EASE,
-              },
-            });
+          enqueue(el, (order) => {
+            if (!el.isConnected) return;
+            const seconds = duration || MOTION_ENTER_DURATION;
+            const wait = delay ? Math.min(delay, MAX_DELAY) : Math.min(order, 4) * MOTION_STAGGER_STEP;
+            /* Reduced motion: it still fades in, but does not travel */
+            const moves = !prefersReducedMotion();
+            /* The end state is written first; the animation draws the way
+               from the hidden start (fill: backwards holds it during the delay) */
+            el.style.opacity = "1";
+            el.style.transform = FINAL_TRANSFORM;
+            el.animate(
+              moves
+                ? [{ opacity: 0, transform: startTransform }, { opacity: 1, transform: FINAL_TRANSFORM }]
+                : [{ opacity: 0 }, { opacity: 1 }],
+              { duration: seconds * 1000, delay: wait * 1000, easing: EASING, fill: "backwards" },
+            );
           });
-        })
-      }
-      {...rest}
-    />
-  );
+        });
+      },
+      "0px 0px -40px 0px",
+    );
+    return () => {
+      stop();
+      cancelIntro();
+    };
+    // x / y / scale only describe the start; they never change while mounted
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <Element ref={ref} style={{ opacity: 0, transform: startTransform }} {...rest} />;
 }
