@@ -8,6 +8,21 @@ import type { BlogYoutubeVideo } from "@/lib/shared";
 
 export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
   {
+    "videoId": "rVp-u3mRKho",
+    "title": "شرح أنواع الـ Backdoors وهجمات Brute Force | Dictionary Attack و Password Spraying",
+    "description": "In this video, we explore two important cybersecurity topics: **Backdoors** and **Brute Force Attacks**. We'll understand how backdoors work, explore their different types, and examine common password-based attacks used by attackers to gain unauthorized access. ### 📌 Topics Covered **1. Backdoor Types** - What is a Backdoor? - How Backdoors work…",
+    "publishedAt": "2026-11-25",
+    "tags": [
+      "CyberSecurity",
+      "Backdoor",
+      "BruteForce",
+      "PasswordSpraying",
+      "DictionaryAttack",
+      "EthicalHacking"
+    ],
+    "auto": true
+  },
+  {
     "videoId": "7zcUxR3GO-Y",
     "title": "What is KPI? | Key Performance Indicator Explained Simply",
     "description": "📊 **What is KPI (Key Performance Indicator)?** Have you ever wondered how companies measure performance and determine whether they're achieving their goals? In this video, we'll explain what **KPI (Key Performance Indicator)** means, why organizations use it, and how it helps measure success and track progress. 🔹 **What You'll Learn:** - What is KPI?…",
@@ -102,7 +117,7 @@ export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
 /* Counter of the channel's uploads: +1 for every upload the feed shows that
    is not in YOUTUBE_COUNTED_IDS yet. scripts/sync-stats.mjs uses it only when
    it can't read YouTube's own number (data/live-stats.ts). */
-export const YOUTUBE_CHANNEL_VIDEOS = 87;
+export const YOUTUBE_CHANNEL_VIDEOS = 88;
 
 /* The uploads already counted in YOUTUBE_CHANNEL_VIDEOS */
 export const YOUTUBE_COUNTED_IDS: string[] = [
@@ -142,6 +157,7 @@ export const YOUTUBE_COUNTED_IDS: string[] = [
   "lrCpQbxw-9o",
   "mvslufknlJ4",
   "orw_kiHZvhU",
+  "rVp-u3mRKho",
   "sWptomUQ1uo",
   "u_hezaAwnmM",
   "vqg_xMdD96E",

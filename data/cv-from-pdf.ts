@@ -33,8 +33,8 @@ export interface CvFromPdf {
 }
 
 export const CV_FROM_PDF: CvFromPdf | null = {
-  "hash": "fa489441e4922321f0ada3bd97db74dac2bf29ad6c7a780f0aae7d6fc5001440",
-  "read": "2026-11-23",
+  "hash": "1a6d34ba6d017d992a0e9179bb895b71dc8ed3e026b52adc5f884b212cf7e6ab",
+  "read": "2026-11-26",
   "titleFirst": true,
   "sections": {
     "contact": {
@@ -45,7 +45,7 @@ export const CV_FROM_PDF: CvFromPdf | null = {
     },
     "education": {
       "degree": "Bachelor of Science (B.Sc.), Computer Science – Information Security and Digital Forensics",
-      "school": "Benha University – GPA: 3.78/4.0",
+      "school": "Benha University – GPA: 3.78/4.0 | Academic Rank: 8th of 900",
       "place": "Benha, Egypt",
       "date": "Jun 2026",
       "gpa": "3.78/4.0",
@@ -91,7 +91,7 @@ export const CV_FROM_PDF: CvFromPdf | null = {
         "dates": "May 2025 – Jan 2026",
         "points": [
           "Completed all INE eJPT labs (reconnaissance, enumeration, exploitation, pivoting) & passed the exam with a **90%** score",
-          "Solved **100%** of assigned labs on PortSwigger, CyberTalents, and Hack The Box (HTB)"
+          "Completed **100+** labs across PortSwigger, CyberTalents & HTB in Web Exploitation, SQLi, XSS, and Privilege Escalation"
         ]
       }
     ],
@@ -251,9 +251,8 @@ export const CV_FROM_PDF: CvFromPdf | null = {
       ]
     ],
     "awards": [
-      "**Academic Excellence:** Ranked **8th of 900** in Information Security and Digital Forensics at Benha University",
       "Ranked in the Top **1%** of users globally on the TryHackMe platform",
-      "Scaled a cybersecurity YouTube channel to **500+** subscribers & **60,000+** views, featuring practical tutorials",
+      "Scaled a cybersecurity YouTube channel to **600+** subscribers & **60,000+** views, featuring practical tutorials",
       "Ranked **44th** out of **450** in the ITI & CyberTalents CTF Competition",
       "Officially recognized as a Top Achiever in the Digital Egypt Pioneers Initiative (DEPI) – Round **4**"
     ],
