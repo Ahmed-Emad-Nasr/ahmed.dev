@@ -8,6 +8,21 @@ import type { BlogYoutubeVideo } from "@/lib/shared";
 
 export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
   {
+    "videoId": "73GtmZ294FM",
+    "title": "Bind Shell vs Reverse Shell | Understanding Remote Shell Connections",
+    "description": "في الفيديو ده هنتعرف على الفرق بين **Bind Shell** و **Reverse Shell**، وهما من المفاهيم الأساسية في عالم Cybersecurity وPenetration Testing. هنشرح - What is a Bind Shell? - What is a Reverse Shell? - How does each connection work? - The difference between Bind and Reverse Shell. - Client vs Server roles. - Why attackers use Reverse Shells. - Common…",
+    "publishedAt": "2026-11-26",
+    "tags": [
+      "CyberSecurity",
+      "ReverseShell",
+      "BindShell",
+      "PenetrationTesting",
+      "Networking",
+      "SOC"
+    ],
+    "auto": true
+  },
+  {
     "videoId": "rVp-u3mRKho",
     "title": "شرح أنواع الـ Backdoors وهجمات Brute Force | Dictionary Attack و Password Spraying",
     "description": "In this video, we explore two important cybersecurity topics: **Backdoors** and **Brute Force Attacks**. We'll understand how backdoors work, explore their different types, and examine common password-based attacks used by attackers to gain unauthorized access. ### 📌 Topics Covered **1. Backdoor Types** - What is a Backdoor? - How Backdoors work…",
@@ -117,7 +132,7 @@ export const YOUTUBE_FEED: BlogYoutubeVideo[] = [
 /* Counter of the channel's uploads: +1 for every upload the feed shows that
    is not in YOUTUBE_COUNTED_IDS yet. scripts/sync-stats.mjs uses it only when
    it can't read YouTube's own number (data/live-stats.ts). */
-export const YOUTUBE_CHANNEL_VIDEOS = 88;
+export const YOUTUBE_CHANNEL_VIDEOS = 89;
 
 /* The uploads already counted in YOUTUBE_CHANNEL_VIDEOS */
 export const YOUTUBE_COUNTED_IDS: string[] = [
@@ -126,6 +141,7 @@ export const YOUTUBE_COUNTED_IDS: string[] = [
   "3qxPeJOAtls",
   "3v3jbpTspr4",
   "4-_XHZa2lVc",
+  "73GtmZ294FM",
   "7zcUxR3GO-Y",
   "9JR1gbmuYrc",
   "9LHwl0FpuPM",
