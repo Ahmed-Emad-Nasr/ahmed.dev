@@ -79,6 +79,9 @@ export default function PageGuide() {
   return (
     <div
       role="status"
+      /* DhikrToast waits while this note is open */
+      data-page-guide
+      data-open={open}
       /* Out of the tab order and the accessibility tree while hidden */
       inert={!open}
       lang={ar ? "ar" : "en"}

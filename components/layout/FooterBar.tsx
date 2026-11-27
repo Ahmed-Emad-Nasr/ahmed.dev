@@ -23,6 +23,7 @@ import Link from "next/link";
 import { PROFILE } from "@/data/profile";
 import { PGP_KEY_FILE, REPO_URL, normalizePublicHref } from "@/lib/shared";
 import { SERVICE, onService } from "@/data/status";
+import Ayah from "@/components/ui/Ayah";
 
 /* When this copy of the site was built (next.config.mjs), shown as
    "Updated 24 Nov 2026" in Cairo time */
@@ -112,10 +113,16 @@ export default function FooterBar({ className = "" }: { className?: string }) {
           </span>
         </div>
       </div>
+      {/* Hud 88 — the words of Shu'ayb (peace be upon him) */}
+      <p className="mt-6 px-4 text-center">
+        <Ayah source="هود: 88" className="text-base leading-loose text-foreground/70">
+          وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ ۚ عَلَيْهِ تَوَكَّلْتُ وَإِلَيْهِ أُنِيبُ
+        </Ayah>
+      </p>
       {/* The day of the last deploy (the site rebuilds daily, so this shows it
           is alive), and the national-service note while it applies
           (data/status.ts) */}
-      <p className="mt-6 mb-16 lg:mb-0 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 tracking-[0.3em]" suppressHydrationWarning>
+      <p className="mt-3 mb-16 lg:mb-0 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 tracking-[0.3em]" suppressHydrationWarning>
         <span>
           Updated <time dateTime={BUILT_AT}>{builtOn(BUILT_AT)}</time>
         </span>

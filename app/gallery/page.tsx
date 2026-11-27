@@ -14,6 +14,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageShell from "@/components/layout/PageShell";
+import Ayah from "@/components/ui/Ayah";
 import PageEffects from "@/lib/perf/PageEffects";
 import { ArtGallery } from "@/components/gallery/dynamic";
 import { absoluteUrl } from "@/lib/site";
@@ -99,7 +100,7 @@ export default function GalleryPage() {
       <div id="gallery" className="pt-28 md:pt-32">
         {/* The same page in Arabic (app/ar/gallery/page.tsx) — no prefetch: it would preload the Arabic font */}
         <p className="relative z-10 px-6 md:px-20 -mb-2">
-          <span className="block max-w-7xl mx-auto">
+          <span className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-x-6 gap-y-1">
             <Link
               href="/ar/gallery"
               prefetch={false}
@@ -109,6 +110,9 @@ export default function GalleryPage() {
               <bdi lang="ar">اقرأ هذه الصفحة بالعربية</bdi>
               <span aria-hidden="true">→</span>
             </Link>
+            <Ayah source="الكهف: 39" className="text-base text-foreground/70">
+              مَا شَاءَ اللَّهُ لَا قُوَّةَ إِلَّا بِاللَّهِ
+            </Ayah>
           </span>
         </p>
         <ArtGallery {...GALLERY_PROPS} />

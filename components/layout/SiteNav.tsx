@@ -154,8 +154,6 @@ export default function SiteNav() {
                 className={`hidden xl:block transition-colors duration-300 ${current === item.href ? "text-primary-ink" : "text-foreground/30 group-hover:text-primary-ink"}`}
               />
               <span>{item.name}</span>
-              {/* Red dot indicator */}
-              <span className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-primary rounded-none transition-opacity duration-300 ${current === item.href ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`} />
             </NavAnchor>
           ))}
         </div>

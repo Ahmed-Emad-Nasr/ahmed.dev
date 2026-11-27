@@ -2,14 +2,16 @@
 
 /*
  * ═══ components/layout/PageGuideMount.tsx ═══
- * Loads the "what's on this page" note (PageGuide.tsx) only once the browser
- * is idle, so it never competes with the page itself.
+ * Loads the "what's on this page" note (PageGuide.tsx) and the small
+ * remembrance card (DhikrToast.tsx) only once the browser is idle, so they
+ * never compete with the page itself.
  */
 
 import { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 
 const PageGuide = dynamic(() => import("@/components/layout/PageGuide"), { ssr: false });
+const DhikrToast = dynamic(() => import("@/components/layout/DhikrToast"), { ssr: false });
 
 export default function PageGuideMount() {
   const [on, setOn] = useState(false);
@@ -18,5 +20,10 @@ export default function PageGuideMount() {
     const id = idle(() => setOn(true));
     return () => (window.cancelIdleCallback ?? window.clearTimeout)(id as number);
   }, []);
-  return on ? <PageGuide /> : null;
+  return on ? (
+    <>
+      <PageGuide />
+      <DhikrToast />
+    </>
+  ) : null;
 }

@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } fr
 import { m as motion, AnimatePresence } from "framer-motion";
 import { prefersReducedMotion } from "@/lib/fx";
 import { INTRO_SEEN_KEY, introSeen, introStarting, markIntroDone } from "@/lib/intro";
+import Ayah from "@/components/ui/Ayah";
 
 /*
  * ═══ components/layout/AppLoader.tsx — the INTRO BOOT SCREEN ═══
@@ -345,6 +346,11 @@ export default function AppLoader() {
               </span>
             </div>
           </div>
+
+          {/* Taha 114 — static, in the server HTML: no shift, nothing to load */}
+          <Ayah source="طه: 114" className="mt-9 px-6 text-center text-xl leading-loose text-foreground/75 md:text-2xl">
+            وَقُل رَّبِّ زِدْنِي عِلْمًا
+          </Ayah>
 
           <span className="absolute bottom-6 font-mono text-[0.625rem] uppercase tracking-[0.3em] text-foreground/60">
             tap anywhere to skip

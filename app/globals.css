@@ -663,6 +663,35 @@ html[data-intro-seen] [data-app-loader] {
   }
 }
 
+/* ─── Quran and adhkar (components/ui/Ayah.tsx, DhikrToast.tsx) ───────
+   Naskh fonts the visitor already has (nothing is downloaded), drawn with
+   their tashkeel. No letter-spacing and no uppercase, whatever the parent
+   (footer labels, loader) sets: they would break the joined letters. */
+.font-ayah {
+  font-family:
+    "Amiri Quran", "Scheherazade New", "Noto Naskh Arabic", "Traditional Arabic", "Geeza Pro", var(--font-arabic, "Cairo"),
+    Tahoma, serif;
+  letter-spacing: normal;
+  text-transform: none;
+  font-style: normal;
+  font-feature-settings: normal;
+}
+/* The little moon on the remembrance card floats gently */
+@media (prefers-reduced-motion: no-preference) {
+  .dhikr-float {
+    animation: dhikr-float 3.2s ease-in-out infinite;
+  }
+}
+@keyframes dhikr-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
 /* Lightbox: follow the theme's red instead of the library's default blue */
 .yarl__thumbnails_thumbnail_active {
   border-color: var(--primary) !important;
@@ -686,6 +715,7 @@ html[data-intro-seen] [data-app-loader] {
   button,
   .skip-link,
   [data-app-loader],
+  [data-dhikr],
   .kanji-watermark,
   .japanese-bg,
   [data-tip] {
