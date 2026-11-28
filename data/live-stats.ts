@@ -36,10 +36,10 @@ export interface LiveStats {
 }
 
 export const LIVE_STATS: LiveStats = {
-  "checked": "2026-11-27",
+  "checked": "2026-11-28",
   "youtube": {
-    "subscribers": 615,
-    "views": 41256,
+    "subscribers": 618,
+    "views": 41405,
     "videos": 89
   },
   "playlists": [
